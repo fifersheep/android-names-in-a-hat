@@ -1,0 +1,119 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:background="@color/dark_grey">   <!-- android:background="@drawable/background_claw" -->
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/relative_BottomBar"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" >
+
+        <LinearLayout
+            android:id="@+id/frag_switch"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tvAddToHat"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/checks_head" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false"
+                android:padding="5dp"
+                android:weightSum="2" >
+
+                <LinearLayout
+                    android:id="@+id/llLeft"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llRight"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout999"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp"
+                android:gravity="center" >
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/relative_BottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:layout_alignParentBottom="true"
+        style="@style/Theme.DrawTheme.BottomBar">
+
+        <TextView
+            android:id="@+id/textView_DrawNames"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:text="@string/draw_head"
+            android:textColor="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/button_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textView_DrawNames"
+            android:text="@string/button_clear"
+            android:contentDescription=""
+            android:drawableLeft="@drawable/ic_action_delete"
+            android:textColor="#FFFFFF"
+            style="?attr/actionButtonStyle"/>
+
+        <Button
+            android:id="@+id/button_go"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/button_clear"
+            android:layout_below="@+id/textView_DrawNames"
+            android:text="@string/button_draw"
+            android:contentDescription=""
+            android:drawableLeft="@drawable/ic_action_send"
+            android:textColor="#FFFFFF"
+            style="?attr/actionButtonStyle"/>
+
+
+        <Spinner
+            android:id="@+id/action_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/button_go"
+            android:layout_below="@+id/textView_DrawNames"
+            android:layout_margin="10dp"
+            android:background="@drawable/custom_spinner"
+            style="@style/Style.BottomBar.Spinner"/>
+
+    </RelativeLayout>
+</RelativeLayout>

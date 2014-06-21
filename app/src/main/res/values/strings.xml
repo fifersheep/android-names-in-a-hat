@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">NamesInAHat</string>
+    <string name="action_settings">Settings</string>
+    <string name="app_tag">NIAH</string>
+
+    <string name="checks_head">Choose which names you would like to include</string>
+    <string name="draw_head">Select the number of names you want to draw</string>
+    <string name="result_title"><u>Names Drawn</u></string>
+
+    <string name="button_draw">Draw</string>
+    <string name="button_clear">Clear/All</string>
+    <string name="spinner_draw_prompt">Select&#8230;</string>
+
+    <string name="file_class_names">class_names</string>
+    <string name="file_current_classroom">current_classroom</string>
+
+    <string name="dialog_new_pupil_msg">Please enter a name for the new pupil</string>
+    <string name="dialog_new_class_msg">Please enter a name for your new class</string>
+    <string name="dialog_edit_class_msg">Please enter a new name for this class</string>
+    <string name="dialog_sort_pupils_msg">Are you sure you want to rearrange the pupils in alphabetical order permanently?</string>
+    <string name="class_name_exists_msg">Please choose a different name for your new class, as this name is already in use.
+        \n\nTo edit an existing class, please select one from the menu and choose the \"Edit Class\" action\n</string>
+    <string name="pupil_name_exists_msg_pt1">Please choose a different name, as this name is already in use within this class.</string>
+    <string name="pupil_name_exists_msg_pt2">\n\nTo edit an existing name, please select the \"Edit Name\" icon beside the name you wish to edit</string>
+
+
+</resources>

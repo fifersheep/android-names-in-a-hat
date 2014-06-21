@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="290dp"
+              android:layout_height="wrap_content"
+              android:background="@color/dark_grey" >
+    <TextView
+        android:id="@+id/dialog_edit_title"
+        android:background="@drawable/actionbar_accent"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:scaleType="center"
+        android:layout_alignParentTop="true"
+        style="@style/Theme.DrawTheme.Dialog.Title"/>
+    <TextView
+        android:id="@+id/dialog_edit_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_edit_title"
+        android:padding="14dp"
+        android:textSize="18sp"
+        android:text="@string/class_name_exists_msg" />
+    <EditText
+        android:id="@+id/dialog_edit_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialog_edit_message"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@android:color/white"
+        android:textCursorDrawable="@null"/>
+        <Button
+            android:id="@+id/dialog_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dialog_edit_input"
+            android:layout_alignParentLeft="true"
+            android:text="Cancel"
+            style="@style/DrawTheme.Dialog.Button"/>
+        <Button
+            android:id="@+id/dialog_ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dialog_edit_input"
+            android:layout_alignParentRight="true"
+            android:text="OK"
+            style="@style/DrawTheme.Dialog.Button.Extra"/>
+</RelativeLayout>

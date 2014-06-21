@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Top Line -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/li_grey_trans" />
+        </shape>
+    </item>
+
+    <!-- Color of the button -->
+    <item android:top="1dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/dark_grey" />
+        </shape>
+    </item>
+</layer-list>

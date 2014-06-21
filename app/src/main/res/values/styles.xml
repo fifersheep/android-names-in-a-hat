@@ -1,0 +1,118 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+<style name="Theme.DrawTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <item name="actionBarStyle">@style/Theme.DrawTheme.ActionBar</item>
+    <item name="android:textColor">@color/li_grey</item> <!-- Does this work? -->
+    <item name="android:dropDownListViewStyle">@style/DrawTheme.Spinner</item>
+</style>
+
+<style name="Theme.DrawTheme.Dialog" parent="android:Theme.Holo.Dialog">
+    <item name="android:background">@color/dark_grey</item>
+    <item name="android:windowTitleStyle">@style/dialog_title_style</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+</style>
+
+<style name="Theme.DrawTheme.DialogStyleLight">
+    <!-- anything can be left out: -->
+    <!--item name="titleTextColor">@color/dialog_title_text</item>
+    <item name="titleSeparatorColor">@color/dialog_title_separator</item>
+    <item name="messageTextColor">@color/dialog_message_text</item>
+    <item name="buttonTextColor">@color/dialog_button_text</item>
+    <item name="buttonSeparatorColor">@color/dialog_button_separator</item>
+    <item name="buttonBackgroundColorNormal">@color/dialog_button_normal</item>
+    <item name="buttonBackgroundColorPressed">@color/dialog_button_pressed</item>
+    <item name="buttonBackgroundColorFocused">@color/dialog_button_focused</item>
+    <item name="dialogBackground">@drawable/dialog_background</item-->
+</style>
+
+<style name="dialog_title_style" parent="android:Widget.TextView">
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:background">@drawable/actionbar_accent</item>
+    <item name="android:textColor">@android:color/white</item>
+    <item name="android:textSize">24sp</item>
+    <item name="android:paddingLeft">12dp</item>
+</style>
+
+<style name="Theme.DrawTheme.Dialog.Title" parent="android:TextAppearance.Theme.Dialog">
+    <item name="android:scrollHorizontally">true</item>
+    <item name="android:textColor">@android:color/white</item>
+    <item name="android:textSize">24sp</item>
+    <item name="android:gravity">center_vertical</item>
+    <item name="android:paddingLeft">12dp</item>
+</style>
+
+<style name="Theme.DrawTheme.ActionBar" parent="Widget.AppCompat.Light.ActionBar">
+    <item name="android:background">@drawable/actionbar_accent</item>
+    <item name="background">@drawable/actionbar_accent</item>
+    <item name="android:spinnerStyle">@style/Style.BottomBar.Spinner</item>
+    <item name="titleTextStyle">@style/Theme.MyAppTheme.ActionBar.TitleTextStyle</item>
+</style>
+
+<style name="Theme.MyAppTheme.ActionBar.TitleTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+    <item name="android:textColor">#fff</item>
+</style>
+
+<style name="Theme.DrawTheme.BottomBar" parent="Theme.DrawTheme">
+    <item name="android:background">@color/medium_grey</item>
+    <item name="android:textColor">@color/li_grey</item>
+    <item name="android:spinnerItemStyle">@style/SpinnerItem</item>
+    <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem</item>
+</style>
+
+<style name="DrawTheme.Spinner" parent="Widget.AppCompat.DropDownItem.Spinner">
+    <item name="android:popupBackground">@drawable/dialog_bottom_holo_dark</item>
+    <item name="android:divider">@color/turquoise</item>
+    <item name="android:dividerHeight">1dp</item>
+</style>
+
+<style name="DrawTheme.Dialog" parent="android:Theme.Holo.Dialog">
+    <item name="android:popupBackground">@color/dark_grey</item>
+</style>
+
+<style name="DrawTheme.Dialog.Button">
+    <item name="android:background">@drawable/dialog_button</item>
+    <item name="android:textColor">@android:color/white</item>
+</style>
+
+<style name="DrawTheme.Dialog.Button.Extra" parent="DrawTheme.Dialog.Button">
+    <item name="android:background">@drawable/dialog_button_next</item>
+</style>
+
+<style name="Style.BottomBar.Spinner" parent="Widget.AppCompat.DropDownItem.Spinner">
+    <item name="android:background">@drawable/custom_spinner</item>
+    <item name="android:spinnerItemStyle">@style/SpinnerItem</item>
+    <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem</item>
+    <item name="android:prompt">@string/spinner_draw_prompt</item>
+    <item name="android:popupBackground">@drawable/dialog_top_holo_dark</item>
+    <item name="popupMenuStyle">@style/Style.BottomBar.PopupMenu</item>
+</style>
+<style name="Style.BottomBar.PopupMenu" parent="Widget.AppCompat.ListPopupWindow">
+    <item name="android:textColor">#FF0000</item>
+</style>
+<style name="SpinnerItem">
+    <item name="android:textColor">#993399</item>
+</style>
+<style name="SpinnerDropDownItem">
+    <item name="android:textColor">#993399</item>
+</style>
+
+<style name="_spinner_style" parent="Widget.AppCompat.Spinner.DropDown.ActionBar">
+    <item name="android:dropDownWidth">290dp</item>
+    <item name="background">@color/spinner_teal</item>
+    <item name="android:background">@drawable/abc_spinner_ab_holo_dark</item>
+    <item name="android:popupBackground">@color/medium_grey</item>
+    <item name="android:divider">@color/dark_grey</item>
+    <item name="android:dividerHeight">3dp</item>
+    <item name="android:scrollbars">none</item>
+    <item name="android:dropDownSelector">@android:color/darker_gray</item>
+    <item name="android:scrollbarAlwaysDrawVerticalTrack">false</item>
+    <item name="android:scrollbarTrackVertical">@android:color/darker_gray</item>
+</style>
+
+</resources>

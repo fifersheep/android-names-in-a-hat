@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="right">
+
+    <Button
+        android:id="@+id/action_add_class"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Class"
+        android:contentDescription=""
+        android:layout_gravity="right"
+        android:drawableLeft="@drawable/ic_new_event"
+        style="?attr/actionButtonStyle"/>
+
+    <Button
+        android:id="@+id/action_edit_class_fake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:contentDescription=""
+        android:layout_gravity="right"
+        android:drawableLeft="@android:drawable/ic_menu_edit"
+        style="?attr/actionButtonStyle"/>
+
+    <Button
+        android:id="@+id/action_delete_class"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        android:contentDescription=""
+        android:layout_gravity="right"
+        android:drawableLeft="@drawable/ic_action_delete"
+        style="?attr/actionButtonStyle"/>
+
+    <Button
+        android:id="@+id/action_add_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        android:contentDescription=""
+        android:layout_gravity="right"
+        android:drawableLeft="@drawable/ic_add_person"
+        style="?attr/actionButtonStyle"/>
+
+    <Button
+        android:id="@+id/action_sort_pupils"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sort"
+        android:contentDescription=""
+        android:layout_gravity="right"
+        android:drawableLeft="@android:drawable/ic_menu_sort_alphabetically"
+        style="?attr/actionButtonStyle"/>
+
+</LinearLayout>
