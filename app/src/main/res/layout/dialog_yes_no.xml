@@ -3,7 +3,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@color/dark_grey">
+              android:background="@color/grey_dark">
     <TextView
         android:id="@+id/dialog_y_n_title"
         android:background="@drawable/actionbar_accent"
@@ -28,7 +28,7 @@
             android:id="@+id/dialog_no"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:background="@color/dark_grey"
+            android:background="@color/grey_dark"
             android:fontFamily="sans-serif"
             android:text="No"
             android:textColor="@android:color/white"/>
@@ -36,7 +36,7 @@
             android:id="@+id/dialog_yes"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:background="@color/dark_grey"
+            android:background="@color/grey_dark"
             android:fontFamily="sans-serif"
             android:text="Yes"
             android:textColor="@android:color/white"/>

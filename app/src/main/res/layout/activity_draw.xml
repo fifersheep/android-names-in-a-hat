@@ -1,7 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="fill_parent"
-android:layout_height="fill_parent"
-android:background="@color/dark_grey">   <!-- android:background="@drawable/background_claw" -->
+android:layout_height="fill_parent">   <!-- android:background="@drawable/background_claw" -->
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -68,16 +67,8 @@ android:background="@color/dark_grey">   <!-- android:background="@drawable/back
         android:layout_height="wrap_content"
         android:gravity="right"
         android:layout_alignParentBottom="true"
+        android:paddingTop="5dp"
         style="@style/Theme.DrawTheme.BottomBar">
-
-        <TextView
-            android:id="@+id/textView_DrawNames"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingTop="5dp"
-            android:text="@string/draw_head"
-            android:textColor="#FFFFFF"/>
 
         <Button
             android:id="@+id/button_clear"
@@ -88,7 +79,7 @@ android:background="@color/dark_grey">   <!-- android:background="@drawable/back
             android:text="@string/button_clear"
             android:contentDescription=""
             android:drawableLeft="@drawable/ic_action_delete"
-            android:textColor="#FFFFFF"
+            android:textColor="#DDDDDD"
             style="?attr/actionButtonStyle"/>
 
         <Button
@@ -100,7 +91,7 @@ android:background="@color/dark_grey">   <!-- android:background="@drawable/back
             android:text="@string/button_draw"
             android:contentDescription=""
             android:drawableLeft="@drawable/ic_action_send"
-            android:textColor="#FFFFFF"
+            android:textColor="#DDDDDD"
             style="?attr/actionButtonStyle"/>
 
 

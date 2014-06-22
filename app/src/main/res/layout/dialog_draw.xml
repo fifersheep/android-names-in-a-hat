@@ -2,7 +2,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@color/dark_grey">
+              android:background="@color/grey_dark">
     <TextView
         android:id="@+id/dialog_draw_title"
         android:background="@drawable/actionbar_accent"

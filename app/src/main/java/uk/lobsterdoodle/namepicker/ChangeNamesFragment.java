@@ -1,24 +1,12 @@
 package uk.lobsterdoodle.namepicker;
 
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.support.v7.app.ActionBar;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 /** Created by: Scott Laing
  *  Date: 01/09/12 @ 17:28 */
@@ -35,7 +23,7 @@ public class ChangeNamesFragment extends ListFragment {
         mActivity = ((ChangeNames) mContext);
 
         ListView listview = getListView();
-        listview.setBackgroundResource(R.color.dark_grey);
+        listview.setBackgroundResource(R.color.grey_dark); // Fixes spinner bug somehow...
         int[] colors = {0x33B3B5B4, 0xDDB3B5B4, 0xEEB3B5B4, 0xDDB3B5B4, 0x33B3B5B4}; //TODO: Set this as resource
         listview.setDivider(new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, colors));
         listview.setDividerHeight(1);

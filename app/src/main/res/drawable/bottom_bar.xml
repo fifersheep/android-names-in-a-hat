@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Bottom Line -->
+    <!-- Top Line -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/tan_dark" />
+            <solid android:color="@color/old_turquoise" />
         </shape>
     </item>
 
-    <!-- Color of your action bar -->
-    <item android:bottom="2dp">
+    <!-- Color of your bar -->
+    <item android:top="2dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/tan" />
+            <solid android:color="@color/grey_dark" />
         </shape>
     </item>
 </layer-list>

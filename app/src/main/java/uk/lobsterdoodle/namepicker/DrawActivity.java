@@ -121,7 +121,7 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
             cb.setPadding(0, 25, 0, 25);
             cb.setId(i);
             cb.setButtonDrawable(R.drawable.checkbox);
-            cb.setTextColor(getResources().getColor(R.color.li_grey));
+            cb.setTextColor(getResources().getColor(R.color.grey_light));
             cb.setLayoutParams(new RelativeLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             cb.setText(mClassroomCoord.getCurrentPupilName(i));

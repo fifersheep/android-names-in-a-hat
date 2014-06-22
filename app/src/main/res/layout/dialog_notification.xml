@@ -3,7 +3,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@color/dark_grey">
+              android:background="@color/grey_dark">
     <TextView
         android:id="@+id/dialog_notify_title"
         android:background="@drawable/actionbar_accent"
@@ -24,7 +24,7 @@
         android:id="@+id/button_notify_dialog"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:background="@color/dark_grey"
+        android:background="@color/grey_dark"
         android:fontFamily="sans-serif"
         android:text="OK"
         android:textColor="@android:color/white"/>

@@ -10,7 +10,7 @@
     <!-- Color of the button -->
     <item android:top="1dp" android:left="1dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/dark_grey" />
+            <solid android:color="@color/grey_dark" />
         </shape>
     </item>
 </layer-list>

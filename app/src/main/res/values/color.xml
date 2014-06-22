@@ -5,9 +5,10 @@
     <color name="old_turquoise">#2D8A84</color>
 
     <color name="tan">#8F764B</color>
-    <color name="dark_grey">#21211C</color>
-    <color name="medium_grey">#787669</color>
-    <color name="li_grey">#B3B5B4</color>
+    <color name="tan_dark">#665336</color>
+    <color name="grey_dark">#21211C</color>
+    <color name="grey_medium">#787669</color>
+    <color name="grey_light">#B3B5B4</color>
     <color name="turquoise">#16625D</color>
     <color name="transparent">#00FFFFFF</color>
 
