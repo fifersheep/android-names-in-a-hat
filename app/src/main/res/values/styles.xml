@@ -62,14 +62,14 @@
 
 <style name="Theme.DrawTheme.BottomBar">
     <item name="android:background">@drawable/bottom_bar</item>
-    <item name="android:textColor">@color/grey_light</item>
+    <item name="android:textColor">@color/grey_dark</item>
     <item name="android:spinnerItemStyle">@style/SpinnerItem</item>
     <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem</item>
 </style>
 
 <style name="DrawTheme.Spinner" parent="Widget.AppCompat.DropDownItem.Spinner">
     <item name="android:popupBackground">@drawable/dialog_bottom_holo_dark</item>
-    <item name="android:divider">@color/turquoise</item>
+    <item name="android:divider">@color/turquoise_light</item>
     <item name="android:dividerHeight">1dp</item>
 </style>
 
