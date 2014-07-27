@@ -2,6 +2,7 @@ package uk.lobsterdoodle.namepicker;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -26,8 +27,7 @@ public class ChangeNamesFragment extends ListFragment {
 
         // TODO: This list view should be a resource
         ListView listview = getListView();
-        listview.setBackgroundColor(
-                getResources().getColor(R.color.grey_dark)); // Fixes spinner bug somehow...
+        listview.setBackgroundColor(Color.WHITE); // Fixes spinner bug somehow...
         int[] colors = {
                 0x33B3B5B4, //TODO: Set this color array as resource
                 0xBBB3B5B4,
