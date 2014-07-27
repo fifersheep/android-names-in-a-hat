@@ -37,7 +37,7 @@ public class Hat {
         return this;
     }
 
-    public ArrayList<String> draw(int quantity){
+    public String draw(int quantity){
 
         ArrayList<String> drawnNames = new ArrayList<String>();
 
@@ -56,7 +56,16 @@ public class Hat {
             }
         }
 
-        return drawnNames;
+        StringBuilder sb = new StringBuilder();
+        for (String string : drawnNames) {
+            sb.append(string);
+
+            if (!string.equals(drawnNames.get(drawnNames.size() - 1))) {
+               sb.append("\n");
+            }
+        }
+
+        return sb.toString();
     }
 
     public int size() {

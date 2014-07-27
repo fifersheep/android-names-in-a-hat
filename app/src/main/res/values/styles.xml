@@ -3,7 +3,23 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="sdlDialogStyle">@style/DialogStyleDark.Custom</item>
     </style>
+
+    <style name="DialogStyleDark.Custom">
+        <!-- anything can be left out: -->
+        <item name="titleTextColor">@color/turquoise_light</item>
+        <item name="titleSeparatorColor">@color/turquoise_light</item>
+        <item name="messageTextColor">@color/grey_light</item>
+        <item name="buttonTextColor">@color/grey_medium</item>
+        <item name="buttonSeparatorColor">@color/li_grey_trans</item>
+
+    </style>
+
+
+
+
+
 
 <style name="Theme.DrawTheme" parent="Theme.AppCompat.Light.DarkActionBar">
     <item name="android:actionBarStyle">@style/Theme.DrawTheme.ActionBar</item>

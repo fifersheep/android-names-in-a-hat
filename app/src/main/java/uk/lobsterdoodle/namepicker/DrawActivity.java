@@ -1,25 +1,36 @@
 package uk.lobsterdoodle.namepicker;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 import uk.lobsterdoodle.namepicker.core.ClassroomCoord;
+import uk.lobsterdoodle.namepicker.dialog.NameDrawDialogFragment;
 
 
 public class DrawActivity extends BaseActivity implements View.OnClickListener, ActionBar.OnNavigationListener {
@@ -28,7 +39,6 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
     Boolean isClassesSpinnerFirstLoad = true;
     Button mButtonClear;
     Button mButtonDraw;
-    Button mButtonEditClass;
     LinearLayout mColumnLeft;
     LinearLayout mColumnRight;
     Spinner mSpinnerDraw;
@@ -48,7 +58,6 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
         mColumnRight = (LinearLayout) findViewById(R.id.llRight);
         mButtonClear = (Button) findViewById(R.id.button_clear);
         mButtonDraw = (Button) findViewById(R.id.button_go);
-        mButtonEditClass = (Button)findViewById(R.id.action_edit_class);
         mSpinnerDraw = (Spinner)findViewById(R.id.action_spinner);
         mButtonClear.setOnClickListener(this);
         mButtonDraw.setOnClickListener(this);
@@ -64,11 +73,6 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.action_edit_class:
-                mButtonEditClass.setVisibility(View.INVISIBLE);
-                Intent i = new Intent(this, ChangeNames.class);
-                startActivityForResult(i, 1);
-                break;
             case R.id.button_go:
                 startDraw();
                 break;
@@ -120,8 +124,8 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
             CheckBox cb = new CheckBox(this);
             cb.setPadding(0, 25, 0, 25);
             cb.setId(i);
-            cb.setButtonDrawable(R.drawable.checkbox);
-            cb.setTextColor(getResources().getColor(R.color.grey_light));
+            //cb.setButtonDrawable(R.drawable.checkbox);
+            cb.setTextColor(getResources().getColor(R.color.grey_dark));
             cb.setLayoutParams(new RelativeLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             cb.setText(mClassroomCoord.getCurrentPupilName(i));
@@ -209,49 +213,14 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
                     Toast.LENGTH_LONG).show();
         } finally {
 
-            ArrayList<String> drawn = Hat.getInstance()
+            String drawn = Hat.getInstance()
                     .setNameList(mCheckBoxArray).draw(numberToDraw);
 
-
-
-                /*SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())
-                        .setTitle(R.string.title)
-                        .setMessage(R.string.message)
-                        .show();  */
-
-                /*final Dialog d = new Dialog(this);
-                d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                d.setContentView(R.layout.dialog_draw);
-
-                TextView textView_content = (TextView)d.findViewById(R.id.textView_draw_dialog_names);
-                textView_content.setText(stringBuilder.toString());
-                Button okayButton = (Button)d.findViewById(R.id.button_draw_dialog_ok);
-                okayButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        d.dismiss();
-                    }
-                });
-                d.show(); */
-
-                /*AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-                // Get the layout inflater
-                LayoutInflater inflater = this.getLayoutInflater();
-                View v = inflater.inflate(R.layout.dialog_draw, null);
-                // Inflate and set the layout for the dialog
-                // Pass null as the parent view because its going in the dialog layout
-                dialogBuilder.setView(v);
-                TextView myMsg = (TextView)v.findViewById(R.id.textView_draw_dialog_names);
-                myMsg.setText(stringBuilder.toString());
-                Button okayButton2 = (Button)v.findViewById(R.id.button_draw_dialog_ok);
-                okayButton2.setOnClickListener(this);
-                        //.setView(myMsg)
-                dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
-                dialogBuilder.create().show();   */
+            SimpleDialogFragment
+                    .createBuilder(this, getSupportFragmentManager())
+                    .setTitle("Drawn Names...")
+                    .setMessage(drawn)
+                    .show();
 
         } // End finally
     }
@@ -292,33 +261,11 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.action_edit_class:
-                //mButtonEditClass.setVisibility(View.INVISIBLE);
+                item.setEnabled(false);
                 Intent i = new Intent(this, ChangeNames.class);
                 startActivityForResult(i, 1);
                 break;
         }
         return true;
     }
-
-/**
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.draw, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-**/
 }

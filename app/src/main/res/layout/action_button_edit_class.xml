@@ -6,7 +6,6 @@
           android:gravity="center"
           style="@style/Widget.AppCompat.ActionButton"
           android:text="Edit Class"
-          android:drawableLeft="@android:drawable/ic_menu_set_as"
           android:background="@color/transparent"
           android:clickable="true"
 
