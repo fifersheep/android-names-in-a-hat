@@ -106,7 +106,7 @@ public class NamesListAdapter extends ArrayAdapter<String> {
         final Dialog d = new Dialog(mContext);
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
         d.setContentView(R.layout.dialog_edit_text);
-        ((TextView)d.findViewById(R.id.dialog_edit_title)).setText("Edit Pupil: " + pupil);
+        //((TextView)d.findViewById(R.id.dialog_edit_title)).setText("Edit Pupil: " + pupil);
 
         TextView message = (TextView)d.findViewById(R.id.dialog_edit_message);
         message.setText("Please enter a new name for " + pupil);
@@ -115,59 +115,59 @@ public class NamesListAdapter extends ArrayAdapter<String> {
         input.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         input.setText(pupil);
 
-        Button okayButton = (Button)d.findViewById(R.id.dialog_ok);
-        okayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String originalName = holder.label.getText().toString();
-                String newName = input.getText().toString();
-
-                // Update database with new name
-                //mDbHelper.updatePupilName(originalName, currentClassroomName, newName);
-                //TODO: mClassroomCoord.updatePupilName(originalName, newName); .... why?
-
-                if(mClassrooms.getCurrentPupils().contains(newName)){
-                    /*Dialog dialog = new Dialog(mContext, R.style.Theme_DrawTheme_Dialog);
-                    dialog.setContentView(R.layout.dialog_edit_text);
-                    dialog.setTitle("Name Exists!");
-                    dialog.show(); */
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.Theme_DrawTheme_Dialog);
-                    //builder.setCustomTitle(v.findViewById(R.id.dialog_edit_title));
-                    builder.setTitle("Name Exists");
-                    builder.setMessage(R.string.pupil_name_exists_msg_pt1);
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface d, int id) {
-                            editName(holder);
-                        }
-                    });
-
-                    AlertDialog newDialog = builder.create();
-                    // Add listener so we can modify the dialog before it is shown
-                    newDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                        @Override
-                        public void onShow(DialogInterface dialogInterface) {
-                            // Set the text color on the dialog title and separator
-                            setTextColor(dialogInterface, 0xFFE5492A);
-                        }
-                    });
-                    newDialog.show();
-                } else {
-                    holder.label.setText(newName);    //TODO: Required?
-                    mClassrooms.changePupilName(originalName, newName);
-                    notifyDataSetChanged();
-                }
-
-                d.dismiss();
-            }
-        });
-        Button cancelButton = (Button)d.findViewById(R.id.dialog_cancel);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                d.dismiss();
-            }
-        });
+//        Button okayButton = (Button)d.findViewById(R.id.dialog_ok);
+//        okayButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String originalName = holder.label.getText().toString();
+//                String newName = input.getText().toString();
+//
+//                // Update database with new name
+//                //mDbHelper.updatePupilName(originalName, currentClassroomName, newName);
+//                //TODO: mClassroomCoord.updatePupilName(originalName, newName); .... why?
+//
+//                if(mClassrooms.getCurrentPupils().contains(newName)){
+//                    /*Dialog dialog = new Dialog(mContext, R.style.Theme_DrawTheme_Dialog);
+//                    dialog.setContentView(R.layout.dialog_edit_text);
+//                    dialog.setTitle("Name Exists!");
+//                    dialog.show(); */
+//
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.Theme_DrawTheme_Dialog);
+//                    //builder.setCustomTitle(v.findViewById(R.id.dialog_edit_title));
+//                    builder.setTitle("Name Exists");
+//                    builder.setMessage(R.string.pupil_name_exists_msg_pt1);
+//                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface d, int id) {
+//                            editName(holder);
+//                        }
+//                    });
+//
+//                    AlertDialog newDialog = builder.create();
+//                    // Add listener so we can modify the dialog before it is shown
+//                    newDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+//                        @Override
+//                        public void onShow(DialogInterface dialogInterface) {
+//                            // Set the text color on the dialog title and separator
+//                            setTextColor(dialogInterface, 0xFFE5492A);
+//                        }
+//                    });
+//                    newDialog.show();
+//                } else {
+//                    holder.label.setText(newName);    //TODO: Required?
+//                    mClassrooms.changePupilName(originalName, newName);
+//                    notifyDataSetChanged();
+//                }
+//
+//                d.dismiss();
+//            }
+//        });
+//        Button cancelButton = (Button)d.findViewById(R.id.dialog_cancel);
+//        cancelButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                d.dismiss();
+//            }
+//        });
 
         // Shows the dialog
         d.show();
