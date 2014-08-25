@@ -1,36 +1,26 @@
 package uk.lobsterdoodle.namepicker;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
-import uk.lobsterdoodle.namepicker.core.ClassroomCoord;
-import uk.lobsterdoodle.namepicker.dialog.NameDrawDialogFragment;
+import uk.lobsterdoodle.namepicker.api.ClassroomCoord;
 
 
 public class DrawActivity extends BaseActivity implements View.OnClickListener, ActionBar.OnNavigationListener {

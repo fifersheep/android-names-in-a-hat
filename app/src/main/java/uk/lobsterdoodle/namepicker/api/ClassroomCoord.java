@@ -1,11 +1,10 @@
-package uk.lobsterdoodle.namepicker.core;
+package uk.lobsterdoodle.namepicker.api;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.Util;

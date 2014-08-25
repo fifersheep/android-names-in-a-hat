@@ -1,4 +1,4 @@
-package uk.lobsterdoodle.namepicker.core;
+package uk.lobsterdoodle.namepicker.api;
 
 import android.content.ContentValues;
 import android.content.Context;

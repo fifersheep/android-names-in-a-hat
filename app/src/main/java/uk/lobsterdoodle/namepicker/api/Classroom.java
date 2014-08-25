@@ -1,7 +1,4 @@
-package uk.lobsterdoodle.namepicker.core;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+package uk.lobsterdoodle.namepicker.api;
 
 import java.util.ArrayList;
 import java.util.Collections;

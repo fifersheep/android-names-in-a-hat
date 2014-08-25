@@ -11,20 +11,24 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.*;
 
-import eu.inmite.android.lib.dialogs.ISimpleDialogListener;
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
-import uk.lobsterdoodle.namepicker.core.ClassroomCoord;
-import uk.lobsterdoodle.namepicker.dialog.InputDialogViewBuilder;
-import uk.lobsterdoodle.namepicker.dialog.MyDialogFragment;
+import uk.lobsterdoodle.namepicker.adapter.NamesListAdapter;
+import uk.lobsterdoodle.namepicker.api.ClassroomCoord;
+import uk.lobsterdoodle.namepicker.dialog.IInputDialogListener;
+import uk.lobsterdoodle.namepicker.dialog.InputDialogFragment;
 
 /** Created by: Scott Laing
  *  Date: 01-Sept-2012 @ 17:28 */
 
-public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationListener, ISimpleDialogListener {
+public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationListener, IInputDialogListener {
 
-    private final static int ADD_PUPIL_DIALOG_REQ_CODE = 63;
-    private final static int SORT_DIALOG_REQ_CODE = 64;
-    private final static int CLASS_EXISTS_DIALOG_REQ_CODE = 65;
+    private final static int PUPIL_ADD_DIALOG_REQ_CODE = 63;
+    public final static int PUPIL_EDIT_DIALOG_REQ_CODE = 64;
+    public final static int PUPIL_EXISTS_DIALOG_REQ_CODE = 65;
+    private final static int CLASSROOM_ADD_DIALOG_REQ_CODE = 66;
+    private final static int CLASSROOM_EDIT_DIALOG_REQ_CODE = 67;
+    private final static int CLASS_EXISTS_DIALOG_REQ_CODE = 68;
+    private final static int SORT_DIALOG_REQ_CODE = 69;
 
     Boolean isClassesSpinnerFirstLoad = true;
     Context mExtraContext;
@@ -73,153 +77,35 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
         return true;
     }
 
-    /** Shows a dialog with option to save when pressing the back button **/
     @Override
     public void onBackPressed() {
-        //Util.saveToFile(this, mClassroomNames, mCurrentClassroom);
         finish();
     }
 
-    /** Adds the user input to 'editableArray' **/
-    public void createAddPupilDialog() {
-
-        /*final Dialog d = new Dialog(this);
-        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        d.setContentView(R.layout.dialog_edit_text);
-        ((TextView)d.findViewById(R.id.dialog_edit_title)).setText("New Pupil");
-
-        TextView message = (TextView)d.findViewById(R.id.dialog_edit_message);
-        message.setText(getString(R.string.dialog_new_pupil_msg));
-
-        final EditText input = (EditText)d.findViewById(R.id.dialog_edit_input);
-        input.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        input.setHint("Pupil Name...");
-
-        Button okayButton = (Button)d.findViewById(R.id.dialog_ok);
-        okayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String newName = input.getText().toString();
-                if (mClassroomCoord.containsPupil(newName)) {
-                    showPupilExists();
-                    d.dismiss();
-                } else {
-                    // Add pupil in database
-                    mClassroomCoord.addPupil(newName);
-
-                    // Update adapter
-                    pupilsAdapter.add(newName);
-                }
-                d.dismiss();
-            }
-        });
-        Button cancelButton = (Button)d.findViewById(R.id.dialog_cancel);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                d.dismiss();
-            }
-        });
-
-        // Brings up keyboard when dialog shows
-        input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    d.getWindow()
-                            .setSoftInputMode(
-                                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-
-                }
-            }
-        });
-
-        // Shows the dialog
-        d.show(); */
-
-//        LayoutInflater inflater = getLayoutInflater();
-//        inflater.inflate(R.layout.dialog_edit_text, null);
-//
-//        TextView textView = (TextView) findViewById(R.id.dialog_edit_message);
-//
-//        EditText editText = (EditText) findViewById(R.id.dialog_edit_input);
-//        editText.setHint("Pupil name...");
-
-//        TextInputDialogFragment
-//                .createBuilder(this, getSupportFragmentManager())
-//                .setHint("Pupil name...")
-//                .setTitle("Add Pupil")
-//                .setMessage(getString(R.string.dialog_new_pupil_msg))
-//                .show();
-
-        final InputDialogViewBuilder viewBuilder = new InputDialogViewBuilder();
-        viewBuilder.setMessage(getString(R.string.dialog_new_pupil_msg));
-        viewBuilder.setHint("Pupil name...");
-
-
-        MyDialogFragment.createBuilder(this, getSupportFragmentManager())
+    public void showAddPupilDialog() {
+        InputDialogFragment.createBuilder(this, getSupportFragmentManager())
                 .setTitle("Add Pupil")
                 .setMessage(getString(R.string.dialog_new_pupil_msg))
                 .setHint("Pupil name...")
-                .setRequestCode(ADD_PUPIL_DIALOG_REQ_CODE)
+                .setPositiveButtonText("Add")
+                .setNegativeButtonText("Cancel")
+                .setRequestCode(PUPIL_ADD_DIALOG_REQ_CODE)
                 .show();
-
-
-        //////////////////
-
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//
-//        final EditText input = new EditText(this);
-//        input.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-//        input.setHint("Pupil Name...");
-//
-//        // Inflate and set the layout for the dialog
-//        // Pass null as the parent view because its going in the dialog layout
-//        // builder.setView(inflater.inflate(R.layout.dialog_edit_text, null))
-//        builder.setView(input)
-//                .setTitle("Add Pupil")
-//                .setMessage(getString(R.string.dialog_new_pupil_msg))
-//                // Add action buttons
-//                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        String newName = input.getText().toString();
-//                        if (mClassroomCoord.containsPupil(newName)) {
-//                            showPupilExists();
-//                            //d.dismiss
-//                        } else {
-//                            // Add pupil in database
-//                            mClassroomCoord.addPupil(newName);
-//
-//                            // Update adapter
-//                            pupilsAdapter.add(newName);
-//                        }
-//
-//                        getWindow().setSoftInputMode(
-//                                        WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-//                        //d.dismiss();
-//                    }
-//                });
-//
-//        // Brings up keyboard when dialog shows
-//        input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (hasFocus) {
-//                    getWindow()
-//                            .setSoftInputMode(
-//                                    WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-//
-//                }
-//            }
-//        });
-//
-//        return builder.create();
     }
 
-    protected void sortPupils() {
+    private void addPupil(String newName) {
+        if (mClassroomCoord.containsPupil(newName)) {
+            showPupilExists();
+        } else {
+            // Add pupil in database
+            mClassroomCoord.addPupil(newName);
 
+            // Update adapter
+            pupilsAdapter.add(newName);
+        }
+    }
+
+    protected void showSortPupilsDialog() {
         SimpleDialogFragment
                 .createBuilder(this, getSupportFragmentManager())
                 .setTitle("Sort Pupils")
@@ -230,104 +116,36 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
                 .show();
     }
 
-    protected void createClassroom() {
+    protected void showAddClassroomDialog() {
+        InputDialogFragment.createBuilder(this, getSupportFragmentManager())
+                .setTitle("Add Classroom")
+                .setMessage(getString(R.string.dialog_new_class_msg))
+                .setHint("Classroom name...")
+                .setPositiveButtonText("Add")
+                .setNegativeButtonText("Cancel")
+                .setRequestCode(CLASSROOM_ADD_DIALOG_REQ_CODE)
+                .show();
+    }
 
-//        final Dialog d = new Dialog(this);
-//        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        d.setContentView(R.layout.dialog_edit_text);
-//        ((TextView)d.findViewById(R.id.dialog_edit_title)).setText("Add Class");
-//
-//        TextView message = (TextView)d.findViewById(R.id.dialog_edit_message);
-//        message.setText(getString(R.string.dialog_new_class_msg));
-//
-//        final EditText input = (EditText)d.findViewById(R.id.dialog_edit_input);
-//        input.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-//        input.setHint("Class Name...");
-//
-//        Button okayButton = (Button)d.findViewById(R.id.dialog_ok);
-//        okayButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Add new classroom to spinner
-//                //SharedPreferences preferences = getSharedPreferences(Util.FILENAME, 0);
-//                String newClassroomName = input.getText().toString();
-//                if (mClassroomCoord.getClassroom(newClassroomName) != null) {
-//                    showClassroomExists();
-//                } else {
-//
-//                    mClassroomCoord.addClassroom(newClassroomName);
-//
-//                    // Add new name to classroom names, update the spinner and save to file
-//                    updateClassesSpinner();
-//
-//                    d.dismiss();
-//                }
-//            }
-//        });
-//        Button cancelButton = (Button)d.findViewById(R.id.dialog_cancel);
-//        cancelButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                d.dismiss();
-//            }
-//        });
-//
-//        // Brings up keyboard when dialog shows
-//        input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (hasFocus) {
-//                    d.getWindow()
-//                            .setSoftInputMode(
-//                                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-//
-//                }
-//            }
-//        });
-//
-//        // Shows the dialog
-//        d.show();
+    private void addClassroom(String classroomName) {
+        // Check if classroom name already exists
+        if (mClassroomCoord.getClassroom(classroomName) != null) {
+            showClassroomExists();
+        } else {
+            // Add classroom to list
+            mClassroomCoord.addClassroom(classroomName);
+
+            // Update the spinner with new list
+            updateClassesSpinner();
+        }
     }
 
     private void showClassroomExists() {
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Class Name Exists");
-        builder.setMessage(R.string.class_name_exists_msg);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface d, int id) {
-                createClassroom();
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();*/
-
         SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())
                 .setTitle("Class Name Exists")
                 .setMessage(getString(R.string.class_name_exists_msg))
                 .setRequestCode(CLASS_EXISTS_DIALOG_REQ_CODE)
                 .show();
-
-
-//        final Dialog d = new Dialog(this);
-//        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        d.setContentView(R.layout.dialog_notification);
-//        ((TextView)d.findViewById(R.id.dialog_notify_title)).setText("Class Name Exists");
-//
-//        TextView message = (TextView)d.findViewById(R.id.dialog_notify_message);
-//        message.setText(getString(R.string.class_name_exists_msg));
-//
-//        Button okayButton = (Button)d.findViewById(R.id.button_notify_dialog);
-//        okayButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                createClassroom();
-//                d.dismiss();
-//            }
-//        });
-//
-//        // Shows the dialog
-//        d.show();
     }
 
     private void deleteClassroom() {
@@ -369,7 +187,9 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
         d.show();
     }
 
-    private void editClassroomName() {
+    private void showEditClassroomNameDialog() {
+
+
 
 //        final Dialog d = new Dialog(this);
 //        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -387,7 +207,7 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
 //        okayButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                editClassroomName(input.getText().toString());
+//                showEditClassroomNameDialog(input.getText().toString());
 //                d.dismiss();
 //            }
 //        });
@@ -440,7 +260,7 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
         okayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createAddPupilDialog();
+                showAddPupilDialog();
                 d.dismiss();
             }
         });
@@ -461,25 +281,24 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
 
         switch (item.getItemId()) {
             case R.id.action_add_name:
-                createAddPupilDialog();
+                showAddPupilDialog();
                 break;
             case R.id.action_add_class:
-                createClassroom();
+                showAddClassroomDialog();
                 break;
             case R.id.action_edit_class_name:
-                editClassroomName();
+                showEditClassroomNameDialog();
                 break;
             case R.id.action_delete_class:
                 deleteClassroom();
                 break;
             case R.id.action_sort_names:
-                sortPupils();
+                showSortPupilsDialog();
                 break;
         }
 
         return false;
     }
-
 
     // Dialog onClickListeners
     @Override
@@ -493,13 +312,28 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
                 pupilsAdapter.notifyDataSetChanged();
                 break;
             case CLASS_EXISTS_DIALOG_REQ_CODE:
-                createClassroom();
+                showAddClassroomDialog();
                 break;
         }
     }
 
     @Override
-    public void onNegativeButtonClicked(int i) {
+    public void onNegativeButtonClicked(int requestCode) { }
 
+    @Override
+    public void onNeutralButtonClicked(int requestCode) { }
+
+    @Override
+    public void onInputReceived(int requestCode, String input) {
+        switch (requestCode) {
+            case PUPIL_ADD_DIALOG_REQ_CODE:
+                addPupil(input);
+                break;
+            case PUPIL_EDIT_DIALOG_REQ_CODE:
+                break;
+            case CLASSROOM_ADD_DIALOG_REQ_CODE:
+                addClassroom(input);
+                break;
+        }
     }
 }

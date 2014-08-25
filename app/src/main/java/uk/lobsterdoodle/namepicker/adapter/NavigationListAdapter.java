@@ -1,4 +1,4 @@
-package uk.lobsterdoodle.namepicker;
+package uk.lobsterdoodle.namepicker.adapter;
 
 import android.content.Context;
 import android.text.InputType;
@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import uk.lobsterdoodle.namepicker.R;
 
 /**
  * Created by: Scott Laing

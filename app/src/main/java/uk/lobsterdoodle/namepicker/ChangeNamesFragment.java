@@ -9,6 +9,8 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
+import uk.lobsterdoodle.namepicker.adapter.NamesListAdapter;
+
 /** Created by: Scott Laing
  *  Date: 01/09/12 @ 17:28 */
 

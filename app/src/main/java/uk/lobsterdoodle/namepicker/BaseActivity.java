@@ -7,7 +7,8 @@ import android.support.v7.app.ActionBarActivity;
 
 import java.util.ArrayList;
 
-import uk.lobsterdoodle.namepicker.core.ClassroomCoord;
+import uk.lobsterdoodle.namepicker.adapter.NavigationListAdapter;
+import uk.lobsterdoodle.namepicker.api.ClassroomCoord;
 
 /** Created by: Scott Laing
  *  Date: 15/05/14 @ 23:42 */

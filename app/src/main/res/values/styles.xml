@@ -24,7 +24,7 @@
 <style name="Theme.DrawTheme" parent="Theme.AppCompat.Light.DarkActionBar">
     <item name="android:actionBarStyle">@style/Theme.DrawTheme.ActionBar</item>
     <item name="actionBarStyle">@style/Theme.DrawTheme.ActionBar</item>
-    <item name="android:textColor">@color/grey_light</item> <!-- Does this work? -->
+    <item name="android:textColor">@color/grey_light</item>
     <item name="android:dropDownListViewStyle">@style/DrawTheme.Spinner</item>
     <item name="android:background">@color/grey_dark</item>
 </style>

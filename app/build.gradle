@@ -23,6 +23,6 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:19+'
-    compile 'eu.inmite.android.lib:android-styled-dialogs:1.1.2@aar'
+    compile 'eu.inmite.android.lib:android-styled-dialogs:1.2.0@aar'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

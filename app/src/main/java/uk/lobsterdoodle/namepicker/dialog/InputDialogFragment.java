@@ -1,77 +1,17 @@
 package uk.lobsterdoodle.namepicker.dialog;
 
-//import android.content.Context;
-//import android.support.v4.app.FragmentActivity;
-//import android.support.v4.app.FragmentManager;
-//import android.view.LayoutInflater;
-//import android.widget.EditText;
-//import android.widget.RelativeLayout;
-//import android.widget.TextView;
-//
-//import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
-//import uk.lobsterdoodle.namepicker.R;
-//
-///**
-// * Created by Scott on 27/07/2014
-// */
-//public class TextInputDialogFragment extends SimpleDialogFragment {
-//
-//    public static String TAG = "TextInputDialogFragment";
-//    private CharSequence mHint = "";
-//
-//    public static TextInputDialogBuilder createBuilder(Context context, FragmentManager fragmentManager) {
-//        return new TextInputDialogBuilder(context, fragmentManager, TextInputDialogFragment.class);
-//    }
-//
-//    @Override
-//    protected Builder build(Builder builder) {
-//        int resourceId = R.layout.dialog_edit_text;
-//        RelativeLayout layout = (RelativeLayout) LayoutInflater.from(getActivity()).inflate(resourceId, null);
-//        builder.setView(layout, 0, 0, 0, 0);
-//
-//        builder.setTitle(getTitle());
-//
-//        EditText input = (EditText) layout.findViewById(R.id.dialog_edit_input);
-//        input.setHint("");
-//
-//        TextView message = (TextView) layout.findViewById(R.id.dialog_edit_message);
-//        message.setText(getMessage());
-//        return null;
-//    }
-//
-//    public static void show(FragmentActivity activity) {
-//        new TextInputDialogFragment().show(activity.getSupportFragmentManager(), TAG);
-//    }
-//
-//    public static class TextInputDialogBuilder extends SimpleDialogFragment.SimpleDialogBuilder {
-//
-//        private CharSequence mHint = "";
-//
-//        public TextInputDialogBuilder(Context context, FragmentManager fragmentManager, Class<TextInputDialogFragment> c) {
-//            super(context, fragmentManager, TextInputDialogFragment.class);
-//        }
-//
-//        public TextInputDialogBuilder setHint(CharSequence hint) {
-//            mHint = hint;
-//            return this;
-//        }
-//
-//        protected CharSequence getHint() {
-//            return mHint;
-//        }
-//    }
-//}
-
 import android.content.Context;
-        import android.content.DialogInterface;
-        import android.os.Bundle;
-        import android.support.v4.app.Fragment;
-        import android.support.v4.app.FragmentManager;
-        import android.text.Html;
-        import android.text.SpannedString;
-        import android.text.TextUtils;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.text.Html;
+import android.text.SpannedString;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -83,13 +23,13 @@ import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 import uk.lobsterdoodle.namepicker.R;
 
 /**
- * Dialog for displaying simple message, message with title or message with title and two buttons. Implement {@link
- * ISimpleDialogListener} in your Fragment or Activity to rect on positive and negative button clicks. This class can
- * be extended and more parameters can be added in overridden build() method.
+ * Dialog for displaying text input, with an optional message and title.
+ * Implement {@link IInputDialogListener} in the Fragment or Activity
+ * to react on positive and negative button clicks.
  *
  * @author David Vávra (david@inmite.eu)
  */
-public class MyDialogFragment extends SimpleDialogFragment {
+public class InputDialogFragment extends SimpleDialogFragment {
 
     protected final static String ARG_MESSAGE = "message";
     protected final static String ARG_TITLE = "title";
@@ -100,17 +40,17 @@ public class MyDialogFragment extends SimpleDialogFragment {
     protected int mRequestCode;
 
     public static MyDialogBuilder createBuilder(Context context, FragmentManager fragmentManager) {
-        return new MyDialogBuilder(context, fragmentManager, MyDialogFragment.class);
+        return new MyDialogBuilder(context, fragmentManager, InputDialogFragment.class);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Bundle args = getArguments();
         final Fragment targetFragment = getTargetFragment();
         if (targetFragment != null) {
             mRequestCode = getTargetRequestCode();
         } else {
-            Bundle args = getArguments();
             if (args != null) {
                 mRequestCode = args.getInt("request_code", 0);
             }
@@ -134,19 +74,24 @@ public class MyDialogFragment extends SimpleDialogFragment {
         TextView msg = (TextView) layout.findViewById(R.id.dialog_edit_message);
         msg.setText(getMessage());
 
-        EditText input = (EditText) layout.findViewById(R.id.dialog_edit_input);
+        final EditText input = (EditText) layout.findViewById(R.id.dialog_edit_input);
         input.setHint(getHint());
+
+        toggleSoftKeyboard();
 
         final String positiveButtonText = getPositiveButtonText();
         if (!TextUtils.isEmpty(positiveButtonText)) {
             builder.setPositiveButton(positiveButtonText, new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ISimpleDialogListener listener = getDialogListener();
+                    IInputDialogListener listener = getDialogListener();
                     if (listener != null) {
+                        String inputString = input.getText().toString();
+                        listener.onInputReceived(mRequestCode, inputString);
                         listener.onPositiveButtonClicked(mRequestCode);
                     }
                     dismiss();
+                    toggleSoftKeyboard();
                 }
             });
         }
@@ -161,6 +106,7 @@ public class MyDialogFragment extends SimpleDialogFragment {
                         listener.onNegativeButtonClicked(mRequestCode);
                     }
                     dismiss();
+                    toggleSoftKeyboard();
                 }
             });
         }
@@ -197,15 +143,15 @@ public class MyDialogFragment extends SimpleDialogFragment {
         }
     }
 
-    protected ISimpleDialogListener getDialogListener() {
+    protected IInputDialogListener getDialogListener() {
         final Fragment targetFragment = getTargetFragment();
         if (targetFragment != null) {
-            if (targetFragment instanceof ISimpleDialogListener) {
-                return (ISimpleDialogListener) targetFragment;
+            if (targetFragment instanceof IInputDialogListener) {
+                return (IInputDialogListener) targetFragment;
             }
         } else {
-            if (getActivity() instanceof ISimpleDialogListener) {
-                return (ISimpleDialogListener) getActivity();
+            if (getActivity() instanceof IInputDialogListener) {
+                return (IInputDialogListener) getActivity();
             }
         }
         return null;
@@ -223,6 +169,13 @@ public class MyDialogFragment extends SimpleDialogFragment {
             }
         }
         return null;
+    }
+
+    private void toggleSoftKeyboard() {
+        InputMethodManager manager = (InputMethodManager)
+                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        manager.toggleSoftInput(
+                InputMethodManager.SHOW_FORCED, 0);
     }
 
     public static class MyDialogBuilder extends SimpleDialogBuilder {
@@ -313,7 +266,7 @@ public class MyDialogFragment extends SimpleDialogFragment {
         @Override
         protected Bundle prepareArguments() {
             if (mShowDefaultButton && mPositiveButtonText == null && mNegativeButtonText == null) {
-                mPositiveButtonText = "Add";
+                mPositiveButtonText = "Send";
             }
 
             Bundle args = new Bundle();

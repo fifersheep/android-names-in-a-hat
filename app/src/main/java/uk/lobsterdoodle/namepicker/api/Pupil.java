@@ -1,4 +1,4 @@
-package uk.lobsterdoodle.namepicker.core;
+package uk.lobsterdoodle.namepicker.api;
 
 /** Created by: Scott Laing
  *  Date: 30-May-2014 @ 11:21 */
