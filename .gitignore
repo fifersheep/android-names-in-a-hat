@@ -1,0 +1,9 @@
+# Android Studio
+.idea/
+*.iml
+local.properties
+
+# Gradle project directories
+.gradle
+gen/
+build/
