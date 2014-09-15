@@ -27,8 +27,9 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
     public final static int PUPIL_EXISTS_DIALOG_REQ_CODE = 65;
     private final static int CLASSROOM_ADD_DIALOG_REQ_CODE = 66;
     private final static int CLASSROOM_EDIT_DIALOG_REQ_CODE = 67;
-    private final static int CLASS_EXISTS_DIALOG_REQ_CODE = 68;
-    private final static int SORT_DIALOG_REQ_CODE = 69;
+    private static final int CLASSROOM_DELETE_DIALOG_REQ_CODE = 68;
+    private final static int CLASS_EXISTS_DIALOG_REQ_CODE = 69;
+    private final static int SORT_DIALOG_REQ_CODE = 70;
 
     Boolean isClassesSpinnerFirstLoad = true;
     Context mExtraContext;
@@ -148,43 +149,24 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
                 .show();
     }
 
-    private void deleteClassroom() {
-
+    private void showDeleteClassroomDialog() {
         final String classroomName = mClassroomCoord.getCurrentClassroomName();
 
-        final Dialog d = new Dialog(this);
-        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        d.setContentView(R.layout.dialog_yes_no);
-        ((TextView)d.findViewById(R.id.dialog_y_n_title)).setText("Delete Class: " + classroomName);
+        SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())
+                .setTitle("Delete Classroom \"" + classroomName + "\"?")
+                .setMessage("Are you sure you want to delete the class room \"" + classroomName +
+                        "\"? This will delete all of the pupils within this classroom too.")
+                .setRequestCode(CLASSROOM_DELETE_DIALOG_REQ_CODE)
+                .show();
+    }
 
-        TextView message = (TextView)d.findViewById(R.id.dialog_y_n_message);
-        message.setText("Are you sure you want to delete '" + classroomName + "' permanently?");
+    private void deleteClassroom() {
 
-        Button yes = (Button)d.findViewById(R.id.dialog_yes);
-        yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        // Remove classroom from spinner
+        mClassroomCoord.removeClassroom();
 
-                // Remove classroom from spinner
-                mClassroomCoord.removeClassroom();
-
-                // Update navigation spinner
-                updateClassesSpinner();
-
-                // Dismiss dialog
-                d.dismiss();
-            }
-        });
-        Button no = (Button)d.findViewById(R.id.dialog_no);
-        no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                d.dismiss();
-            }
-        });
-
-        // Shows the dialog
-        d.show();
+        // Update navigation spinner
+        updateClassesSpinner();
     }
 
     private void showEditClassroomNameDialog() {
@@ -258,7 +240,7 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
                 showEditClassroomNameDialog();
                 break;
             case R.id.action_delete_class:
-                deleteClassroom();
+                showDeleteClassroomDialog();
                 break;
             case R.id.action_sort_names:
                 showSortPupilsDialog();
@@ -305,6 +287,8 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
             case CLASSROOM_EDIT_DIALOG_REQ_CODE:
                 editClassroomName(input);
                 break;
+            case CLASSROOM_DELETE_DIALOG_REQ_CODE:
+                deleteClassroom();
         }
     }
 }
