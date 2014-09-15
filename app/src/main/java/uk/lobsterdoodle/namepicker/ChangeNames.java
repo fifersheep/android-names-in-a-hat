@@ -189,60 +189,28 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
 
     private void showEditClassroomNameDialog() {
 
-
-
-//        final Dialog d = new Dialog(this);
-//        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        d.setContentView(R.layout.dialog_edit_text);
-//        ((TextView)d.findViewById(R.id.dialog_edit_title)).setText("Edit Class Name");
-//
-//        TextView message = (TextView)d.findViewById(R.id.dialog_edit_message);
-//        message.setText(getString(R.string.dialog_edit_class_msg));
-//
-//        final EditText input = (EditText)d.findViewById(R.id.dialog_edit_input);
-//        input.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-//        input.setText(mClassroomCoord.getCurrentClassroomName());
-//
-//        Button okayButton = (Button)d.findViewById(R.id.dialog_ok);
-//        okayButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showEditClassroomNameDialog(input.getText().toString());
-//                d.dismiss();
-//            }
-//        });
-//        Button cancelButton = (Button)d.findViewById(R.id.dialog_cancel);
-//        cancelButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                d.dismiss();
-//            }
-//        });
-//
-//        // Brings up keyboard when dialog shows
-//        input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (hasFocus) {
-//                    d.getWindow()
-//                            .setSoftInputMode(
-//                                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-//
-//                }
-//            }
-//        });
-//
-//        // Shows the dialog
-//        d.show();
+        InputDialogFragment.createBuilder(this, getSupportFragmentManager())
+                .setTitle("Edit Classroom")
+                .setMessage(getString(R.string.dialog_edit_class_msg))
+                .setHint("Classroom name...")
+                .setPositiveButtonText("Add")
+                .setNegativeButtonText("Cancel")
+                .setRequestCode(CLASSROOM_EDIT_DIALOG_REQ_CODE)
+                .show();
     }
 
     private void editClassroomName(String newName){
 
-        // Modify classroom name
-        mClassroomCoord.editClassroomName(newName);
+        if (mClassroomCoord.containsPupil(newName)) {
+            showEditClassroomNameDialog();
+        } else {
+            // Modify classroom name
+            mClassroomCoord.editClassroomName(newName);
 
-        // Update spinner with new classroom names list
-        updateClassesSpinner();
+            // Update spinner with new classroom names list
+            updateClassesSpinner();
+        }
+
     }
 
     private void showPupilExists() {
@@ -333,6 +301,9 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
                 break;
             case CLASSROOM_ADD_DIALOG_REQ_CODE:
                 addClassroom(input);
+                break;
+            case CLASSROOM_EDIT_DIALOG_REQ_CODE:
+                editClassroomName(input);
                 break;
         }
     }
