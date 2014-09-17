@@ -153,9 +153,11 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
         final String classroomName = mClassroomCoord.getCurrentClassroomName();
 
         SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())
-                .setTitle("Delete Classroom \"" + classroomName + "\"?")
-                .setMessage("Are you sure you want to delete the class room \"" + classroomName +
-                        "\"? This will delete all of the pupils within this classroom too.")
+                .setTitle("Delete \"" + classroomName + "\"?")
+                .setMessage("Are you sure you want to delete \"" + classroomName +
+                        "\"? This will also delete all of the pupils within the classroom.")
+                .setPositiveButtonText("Yes")
+                .setNegativeButtonText("No")
                 .setRequestCode(CLASSROOM_DELETE_DIALOG_REQ_CODE)
                 .show();
     }
@@ -264,6 +266,8 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
             case CLASS_EXISTS_DIALOG_REQ_CODE:
                 showAddClassroomDialog();
                 break;
+            case CLASSROOM_DELETE_DIALOG_REQ_CODE:
+                deleteClassroom();
         }
     }
 
@@ -287,8 +291,6 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
             case CLASSROOM_EDIT_DIALOG_REQ_CODE:
                 editClassroomName(input);
                 break;
-            case CLASSROOM_DELETE_DIALOG_REQ_CODE:
-                deleteClassroom();
         }
     }
 }
