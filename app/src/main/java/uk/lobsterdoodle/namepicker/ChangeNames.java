@@ -284,6 +284,7 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
                 addPupil(input);
                 break;
             case PUPIL_EDIT_DIALOG_REQ_CODE:
+                pupilsAdapter.editPupil(input);
                 break;
             case CLASSROOM_ADD_DIALOG_REQ_CODE:
                 addClassroom(input);
