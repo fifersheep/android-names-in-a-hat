@@ -25,11 +25,12 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
     private final static int PUPIL_ADD_DIALOG_REQ_CODE = 63;
     public final static int PUPIL_EDIT_DIALOG_REQ_CODE = 64;
     public final static int PUPIL_EXISTS_DIALOG_REQ_CODE = 65;
-    private final static int CLASSROOM_ADD_DIALOG_REQ_CODE = 66;
-    private final static int CLASSROOM_EDIT_DIALOG_REQ_CODE = 67;
-    private static final int CLASSROOM_DELETE_DIALOG_REQ_CODE = 68;
-    private final static int CLASS_EXISTS_DIALOG_REQ_CODE = 69;
-    private final static int SORT_DIALOG_REQ_CODE = 70;
+    public final static int PUPIL_DELETE_DIALOG_REQ_CODE = 66;
+    private final static int CLASSROOM_ADD_DIALOG_REQ_CODE = 67;
+    private final static int CLASSROOM_EDIT_DIALOG_REQ_CODE = 68;
+    private static final int CLASSROOM_DELETE_DIALOG_REQ_CODE = 69;
+    private final static int CLASS_EXISTS_DIALOG_REQ_CODE = 70;
+    private final static int SORT_DIALOG_REQ_CODE = 71;
 
     Boolean isClassesSpinnerFirstLoad = true;
     Context mExtraContext;
@@ -268,6 +269,9 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
                 break;
             case CLASSROOM_DELETE_DIALOG_REQ_CODE:
                 deleteClassroom();
+                break;
+            case PUPIL_DELETE_DIALOG_REQ_CODE:
+                pupilsAdapter.deletePupil();
         }
     }
 

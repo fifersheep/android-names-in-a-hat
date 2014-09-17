@@ -102,11 +102,9 @@ public class NamesListAdapter extends ArrayAdapter<String> implements IInputDial
 
     private void showEditNameDialog(final ViewHolder holder) {
 
-        String pupil = holder.label.getText().toString();
-
-        mTempHolder = holder;
-
         ActionBarActivity activity = (ActionBarActivity) mContext;
+        String pupil = holder.label.getText().toString();
+        mTempHolder = holder;
 
         InputDialogFragment.createBuilder(mContext, activity.getSupportFragmentManager())
                 .setTitle("Edit Pupil")
@@ -120,50 +118,74 @@ public class NamesListAdapter extends ArrayAdapter<String> implements IInputDial
 
     public void showDeletePupilDialog(final ViewHolder holder) {
 
-        final SharedPreferences preferences = mContext.getSharedPreferences(Util.FILENAME, 0);
-        final String currentClassroomName = preferences.getString(
-                mContext.getString(R.string.file_current_classroom, ""),
-                null);
+        ActionBarActivity activity = (ActionBarActivity) mContext;
         String pupil = holder.label.getText().toString();
-        final int position = mClassrooms.getCurrentPupils().indexOf(pupil);
+        mTempHolder = holder;
 
-        final Dialog d = new Dialog(mContext);
-        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        d.setContentView(R.layout.dialog_yes_no);
-        ((TextView)d.findViewById(R.id.dialog_y_n_title)).setText("Delete Pupil: " + pupil);
+        SimpleDialogFragment.createBuilder(activity, activity.getSupportFragmentManager())
+                .setTitle("Delete \"" + pupil + "\"?")
+                .setMessage("Are you sure you want to delete \"" + pupil + "\" permanently?")
+                .setPositiveButtonText("Delete")
+                .setNegativeButtonText("Cancel")
+                .setRequestCode(ChangeNames.PUPIL_DELETE_DIALOG_REQ_CODE)
+                .show();
 
-        TextView message = (TextView)d.findViewById(R.id.dialog_y_n_message);
-        message.setText("Are you sure you want to delete '" + pupil + "' permanently?");
+//        final SharedPreferences preferences = mContext.getSharedPreferences(Util.FILENAME, 0);
+//        final String currentClassroomName = preferences.getString(
+//                mContext.getString(R.string.file_current_classroom, ""),
+//                null);
+//        final int position = mClassrooms.getCurrentPupils().indexOf(pupil);
+//
+//        final Dialog d = new Dialog(mContext);
+//        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        d.setContentView(R.layout.dialog_yes_no);
+//        ((TextView)d.findViewById(R.id.dialog_y_n_title)).setText("Delete Pupil: " + pupil);
+//
+//        TextView message = (TextView)d.findViewById(R.id.dialog_y_n_message);
+//        message.setText("Are you sure you want to delete '" + pupil + "' permanently?");
+//
+//        Button yes = (Button)d.findViewById(R.id.dialog_yes);
+//        yes.setText("Delete");
+//        yes.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Remove from adapter list
+//                remove(mClassrooms.getCurrentPupilName(position));
+//
+//                // Remove from database
+//                mClassrooms.removePupil(mClassrooms.getCurrentPupils().get(position));
+//
+//                // Notify adapter of changes
+//                //notifyDataSetChanged();
+//
+//                // Dismiss dialog
+//                d.dismiss();
+//            }
+//        });
+//        Button no = (Button)d.findViewById(R.id.dialog_no);
+//        no.setText("Cancel");
+//        no.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                d.dismiss();
+//            }
+//        });
+//
+//        // Shows the dialog
+//        d.show();
+    }
 
-        Button yes = (Button)d.findViewById(R.id.dialog_yes);
-        yes.setText("Delete");
-        yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Remove from adapter list
-                remove(mClassrooms.getCurrentPupilName(position));
+    public void deletePupil() {
+        int position = getPosition(mTempHolder.label.getText().toString());
 
-                // Remove from database
-                mClassrooms.removePupil(mClassrooms.getCurrentPupils().get(position));
+        // Remove from adapter list
+        remove(mClassrooms.getCurrentPupilName(position));
 
-                // Notify adapter of changes
-                //notifyDataSetChanged();
+        // Remove from database
+        mClassrooms.removePupil(mClassrooms.getCurrentPupils().get(position));
 
-                // Dismiss dialog
-                d.dismiss();
-            }
-        });
-        Button no = (Button)d.findViewById(R.id.dialog_no);
-        no.setText("Cancel");
-        no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                d.dismiss();
-            }
-        });
-
-        // Shows the dialog
-        d.show();
+        // Notify adapter of changes
+        //notifyDataSetChanged();
     }
 
     public void addPupils(ArrayList<String> pupils) {
