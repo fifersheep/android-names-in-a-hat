@@ -131,7 +131,7 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
 
     private void addClassroom(String classroomName) {
         // Check if classroom name already exists
-        if (mClassroomCoord.getClassroom(classroomName) != null) {
+        if (mClassroomCoord.containsClassroom(classroomName)) {
             showClassroomExists();
         } else {
             // Add classroom to list
@@ -186,8 +186,8 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
 
     private void editClassroomName(String newName){
 
-        if (mClassroomCoord.containsPupil(newName)) {
-            showEditClassroomNameDialog();
+        if (mClassroomCoord.containsClassroom(newName)) {
+            showClassroomExists();
         } else {
             // Modify classroom name
             mClassroomCoord.editClassroomName(newName);
@@ -251,7 +251,7 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
                 pupilsAdapter.notifyDataSetChanged();
                 break;
             case CLASS_EXISTS_DIALOG_REQ_CODE:
-                showAddClassroomDialog();
+                showEditClassroomNameDialog();
                 break;
             case CLASSROOM_DELETE_DIALOG_REQ_CODE:
                 deleteClassroom();

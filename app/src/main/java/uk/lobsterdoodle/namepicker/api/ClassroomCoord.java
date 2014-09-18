@@ -159,6 +159,10 @@ import uk.lobsterdoodle.namepicker.Util;
         return getCurrentPupils().contains(pupilName);
     }
 
+    public boolean containsClassroom(String classroomName) {
+        return getClassroomNames().contains(classroomName);
+    }
+
     public void addPupil(String pupilName) {
         // Add pupil to current classroom
         getCurrentClassroom().addPupil(pupilName);
