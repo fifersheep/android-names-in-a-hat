@@ -199,27 +199,13 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
     }
 
     private void showPupilExists() {
-        final Dialog d = new Dialog(this);
-        d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        d.setContentView(R.layout.dialog_notification);
-        ((TextView)d.findViewById(R.id.dialog_notify_title)).setText("Pupil Name Exists");
-
-        TextView message = (TextView)d.findViewById(R.id.dialog_notify_message);
-        message.setText(
-                getString(R.string.pupil_name_exists_msg_pt1) +
-                getString(R.string.pupil_name_exists_msg_pt2));
-
-        Button okayButton = (Button)d.findViewById(R.id.button_notify_dialog);
-        okayButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAddPupilDialog();
-                d.dismiss();
-            }
-        });
-
-        // Shows the dialog
-        d.show();
+        SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())
+                .setTitle("Pupil Name Exists")
+                .setMessage(
+                        getString(R.string.pupil_name_exists_msg_pt1) +
+                        getString(R.string.pupil_name_exists_msg_pt2))
+                .setRequestCode(PUPIL_EXISTS_DIALOG_REQ_CODE)
+                .show();
     }
 
     /** Set up menu **/
@@ -272,6 +258,9 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
                 break;
             case PUPIL_DELETE_DIALOG_REQ_CODE:
                 pupilsAdapter.deletePupil();
+                break;
+            case PUPIL_EXISTS_DIALOG_REQ_CODE:
+                showAddPupilDialog();
         }
     }
 
