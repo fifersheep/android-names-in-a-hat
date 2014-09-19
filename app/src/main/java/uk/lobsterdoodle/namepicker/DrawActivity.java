@@ -122,7 +122,7 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
             mCheckBoxArray.add(cb);
 
             // If iterator is odd, add to left column. Otherwise add to right column
-            if (i % 2 == 0) {
+            if ((i & 1) == 0) {
                 mColumnLeft.addView(cb);
             } else {
                 mColumnRight.addView(cb);
@@ -181,7 +181,7 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    protected void startDraw() {  // TODO: This method does not display results (use dialog)
+    protected void startDraw() {
         int numberToDraw = 0;
 
         try {
@@ -212,25 +212,19 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
                     .setMessage(drawn)
                     .show();
 
-        } // End finally
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Update classroom list and spinner
-        //mClassroomCoord.update();
         updateClassesSpinner();
 
-        // Set classes spinner to current class
         int itemPosition = mClassroomCoord.getCurrentClassroomIndex();
         getSupportActionBar().setSelectedNavigationItem(itemPosition);
 
-        // Update the checkboxes with current class pupils
         updateChecks();
-
-        // Update the draw number spinner
         updateDrawSpinner(0);
     }
 
@@ -252,7 +246,7 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
         switch (item.getItemId()){
             case R.id.action_edit_class:
                 item.setEnabled(false);
-                Intent i = new Intent(this, ChangeNames.class);
+                Intent i = new Intent(this, ChangeNamesActivity.class);
                 startActivityForResult(i, 1);
                 break;
         }

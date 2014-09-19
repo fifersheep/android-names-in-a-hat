@@ -1,9 +1,7 @@
 package uk.lobsterdoodle.namepicker.adapter;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.*;
@@ -13,9 +11,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
-import uk.lobsterdoodle.namepicker.ChangeNames;
+import uk.lobsterdoodle.namepicker.ChangeNamesActivity;
 import uk.lobsterdoodle.namepicker.R;
-import uk.lobsterdoodle.namepicker.Util;
 import uk.lobsterdoodle.namepicker.api.ClassroomCoord;
 import uk.lobsterdoodle.namepicker.dialog.IInputDialogListener;
 import uk.lobsterdoodle.namepicker.dialog.InputDialogFragment;
@@ -112,7 +109,7 @@ public class NamesListAdapter extends ArrayAdapter<String> implements IInputDial
                 .setHint("New name...")
                 .setPositiveButtonText("Save")
                 .setNegativeButtonText("Cancel")
-                .setRequestCode(ChangeNames.PUPIL_EDIT_DIALOG_REQ_CODE)
+                .setRequestCode(ChangeNamesActivity.PUPIL_EDIT_DIALOG_REQ_CODE)
                 .show();
     }
 
@@ -127,7 +124,7 @@ public class NamesListAdapter extends ArrayAdapter<String> implements IInputDial
                 .setMessage("Are you sure you want to delete \"" + pupil + "\" permanently?")
                 .setPositiveButtonText("Delete")
                 .setNegativeButtonText("Cancel")
-                .setRequestCode(ChangeNames.PUPIL_DELETE_DIALOG_REQ_CODE)
+                .setRequestCode(ChangeNamesActivity.PUPIL_DELETE_DIALOG_REQ_CODE)
                 .show();
     }
 
@@ -187,7 +184,7 @@ public class NamesListAdapter extends ArrayAdapter<String> implements IInputDial
             SimpleDialogFragment.createBuilder(activity, activity.getSupportFragmentManager())
                     .setTitle("Class Name Exists")
                     .setMessage(mContext.getString(R.string.class_name_exists_msg))
-                    .setRequestCode(ChangeNames.PUPIL_EXISTS_DIALOG_REQ_CODE)
+                    .setRequestCode(ChangeNamesActivity.PUPIL_EXISTS_DIALOG_REQ_CODE)
                     .show();
 
             showDeletePupilDialog(mTempHolder);

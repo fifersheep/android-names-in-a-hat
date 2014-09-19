@@ -18,7 +18,7 @@
         </activity>
         <activity
             android:label="Change Names"
-            android:name=".ChangeNames"
+            android:name=".ChangeNamesActivity"
             android:screenOrientation="portrait">
             <intent-filter >
                 <action android:name="uk.lobsterdoodle.namepicker.CHANGENAMES" />

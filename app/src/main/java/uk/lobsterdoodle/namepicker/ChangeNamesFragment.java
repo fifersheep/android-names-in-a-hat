@@ -16,14 +16,14 @@ import uk.lobsterdoodle.namepicker.adapter.NamesListAdapter;
 
 public class ChangeNamesFragment extends ListFragment {
 
-    ChangeNames mActivity;
+    ChangeNamesActivity mActivity;
     Context mContext;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mContext = this.getActivity();
-        mActivity = ((ChangeNames) mContext);
+        mActivity = ((ChangeNamesActivity) mContext);
 
         //mActivity.setContentView(R.layout.change_names_list);
 

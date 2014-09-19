@@ -1,15 +1,10 @@
 package uk.lobsterdoodle.namepicker;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.widget.TextView;
-import android.widget.*;
 
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 import uk.lobsterdoodle.namepicker.adapter.NamesListAdapter;
@@ -20,7 +15,7 @@ import uk.lobsterdoodle.namepicker.dialog.InputDialogFragment;
 /** Created by: Scott Laing
  *  Date: 01-Sept-2012 @ 17:28 */
 
-public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationListener, IInputDialogListener {
+public class ChangeNamesActivity extends BaseActivity implements ActionBar.OnNavigationListener, IInputDialogListener {
 
     private final static int PUPIL_ADD_DIALOG_REQ_CODE = 63;
     public final static int PUPIL_EDIT_DIALOG_REQ_CODE = 64;
@@ -46,7 +41,7 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
-        mExtraContext = ChangeNames.this;
+        mExtraContext = ChangeNamesActivity.this;
         mClassroomCoord = ClassroomCoord.getInstance(this);
 
         updateClassesSpinner();
@@ -54,27 +49,21 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
 
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-        // Get the correct name for the current classroom
         if (isClassesSpinnerFirstLoad) {
-
-            // Set classes spinner to current class
             getSupportActionBar().setSelectedNavigationItem(
                     mClassroomCoord.getCurrentClassroomIndex());
         }
 
         mClassroomCoord.setCurrentClassroomName(itemPosition);
 
-        // Use pupils from the current classroom to populate the pupil name list on screen
         pupilsAdapter = new NamesListAdapter(mExtraContext,
                 mClassroomCoord.getCurrentPupils());
         pupilsAdapter.refreshList();
-        /** setListAdapter(pupilsAdapter); **/ //TODO: pupilsAdapter.changePupils(mClassroomCoord.getCurrentPupils()
 
         mFragment = new ChangeNamesFragment();
         mFragment.setAdapter(pupilsAdapter);
         getSupportFragmentManager().beginTransaction().replace(R.id.names_list_fragment, mFragment).commit();
 
-        // Set boolean to show spinner has been loaded before
         isClassesSpinnerFirstLoad = false;
         return true;
     }
@@ -99,10 +88,7 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
         if (mClassroomCoord.containsPupil(newName)) {
             showPupilExists();
         } else {
-            // Add pupil in database
             mClassroomCoord.addPupil(newName);
-
-            // Update adapter
             pupilsAdapter.add(newName);
         }
     }
@@ -130,14 +116,10 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
     }
 
     private void addClassroom(String classroomName) {
-        // Check if classroom name already exists
         if (mClassroomCoord.containsClassroom(classroomName)) {
             showClassroomExists();
         } else {
-            // Add classroom to list
             mClassroomCoord.addClassroom(classroomName);
-
-            // Update the spinner with new list
             updateClassesSpinner();
         }
     }
@@ -164,11 +146,7 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
     }
 
     private void deleteClassroom() {
-
-        // Remove classroom from spinner
         mClassroomCoord.removeClassroom();
-
-        // Update navigation spinner
         updateClassesSpinner();
     }
 
@@ -189,10 +167,7 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
         if (mClassroomCoord.containsClassroom(newName)) {
             showClassroomExists();
         } else {
-            // Modify classroom name
             mClassroomCoord.editClassroomName(newName);
-
-            // Update spinner with new classroom names list
             updateClassesSpinner();
         }
 
@@ -242,10 +217,7 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
     public void onPositiveButtonClicked(int requestCode) {
         switch(requestCode) {
             case SORT_DIALOG_REQ_CODE:
-                // Sort pupils in current class
                 mClassroomCoord.sortCurrentPupils();
-
-                // Update adapter
                 pupilsAdapter.notifyDataSetChanged();
                 break;
             case CLASS_EXISTS_DIALOG_REQ_CODE:
