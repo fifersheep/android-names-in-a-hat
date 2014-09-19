@@ -22,8 +22,8 @@
     <string name="dialog_sort_pupils_msg">Are you sure you want to rearrange the pupils in alphabetical order permanently?</string>
     <string name="class_name_exists_msg">Please choose a different name for your new class, as this name is already in use.
         \n\nTo edit an existing class, please select one from the menu and choose the \"Edit Class\" action\n</string>
-    <string name="pupil_name_exists_msg_pt1">Please choose a different name, as this name is already in use within this class.</string>
-    <string name="pupil_name_exists_msg_pt2">\n\nTo edit an existing name, please select the \"Edit Name\" icon beside the name you wish to edit</string>
+    <string name="pupil_name_exists_msg">Please choose a different name, as this name is already in use within this class.
+        \n\nTo edit an existing name, please select the \"Edit Name\" icon beside the name you wish to edit</string>
 
 
 </resources>

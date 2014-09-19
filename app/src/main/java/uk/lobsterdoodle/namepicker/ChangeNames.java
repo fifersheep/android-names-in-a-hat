@@ -201,9 +201,7 @@ public class ChangeNames extends BaseActivity implements ActionBar.OnNavigationL
     private void showPupilExists() {
         SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())
                 .setTitle("Pupil Name Exists")
-                .setMessage(
-                        getString(R.string.pupil_name_exists_msg_pt1) +
-                        getString(R.string.pupil_name_exists_msg_pt2))
+                .setMessage(getString(R.string.pupil_name_exists_msg))
                 .setRequestCode(PUPIL_EXISTS_DIALOG_REQ_CODE)
                 .show();
     }
