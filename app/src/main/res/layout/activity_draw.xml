@@ -75,11 +75,10 @@ android:layout_height="fill_parent">   <!-- android:background="@drawable/backgr
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/textView_DrawNames"
             android:text="@string/button_clear"
             android:contentDescription=""
-            android:drawableLeft="@drawable/ic_action_delete"
-            android:textColor="#DDDDDD"
+            android:drawableLeft="@drawable/ic_action_accept"
+            android:textColor="@color/grey_dark"
             style="?attr/actionButtonStyle"/>
 
         <Button
@@ -87,23 +86,20 @@ android:layout_height="fill_parent">   <!-- android:background="@drawable/backgr
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/button_clear"
-            android:layout_below="@+id/textView_DrawNames"
             android:text="@string/button_draw"
             android:contentDescription=""
             android:drawableLeft="@drawable/ic_action_send"
-            android:textColor="#DDDDDD"
+            android:textColor="@color/grey_dark"
             style="?attr/actionButtonStyle"/>
 
-
+        <!-- android:background="@drawable/custom_spinner" -->
         <Spinner
             android:id="@+id/action_spinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/button_go"
-            android:layout_below="@+id/textView_DrawNames"
             android:layout_margin="10dp"
-            android:background="@drawable/custom_spinner"
             style="@style/Style.BottomBar.Spinner"/>
 
     </RelativeLayout>

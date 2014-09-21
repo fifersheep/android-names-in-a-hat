@@ -32,7 +32,7 @@
         android:text="Delete"
         android:contentDescription=""
         android:layout_gravity="right"
-        android:drawableLeft="@drawable/ic_action_delete"
+        android:drawableLeft="@drawable/ic_action_discard"
         style="?attr/actionButtonStyle"/>
 
     <Button

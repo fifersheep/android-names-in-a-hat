@@ -103,12 +103,11 @@
 </style>
 
 <style name="Style.BottomBar.Spinner" parent="Widget.AppCompat.DropDownItem.Spinner">
-    <item name="android:background">@drawable/custom_spinner</item>
+    <item name="android:background">@drawable/abc_spinner_ab_holo_light</item>
     <item name="android:spinnerItemStyle">@style/SpinnerItem</item>
     <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItem</item>
     <item name="android:prompt">@string/spinner_draw_prompt</item>
-    <item name="android:popupBackground">@drawable/dialog_top_holo_dark</item>
-    <item name="popupMenuStyle">@style/Style.BottomBar.PopupMenu</item>
+    <!--item name="android:popupBackground">@drawable/dialog_top_holo_dark</item-->
 </style>
 <style name="Style.BottomBar.PopupMenu" parent="Widget.AppCompat.ListPopupWindow">
     <item name="android:textColor">#FF0000</item>
