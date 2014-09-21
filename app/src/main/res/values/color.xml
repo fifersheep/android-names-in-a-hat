@@ -2,6 +2,8 @@
 <resources>
     <color name="old_dark_grey">#424138</color>
 
+    <color name="holo_blue_light">#33b5e5</color>
+
     <!-- Adidas Colours -->
     <color name="tan">#8F764B</color>
     <color name="tan_dark">#665336</color>
