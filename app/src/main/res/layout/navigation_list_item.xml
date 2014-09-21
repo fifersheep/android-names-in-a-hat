@@ -16,7 +16,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="10sp"
         style="?android:attr/spinnerItemStyle"
-        android:textColor="@android:color/primary_text_dark_nodisable"/>
+        android:textColor="@color/grey_dark"/>
 
     <TextView
         android:id="@+id/nav_subtitle"
@@ -28,6 +28,6 @@
         android:textAppearance="?attr/textAppearanceLargePopupMenu"
         android:textSize="16sp"
         style="?android:attr/spinnerItemStyle"
-        android:textColor="@android:color/primary_text_dark_nodisable"/>
+        android:textColor="@color/grey_dark"/>
 
 </LinearLayout>
