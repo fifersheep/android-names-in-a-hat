@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="sdlDialogStyle">@style/DialogStyleDark.Custom</item>
+        <item name="sdlDialogStyle">@style/DialogStyleLight</item>
     </style>
 
     <style name="DialogStyleDark.Custom">
@@ -13,7 +13,6 @@
         <item name="messageTextColor">@color/grey_dark</item>
         <item name="buttonTextColor">@color/grey_medium</item>
         <item name="buttonSeparatorColor">@color/li_grey_trans</item>
-
     </style>
 
 
