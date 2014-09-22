@@ -18,18 +18,18 @@
         android:id="@+id/button_delete_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription=""
+        android:contentDescription="Delete Name"
         android:layout_alignParentRight="true"
-        android:drawableLeft="@android:drawable/ic_menu_delete"
+        android:drawableLeft="@drawable/ic_action_discard"
         style="?attr/actionButtonStyle"/>
 
     <Button
         android:id="@+id/button_edit_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription=""
+        android:contentDescription="Edit Name"
         android:layout_toLeftOf="@+id/button_delete_name"
-        android:drawableLeft="@android:drawable/ic_menu_edit"
+        android:drawableLeft="@drawable/ic_action_edit"
         style="?attr/actionButtonStyle"/>
 
 </RelativeLayout>
