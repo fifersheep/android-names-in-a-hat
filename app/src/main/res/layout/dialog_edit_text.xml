@@ -10,7 +10,6 @@
         android:layout_alignParentTop="true"
         android:padding="14dp"
         android:textSize="18sp"
-        android:textColor="@color/grey_light"
         android:text="@string/class_name_exists_msg" />
 
     <EditText
