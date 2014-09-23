@@ -130,6 +130,7 @@ public class NamesListAdapter extends ArrayAdapter<String> implements IInputDial
 
     public void deletePupil() {
         int position = getPosition(mTempHolder.label.getText().toString());
+        position = mClassrooms.getPosition(mTempHolder.label.getText().toString());
 
         // Remove from adapter list
         remove(mClassrooms.getCurrentPupilName(position));

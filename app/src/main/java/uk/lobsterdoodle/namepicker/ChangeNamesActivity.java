@@ -218,7 +218,7 @@ public class ChangeNamesActivity extends BaseActivity implements ActionBar.OnNav
         switch(requestCode) {
             case SORT_DIALOG_REQ_CODE:
                 mClassroomCoord.sortCurrentPupils();
-                pupilsAdapter.notifyDataSetChanged();
+                pupilsAdapter.updateDataSource(mClassroomCoord);
                 break;
             case CLASS_EXISTS_DIALOG_REQ_CODE:
                 showEditClassroomNameDialog();

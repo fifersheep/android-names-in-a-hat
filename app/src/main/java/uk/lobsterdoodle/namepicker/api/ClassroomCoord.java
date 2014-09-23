@@ -102,6 +102,10 @@ import uk.lobsterdoodle.namepicker.Util;
         return arrayList;
     }
 
+    public int getPosition(String pupilName) {
+        return getCurrentClassroom().getPosition(pupilName);
+    }
+
     public Classroom getClassroom(String classroomName) {
         for (Classroom cr : mClassrooms) {
             if (cr.getName().equals(classroomName))

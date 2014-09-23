@@ -82,6 +82,10 @@ import java.util.Collections;
         return mPupils;
     }
 
+    public int getPosition(String pupilName) {
+        return mPupils.indexOf(getPupil(pupilName));
+    }
+
     protected void sortPupils() {
         Collections.sort(mPupils);
     }
