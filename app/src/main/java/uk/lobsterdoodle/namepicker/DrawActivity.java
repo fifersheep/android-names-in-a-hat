@@ -22,7 +22,6 @@ import java.util.ArrayList;
 
 import eu.inmite.android.lib.dialogs.SimpleDialogFragment;
 import uk.lobsterdoodle.namepicker.api.ClassroomCoord;
-import com.newrelic.agent.android.NewRelic;
 
 
 public class DrawActivity extends BaseActivity implements View.OnClickListener, ActionBar.OnNavigationListener {
@@ -39,9 +38,6 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_draw);
-
-        NewRelic.withApplicationToken(
-                "AAac33f7702cd4bb3effd74df8e90cc829bd4d5666").start(this.getApplication());
 
         ActionBar bar = getSupportActionBar();
         bar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);

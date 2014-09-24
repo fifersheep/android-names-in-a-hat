@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'newrelic'
 
 android {
     compileSdkVersion 19
@@ -25,6 +24,5 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:19+'
     compile 'eu.inmite.android.lib:android-styled-dialogs:1.2.0@aar'
-    compile 'com.newrelic.agent.android:android-agent:3.+'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
