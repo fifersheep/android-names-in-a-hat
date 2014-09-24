@@ -1,6 +1,7 @@
 package uk.lobsterdoodle.namepicker;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -57,6 +58,14 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
         mButtonDraw.setOnClickListener(this);
 
         mClassroomCoord = ClassroomCoord.getInstance(this);
+
+        if (getOldNameList() != null) {
+            mClassroomCoord.addClassroom("Original Names");
+            String[] oldNames = getOldNameList();
+            for (String name : oldNames) {
+                mClassroomCoord.addPupil(name);
+            }
+        }
     }
 
     @Override
@@ -104,6 +113,21 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("tab", getSupportActionBar().getSelectedNavigationIndex());
+    }
+
+    @Deprecated
+    protected String[] getOldNameList() {
+        String FILENAME = "name_list";
+        SharedPreferences sharedPreferences = getSharedPreferences(FILENAME, 0);
+        String loadedNames = sharedPreferences.getString("names", null);
+        if (loadedNames == null) {
+            Log.d("::: LOADED NAMES :::", "returning null");
+            return null;
+        } else {
+            sharedPreferences.edit().clear().commit();
+            Log.d("::: LOADED NAMES :::", loadedNames);
+            return loadedNames.split(", ");
+        }
     }
 
     protected void updateChecks() {
