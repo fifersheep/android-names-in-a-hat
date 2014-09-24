@@ -26,6 +26,7 @@ public class Hat {
     }
 
     public Hat setNameList(ArrayList<CheckBox> checkBoxArray) {
+        mNameList.clear();
         // Add each name to the list if the corresponding checkbox is checked
         for (CheckBox cb : checkBoxArray) {
             if (cb.isChecked()) {
