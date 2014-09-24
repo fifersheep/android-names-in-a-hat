@@ -59,12 +59,9 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
 
         mClassroomCoord = ClassroomCoord.getInstance(this);
 
-        if (getOldNameList() != null) {
-            mClassroomCoord.addClassroom("Original Names");
-            String[] oldNames = getOldNameList();
-            for (String name : oldNames) {
-                mClassroomCoord.addPupil(name);
-            }
+        String[] oldNames = getOldNameList();
+        if (oldNames != null) {
+            mClassroomCoord.addClassroom("Original Names", oldNames);
         }
     }
 

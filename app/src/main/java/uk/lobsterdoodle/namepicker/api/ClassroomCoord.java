@@ -129,6 +129,11 @@ import uk.lobsterdoodle.namepicker.Util;
         addClassroom(classroom);
     }
 
+    public void addClassroom(String newClassroomName, String[] pupils) {
+        Classroom classroom = new Classroom(newClassroomName, pupils);
+        addClassroom(classroom);
+    }
+
     public void removeClassroom() {
 
         // Remove from database
