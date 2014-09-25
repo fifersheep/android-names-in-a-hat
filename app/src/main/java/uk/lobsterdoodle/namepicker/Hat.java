@@ -12,7 +12,6 @@ import java.util.Random;
  */
 public class Hat {
 
-    private List<String> mNameList;
     private static Hat mInstance = new Hat();
 
     public static Hat getInstance() {
@@ -21,55 +20,49 @@ public class Hat {
         return mInstance;
     }
 
-    private Hat(){
-        mNameList = new ArrayList<String>();
+    private Hat(){ }
+
+    public String draw(int quantity ,ArrayList<CheckBox> checkBoxArray){
+        String[] checkedNames = getCheckedNames(checkBoxArray);
+        String[] pickedNames = pickRandomNames(quantity, checkedNames);
+        return buildString(pickedNames);
     }
 
-    public Hat setNameList(ArrayList<CheckBox> checkBoxArray) {
-        mNameList.clear();
-        // Add each name to the list if the corresponding checkbox is checked
+    private String buildString(String[] pickedNames) {
+        String lastNameInList = pickedNames[pickedNames.length - 1];
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (String name : pickedNames) {
+            stringBuilder.append(name);
+            if (!name.equals(lastNameInList)) {
+                stringBuilder.append("\n");
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    private String[] getCheckedNames(ArrayList<CheckBox> checkBoxArray) {
+        ArrayList<String> checkedNames = new ArrayList<String>();
         for (CheckBox cb : checkBoxArray) {
             if (cb.isChecked()) {
-                mNameList.add(cb.getText().toString());
+                checkedNames.add(cb.getText().toString());
             }
         }
-
-        // Return self in order to chain methods
-        return this;
+        return (String[]) checkedNames.toArray();
     }
 
-    public String draw(int quantity){
+    private String[] pickRandomNames(int quantity, String[] names) {
+        ArrayList<String> result = new ArrayList<String>();
+        Random random = new Random();
+        int randomNumber;
 
-        ArrayList<String> drawnNames = new ArrayList<String>();
-
-        // Validate input
-        if (quantity > 0 && quantity <= mNameList.size()) {
-            for (int y = 0; y < quantity; y++) {
-
-                Random r = new Random();
-                int randomNumber = r.nextInt(mNameList.size());
-
-                // Check if name drawn is already in the hat, and replaces if necessary
-                while (drawnNames.contains(mNameList.get(randomNumber))) {
-                    randomNumber = r.nextInt(mNameList.size());
-                }
-                drawnNames.add(mNameList.get(randomNumber));
+        for (int y = 0; y < quantity; y++) {
+            randomNumber = random.nextInt(names.length);
+            while (result.contains(names[randomNumber])) {
+                randomNumber = random.nextInt(names.length);
             }
+            result.add(names[randomNumber]);
         }
-
-        StringBuilder sb = new StringBuilder();
-        for (String string : drawnNames) {
-            sb.append(string);
-
-            if (!string.equals(drawnNames.get(drawnNames.size() - 1))) {
-               sb.append("\n");
-            }
-        }
-
-        return sb.toString();
-    }
-
-    public int size() {
-        return mNameList.size();
+        return (String[]) result.toArray();
     }
 }

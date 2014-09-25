@@ -206,36 +206,22 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     protected void startDraw() {
-        int numberToDraw = 0;
+        int numberToDraw = 1;
 
         try {
             numberToDraw = Integer.parseInt((String) mSpinnerDraw.getSelectedItem());
         } catch (NumberFormatException e) {
-            Log.e(
-                    getString(R.string.app_tag),
-                    "NumberFormatException: DrawActivity > startDraw()", e);
-
-            Toast.makeText(this,
-                    "NumberFormatException: DrawActivity > startDraw()",
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "NumberFormatException: DrawActivity > startDraw()", Toast.LENGTH_LONG).show();
         } catch (NullPointerException e) {
-            Log.e(
-                    getString(R.string.app_tag),
-                    "NullPointerException: DrawActivity > startDraw()", e);
-            Toast.makeText(this,
-                    "NullPointerException: DrawActivity > startDraw()" + e,
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "NullPointerException: DrawActivity > startDraw()", Toast.LENGTH_LONG).show();
         } finally {
-
-            String drawn = Hat.getInstance()
-                    .setNameList(mCheckBoxArray).draw(numberToDraw);
+            String drawnNames = Hat.getInstance().draw(numberToDraw, mCheckBoxArray);
 
             SimpleDialogFragment
                     .createBuilder(this, getSupportFragmentManager())
                     .setTitle("Drawn Names...")
-                    .setMessage(drawn)
+                    .setMessage(drawnNames)
                     .show();
-
         }
     }
 
