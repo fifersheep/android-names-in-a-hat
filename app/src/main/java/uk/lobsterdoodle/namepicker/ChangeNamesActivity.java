@@ -156,7 +156,7 @@ public class ChangeNamesActivity extends BaseActivity implements ActionBar.OnNav
                 .setTitle("Edit Classroom")
                 .setMessage(getString(R.string.dialog_edit_class_msg))
                 .setHint("Classroom name...")
-                .setPositiveButtonText("Add")
+                .setPositiveButtonText("Save")
                 .setNegativeButtonText("Cancel")
                 .setRequestCode(CLASSROOM_EDIT_DIALOG_REQ_CODE)
                 .show();
