@@ -133,12 +133,15 @@ public class DrawActivity extends BaseActivity implements View.OnClickListener, 
         for (int i = 0; i < mClassroomCoord.getCurrentClassroomSize(); i++) {
 
             CheckBox cb = new CheckBox(this);
-            cb.setPadding(0, 25, 0, 25);
+            final float scale = this.getResources().getDisplayMetrics().density;
+            int extra = (int)(5.0f * scale + 0.5f);
+            cb.setPadding(cb.getPaddingLeft() + extra,
+                    cb.getPaddingTop() + extra,
+                    cb.getPaddingRight(),
+                    cb.getPaddingBottom() + extra);
             cb.setId(i);
             //cb.setButtonDrawable(R.drawable.checkbox);
             cb.setTextColor(getResources().getColor(R.color.grey_dark));
-            cb.setLayoutParams(new RelativeLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             cb.setText(mClassroomCoord.getCurrentPupilName(i));
             mCheckBoxArray.add(cb);
 
