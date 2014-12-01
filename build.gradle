@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.android.tools.build:gradle:1.0.0-rc1'
         classpath 'com.newrelic.agent.android:agent-gradle-plugin:3.+'
     }
 }
@@ -18,5 +18,5 @@ allprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+    gradleVersion = '2.2.1'
 }
