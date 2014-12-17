@@ -22,6 +22,7 @@ android {
 }
 
 dependencies {
+    compile project(':api')
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile group: 'com.android.support',   name: 'appcompat-v7',           version: '19.0.0'
     compile group: 'eu.inmite.android.lib', name: 'android-styled-dialogs', version: '1.2.0'
