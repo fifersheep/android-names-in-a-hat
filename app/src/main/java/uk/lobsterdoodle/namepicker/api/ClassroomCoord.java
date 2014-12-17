@@ -12,7 +12,7 @@ import uk.lobsterdoodle.namepicker.Util;
 /** Created by: Scott Laing
  *  Date: 13-May-2014 @ 23:55 */
 
-  public class ClassroomCoord {
+public class ClassroomCoord {
 
     private static ClassroomCoord mInstance = null;
     private ArrayList<Classroom> mClassrooms;

@@ -11,7 +11,7 @@ package uk.lobsterdoodle.namepicker.api;
     Pupil (Classroom classroom, String name) {
         // Set name and classroom
         mName = name;
-        mClassroom = classroom;
+        mClassroom = classroom == null ? new Classroom() : classroom;
     }
 
     void setName(String name) { mName = name; }

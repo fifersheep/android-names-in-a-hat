@@ -7,6 +7,7 @@ import java.util.Collections;
  *  Date: 03-Sept-2013 @ 18:16 */
 
   class Classroom implements Comparable<Classroom>{
+    protected static String DEFAULT_CLASSROOM_NAME = "Default Class";
     private static String[] DEFAULT_NAMES = {"Amie", "Abbie", "Beth", "Jane", "Joanne", "Louise",
                                                     "Phoebe", "Rachel", "Sam", "Scott", "Tiffany"};
     private String mName;
@@ -14,7 +15,7 @@ import java.util.Collections;
 
     public Classroom() {
         // Set default name and pupils
-        this("Default Class", DEFAULT_NAMES);
+        this(DEFAULT_CLASSROOM_NAME, DEFAULT_NAMES);
     }
 
     public Classroom(String name) {
