@@ -1,19 +1,25 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.1.0"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
-        minSdkVersion 8
-        targetSdkVersion 19
+        minSdkVersion 14
+        targetSdkVersion 24
         versionCode 11
         versionName "2.0.0"
     }
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            proguardFiles 'proguard-rules.txt'
         }
     }
     lintOptions {
@@ -23,10 +29,11 @@ android {
 
 dependencies {
     compile project(':api')
+    compile project(':core')
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile group: 'com.android.support',   name: 'appcompat-v7',           version: '19.0.0'
-    compile group: 'eu.inmite.android.lib', name: 'android-styled-dialogs', version: '1.2.0'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:design:24.2.0'
+    compile 'com.avast:android-styled-dialogs:2.2.0'
 
-    androidTestCompile group: 'org.mockito', name: 'mockito-core', version: '1.10.8'
-    androidTestCompile group: 'org.jbehave', name: 'jbehave-core', version: '4.+'
+    androidTestCompile 'org.mockito:mockito-core:1.10.8'
 }

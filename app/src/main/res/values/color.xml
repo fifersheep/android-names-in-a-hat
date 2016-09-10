@@ -22,4 +22,8 @@
     <!-- Test Colours -->
     <color name="li_grey_trans">#66B3B5B4</color>
     <color name="spinner_teal">#18C3EF</color>
+
+    <!-- Pallet Colours -->
+    <color name="palette_red">#B32A33</color>
+    <color name="palette_white">#F7FEFF</color>
 </resources>
