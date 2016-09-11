@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="NamesTheme" parent="Base.Theme.AppCompat">
+    <style name="NamesTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/palette_red</item>
+        <item name="colorAccent">@color/palette_red</item>
+        <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
     </style>
 
 </resources>

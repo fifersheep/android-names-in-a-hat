@@ -26,4 +26,5 @@
     <!-- Pallet Colours -->
     <color name="palette_red">#B32A33</color>
     <color name="palette_white">#F7FEFF</color>
+    <color name="palette_grey_dark">#1F1F1A</color>
 </resources>
