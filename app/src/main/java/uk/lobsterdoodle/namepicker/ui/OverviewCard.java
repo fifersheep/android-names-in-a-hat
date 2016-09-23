@@ -36,6 +36,9 @@ public class OverviewCard extends CardView {
 
     private void init() {
         ButterKnife.inject(this, LayoutInflater.from(getContext()).inflate(R.layout.overview_card, this, true));
+        setCardBackgroundColor(getContext().getResources().getColor(android.R.color.white));
+        setUseCompatPadding(true);
+        setCardElevation(3f);
     }
 
     public void bind(OverviewCardCellData data) {

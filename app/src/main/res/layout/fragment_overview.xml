@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -16,6 +15,8 @@
         android:layout_height="wrap_content"
         android:text="@string/overview_label"
         android:layout_alignBaseline="@+id/overview_add_group"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/overview_add_group"
         style="@style/AppText.Label"/>
 
     <Button
@@ -27,11 +28,10 @@
         android:text="@string/overview_add_group"
         tools:ignore="RtlHardcoded"/>
 
-    <uk.lobsterdoodle.namepicker.ui.OverviewCard
-        android:id="@+id/test_overview_card"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/overview_group_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/overview_add_group"
-        app:cardBackgroundColor="@android:color/white"/>
+        android:layout_below="@+id/overview_add_group"/>
 
 </RelativeLayout>
