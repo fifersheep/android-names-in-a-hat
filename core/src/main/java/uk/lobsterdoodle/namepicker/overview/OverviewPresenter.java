@@ -10,8 +10,8 @@ public class OverviewPresenter {
 
     public void onViewCreated(OverviewView view) {
         this.view = view;
-        cellData.add(new OverviewCardCellData("Position 0", 0));
-        cellData.add(new OverviewCardCellData("Position 1", 1));
+        cellData.add(new OverviewCardCellData("The Android Team", 13));
+        cellData.add(new OverviewCardCellData("Visitor Services Team", 24));
     }
 
     public int itemCount() {
