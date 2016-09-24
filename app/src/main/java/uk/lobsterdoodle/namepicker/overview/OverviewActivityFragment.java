@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -56,9 +57,16 @@ public class OverviewActivityFragment extends Fragment implements OverviewView {
     @Override
     public void onResume() {
         super.onResume();
+        presenter.onResume();
         if (getUserVisibleHint()) {
             notifyVisibleItems();
         }
+    }
+
+    @Override
+    public void onPause() {
+        presenter.onPause();
+        super.onPause();
     }
 
     private void notifyVisibleItems() {
@@ -73,6 +81,11 @@ public class OverviewActivityFragment extends Fragment implements OverviewView {
     @Override
     public void dataSetChanged() {
         getActivity().runOnUiThread(() -> overviewAdapter.notifyDataSetChanged());
+    }
+
+    @Override
+    public void toastEventBus() {
+        Toast.makeText(getActivity(), "EventBus ready!", Toast.LENGTH_LONG).show();
     }
 
     private class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
