@@ -1,5 +1,6 @@
 package uk.lobsterdoodle.namepicker.overview;
 
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,9 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
+import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.ui.OverviewCard;
 
 public class OverviewActivityFragment extends Fragment implements OverviewView {
@@ -18,17 +22,23 @@ public class OverviewActivityFragment extends Fragment implements OverviewView {
     @InjectView(R.id.overview_group_list)
     RecyclerView groupsRecyclerView;
 
-    private OverviewPresenter presenter;
+    @Inject OverviewPresenter presenter;
+
     private OverviewAdapter overviewAdapter;
 
     public OverviewActivityFragment() {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        App.get(getActivity()).component().inject(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_overview, container, false);
         ButterKnife.inject(this, view);
-        presenter = new OverviewPresenter();
         presenter.onViewCreated(this);
         overviewAdapter = new OverviewAdapter();
         groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
