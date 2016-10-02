@@ -22,12 +22,11 @@ public class OverviewPresenter {
 
     public void onViewCreated(OverviewView view) {
         this.view = view;
-        cellData.add(new OverviewCardCellData("The Android Team", 13));
-        cellData.add(new OverviewCardCellData("Visitor Services Team", 24));
     }
 
     public void onResume() {
         bus.register(this);
+        bus.post(new OverviewBecameVisibleEvent());
     }
 
     public void onPause() {
@@ -42,13 +41,9 @@ public class OverviewPresenter {
         return cellData.get(position);
     }
 
-    public void visibleItems(int firstPosition, int lastPosition) {
-        bus.post(new OverviewBecameVisibleEvent());
-        view.dataSetChanged();
-    }
-
     @Subscribe
-    public void onEvent(OverviewBecameVisibleEvent becameVisibleEvent) {
-        view.toastEventBus();
+    public void onEvent(OverviewRetrievedEvent retrievedEvent) {
+        cellData = retrievedEvent.cellData;
+        view.dataSetChanged();
     }
 }

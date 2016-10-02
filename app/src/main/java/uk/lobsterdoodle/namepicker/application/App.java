@@ -5,6 +5,7 @@ import android.content.Context;
 
 import uk.lobsterdoodle.namepicker.application.di.DaggerDependencyInjectionComponent;
 import uk.lobsterdoodle.namepicker.application.di.DependencyInjectionComponent;
+import uk.lobsterdoodle.namepicker.application.di.DependencyInjectionModule;
 
 public class App extends Application {
 
@@ -17,8 +18,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        component = DaggerDependencyInjectionComponent
-                .builder()
+        component = DaggerDependencyInjectionComponent.builder()
+                .dependencyInjectionModule(new DependencyInjectionModule())
                 .build();
 
         component.inject(this);

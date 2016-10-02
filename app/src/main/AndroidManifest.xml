@@ -9,15 +9,28 @@
         android:label="@string/app_name"
         android:logo="@drawable/ic_logo"
         android:theme="@style/NamesTheme">
+
+        <service
+            android:name=".application.AppService"
+            android:enabled="true"
+            android:exported="false">
+        </service>
+
         <activity
-            android:name=".overview.OverviewActivity"
-            android:label="@string/title_activity_overview">
+            android:name=".SplashActivity"
+            android:label="@string/app_name"
+            android:theme="@style/NamesTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".overview.OverviewActivity"
+            android:label="@string/title_activity_overview">
+        </activity>
+
     </application>
 
 </manifest>
