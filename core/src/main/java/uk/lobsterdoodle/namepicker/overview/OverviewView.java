@@ -1,7 +1,7 @@
 package uk.lobsterdoodle.namepicker.overview;
 
-public interface OverviewView {
-    void dataSetChanged();
+import uk.lobsterdoodle.namepicker.ui.DataSetChangedListener;
 
+public interface OverviewView extends DataSetChangedListener {
     void launchAddGroupFragment();
 }

@@ -15,8 +15,9 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.App;
+import uk.lobsterdoodle.namepicker.ui.DataSetChangedListener;
 
-public class AddGroupFragment extends Fragment {
+public class AddGroupFragment extends Fragment implements DataSetChangedListener {
 
     @InjectView(R.id.add_group_name_list)
     RecyclerView nameList;
@@ -32,6 +33,18 @@ public class AddGroupFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        presenter.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        presenter.onPause();
+        super.onPause();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_add_group, container, false);
         ButterKnife.inject(this, view);
@@ -39,6 +52,11 @@ public class AddGroupFragment extends Fragment {
         nameList.setLayoutManager(new LinearLayoutManager(getActivity()));
         nameList.setAdapter(nameListAdapter);
         return view;
+    }
+
+    @Override
+    public void dataSetChanged() {
+        getActivity().runOnUiThread(() -> nameListAdapter.notifyDataSetChanged());
     }
 
     public class NameListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

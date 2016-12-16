@@ -1,24 +1,50 @@
 package uk.lobsterdoodle.namepicker.addgroup;
 
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import static java.util.Arrays.asList;
+import uk.lobsterdoodle.namepicker.events.EventBus;
+import uk.lobsterdoodle.namepicker.ui.DataSetChangedListener;
 
 public class NameListPresenter {
 
-    private List<String> stubbedData = asList("Scott", "Rob", "Peter");
+    private EventBus bus;
+    private DataSetChangedListener listener;
+    private List<NameCardCellData> cellData = new ArrayList<>();
 
     @Inject
-    public NameListPresenter() {
+    public NameListPresenter(EventBus bus) {
+        this.bus = bus;
     }
 
-    public NameCardCellData dataFor(int position) {
-        return new NameCardCellData(stubbedData.get(position));
+    public void onViewCreated(DataSetChangedListener listener) {
+        this.listener = listener;
+    }
+
+    public void onResume() {
+        bus.register(this);
+        bus.post(new NameListBecameVisibleEvent());
+    }
+
+    public void onPause() {
+        bus.unregister(this);
     }
 
     public int itemCount() {
-        return 3;
+        return cellData.size();
+    }
+
+    public NameCardCellData dataFor(int position) {
+        return cellData.get(position);
+    }
+
+    @Subscribe
+    public void onEvent(NamesRetrievedEvent event) {
+        cellData = event.cellData;
+        listener.dataSetChanged();
     }
 }
