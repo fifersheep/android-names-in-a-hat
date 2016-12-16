@@ -7,6 +7,7 @@ import android.os.IBinder;
 
 import javax.inject.Inject;
 
+import uk.lobsterdoodle.namepicker.addgroup.AddNamesUseCase;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.namelist.NameListUseCase;
 import uk.lobsterdoodle.namepicker.overview.OverviewUseCase;
@@ -19,6 +20,8 @@ public class AppService extends Service {
     @Inject OverviewUseCase overviewUseCase;
 
     @Inject NameListUseCase nameListUseCase;
+
+    @Inject AddNamesUseCase addNamesUseCase;
 
     public AppService() {
     }

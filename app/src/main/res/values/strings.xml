@@ -15,6 +15,8 @@
 
     <string name="add_group_input_label_name">Group Name</string>
     <string name="add_group_button_done">Done</string>
+    <string name="add_group_button_add_name">Add Name</string>
     <string name="add_group_label_names">Names</string>
     <string name="add_group_group_name_input_hint">e.g. Team Lobster Doodle</string>
+    <string name="add_group_name_input_hint">e.g. Sebastian</string>
 </resources>

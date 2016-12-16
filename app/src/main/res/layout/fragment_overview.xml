@@ -6,7 +6,7 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                android:background="@color/palette_white"
+                android:background="@color/palette_grey_light"
                 tools:context="uk.lobsterdoodle.namepicker.overview.OverviewActivityFragment">
 
     <TextView

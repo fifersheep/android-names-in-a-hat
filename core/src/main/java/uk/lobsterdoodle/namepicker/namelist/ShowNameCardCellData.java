@@ -4,19 +4,19 @@ import java.util.List;
 
 import uk.lobsterdoodle.namepicker.addgroup.NameCardCellData;
 
-public class NamesRetrievedEvent {
+public class ShowNameCardCellData {
     public final List<NameCardCellData> cellData;
 
-    public NamesRetrievedEvent(List<NameCardCellData> cellData) {
+    public ShowNameCardCellData(List<NameCardCellData> cellData) {
         this.cellData = cellData;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof NamesRetrievedEvent)) return false;
+        if (!(o instanceof ShowNameCardCellData)) return false;
 
-        NamesRetrievedEvent that = (NamesRetrievedEvent) o;
+        ShowNameCardCellData that = (ShowNameCardCellData) o;
 
         return cellData != null ? cellData.equals(that.cellData) : that.cellData == null;
 
@@ -29,7 +29,7 @@ public class NamesRetrievedEvent {
 
     @Override
     public String toString() {
-        return "NamesRetrievedEvent{" +
+        return "ShowNameCardCellData{" +
                 "cellData=" + cellData +
                 '}';
     }
