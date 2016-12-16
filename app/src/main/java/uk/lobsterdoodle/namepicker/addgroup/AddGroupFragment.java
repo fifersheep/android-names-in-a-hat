@@ -9,39 +9,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.App;
-import uk.lobsterdoodle.namepicker.ui.DataSetChangedListener;
+import uk.lobsterdoodle.namepicker.events.EventBus;
+import uk.lobsterdoodle.namepicker.namelist.NameListBecameVisibleEvent;
+import uk.lobsterdoodle.namepicker.namelist.NamesRetrievedEvent;
 
-public class AddGroupFragment extends Fragment implements DataSetChangedListener {
+public class AddGroupFragment extends Fragment {
 
     @InjectView(R.id.add_group_name_list)
     RecyclerView nameList;
 
-    @Inject NameListPresenter presenter;
+    @Inject EventBus bus;
 
     private NameListAdapter nameListAdapter;
+    private List<NameCardCellData> cellData = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.get(getActivity()).component().inject(this);
+        bus.register(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        presenter.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        presenter.onPause();
-        super.onPause();
+        bus.post(new NameListBecameVisibleEvent());
     }
 
     @Override
@@ -54,8 +57,9 @@ public class AddGroupFragment extends Fragment implements DataSetChangedListener
         return view;
     }
 
-    @Override
-    public void dataSetChanged() {
+    @Subscribe
+    public void onEvent(NamesRetrievedEvent e) {
+        cellData = e.cellData;
         getActivity().runOnUiThread(() -> nameListAdapter.notifyDataSetChanged());
     }
 
@@ -69,12 +73,12 @@ public class AddGroupFragment extends Fragment implements DataSetChangedListener
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             NameCardViewHolder cardViewHolder = (NameCardViewHolder) holder;
-            cardViewHolder.bind(presenter.dataFor(position));
+            cardViewHolder.bind(cellData.get(position));
         }
 
         @Override
         public int getItemCount() {
-            return presenter.itemCount();
+            return cellData.size();
         }
     }
 

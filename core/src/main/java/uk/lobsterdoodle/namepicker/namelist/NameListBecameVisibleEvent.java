@@ -1,4 +1,4 @@
-package uk.lobsterdoodle.namepicker.addgroup;
+package uk.lobsterdoodle.namepicker.namelist;
 
 public class NameListBecameVisibleEvent {
     @Override

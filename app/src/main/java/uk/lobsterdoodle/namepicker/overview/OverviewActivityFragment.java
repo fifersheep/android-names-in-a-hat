@@ -10,15 +10,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.App;
+import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.ui.OverviewCard;
 
-public class OverviewActivityFragment extends Fragment implements OverviewView {
+public class OverviewActivityFragment extends Fragment {
 
     @InjectView(R.id.overview_group_list)
     RecyclerView groupsRecyclerView;
@@ -26,9 +32,10 @@ public class OverviewActivityFragment extends Fragment implements OverviewView {
     @InjectView(R.id.overview_add_group)
     Button addGroupButton;
 
-    @Inject OverviewPresenter presenter;
+    @Inject EventBus bus;
 
     private OverviewAdapter overviewAdapter;
+    private List<OverviewCardCellData> cellData = new ArrayList<>();
 
     public OverviewActivityFragment() {
     }
@@ -37,39 +44,29 @@ public class OverviewActivityFragment extends Fragment implements OverviewView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.get(getActivity()).component().inject(this);
+        bus.register(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_overview, container, false);
         ButterKnife.inject(this, view);
-        presenter.onViewCreated(this);
         overviewAdapter = new OverviewAdapter();
         groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         groupsRecyclerView.setAdapter(overviewAdapter);
-        addGroupButton.setOnClickListener((v) -> presenter.addGroupTapped());
+        addGroupButton.setOnClickListener((v) -> ((OverviewActivity) getActivity()).showAddGroup());
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        presenter.onResume();
+        bus.post(new OverviewBecameVisibleEvent());
     }
 
-    @Override
-    public void onPause() {
-        presenter.onPause();
-        super.onPause();
-    }
-
-    @Override
-    public void launchAddGroupFragment() {
-        ((OverviewActivity) getActivity()).showAddGroup();
-    }
-
-    @Override
-    public void dataSetChanged() {
+    @Subscribe
+    public void onEvent(OverviewRetrievedEvent retrievedEvent) {
+        cellData = retrievedEvent.cellData;
         getActivity().runOnUiThread(() -> overviewAdapter.notifyDataSetChanged());
     }
 
@@ -83,12 +80,12 @@ public class OverviewActivityFragment extends Fragment implements OverviewView {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             OverviewCardViewHolder cardViewHolder = (OverviewCardViewHolder) holder;
-            cardViewHolder.bind(presenter.dataFor(position));
+            cardViewHolder.bind(cellData.get(position));
         }
 
         @Override
         public int getItemCount() {
-            return presenter.itemCount();
+            return cellData.size();
         }
     }
 

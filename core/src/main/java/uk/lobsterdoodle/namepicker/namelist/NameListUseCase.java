@@ -8,8 +8,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import uk.lobsterdoodle.namepicker.addgroup.NameCardCellData;
-import uk.lobsterdoodle.namepicker.addgroup.NameListBecameVisibleEvent;
-import uk.lobsterdoodle.namepicker.addgroup.NamesRetrievedEvent;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 
 public class NameListUseCase {

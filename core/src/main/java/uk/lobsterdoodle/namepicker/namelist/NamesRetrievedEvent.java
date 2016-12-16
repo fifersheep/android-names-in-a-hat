@@ -1,6 +1,8 @@
-package uk.lobsterdoodle.namepicker.addgroup;
+package uk.lobsterdoodle.namepicker.namelist;
 
 import java.util.List;
+
+import uk.lobsterdoodle.namepicker.addgroup.NameCardCellData;
 
 public class NamesRetrievedEvent {
     public final List<NameCardCellData> cellData;
