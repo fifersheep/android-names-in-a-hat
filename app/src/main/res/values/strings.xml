@@ -12,4 +12,9 @@
     <string name="title_activity_overview">Groups</string>
     <string name="overview_label">Select a group</string>
     <string name="overview_add_group">Add Group</string>
+
+    <string name="add_group_input_label_name">Group Name</string>
+    <string name="add_group_button_done">Done</string>
+    <string name="add_group_label_names">Names</string>
+    <string name="add_group_group_name_input_hint">e.g. Team Lobster Doodle</string>
 </resources>

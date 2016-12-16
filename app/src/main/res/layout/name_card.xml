@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/name_card_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/name_card_delete_icon"
+        style="@style/AppText.AddGroup.NameCard"
+        tools:text="Scott"
+        tools:ignore="RtlHardcoded"/>
+
+    <TextView
+        android:id="@+id/name_card_delete_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="X"/>
+</RelativeLayout>

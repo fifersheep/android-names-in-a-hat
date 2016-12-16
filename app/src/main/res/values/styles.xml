@@ -6,6 +6,7 @@
     <style name="AppText.Label">
         <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginLeft">8dp</item>
         <item name="android:layout_marginRight">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
@@ -21,6 +22,14 @@
 
     <style name="AppText.Overview.Count">
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AppText.AddGroup">
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="AppText.AddGroup.NameCard">
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="NamesTheme.NoActionBar">

@@ -30,6 +30,12 @@ public class SplashActivity extends AppCompatActivity implements ServiceConnecti
     }
 
     @Override
+    protected void onDestroy() {
+        unbindService(this);
+        super.onDestroy();
+    }
+
+    @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
 
     }

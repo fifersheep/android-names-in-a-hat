@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import javax.inject.Inject;
 
@@ -21,6 +22,9 @@ public class OverviewActivityFragment extends Fragment implements OverviewView {
 
     @InjectView(R.id.overview_group_list)
     RecyclerView groupsRecyclerView;
+
+    @InjectView(R.id.overview_add_group)
+    Button addGroupButton;
 
     @Inject OverviewPresenter presenter;
 
@@ -43,6 +47,7 @@ public class OverviewActivityFragment extends Fragment implements OverviewView {
         overviewAdapter = new OverviewAdapter();
         groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         groupsRecyclerView.setAdapter(overviewAdapter);
+        addGroupButton.setOnClickListener((v) -> presenter.addGroupTapped());
         return view;
     }
 
@@ -56,6 +61,11 @@ public class OverviewActivityFragment extends Fragment implements OverviewView {
     public void onPause() {
         presenter.onPause();
         super.onPause();
+    }
+
+    @Override
+    public void launchAddGroupFragment() {
+        ((OverviewActivity) getActivity()).showAddGroup();
     }
 
     @Override

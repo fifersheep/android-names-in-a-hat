@@ -46,4 +46,8 @@ public class OverviewPresenter {
         cellData = retrievedEvent.cellData;
         view.dataSetChanged();
     }
+
+    public void addGroupTapped() {
+        view.launchAddGroupFragment();
+    }
 }

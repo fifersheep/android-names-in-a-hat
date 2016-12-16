@@ -68,4 +68,11 @@ public class OverviewPresenterTest {
         assertThat(presenter.dataFor(0), is(equalTo(new OverviewCardCellData("Android Team", 13))));
         assertThat(presenter.dataFor(1), is(equalTo(new OverviewCardCellData("Visitor Services Team", 24))));
     }
+
+    @Test
+    public void view_show_add_group_dialog_on_add_group_tapped() {
+        presenter.onViewCreated(view);
+        presenter.addGroupTapped();
+        verify(view).launchAddGroupFragment();
+    }
 }

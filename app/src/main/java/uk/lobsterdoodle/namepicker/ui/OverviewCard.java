@@ -9,6 +9,7 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
+import uk.lobsterdoodle.namepicker.application.util.As;
 import uk.lobsterdoodle.namepicker.overview.OverviewCardCellData;
 
 public class OverviewCard extends CardView {
@@ -38,7 +39,7 @@ public class OverviewCard extends CardView {
         ButterKnife.inject(this, LayoutInflater.from(getContext()).inflate(R.layout.overview_card, this, true));
         setCardBackgroundColor(getContext().getResources().getColor(android.R.color.white));
         setUseCompatPadding(true);
-        setCardElevation(3f);
+        setCardElevation(As.px(getContext(), 2));
     }
 
     public void bind(OverviewCardCellData data) {

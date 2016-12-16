@@ -3,6 +3,7 @@ package uk.lobsterdoodle.namepicker.application.di;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import uk.lobsterdoodle.namepicker.addgroup.AddGroupFragment;
 import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.application.AppService;
 import uk.lobsterdoodle.namepicker.overview.OverviewActivityFragment;
@@ -16,4 +17,6 @@ public interface DependencyInjectionComponent {
     void inject(AppService service);
 
     void inject(OverviewActivityFragment overviewActivityFragment);
+
+    void inject(AddGroupFragment addGroupFragment);
 }
