@@ -10,12 +10,15 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+
+import uk.lobsterdoodle.namepicker.model.Group;
+import uk.lobsterdoodle.namepicker.storage.DbHelper;
 
 /** Created by: Scott Laing
  *  Date: 08-May-2014 @ 13:28 */
 
-class ClassroomDbHelper extends SQLiteOpenHelper {
-    // If you change the database schema, you must increment the database version.
+public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
     private static ClassroomDbHelper mInstance = null;
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "Classrooms.db";
@@ -28,18 +31,19 @@ class ClassroomDbHelper extends SQLiteOpenHelper {
     private static final String COLUMN_PUPIL_NAME = "column_pupil_name";
 
     public static ClassroomDbHelper getInstance(Context context) {
-        if (mInstance == null)
-            mInstance = new ClassroomDbHelper(context.getApplicationContext());
+        if (mInstance == null) mInstance = new ClassroomDbHelper(context.getApplicationContext());
         return mInstance;
     }
 
     private ClassroomDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_CLASSROOM_TABLE);
         db.execSQL(CREATE_PUPIL_TABLE);
     }
+
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
@@ -47,6 +51,7 @@ class ClassroomDbHelper extends SQLiteOpenHelper {
         db.execSQL(DELETE_PUPIL_TABLE);
         onCreate(db);
     }
+
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
     }
@@ -62,77 +67,55 @@ class ClassroomDbHelper extends SQLiteOpenHelper {
             + COLUMN_CLASSROOM_ID + " references "
             + TABLE_CLASSROOM + "(" + COLUMN_CLASSROOM_ID + "));";
 
-    private static final String DELETE_CLASSROOM_TABLE =
-            "DROP TABLE IF EXISTS " + TABLE_CLASSROOM;
+    private static final String DELETE_CLASSROOM_TABLE = "DROP TABLE IF EXISTS " + TABLE_CLASSROOM;
+    private static final String DELETE_PUPIL_TABLE = "DROP TABLE IF EXISTS " + TABLE_PUPIL;
 
-    private static final String DELETE_PUPIL_TABLE =
-            "DROP TABLE IF EXISTS " + TABLE_PUPIL;
-
+    @Override
     public void addClassroom(String classroomName) {
-        // Gets the data repository in write mode
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(COLUMN_CLASSROOM_NAME, classroomName);
 
-        // Insert the new row
         if (db != null) {
             db.insert(TABLE_CLASSROOM, null, values);
+            db.close();
         } else {
             Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > addClassroom()");
         }
     }
 
-    public void addClassroom (String classroomName, ArrayList<Pupil> pupils) {
-        // Add classroom to the classrooms table
+    @Override
+    public void addClassroom (String classroomName, List<String> pupils) {
         addClassroom(classroomName);
-
-        // Add each pupil to the database
-        for (Pupil pupil : pupils) {
-            addPupil(classroomName, pupil.getName());
+        for (String pupil : pupils) {
+            addPupil(classroomName, pupil);
         }
     }
 
+    @Override
     public void updateClassroomName(String originalName, String newName){
-        // Put the data repository in read mode
         SQLiteDatabase db = this.getReadableDatabase();
+        String selection = COLUMN_CLASSROOM_ID + " LIKE ?";
+        String[] selectionArgs = { String.valueOf(getClassroomId(originalName)) };
 
-        // Get the classroom id using the classroom name
-        long classroomId = getClassroomId(originalName);
-
-        // New value for one column
         ContentValues values = new ContentValues();
         values.put(COLUMN_CLASSROOM_NAME, newName);
 
-        // Which row to update, based on the ID
-        String selection = COLUMN_CLASSROOM_ID + " LIKE ?";
-        String[] selectionArgs = { String.valueOf(classroomId) };
-
         if (db != null) {
-            db.update(
-                TABLE_CLASSROOM,
-                values,
-                selection,
-                selectionArgs);
+            db.update(TABLE_CLASSROOM, values, selection, selectionArgs);
         } else {
             Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > updateClassroomName()");
         }
     }
 
+    @Override
     public void removeClassroom(String classroomName) {
-        emptyClassroom(classroomName);
-
-        // Puts the data repository in read mode
         SQLiteDatabase db = this.getReadableDatabase();
-
-        // Define 'where' part of query.
+        emptyClassroom(classroomName);
         String selection = COLUMN_CLASSROOM_NAME + " LIKE ?";
-
-        // Specify arguments in placeholder order.
         String[] selectionArgs = { classroomName };
 
-        // Issue SQL statement.
         if (db != null) {
             db.delete(TABLE_CLASSROOM, selection, selectionArgs);
         } else {
@@ -144,17 +127,9 @@ class ClassroomDbHelper extends SQLiteOpenHelper {
     }
 
     private void emptyClassroom(String classroomName) {
-        // Retrieve the classroom's id
-        long classroomId = getClassroomId(classroomName);
-
-        // Puts the data repository in read mode
         SQLiteDatabase db = this.getReadableDatabase();
-
-        // Define 'where' part of query.
         String selection = COLUMN_CLASSROOM_ID + " LIKE ?";
-
-        // Specify arguments in placeholder order.
-        String[] selectionArgs = { String.valueOf(classroomId) };
+        String[] selectionArgs = { String.valueOf(getClassroomId(classroomName)) };
 
         // Issue SQL statement.
         if (db != null) {
@@ -165,42 +140,29 @@ class ClassroomDbHelper extends SQLiteOpenHelper {
         }
     }
 
+    @Override
     public void addPupil(String classroomName, String pupilName) {
-
-        // Retrieve the classroom's id
-        long classroomId = getClassroomId(classroomName);
-
-        // Gets the data repository in write mode
         SQLiteDatabase db = this.getWritableDatabase();
 
-        // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        values.put(COLUMN_CLASSROOM_ID, classroomId);
+        values.put(COLUMN_CLASSROOM_ID, getClassroomId(classroomName));
         values.put(COLUMN_PUPIL_NAME, pupilName);
 
-        // Insert the new row, returning the primary key value of the new row
         if (db != null) {
             db.insert(TABLE_PUPIL, null, values);
+            db.close();
         } else {
             Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > addPupil()");
         }
     }
 
+    @Override
     public void removePupil(String pupilName, String classroomName) {
-
-        // Retrieve the classroom's id
-        long classroomId = getClassroomId(classroomName);
-
-        // Puts the data repository in read mode
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Define 'where' part of query.
         String selection = COLUMN_PUPIL_NAME + " LIKE ? AND " + COLUMN_CLASSROOM_ID + " LIKE ?";
+        String[] selectionArgs = { pupilName, String.valueOf(getClassroomId(classroomName)) };
 
-        // Specify arguments in placeholder order.
-        String[] selectionArgs = { pupilName, String.valueOf(classroomId) };
-
-        // Issue SQL statement.
         if (db != null) {
             db.delete(TABLE_PUPIL, selection, selectionArgs);
             db.close();
@@ -212,253 +174,131 @@ class ClassroomDbHelper extends SQLiteOpenHelper {
         //TODO: Reset counter for pupil id in SQLite db table when empty
     }
 
+    @Override
     public void updatePupilName(String currentName, String classroomName, String newName) {
-        // Puts the data repository in read mode
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Get the classroom id using the classroom name
-        long classroomId = getClassroomId(classroomName);
-
-        // New value for one column
         ContentValues values = new ContentValues();
         values.put(COLUMN_PUPIL_NAME, newName);
 
-        // Which row to update, based on the ID
         String selection = COLUMN_PUPIL_NAME + " LIKE ? AND " + COLUMN_CLASSROOM_ID + " LIKE ?";
-        String[] selectionArgs = { currentName, String.valueOf(classroomId)};
+        String[] selectionArgs = { currentName, String.valueOf(getClassroomId(classroomName))};
 
-        // Run the database update query
         if (db != null) {
-            db.update(TABLE_PUPIL,
-                    values,
-                    selection,
-                    selectionArgs);
+            db.update(TABLE_PUPIL, values, selection, selectionArgs);
+            db.close();
         } else {
             Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > updatePupilName()");
         }
     }
 
+    @Override
     public long getClassroomId(String classroomName) {
-
-        // Puts the data repository in read mode
         SQLiteDatabase db = this.getReadableDatabase();
+        long classroomId = -1;
 
-        // Define a projection that specifies which columns from the database you will actually use after this query
         String[] projection = { COLUMN_CLASSROOM_ID };
-
-        // Define 'where' part of query
         String selection = COLUMN_CLASSROOM_NAME + " LIKE ?";
-
-        // Specify arguments in placeholder order
         String[] selectionArgs = { classroomName };
-
-        // Sorting for results in the resulting Cursor
         String sortOrder = COLUMN_CLASSROOM_ID + " DESC";
 
-        // Run the database query
         if (db != null) {
-            Cursor cursor = db.query(
-                TABLE_CLASSROOM, // The table to query
-                projection,      // The columns to return
-                selection,       // The columns for the WHERE clause
-                selectionArgs,   // The values for the WHERE clause
-                null,            // Don't group the rows
-                null,            // Don't filter by row groups
-                sortOrder        // The sort order
-            );
-
-            // Make sure the cursor is on the id field
+            Cursor cursor = db.query(TABLE_CLASSROOM, projection, selection, selectionArgs, null, null, sortOrder);
             cursor.moveToFirst();
 
-            // Return the id
             try {
-                return cursor.getLong(
-                        cursor.getColumnIndexOrThrow(COLUMN_CLASSROOM_ID));
+                classroomId = cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_CLASSROOM_ID));
             } catch (CursorIndexOutOfBoundsException e) {
-                return -1;
+                Log.e("Names in a Hat",  "CursorIndexOutOfBounds: " + getClass().getName() + " > getClassroomId()");
+            } finally {
+                cursor.close();
             }
-        } else {
-            return -1;
         }
+        return classroomId;
     }
 
-    public ArrayList<Classroom> getClassroomList() {
-
-        // Puts the data repository in read mode
+    @Override
+    public List<Group> getClassroomList() {
         SQLiteDatabase db = this.getReadableDatabase();
+        List<Group> classroomArrayList = new ArrayList<>();
 
-        // Run the database query
         if (db != null) {
-
-            Cursor cursor = db.rawQuery(
-                    "SELECT " + COLUMN_CLASSROOM_NAME + " FROM " + TABLE_CLASSROOM,
-                    null);
-
-            ArrayList<String> classroomNames = new ArrayList<String>();
-            ArrayList<Classroom> classroomArrayList = new ArrayList<Classroom>();
-
-            // Make sure the cursor is on the id field
+            List<String> classroomNames = new ArrayList<>();
+            Cursor cursor = db.rawQuery("SELECT " + COLUMN_CLASSROOM_NAME + " FROM " + TABLE_CLASSROOM, null);
             cursor.moveToFirst();
 
-            // Iterate over each row to extract classroom names
             for (int i = 0; i < cursor.getCount(); i++) {
-                classroomNames.add(
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(COLUMN_CLASSROOM_NAME))
-                );
-
+                classroomNames.add(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CLASSROOM_NAME)));
                 cursor.moveToNext();
             }
+            cursor.close();
 
-            // Use the classroom names to get pupil list and add as classroom object to array
-            for (String classroomName : classroomNames){
-                Classroom c = new Classroom(
-                        classroomName,
-                        getPupils(classroomName));
-
-                classroomArrayList.add(c);
+            for (String classroomName : classroomNames) {
+                classroomArrayList.add(new Group(classroomName, getPupils(classroomName)));
             }
-
-            // Return the id
-            return classroomArrayList;
-        } else {
-            return new ArrayList<Classroom>();
         }
+        return classroomArrayList;
     }
 
-    public String[] getPupils(String classroomName) {
-
-        // Get classroom id
-        long classroomId = this.getClassroomId(classroomName);
-
-        // Puts the data repository in read mode
+    public List<String> getPupils(String classroomName) {
+        List<String> pupilNames = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Define a projection that specifies which columns from the database you will actually use after this query
         String[] projection = { COLUMN_PUPIL_NAME };
-
-        // Define 'where' part of query
         String selection = COLUMN_CLASSROOM_ID + " LIKE ?";
-
-        // Specify arguments in placeholder order
-        String[] selectionArgs = { String.valueOf(classroomId) };
-
-        // Sorting for results in the resulting Cursor
+        String[] selectionArgs = { String.valueOf(getClassroomId(classroomName)) };
         String sortOrder = COLUMN_CLASSROOM_ID + " DESC";
 
-        // Run the database query
         if (db != null) {
-            Cursor cursor = db.query(
-                    TABLE_PUPIL, // The table to query
-                    projection,      // The columns to return
-                    selection,       // The columns for the WHERE clause
-                    selectionArgs,   // The values for the WHERE clause
-                    null,            // Don't group the rows
-                    null,            // Don't filter by row groups
-                    sortOrder        // The sort order
-            );
-
-            ArrayList<String> pupilNames = new ArrayList<String>();
-
-            // Make sure the cursor is on the id field
+            Cursor cursor = db.query(TABLE_PUPIL, projection, selection, selectionArgs, null, null, sortOrder);
             cursor.moveToFirst();
 
             for (int i = 0; i < cursor.getCount(); i++) {
-                pupilNames.add(
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(COLUMN_PUPIL_NAME))
-                );
-
+                pupilNames.add(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PUPIL_NAME)));
                 cursor.moveToNext();
             }
-
-            // Return the id
-            return pupilNames.toArray(
-                    new String[pupilNames.size()]);
-        } else {
-            return null;
+            cursor.close();
         }
+        return pupilNames;
     }
 
     public boolean sortPupils(String classroomName) {
-        // Get classroom id
-        long classroomId = this.getClassroomId(classroomName);
-
-        // Puts the data repository in read mode
         SQLiteDatabase db = this.getReadableDatabase();
 
-        // Define a projection that specifies which columns from the database you will actually use after this query
         String[] projection = { COLUMN_PUPIL_ID, COLUMN_PUPIL_NAME };
-
-        // Define 'where' part of query
         String selection = COLUMN_CLASSROOM_ID + " LIKE ?";
-
-        // Specify arguments in placeholder order
-        String[] selectionArgs = { String.valueOf(classroomId) };
-
-        // Sorting for results in the resulting Cursor
+        String[] selectionArgs = { String.valueOf(getClassroomId(classroomName)) };
         String sortOrder = COLUMN_CLASSROOM_ID + " DESC";
 
-        // Run the database query
         if (db != null) {
-            Cursor cursor = db.query(
-                    TABLE_PUPIL, // The table to query
-                    projection,      // The columns to return
-                    selection,       // The columns for the WHERE clause
-                    selectionArgs,   // The values for the WHERE clause
-                    null,            // Don't group the rows
-                    null,            // Don't filter by row groups
-                    sortOrder        // The sort order
-            );
+            List<String> originalNames = new ArrayList<>();
+            List<String> ids = new ArrayList<>();
 
-            ArrayList<String> originalNames = new ArrayList<String>();
-            ArrayList<String> ids = new ArrayList<String>();
-
-            // Make sure the cursor is on the id field
+            Cursor cursor = db.query(TABLE_PUPIL, projection, selection, selectionArgs, null, null, sortOrder);
             cursor.moveToFirst();
 
             for (int i = 0; i < cursor.getCount(); i++) {
-                originalNames.add(
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(COLUMN_PUPIL_NAME))
-                );
-
-                ids.add(
-                        cursor.getString(
-                                cursor.getColumnIndexOrThrow(COLUMN_PUPIL_ID))
-                );
-
+                originalNames.add(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PUPIL_NAME)));
+                ids.add(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PUPIL_ID)));
                 cursor.moveToNext();
             }
 
-            // Create a sorted ArrayList
-            ArrayList<String> sortedNames = new ArrayList<String>(originalNames);
+            List<String> sortedNames = new ArrayList<>(originalNames);
             Collections.sort(sortedNames);
-
-            // Move cursor back to beginning
             cursor.moveToFirst();
 
-            // Iterate over each row changing new name
             for (int i = 0; i < originalNames.size(); i++) {
-                // New value for one column
                 ContentValues values = new ContentValues();
                 values.put(COLUMN_PUPIL_NAME, sortedNames.get(i));
 
-                // Which row to update, based on the ID
                 String sel = COLUMN_PUPIL_ID + " LIKE ?";
                 String[] selArgs = { ids.get(i) };
 
-                db.update(TABLE_PUPIL,
-                        values,
-                        sel,
-                        selArgs);
+                db.update(TABLE_PUPIL, values, sel, selArgs);
             }
-
-            // Return the id
             return true;
         } else {
             return false;
         }
-
     }
 }

@@ -11,6 +11,7 @@ import uk.lobsterdoodle.namepicker.addgroup.AddNamesUseCase;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.namelist.NameListUseCase;
 import uk.lobsterdoodle.namepicker.overview.OverviewUseCase;
+import uk.lobsterdoodle.namepicker.storage.StorageUseCase;
 
 public class AppService extends Service {
     private final Binder binder = new LocalBinder();
@@ -22,6 +23,8 @@ public class AppService extends Service {
     @Inject NameListUseCase nameListUseCase;
 
     @Inject AddNamesUseCase addNamesUseCase;
+
+    @Inject StorageUseCase storageUseCase;
 
     public AppService() {
     }

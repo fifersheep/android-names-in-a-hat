@@ -19,7 +19,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         component = DaggerDependencyInjectionComponent.builder()
-                .dependencyInjectionModule(new DependencyInjectionModule())
+                .dependencyInjectionModule(new DependencyInjectionModule(this))
                 .build();
 
         component.inject(this);

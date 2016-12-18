@@ -24,6 +24,6 @@ public class OverviewUseCase {
 
     @Subscribe
     public void onEvent(OverviewBecameVisibleEvent becameVisibleEvent) {
-        bus.post(new OverviewRetrievedEvent(cellData));
+//        bus.post(new OverviewRetrievedEvent(cellData));
     }
 }
