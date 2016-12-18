@@ -25,6 +25,7 @@ import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.namelist.NameListBecameVisibleEvent;
 import uk.lobsterdoodle.namepicker.namelist.ShowNameCardCellData;
+import uk.lobsterdoodle.namepicker.storage.GroupSavedSuccessfullyEvent;
 
 public class AddGroupFragment extends Fragment {
 
@@ -52,13 +53,19 @@ public class AddGroupFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.get(getActivity()).component().inject(this);
-        bus.register(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        bus.register(this);
         bus.post(new NameListBecameVisibleEvent());
+    }
+
+    @Override
+    public void onPause() {
+        bus.unregister(this);
+        super.onPause();
     }
 
     @Override
@@ -77,6 +84,11 @@ public class AddGroupFragment extends Fragment {
     public void onEvent(ShowNameCardCellData e) {
         cellData = e.cellData;
         getActivity().runOnUiThread(() -> nameListAdapter.notifyDataSetChanged());
+    }
+
+    @Subscribe
+    public void on(GroupSavedSuccessfullyEvent event) {
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 
     public class NameListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

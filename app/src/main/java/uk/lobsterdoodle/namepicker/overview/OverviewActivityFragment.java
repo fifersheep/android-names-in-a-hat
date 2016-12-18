@@ -44,7 +44,6 @@ public class OverviewActivityFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.get(getActivity()).component().inject(this);
-        bus.register(this);
     }
 
     @Override
@@ -61,7 +60,14 @@ public class OverviewActivityFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        bus.register(this);
         bus.post(new OverviewBecameVisibleEvent());
+    }
+
+    @Override
+    public void onPause() {
+        bus.unregister(this);
+        super.onPause();
     }
 
     @Subscribe

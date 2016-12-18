@@ -1,0 +1,8 @@
+package uk.lobsterdoodle.namepicker.storage;
+
+public class GroupSavedSuccessfullyEvent {
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof GroupSavedSuccessfullyEvent;
+    }
+}

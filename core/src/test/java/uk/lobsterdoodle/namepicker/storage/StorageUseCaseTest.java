@@ -43,6 +43,12 @@ public class StorageUseCaseTest {
     }
 
     @Test
+    public void on_save_group_event_post_group_saved_successfully_event() {
+        useCase.on(new SaveGroupEvent("Group Name", asList("Scott", "Peter")));
+        verify(bus).post(new GroupSavedSuccessfullyEvent());
+    }
+
+    @Test
     public void on_overview_visible_event_post_overview_retrieved_event() {
         when(dbHelper.getPupils("Group One")).thenReturn(asList("Scott", "Peter"));
         when(dbHelper.getPupils("Group Two")).thenReturn(asList("Rob", "Andy", "Anders", "Rachel", "John"));

@@ -31,6 +31,7 @@ public class StorageUseCase {
     @Subscribe
     public void on(SaveGroupEvent event) {
         db.addClassroom(event.groupName, event.names);
+        bus.post(new GroupSavedSuccessfullyEvent());
     }
 
     @Subscribe
