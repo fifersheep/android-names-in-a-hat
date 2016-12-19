@@ -1,12 +1,37 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:background="@color/palette_grey_light"
+                tools:context="uk.lobsterdoodle.namepicker.overview.OverviewActivity">
 
-    <FrameLayout
-        android:id="@+id/overview_fragment_container"
+    <TextView
+        android:id="@+id/overview_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/overview_label"
+        android:layout_alignBaseline="@+id/overview_add_group"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/overview_add_group"
+        style="@style/AppText.Label"/>
+
+    <Button
+        android:id="@+id/overview_add_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="8dp"
+        android:text="@string/overview_add_group"
+        tools:ignore="RtlHardcoded"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/overview_group_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/fragment_overview"/>
-</FrameLayout>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/overview_add_group"/>
+
+</RelativeLayout>

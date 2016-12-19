@@ -7,7 +7,7 @@ import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.application.AppService;
 import uk.lobsterdoodle.namepicker.creategroup.CreateGroupActivity;
 import uk.lobsterdoodle.namepicker.edit.EditGroupActivity;
-import uk.lobsterdoodle.namepicker.overview.OverviewActivityFragment;
+import uk.lobsterdoodle.namepicker.overview.OverviewActivity;
 
 @Singleton
 @Component(modules = { DependencyInjectionModule.class })
@@ -17,7 +17,7 @@ public interface DependencyInjectionComponent {
 
     void inject(AppService service);
 
-    void inject(OverviewActivityFragment overviewActivityFragment);
+    void inject(OverviewActivity overviewActivity);
 
     void inject(EditGroupActivity editGroupActivity);
 
