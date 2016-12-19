@@ -1,12 +1,12 @@
 package uk.lobsterdoodle.namepicker.creategroup;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -17,13 +17,12 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.App;
+import uk.lobsterdoodle.namepicker.edit.EditGroupActivity;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.overview.OverviewActivity;
 import uk.lobsterdoodle.namepicker.storage.GroupCreationSuccessfulEvent;
 
-public class CreateGroupFragment extends Fragment {
-
-    @Inject EventBus bus;
+public class CreateGroupActivity extends AppCompatActivity {
 
     @InjectView(R.id.create_group_name_input)
     TextInputEditText groupName;
@@ -31,10 +30,17 @@ public class CreateGroupFragment extends Fragment {
     @InjectView(R.id.create_group_done_button)
     Button done;
 
+    @Inject
+    EventBus bus;
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        App.get(getActivity()).component().inject(this);
+        setContentView(R.layout.activity_create_group);
+        App.get(this).component().inject(this);
+        ButterKnife.inject(this);
+
+        done.setOnClickListener(v -> bus.post(new CreateGroupDoneSelectedEvent(groupName.getText().toString())));
     }
 
     @Override
@@ -49,18 +55,15 @@ public class CreateGroupFragment extends Fragment {
         super.onPause();
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_create_group, container, false);
-        ButterKnife.inject(this, view);
-
-        done.setOnClickListener(v -> bus.post(new CreateGroupDoneSelectedEvent(groupName.getText().toString())));
-        return view;
-    }
-
     @Subscribe
     public void on(GroupCreationSuccessfulEvent event) {
-        ((OverviewActivity) getActivity()).showEditGroupList(event.classroomId);
+        TaskStackBuilder.create(this)
+                .addNextIntent(OverviewActivity.launchIntent(this))
+                .addNextIntent(EditGroupActivity.launchIntent(this, event.classroomId))
+                .startActivities();
+    }
+
+    public static Intent launchIntent(Context context) {
+        return new Intent(context, CreateGroupActivity.class);
     }
 }
