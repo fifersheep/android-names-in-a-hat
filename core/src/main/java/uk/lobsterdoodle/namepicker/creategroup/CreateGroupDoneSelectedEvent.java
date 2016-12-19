@@ -1,19 +1,19 @@
-package uk.lobsterdoodle.namepicker.addgroup;
+package uk.lobsterdoodle.namepicker.creategroup;
 
-public class AddGroupDoneSelectedEvent {
+public class CreateGroupDoneSelectedEvent {
 
     public final String groupName;
 
-    public AddGroupDoneSelectedEvent(String groupName) {
+    public CreateGroupDoneSelectedEvent(String groupName) {
         this.groupName = groupName;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AddGroupDoneSelectedEvent)) return false;
+        if (!(o instanceof CreateGroupDoneSelectedEvent)) return false;
 
-        AddGroupDoneSelectedEvent that = (AddGroupDoneSelectedEvent) o;
+        CreateGroupDoneSelectedEvent that = (CreateGroupDoneSelectedEvent) o;
 
         return groupName != null ? groupName.equals(that.groupName) : that.groupName == null;
 
