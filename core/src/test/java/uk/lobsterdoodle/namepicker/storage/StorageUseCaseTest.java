@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.List;
 
 import uk.lobsterdoodle.namepicker.addgroup.SaveGroupEvent;
+import uk.lobsterdoodle.namepicker.creategroup.CreateGroupDoneSelectedEvent;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.model.Group;
 import uk.lobsterdoodle.namepicker.overview.OverviewBecameVisibleEvent;
@@ -34,6 +35,19 @@ public class StorageUseCaseTest {
     @Test
     public void registers_on_bus_on_creation() {
         verify(bus).register(useCase);
+    }
+
+    @Test
+    public void on_create_group_done_selected_add_group_to_database() {
+        useCase.on(new CreateGroupDoneSelectedEvent("Group Name"));
+        verify(dbHelper).addClassroom("Group Name");
+    }
+
+    @Test
+    public void on_create_group_done_selected_event_post_group_creation_successful_event() {
+        when(dbHelper.addClassroom("Group Name")).thenReturn(24L);
+        useCase.on(new CreateGroupDoneSelectedEvent("Group Name"));
+        verify(bus).post(new GroupCreationSuccessfulEvent(24L));
     }
 
     @Test

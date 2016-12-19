@@ -3,6 +3,7 @@ package uk.lobsterdoodle.namepicker.addgroup;
 import org.junit.Before;
 import org.junit.Test;
 
+import uk.lobsterdoodle.namepicker.creategroup.CreateGroupDoneSelectedEvent;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 
 import static java.util.Arrays.asList;
@@ -41,7 +42,7 @@ public class AddNamesUseCaseTest {
     public void post_save_group_event_on_add_group_selected_with_names() {
         useCase.onEvent(new AddNameSelectedEvent("Scott"));
         useCase.onEvent(new AddNameSelectedEvent("Peter"));
-        useCase.onEvent(new AddGroupDoneSelectedEvent("The Cool Gang"));
+        useCase.onEvent(new CreateGroupDoneSelectedEvent("The Cool Gang"));
         verify(bus).post(new SaveGroupEvent("The Cool Gang", asList("Scott", "Peter")));
     }
 }

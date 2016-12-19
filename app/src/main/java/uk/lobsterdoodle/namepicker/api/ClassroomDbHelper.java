@@ -71,18 +71,20 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
     private static final String DELETE_PUPIL_TABLE = "DROP TABLE IF EXISTS " + TABLE_PUPIL;
 
     @Override
-    public void addClassroom(String classroomName) {
+    public long addClassroom(String classroomName) {
         SQLiteDatabase db = this.getWritableDatabase();
+        long classroomId = -1;
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_CLASSROOM_NAME, classroomName);
 
         if (db != null) {
-            db.insert(TABLE_CLASSROOM, null, values);
+            classroomId = db.insert(TABLE_CLASSROOM, null, values);
             db.close();
         } else {
             Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > addClassroom()");
         }
+        return classroomId;
     }
 
     @Override

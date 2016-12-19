@@ -7,6 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import uk.lobsterdoodle.namepicker.addgroup.SaveGroupEvent;
+import uk.lobsterdoodle.namepicker.creategroup.CreateGroupDoneSelectedEvent;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.model.Group;
 import uk.lobsterdoodle.namepicker.overview.OverviewBecameVisibleEvent;
@@ -38,5 +39,11 @@ public class StorageUseCase {
     public void on(OverviewBecameVisibleEvent event) {
         final List<Group> dbClassroomList = db.getClassroomList();
         bus.post(new OverviewRetrievedEvent(transform(dbClassroomList, g -> new OverviewCardCellData(g.name, db.getPupils(g.name).size()))));
+    }
+
+    @Subscribe
+    public void on(CreateGroupDoneSelectedEvent event) {
+        final long groupId = db.addClassroom(event.groupName);
+        bus.post(new GroupCreationSuccessfulEvent(groupId));
     }
 }

@@ -26,7 +26,7 @@ public class CreateGroupDoneSelectedEvent {
 
     @Override
     public String toString() {
-        return "AddGroupDoneSelectedEvent{" +
+        return "CreateGroupDoneSelectedEvent{" +
                 "groupName='" + groupName + '\'' +
                 '}';
     }

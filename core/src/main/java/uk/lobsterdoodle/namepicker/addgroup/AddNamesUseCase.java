@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import uk.lobsterdoodle.namepicker.creategroup.CreateGroupDoneSelectedEvent;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 
 public class AddNamesUseCase {
@@ -25,8 +26,8 @@ public class AddNamesUseCase {
         bus.post(new ShowNamesEvent(selectedNames));
     }
 
-    @Subscribe
-    public void onEvent(AddGroupDoneSelectedEvent event) {
-        bus.post(new SaveGroupEvent(event.groupName, selectedNames));
-    }
+//    @Subscribe
+//    public void onEvent(CreateGroupDoneSelectedEvent event) {
+//        bus.post(new SaveGroupEvent(event.groupName, selectedNames));
+//    }
 }

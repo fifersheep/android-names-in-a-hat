@@ -53,7 +53,7 @@ public class OverviewActivityFragment extends Fragment {
         overviewAdapter = new OverviewAdapter();
         groupsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         groupsRecyclerView.setAdapter(overviewAdapter);
-        addGroupButton.setOnClickListener((v) -> ((OverviewActivity) getActivity()).showAddGroup());
+        addGroupButton.setOnClickListener((v) -> ((OverviewActivity) getActivity()).showCreateGroup());
         return view;
     }
 
