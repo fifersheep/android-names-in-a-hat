@@ -71,7 +71,7 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
     private static final String DELETE_PUPIL_TABLE = "DROP TABLE IF EXISTS " + TABLE_PUPIL;
 
     @Override
-    public long addClassroom(String classroomName) {
+    public long createGroup(String classroomName) {
         SQLiteDatabase db = this.getWritableDatabase();
         long classroomId = -1;
 
@@ -82,16 +82,37 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
             classroomId = db.insert(TABLE_CLASSROOM, null, values);
             db.close();
         } else {
-            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > addClassroom()");
+            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > createGroup()");
         }
         return classroomId;
     }
 
     @Override
     public void addClassroom (String classroomName, List<String> pupils) {
-        addClassroom(classroomName);
+        createGroup(classroomName);
         for (String pupil : pupils) {
             addPupil(classroomName, pupil);
+        }
+    }
+
+    @Override
+    public void editGroupNames(long groupId, List<String> names) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        if (db != null) {
+            String[] selectionArgs = { COLUMN_CLASSROOM_ID, String.valueOf(groupId) };
+            db.delete(TABLE_PUPIL, "? LIKE ?", selectionArgs);
+
+            for (String name : names) {
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_CLASSROOM_ID, groupId);
+                values.put(COLUMN_PUPIL_NAME, name);
+                db.insert(TABLE_PUPIL, null, values);
+            }
+
+            db.close();
+        } else {
+            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > emptyClassroom()");
         }
     }
 

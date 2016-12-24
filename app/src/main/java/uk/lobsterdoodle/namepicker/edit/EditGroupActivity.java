@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,8 +31,10 @@ import uk.lobsterdoodle.namepicker.namelist.NameListBecameVisibleEvent;
 import uk.lobsterdoodle.namepicker.namelist.ShowNameCardCellData;
 import uk.lobsterdoodle.namepicker.storage.GroupSavedSuccessfullyEvent;
 
+import static com.google.common.collect.Lists.transform;
+
 public class EditGroupActivity extends AppCompatActivity {
-    public static final String EXTRA_CLASSROOM_ID = "EXTRA_CLASSROOM_ID";
+    public static final String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
 
     @InjectView(R.id.edit_group_name_list)
     RecyclerView nameList;
@@ -48,7 +51,7 @@ public class EditGroupActivity extends AppCompatActivity {
     @Inject
     EventBus bus;
 
-    private long classRoomId;
+    private long groupId;
     private NameListAdapter nameListAdapter;
     private List<NameCardCellData> cellData = new ArrayList<>();
 
@@ -59,11 +62,12 @@ public class EditGroupActivity extends AppCompatActivity {
         App.get(this).component().inject(this);
         ButterKnife.inject(this);
 
-        classRoomId = getIntent().getLongExtra(EXTRA_CLASSROOM_ID, -1);
+        groupId = getIntent().getLongExtra(EXTRA_GROUP_ID, -1);
         nameListAdapter = new NameListAdapter();
         nameList.setLayoutManager(new LinearLayoutManager(this));
         nameList.setAdapter(nameListAdapter);
         addName.setOnClickListener(v -> bus.post(new AddNameSelectedEvent(nameInput.getText().toString())));
+        done.setOnClickListener(v -> bus.post(new EditGroupNamesEvent(groupId, transform(cellData, data -> data.name))));
     }
 
     @Override
@@ -87,7 +91,19 @@ public class EditGroupActivity extends AppCompatActivity {
 
     @Subscribe
     public void on(GroupSavedSuccessfullyEvent event) {
-        getSupportFragmentManager().popBackStack();
+        Snackbar.make(nameList, R.string.group_saved_successfully, Snackbar.LENGTH_SHORT)
+                .setCallback(onDismissed(this::finish))
+                .show();
+    }
+
+    private Snackbar.Callback onDismissed(Runnable runnable) {
+        return new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                super.onDismissed(snackbar, event);
+                runnable.run();
+            }
+        };
     }
 
     public class NameListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -124,7 +140,7 @@ public class EditGroupActivity extends AppCompatActivity {
 
     public static Intent launchIntent(Context context, long groupId) {
         final Intent intent = new Intent(context, EditGroupActivity.class);
-        intent.putExtra(EditGroupActivity.EXTRA_CLASSROOM_ID, groupId);
+        intent.putExtra(EditGroupActivity.EXTRA_GROUP_ID, groupId);
         return intent;
     }
 }

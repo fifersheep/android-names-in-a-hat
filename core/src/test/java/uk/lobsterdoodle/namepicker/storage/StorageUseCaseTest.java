@@ -5,8 +5,8 @@ import org.junit.Test;
 
 import java.util.List;
 
-import uk.lobsterdoodle.namepicker.addgroup.SaveGroupEvent;
 import uk.lobsterdoodle.namepicker.creategroup.CreateGroupDoneSelectedEvent;
+import uk.lobsterdoodle.namepicker.edit.EditGroupNamesEvent;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.model.Group;
 import uk.lobsterdoodle.namepicker.overview.OverviewBecameVisibleEvent;
@@ -40,25 +40,25 @@ public class StorageUseCaseTest {
     @Test
     public void on_create_group_done_selected_add_group_to_database() {
         useCase.on(new CreateGroupDoneSelectedEvent("Group Name"));
-        verify(dbHelper).addClassroom("Group Name");
+        verify(dbHelper).createGroup("Group Name");
     }
 
     @Test
     public void on_create_group_done_selected_event_post_group_creation_successful_event() {
-        when(dbHelper.addClassroom("Group Name")).thenReturn(24L);
+        when(dbHelper.createGroup("Group Name")).thenReturn(24L);
         useCase.on(new CreateGroupDoneSelectedEvent("Group Name"));
         verify(bus).post(new GroupCreationSuccessfulEvent(24L));
     }
 
     @Test
     public void on_save_group_event_add_group_to_database() {
-        useCase.on(new SaveGroupEvent("Group Name", asList("Scott", "Peter")));
-        verify(dbHelper).addClassroom("Group Name", asList("Scott", "Peter"));
+        useCase.on(new EditGroupNamesEvent(24L, asList("Scott", "Peter")));
+        verify(dbHelper).editGroupNames(24L, asList("Scott", "Peter"));
     }
 
     @Test
     public void on_save_group_event_post_group_saved_successfully_event() {
-        useCase.on(new SaveGroupEvent("Group Name", asList("Scott", "Peter")));
+        useCase.on(new EditGroupNamesEvent(24L, asList("Scott", "Peter")));
         verify(bus).post(new GroupSavedSuccessfullyEvent());
     }
 
