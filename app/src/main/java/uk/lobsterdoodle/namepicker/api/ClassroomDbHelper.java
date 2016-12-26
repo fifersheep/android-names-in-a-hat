@@ -6,11 +6,14 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.v4.util.LongSparseArray;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import uk.lobsterdoodle.namepicker.model.Group;
 import uk.lobsterdoodle.namepicker.storage.DbHelper;
@@ -241,26 +244,29 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
     }
 
     @Override
-    public List<Group> getClassroomList() {
+    public List<Group> getAllGroups() {
         SQLiteDatabase db = this.getReadableDatabase();
-        List<Group> classroomArrayList = new ArrayList<>();
+        List<Group> groups = new ArrayList<>();
 
         if (db != null) {
-            List<String> classroomNames = new ArrayList<>();
-            Cursor cursor = db.rawQuery("SELECT " + COLUMN_CLASSROOM_NAME + " FROM " + TABLE_CLASSROOM, null);
+            LongSparseArray<String> groupNamesById = new LongSparseArray<>();
+            Cursor cursor = db.rawQuery("SELECT " + COLUMN_CLASSROOM_ID + "," + COLUMN_CLASSROOM_NAME + " FROM " + TABLE_CLASSROOM, null);
             cursor.moveToFirst();
 
             for (int i = 0; i < cursor.getCount(); i++) {
-                classroomNames.add(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CLASSROOM_NAME)));
+                groupNamesById.put(
+                        cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_CLASSROOM_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CLASSROOM_NAME)));
                 cursor.moveToNext();
             }
             cursor.close();
 
-            for (String classroomName : classroomNames) {
-                classroomArrayList.add(new Group(classroomName, getPupils(classroomName)));
+            for (int i = 0; i < groupNamesById.size(); i++) {
+                final String groupName = groupNamesById.valueAt(i);
+                groups.add(new Group(groupNamesById.keyAt(i), groupName, getPupils(groupName)));
             }
         }
-        return classroomArrayList;
+        return groups;
     }
 
     public List<String> getPupils(String classroomName) {

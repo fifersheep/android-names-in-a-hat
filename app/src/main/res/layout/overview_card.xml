@@ -1,27 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                xmlns:tools="http://schemas.android.com/tools">
+                android:padding="8dp">
 
-    <TextView
-        android:id="@+id/overview_card_count"
+    <LinearLayout
+        android:id="@+id/overview_card_summary_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="8dp">
+
+        <TextView
+            android:id="@+id/overview_card_title"
+            style="@style/AppText.Overview.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            tools:ignore="RtlHardcoded"
+            tools:text="FanDuel US DFS Android Team"/>
+
+        <TextView
+            android:id="@+id/overview_card_count"
+            style="@style/AppText.Overview.Count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="RtlHardcoded"
+            tools:text="12 names"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/overview_card_overflow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        style="@style/AppText.Overview.Count"
-        tools:text="12"
-        tools:ignore="RtlHardcoded"/>
-
-    <TextView
-        android:id="@+id/overview_card_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/overview_card_count"
-        style="@style/AppText.Overview.Title"
-        tools:text="FanDuel US DFS Android Team"
-        tools:ignore="RtlHardcoded"/>
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="4dp"
+        android:src="@drawable/ic_more_horiz"
+        android:tint="@color/grey_light"
+        android:contentDescription="@string/overview_card_overflow_description"/>
 
 </RelativeLayout>

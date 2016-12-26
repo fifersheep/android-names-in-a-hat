@@ -66,22 +66,22 @@ public class StorageUseCaseTest {
     public void on_overview_visible_event_post_overview_retrieved_event() {
         when(dbHelper.getPupils("Group One")).thenReturn(asList("Scott", "Peter"));
         when(dbHelper.getPupils("Group Two")).thenReturn(asList("Rob", "Andy", "Anders", "Rachel", "John"));
-        when(dbHelper.getClassroomList()).thenReturn(asList(
-                group("Group One", asList("Scott", "Peter")),
-                group("Group Two", asList("Rob", "Andy"))));
+        when(dbHelper.getAllGroups()).thenReturn(asList(
+                group(1L, "Group One", asList("Scott", "Peter")),
+                group(2L, "Group Two", asList("Rob", "Andy"))));
 
         useCase.on(new OverviewBecameVisibleEvent());
 
         verify(bus).post(new OverviewRetrievedEvent(asList(
-                cellData("Group One", 2),
-                cellData("Group Two", 5))));
+                cellData(1L, "Group One", 2),
+                cellData(2L, "Group Two", 5))));
     }
 
-    private OverviewCardCellData cellData(String groupName, int nameCount) {
-        return new OverviewCardCellData(groupName, nameCount);
+    private OverviewCardCellData cellData(long groupId, String groupName, int nameCount) {
+        return new OverviewCardCellData(groupId, groupName, nameCount);
     }
 
-    private Group group(String groupName, List<String> nameList) {
-        return new Group(groupName, nameList);
+    private Group group(long groupId, String groupName, List<String> nameList) {
+        return new Group(groupId, groupName, nameList);
     }
 }

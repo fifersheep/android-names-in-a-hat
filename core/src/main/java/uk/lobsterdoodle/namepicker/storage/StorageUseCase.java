@@ -37,8 +37,9 @@ public class StorageUseCase {
 
     @Subscribe
     public void on(OverviewBecameVisibleEvent event) {
-        final List<Group> dbClassroomList = db.getClassroomList();
-        bus.post(new OverviewRetrievedEvent(transform(dbClassroomList, g -> new OverviewCardCellData(g.name, db.getPupils(g.name).size()))));
+        final List<Group> dbClassroomList = db.getAllGroups();
+        bus.post(new OverviewRetrievedEvent(transform(dbClassroomList,
+                g -> new OverviewCardCellData(g.id, g.name, db.getPupils(g.name).size()))));
     }
 
     @Subscribe

@@ -3,10 +3,12 @@ package uk.lobsterdoodle.namepicker.model;
 import java.util.List;
 
 public class Group {
+    public final long id;
     public final String name;
     public final List<String> nameList;
 
-    public Group(String name, List<String> nameList) {
+    public Group(long id, String name, List<String> nameList) {
+        this.id = id;
         this.name = name;
         this.nameList = nameList;
     }
@@ -18,6 +20,7 @@ public class Group {
 
         Group group = (Group) o;
 
+        if (id != group.id) return false;
         if (name != null ? !name.equals(group.name) : group.name != null) return false;
         return nameList != null ? nameList.equals(group.nameList) : group.nameList == null;
 
@@ -25,7 +28,8 @@ public class Group {
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (nameList != null ? nameList.hashCode() : 0);
         return result;
     }
@@ -33,7 +37,8 @@ public class Group {
     @Override
     public String toString() {
         return "Group{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", nameList=" + nameList +
                 '}';
     }

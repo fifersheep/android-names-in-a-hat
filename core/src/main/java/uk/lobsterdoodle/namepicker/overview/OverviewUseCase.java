@@ -18,8 +18,8 @@ public class OverviewUseCase {
         this.bus = bus;
         bus.register(this);
 
-        cellData.add(new OverviewCardCellData("The Android Team", 15));
-        cellData.add(new OverviewCardCellData("Visitor Services Team", 24));
+//        cellData.add(new OverviewCardCellData("The Android Team", 15));
+//        cellData.add(new OverviewCardCellData("Visitor Services Team", 24));
     }
 
     @Subscribe

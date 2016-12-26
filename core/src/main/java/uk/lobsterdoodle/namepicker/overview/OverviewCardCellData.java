@@ -1,10 +1,12 @@
 package uk.lobsterdoodle.namepicker.overview;
 
 public class OverviewCardCellData {
+    public final long groupId;
     public final String listTitle;
     public final int nameCount;
 
-    public OverviewCardCellData(String listTitle, int nameCount) {
+    public OverviewCardCellData(long groupId, String listTitle, int nameCount) {
+        this.groupId = groupId;
         this.listTitle = listTitle;
         this.nameCount = nameCount;
     }
@@ -16,6 +18,7 @@ public class OverviewCardCellData {
 
         OverviewCardCellData that = (OverviewCardCellData) o;
 
+        if (groupId != that.groupId) return false;
         if (nameCount != that.nameCount) return false;
         return listTitle != null ? listTitle.equals(that.listTitle) : that.listTitle == null;
 
@@ -23,7 +26,8 @@ public class OverviewCardCellData {
 
     @Override
     public int hashCode() {
-        int result = listTitle != null ? listTitle.hashCode() : 0;
+        int result = (int) (groupId ^ (groupId >>> 32));
+        result = 31 * result + (listTitle != null ? listTitle.hashCode() : 0);
         result = 31 * result + nameCount;
         return result;
     }
@@ -31,7 +35,8 @@ public class OverviewCardCellData {
     @Override
     public String toString() {
         return "OverviewCardCellData{" +
-                "listTitle='" + listTitle + '\'' +
+                "groupId=" + groupId +
+                ", listTitle='" + listTitle + '\'' +
                 ", nameCount=" + nameCount +
                 '}';
     }

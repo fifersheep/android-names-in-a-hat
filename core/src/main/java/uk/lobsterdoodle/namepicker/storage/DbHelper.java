@@ -5,7 +5,7 @@ import java.util.List;
 import uk.lobsterdoodle.namepicker.model.Group;
 
 public interface DbHelper {
-    List<Group> getClassroomList();
+    List<Group> getAllGroups();
     long createGroup(String classroomName);
     void addClassroom (String classroomName, List<String> pupils);
     void editGroupNames (long groupId, List<String> pupils);
