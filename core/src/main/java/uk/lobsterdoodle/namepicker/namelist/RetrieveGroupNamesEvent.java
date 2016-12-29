@@ -1,18 +1,18 @@
-package uk.lobsterdoodle.namepicker.storage;
+package uk.lobsterdoodle.namepicker.namelist;
 
-public class GroupCreationSuccessfulEvent {
+public class RetrieveGroupNamesEvent {
     public final long groupId;
 
-    public GroupCreationSuccessfulEvent(long groupId) {
+    public RetrieveGroupNamesEvent(long groupId) {
         this.groupId = groupId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof GroupCreationSuccessfulEvent)) return false;
+        if (!(o instanceof RetrieveGroupNamesEvent)) return false;
 
-        GroupCreationSuccessfulEvent that = (GroupCreationSuccessfulEvent) o;
+        RetrieveGroupNamesEvent that = (RetrieveGroupNamesEvent) o;
 
         return groupId == that.groupId;
 
@@ -25,7 +25,7 @@ public class GroupCreationSuccessfulEvent {
 
     @Override
     public String toString() {
-        return "GroupCreationSuccessfulEvent{" +
+        return "RetrieveGroupNamesEvent{" +
                 "groupId=" + groupId +
                 '}';
     }

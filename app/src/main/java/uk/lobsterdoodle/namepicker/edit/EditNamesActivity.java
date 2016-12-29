@@ -22,30 +22,29 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
-import uk.lobsterdoodle.namepicker.addgroup.AddNameSelectedEvent;
+import uk.lobsterdoodle.namepicker.addgroup.AddNameToGroupEvent;
 import uk.lobsterdoodle.namepicker.addgroup.NameCard;
 import uk.lobsterdoodle.namepicker.addgroup.NameCardCellData;
 import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.events.EventBus;
-import uk.lobsterdoodle.namepicker.namelist.NameListBecameVisibleEvent;
-import uk.lobsterdoodle.namepicker.namelist.ShowNameCardCellData;
-import uk.lobsterdoodle.namepicker.storage.GroupSavedSuccessfullyEvent;
+import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
+import uk.lobsterdoodle.namepicker.storage.GroupNamesRetrievedEvent;
 
 import static com.google.common.collect.Lists.transform;
 
-public class EditGroupActivity extends AppCompatActivity {
+public class EditNamesActivity extends AppCompatActivity {
     public static final String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
 
-    @InjectView(R.id.edit_group_name_list)
+    @InjectView(R.id.edit_group_names_list)
     RecyclerView nameList;
 
-    @InjectView(R.id.edit_group_button_add_name)
+    @InjectView(R.id.edit_group_names_button_add_name)
     Button addName;
 
-    @InjectView(R.id.edit_group_done_button)
+    @InjectView(R.id.edit_group_names_done_button)
     Button done;
 
-    @InjectView(R.id.edit_group_input)
+    @InjectView(R.id.edit_group_names_input)
     TextInputEditText nameInput;
 
     @Inject
@@ -58,23 +57,23 @@ public class EditGroupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_group);
+        setContentView(R.layout.activity_edit_names);
         App.get(this).component().inject(this);
         ButterKnife.inject(this);
 
-        groupId = getIntent().getLongExtra(EXTRA_GROUP_ID, -1);
+        groupId = getIntent().getLongExtra(EXTRA_GROUP_ID, -1L);
         nameListAdapter = new NameListAdapter();
         nameList.setLayoutManager(new LinearLayoutManager(this));
         nameList.setAdapter(nameListAdapter);
-        addName.setOnClickListener(v -> bus.post(new AddNameSelectedEvent(nameInput.getText().toString())));
-        done.setOnClickListener(v -> bus.post(new EditGroupNamesEvent(groupId, transform(cellData, data -> data.name))));
+        addName.setOnClickListener(v -> bus.post(new AddNameToGroupEvent(groupId, nameInput.getText().toString())));
+        done.setOnClickListener(v -> finish());
     }
 
     @Override
     public void onResume() {
         super.onResume();
         bus.register(this);
-        bus.post(new NameListBecameVisibleEvent());
+        bus.post(new RetrieveGroupNamesEvent(groupId));
     }
 
     @Override
@@ -84,16 +83,9 @@ public class EditGroupActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void onEvent(ShowNameCardCellData e) {
-        cellData = e.cellData;
+    public void on(GroupNamesRetrievedEvent event) {
+        cellData = transform(event.names, NameCardCellData::new);
         runOnUiThread(() -> nameListAdapter.notifyDataSetChanged());
-    }
-
-    @Subscribe
-    public void on(GroupSavedSuccessfullyEvent event) {
-        Snackbar.make(nameList, R.string.group_saved_successfully, Snackbar.LENGTH_SHORT)
-                .setCallback(onDismissed(this::finish))
-                .show();
     }
 
     private Snackbar.Callback onDismissed(Runnable runnable) {
@@ -110,7 +102,7 @@ public class EditGroupActivity extends AppCompatActivity {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new NameCardViewHolder(new NameCard(EditGroupActivity.this));
+            return new NameCardViewHolder(new NameCard(EditNamesActivity.this));
         }
 
         @Override
@@ -139,8 +131,8 @@ public class EditGroupActivity extends AppCompatActivity {
     }
 
     public static Intent launchIntent(Context context, long groupId) {
-        final Intent intent = new Intent(context, EditGroupActivity.class);
-        intent.putExtra(EditGroupActivity.EXTRA_GROUP_ID, groupId);
+        final Intent intent = new Intent(context, EditNamesActivity.class);
+        intent.putExtra(EditNamesActivity.EXTRA_GROUP_ID, groupId);
         return intent;
     }
 }

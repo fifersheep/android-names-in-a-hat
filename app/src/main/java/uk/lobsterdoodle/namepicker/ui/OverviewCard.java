@@ -5,15 +5,14 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.util.As;
+import uk.lobsterdoodle.namepicker.overview.OverviewCardActionsCallback;
 import uk.lobsterdoodle.namepicker.overview.OverviewCardCellData;
 
 public class OverviewCard extends CardView {
@@ -53,7 +52,7 @@ public class OverviewCard extends CardView {
         setCardElevation(As.px(getContext(), 2));
     }
 
-    public void bind(OverviewCardCellData data) {
+    public void bind(OverviewCardActionsCallback callback, OverviewCardCellData data) {
         this.title.setText(data.listTitle);
         this.count.setText(String.format("%s names", String.valueOf(data.nameCount)));
 
@@ -62,7 +61,13 @@ public class OverviewCard extends CardView {
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.overview_card_overflow_edit_names:
-                    Toast.makeText(context, "Edit Names for group " + data.groupId, Toast.LENGTH_SHORT).show();
+                    callback.launchEditGroupNamesScreen(data.groupId);
+                    return true;
+                case R.id.overview_card_overflow_edit_group:
+                    callback.launchEditGroupDetailsScreen(data.groupId);
+                    return true;
+                case R.id.overview_card_overflow_delete_group:
+                    callback.launchDeleteGroupScreen(data.groupId);
                     return true;
                 default:
                     return true;

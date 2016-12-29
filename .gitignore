@@ -10,3 +10,8 @@ build/
 
 # Android artifacts
 *.apk
+
+# Project specific
+captures/
+databases/
+projectFilesBackup/

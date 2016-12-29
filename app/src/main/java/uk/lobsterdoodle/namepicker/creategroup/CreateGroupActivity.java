@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.App;
-import uk.lobsterdoodle.namepicker.edit.EditGroupActivity;
+import uk.lobsterdoodle.namepicker.edit.EditNamesActivity;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.overview.OverviewActivity;
 import uk.lobsterdoodle.namepicker.storage.GroupCreationSuccessfulEvent;
@@ -59,7 +59,7 @@ public class CreateGroupActivity extends AppCompatActivity {
     public void on(GroupCreationSuccessfulEvent event) {
         TaskStackBuilder.create(this)
                 .addNextIntent(OverviewActivity.launchIntent(this))
-                .addNextIntent(EditGroupActivity.launchIntent(this, event.classroomId))
+                .addNextIntent(EditNamesActivity.launchIntent(this, event.groupId))
                 .startActivities();
     }
 

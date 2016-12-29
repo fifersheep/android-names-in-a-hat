@@ -21,10 +21,11 @@ import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.creategroup.CreateGroupActivity;
+import uk.lobsterdoodle.namepicker.edit.EditNamesActivity;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.ui.OverviewCard;
 
-public class OverviewActivity extends AppCompatActivity {
+public class OverviewActivity extends AppCompatActivity implements OverviewCardActionsCallback {
 
     @InjectView(R.id.overview_group_list)
     RecyclerView groupsRecyclerView;
@@ -75,6 +76,23 @@ public class OverviewActivity extends AppCompatActivity {
         return new Intent(context, OverviewActivity.class);
     }
 
+    @Override
+    public void launchEditGroupNamesScreen(long groupId) {
+        final Intent intent = new Intent(this, EditNamesActivity.class);
+        intent.putExtra(EditNamesActivity.EXTRA_GROUP_ID, groupId);
+        startActivity(intent);
+    }
+
+    @Override
+    public void launchEditGroupDetailsScreen(long groupId) {
+
+    }
+
+    @Override
+    public void launchDeleteGroupScreen(long groupId) {
+
+    }
+
     private class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
@@ -103,7 +121,7 @@ public class OverviewActivity extends AppCompatActivity {
         }
 
         void bind(OverviewCardCellData data) {
-            view.bind(data);
+            view.bind(OverviewActivity.this, data);
         }
     }
 }

@@ -1,20 +1,20 @@
-package uk.lobsterdoodle.namepicker.addgroup;
+package uk.lobsterdoodle.namepicker.storage;
 
 import java.util.List;
 
-public class ShowNamesEvent {
+public class GroupNamesRetrievedEvent {
     public final List<String> names;
 
-    public ShowNamesEvent(List<String> names) {
+    public GroupNamesRetrievedEvent(List<String> names) {
         this.names = names;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ShowNamesEvent)) return false;
+        if (!(o instanceof GroupNamesRetrievedEvent)) return false;
 
-        ShowNamesEvent that = (ShowNamesEvent) o;
+        GroupNamesRetrievedEvent that = (GroupNamesRetrievedEvent) o;
 
         return names != null ? names.equals(that.names) : that.names == null;
 
@@ -27,7 +27,7 @@ public class ShowNamesEvent {
 
     @Override
     public String toString() {
-        return "ShowNamesEvent{" +
+        return "GroupNamesRetrievedEvent{" +
                 "names=" + names +
                 '}';
     }

@@ -5,10 +5,11 @@ import org.junit.Test;
 
 import java.util.List;
 
+import uk.lobsterdoodle.namepicker.addgroup.AddNameToGroupEvent;
 import uk.lobsterdoodle.namepicker.creategroup.CreateGroupDoneSelectedEvent;
-import uk.lobsterdoodle.namepicker.edit.EditGroupNamesEvent;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.model.Group;
+import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
 import uk.lobsterdoodle.namepicker.overview.OverviewBecameVisibleEvent;
 import uk.lobsterdoodle.namepicker.overview.OverviewCardCellData;
 import uk.lobsterdoodle.namepicker.overview.OverviewRetrievedEvent;
@@ -51,30 +52,36 @@ public class StorageUseCaseTest {
     }
 
     @Test
-    public void on_save_group_event_add_group_to_database() {
-        useCase.on(new EditGroupNamesEvent(24L, asList("Scott", "Peter")));
-        verify(dbHelper).editGroupNames(24L, asList("Scott", "Peter"));
+    public void on_add_name_to_group_event_save_add_name_to_database() {
+        useCase.on(new AddNameToGroupEvent(24L, "Scott"));
+        verify(dbHelper).addNameToGroup(24L, "Scott");
     }
 
     @Test
-    public void on_save_group_event_post_group_saved_successfully_event() {
-        useCase.on(new EditGroupNamesEvent(24L, asList("Scott", "Peter")));
-        verify(bus).post(new GroupSavedSuccessfullyEvent());
+    public void on_add_name_to_group_event_post_name_added_successfully_event() {
+        when(dbHelper.retrieveGroupNames(24L)).thenReturn(asList("Bauer", "Kim", "Yelena"));
+        useCase.on(new AddNameToGroupEvent(24L, "Scott"));
+        verify(bus).post(new GroupNamesRetrievedEvent(asList("Bauer", "Kim", "Yelena")));
     }
 
     @Test
     public void on_overview_visible_event_post_overview_retrieved_event() {
-        when(dbHelper.getPupils("Group One")).thenReturn(asList("Scott", "Peter"));
-        when(dbHelper.getPupils("Group Two")).thenReturn(asList("Rob", "Andy", "Anders", "Rachel", "John"));
         when(dbHelper.getAllGroups()).thenReturn(asList(
                 group(1L, "Group One", asList("Scott", "Peter")),
-                group(2L, "Group Two", asList("Rob", "Andy"))));
+                group(2L, "Group Two", asList("Rob", "Andy", "Rachel"))));
 
         useCase.on(new OverviewBecameVisibleEvent());
 
         verify(bus).post(new OverviewRetrievedEvent(asList(
                 cellData(1L, "Group One", 2),
-                cellData(2L, "Group Two", 5))));
+                cellData(2L, "Group Two", 3))));
+    }
+
+    @Test
+    public void on_retrieve_group_names_event_post_group_names_retrieved_event() {
+        when(dbHelper.retrieveGroupNames(24L)).thenReturn(asList("Bauer", "Kim", "Yelena"));
+        useCase.on(new RetrieveGroupNamesEvent(24L));
+        verify(bus).post(new GroupNamesRetrievedEvent(asList("Bauer", "Kim", "Yelena")));
     }
 
     private OverviewCardCellData cellData(long groupId, String groupName, int nameCount) {

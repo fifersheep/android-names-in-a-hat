@@ -13,9 +13,9 @@ public interface DbHelper {
     void updateClassroomName(String originalName, String newName);
     void removeClassroom(String classroomName);
 
-    void addPupil(String classroomName, String pupilName);
+    void addNameToGroup(long groupId, String name);
     void removePupil(String pupilName, String classroomName);
     void updatePupilName(String currentName, String classroomName, String newName);
-    List<String> getPupils(String classroomName);
-    boolean sortPupils(String classroomName);
+    List<String> retrieveGroupNames(long groupId);
+    boolean sortPupils(String groupId);
 }

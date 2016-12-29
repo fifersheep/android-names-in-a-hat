@@ -11,12 +11,12 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import uk.lobsterdoodle.namepicker.model.Group;
 import uk.lobsterdoodle.namepicker.storage.DbHelper;
+
+import static java.util.Arrays.asList;
 
 /** Created by: Scott Laing
  *  Date: 08-May-2014 @ 13:28 */
@@ -92,31 +92,31 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
 
     @Override
     public void addClassroom (String classroomName, List<String> pupils) {
-        createGroup(classroomName);
-        for (String pupil : pupils) {
-            addPupil(classroomName, pupil);
-        }
+//        createGroup(classroomName);
+//        for (String pupil : pupils) {
+//            addPupil(classroomName, pupil);
+//        }
     }
 
     @Override
     public void editGroupNames(long groupId, List<String> names) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        if (db != null) {
-            String[] selectionArgs = { COLUMN_CLASSROOM_ID, String.valueOf(groupId) };
-            db.delete(TABLE_PUPIL, "? LIKE ?", selectionArgs);
-
-            for (String name : names) {
-                ContentValues values = new ContentValues();
-                values.put(COLUMN_CLASSROOM_ID, groupId);
-                values.put(COLUMN_PUPIL_NAME, name);
-                db.insert(TABLE_PUPIL, null, values);
-            }
-
-            db.close();
-        } else {
-            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > emptyClassroom()");
-        }
+//        SQLiteDatabase db = this.getWritableDatabase();
+//
+//        if (db != null) {
+//            String[] selectionArgs = { COLUMN_CLASSROOM_ID, String.valueOf(groupId) };
+//            db.delete(TABLE_PUPIL, "? LIKE ?", selectionArgs);
+//
+//            for (String name : names) {
+//                ContentValues values = new ContentValues();
+//                values.put(COLUMN_CLASSROOM_ID, groupId);
+//                values.put(COLUMN_PUPIL_NAME, name);
+//                db.insert(TABLE_PUPIL, null, values);
+//            }
+//
+//            db.close();
+//        } else {
+//            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > emptyClassroom()");
+//        }
     }
 
     @Override
@@ -167,18 +167,18 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
     }
 
     @Override
-    public void addPupil(String classroomName, String pupilName) {
+    public void addNameToGroup(long groupId, String name) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_CLASSROOM_ID, getClassroomId(classroomName));
-        values.put(COLUMN_PUPIL_NAME, pupilName);
+        values.put(COLUMN_CLASSROOM_ID, groupId);
+        values.put(COLUMN_PUPIL_NAME, name);
 
         if (db != null) {
             db.insert(TABLE_PUPIL, null, values);
             db.close();
         } else {
-            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > addPupil()");
+            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > addNameToGroup()");
         }
     }
 
@@ -250,7 +250,8 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
 
         if (db != null) {
             LongSparseArray<String> groupNamesById = new LongSparseArray<>();
-            Cursor cursor = db.rawQuery("SELECT " + COLUMN_CLASSROOM_ID + "," + COLUMN_CLASSROOM_NAME + " FROM " + TABLE_CLASSROOM, null);
+            String sortOrder = COLUMN_CLASSROOM_ID + " DESC";
+            Cursor cursor = db.query(TABLE_CLASSROOM, arr(COLUMN_CLASSROOM_ID, COLUMN_CLASSROOM_NAME), null, null, null, null, sortOrder);
             cursor.moveToFirst();
 
             for (int i = 0; i < cursor.getCount(); i++) {
@@ -262,20 +263,20 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
             cursor.close();
 
             for (int i = 0; i < groupNamesById.size(); i++) {
-                final String groupName = groupNamesById.valueAt(i);
-                groups.add(new Group(groupNamesById.keyAt(i), groupName, getPupils(groupName)));
+                final long groupId = groupNamesById.keyAt(i);
+                groups.add(new Group(groupId, groupNamesById.valueAt(i), retrieveGroupNames(groupId)));
             }
         }
         return groups;
     }
 
-    public List<String> getPupils(String classroomName) {
+    public List<String> retrieveGroupNames(long classroomId) {
         List<String> pupilNames = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
         String[] projection = { COLUMN_PUPIL_NAME };
         String selection = COLUMN_CLASSROOM_ID + " LIKE ?";
-        String[] selectionArgs = { String.valueOf(getClassroomId(classroomName)) };
+        String[] selectionArgs = { String.valueOf(classroomId) };
         String sortOrder = COLUMN_CLASSROOM_ID + " DESC";
 
         if (db != null) {
@@ -291,19 +292,18 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
         return pupilNames;
     }
 
-    public boolean sortPupils(String classroomName) {
+    public boolean sortPupils(String groupId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String[] projection = { COLUMN_PUPIL_ID, COLUMN_PUPIL_NAME };
-        String selection = COLUMN_CLASSROOM_ID + " LIKE ?";
-        String[] selectionArgs = { String.valueOf(getClassroomId(classroomName)) };
+        String[] selectionArgs = { COLUMN_CLASSROOM_ID, groupId };
         String sortOrder = COLUMN_CLASSROOM_ID + " DESC";
 
         if (db != null) {
             List<String> originalNames = new ArrayList<>();
             List<String> ids = new ArrayList<>();
 
-            Cursor cursor = db.query(TABLE_PUPIL, projection, selection, selectionArgs, null, null, sortOrder);
+            Cursor cursor = db.query(TABLE_PUPIL, projection, "?=?", selectionArgs, null, null, sortOrder);
             cursor.moveToFirst();
 
             for (int i = 0; i < cursor.getCount(); i++) {
@@ -311,10 +311,10 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
                 ids.add(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PUPIL_ID)));
                 cursor.moveToNext();
             }
+            cursor.close();
 
             List<String> sortedNames = new ArrayList<>(originalNames);
             Collections.sort(sortedNames);
-            cursor.moveToFirst();
 
             for (int i = 0; i < originalNames.size(); i++) {
                 ContentValues values = new ContentValues();
@@ -329,5 +329,9 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
         } else {
             return false;
         }
+    }
+
+    private String[] arr(String... items) {
+        return asList(items).toArray(new String[items.length]);
     }
 }
