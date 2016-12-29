@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 import uk.lobsterdoodle.namepicker.model.Group;
+import uk.lobsterdoodle.namepicker.model.Name;
 import uk.lobsterdoodle.namepicker.storage.DbHelper;
 
 import static java.util.Arrays.asList;
@@ -121,32 +122,32 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
 
     @Override
     public void updateClassroomName(String originalName, String newName){
-        SQLiteDatabase db = this.getReadableDatabase();
-        String selection = COLUMN_CLASSROOM_ID + " LIKE ?";
-        String[] selectionArgs = { String.valueOf(getClassroomId(originalName)) };
-
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_CLASSROOM_NAME, newName);
-
-        if (db != null) {
-            db.update(TABLE_CLASSROOM, values, selection, selectionArgs);
-        } else {
-            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > updateClassroomName()");
-        }
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        String selection = COLUMN_CLASSROOM_ID + " LIKE ?";
+//        String[] selectionArgs = { String.valueOf(getClassroomId(originalName)) };
+//
+//        ContentValues values = new ContentValues();
+//        values.put(COLUMN_CLASSROOM_NAME, newName);
+//
+//        if (db != null) {
+//            db.update(TABLE_CLASSROOM, values, selection, selectionArgs);
+//        } else {
+//            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > updateClassroomName()");
+//        }
     }
 
     @Override
     public void removeClassroom(String classroomName) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        emptyClassroom(classroomName);
-        String selection = COLUMN_CLASSROOM_NAME + " LIKE ?";
-        String[] selectionArgs = { classroomName };
-
-        if (db != null) {
-            db.delete(TABLE_CLASSROOM, selection, selectionArgs);
-        } else {
-            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > removeClassroom()");
-        }
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        emptyClassroom(classroomName);
+//        String selection = COLUMN_CLASSROOM_NAME + " LIKE ?";
+//        String[] selectionArgs = { classroomName };
+//
+//        if (db != null) {
+//            db.delete(TABLE_CLASSROOM, selection, selectionArgs);
+//        } else {
+//            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > removeClassroom()");
+//        }
 
         // Reset classroom id counter table is empty
         //TODO: Reset counter for classroom id in SQLite db table when empty
@@ -270,11 +271,11 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
         return groups;
     }
 
-    public List<String> retrieveGroupNames(long classroomId) {
-        List<String> pupilNames = new ArrayList<>();
+    public List<Name> retrieveGroupNames(long classroomId) {
+        List<Name> pupilNames = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String[] projection = { COLUMN_PUPIL_NAME };
+        String[] projection = { COLUMN_PUPIL_ID, COLUMN_PUPIL_NAME };
         String selection = COLUMN_CLASSROOM_ID + " LIKE ?";
         String[] selectionArgs = { String.valueOf(classroomId) };
         String sortOrder = COLUMN_CLASSROOM_ID + " DESC";
@@ -284,7 +285,9 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
             cursor.moveToFirst();
 
             for (int i = 0; i < cursor.getCount(); i++) {
-                pupilNames.add(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PUPIL_NAME)));
+                pupilNames.add(new Name(
+                        cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_PUPIL_ID)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PUPIL_NAME))));
                 cursor.moveToNext();
             }
             cursor.close();

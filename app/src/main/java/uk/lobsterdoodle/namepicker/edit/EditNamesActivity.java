@@ -24,13 +24,11 @@ import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.addgroup.AddNameToGroupEvent;
 import uk.lobsterdoodle.namepicker.addgroup.NameCard;
-import uk.lobsterdoodle.namepicker.addgroup.NameCardCellData;
 import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.events.EventBus;
+import uk.lobsterdoodle.namepicker.model.Name;
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
 import uk.lobsterdoodle.namepicker.storage.GroupNamesRetrievedEvent;
-
-import static com.google.common.collect.Lists.transform;
 
 public class EditNamesActivity extends AppCompatActivity {
     public static final String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
@@ -52,7 +50,7 @@ public class EditNamesActivity extends AppCompatActivity {
 
     private long groupId;
     private NameListAdapter nameListAdapter;
-    private List<NameCardCellData> cellData = new ArrayList<>();
+    private List<Name> cellData = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,7 +82,7 @@ public class EditNamesActivity extends AppCompatActivity {
 
     @Subscribe
     public void on(GroupNamesRetrievedEvent event) {
-        cellData = transform(event.names, NameCardCellData::new);
+        cellData = event.names;
         runOnUiThread(() -> nameListAdapter.notifyDataSetChanged());
     }
 
@@ -125,7 +123,7 @@ public class EditNamesActivity extends AppCompatActivity {
             this.view = view;
         }
 
-        void bind(NameCardCellData data) {
+        void bind(Name data) {
             view.bind(data);
         }
     }

@@ -9,6 +9,7 @@ import uk.lobsterdoodle.namepicker.addgroup.AddNameToGroupEvent;
 import uk.lobsterdoodle.namepicker.creategroup.CreateGroupDoneSelectedEvent;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.model.Group;
+import uk.lobsterdoodle.namepicker.model.Name;
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
 import uk.lobsterdoodle.namepicker.overview.OverviewBecameVisibleEvent;
 import uk.lobsterdoodle.namepicker.overview.OverviewCardCellData;
@@ -59,16 +60,16 @@ public class StorageUseCaseTest {
 
     @Test
     public void on_add_name_to_group_event_post_name_added_successfully_event() {
-        when(dbHelper.retrieveGroupNames(24L)).thenReturn(asList("Bauer", "Kim", "Yelena"));
+        when(dbHelper.retrieveGroupNames(24L)).thenReturn(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena")));
         useCase.on(new AddNameToGroupEvent(24L, "Scott"));
-        verify(bus).post(new GroupNamesRetrievedEvent(asList("Bauer", "Kim", "Yelena")));
+        verify(bus).post(new GroupNamesRetrievedEvent(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena"))));
     }
 
     @Test
     public void on_overview_visible_event_post_overview_retrieved_event() {
         when(dbHelper.getAllGroups()).thenReturn(asList(
-                group(1L, "Group One", asList("Scott", "Peter")),
-                group(2L, "Group Two", asList("Rob", "Andy", "Rachel"))));
+                group(1L, "Group One", asList(name(1L, "Scott"), name(2L, "Peter"))),
+                group(2L, "Group Two", asList(name(3L, "Rob"), name(4L, "Andy"), name(5L, "Rachel")))));
 
         useCase.on(new OverviewBecameVisibleEvent());
 
@@ -79,16 +80,20 @@ public class StorageUseCaseTest {
 
     @Test
     public void on_retrieve_group_names_event_post_group_names_retrieved_event() {
-        when(dbHelper.retrieveGroupNames(24L)).thenReturn(asList("Bauer", "Kim", "Yelena"));
+        when(dbHelper.retrieveGroupNames(24L)).thenReturn(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena")));
         useCase.on(new RetrieveGroupNamesEvent(24L));
-        verify(bus).post(new GroupNamesRetrievedEvent(asList("Bauer", "Kim", "Yelena")));
+        verify(bus).post(new GroupNamesRetrievedEvent(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena"))));
     }
 
     private OverviewCardCellData cellData(long groupId, String groupName, int nameCount) {
         return new OverviewCardCellData(groupId, groupName, nameCount);
     }
 
-    private Group group(long groupId, String groupName, List<String> nameList) {
+    private Group group(long groupId, String groupName, List<Name> nameList) {
         return new Group(groupId, groupName, nameList);
+    }
+
+    private Name name(long id, String name) {
+        return new Name(id, name);
     }
 }

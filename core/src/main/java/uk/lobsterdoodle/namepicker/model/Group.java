@@ -5,9 +5,9 @@ import java.util.List;
 public class Group {
     public final long id;
     public final String name;
-    public final List<String> nameList;
+    public final List<Name> nameList;
 
-    public Group(long id, String name, List<String> nameList) {
+    public Group(long id, String name, List<Name> nameList) {
         this.id = id;
         this.name = name;
         this.nameList = nameList;

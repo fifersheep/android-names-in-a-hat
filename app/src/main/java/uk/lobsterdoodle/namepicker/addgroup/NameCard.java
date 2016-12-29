@@ -10,6 +10,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.util.As;
+import uk.lobsterdoodle.namepicker.model.Name;
 
 public class NameCard extends CardView {
 
@@ -38,7 +39,7 @@ public class NameCard extends CardView {
         setCardElevation(As.px(getContext(), 2));
     }
 
-    public void bind(NameCardCellData data) {
-        this.name.setText(data.name);
+    public void bind(Name name) {
+        this.name.setText(name.name);
     }
 }

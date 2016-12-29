@@ -10,6 +10,7 @@ import uk.lobsterdoodle.namepicker.addgroup.AddNameToGroupEvent;
 import uk.lobsterdoodle.namepicker.creategroup.CreateGroupDoneSelectedEvent;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.model.Group;
+import uk.lobsterdoodle.namepicker.model.Name;
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
 import uk.lobsterdoodle.namepicker.overview.OverviewBecameVisibleEvent;
 import uk.lobsterdoodle.namepicker.overview.OverviewCardCellData;
@@ -32,8 +33,8 @@ public class StorageUseCase {
 
     @Subscribe
     public void on(OverviewBecameVisibleEvent event) {
-        final List<Group> dbClassroomList = db.getAllGroups();
-        bus.post(new OverviewRetrievedEvent(transform(dbClassroomList,
+        final List<Group> groupList = db.getAllGroups();
+        bus.post(new OverviewRetrievedEvent(transform(groupList,
                 group -> new OverviewCardCellData(group.id, group.name, group.nameList.size()))));
     }
 
@@ -46,13 +47,13 @@ public class StorageUseCase {
     @Subscribe
     public void on(AddNameToGroupEvent event) {
         db.addNameToGroup(event.groupId, event.name);
-        final List<String> groupNames = db.retrieveGroupNames(event.groupId);
+        final List<Name> groupNames = db.retrieveGroupNames(event.groupId);
         bus.post(new GroupNamesRetrievedEvent(groupNames));
     }
 
     @Subscribe
     public void on(RetrieveGroupNamesEvent event) {
-        final List<String> retrieveGroupNames = db.retrieveGroupNames(event.groupId);
+        final List<Name> retrieveGroupNames = db.retrieveGroupNames(event.groupId);
         bus.post(new GroupNamesRetrievedEvent(retrieveGroupNames));
     }
 }

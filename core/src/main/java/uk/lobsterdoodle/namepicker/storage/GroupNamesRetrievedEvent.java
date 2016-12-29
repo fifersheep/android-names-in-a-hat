@@ -2,10 +2,12 @@ package uk.lobsterdoodle.namepicker.storage;
 
 import java.util.List;
 
-public class GroupNamesRetrievedEvent {
-    public final List<String> names;
+import uk.lobsterdoodle.namepicker.model.Name;
 
-    public GroupNamesRetrievedEvent(List<String> names) {
+public class GroupNamesRetrievedEvent {
+    public final List<Name> names;
+
+    public GroupNamesRetrievedEvent(List<Name> names) {
         this.names = names;
     }
 
