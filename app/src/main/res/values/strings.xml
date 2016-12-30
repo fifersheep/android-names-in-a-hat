@@ -26,4 +26,5 @@
     <string name="overview_card_overflow_edit_names">Edit Names</string>
     <string name="overview_card_overflow_edit_group">Edit Group Details</string>
     <string name="overview_card_overflow_delete_group">Delete Group</string>
+    <string name="delete_name_button_description">Delete Name</string>
 </resources>

@@ -4,18 +4,23 @@ import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.util.As;
+import uk.lobsterdoodle.namepicker.edit.NameCardActions;
 import uk.lobsterdoodle.namepicker.model.Name;
 
 public class NameCard extends CardView {
 
     @InjectView(R.id.name_card_name)
     TextView name;
+
+    @InjectView(R.id.name_card_delete_icon)
+    ImageView delete;
 
     public NameCard(Context context) {
         super(context);
@@ -39,7 +44,8 @@ public class NameCard extends CardView {
         setCardElevation(As.px(getContext(), 2));
     }
 
-    public void bind(Name name) {
+    public void bind(NameCardActions nameCardActions, Name name) {
         this.name.setText(name.name);
+        delete.setOnClickListener(v -> nameCardActions.deleteName(name.id));
     }
 }

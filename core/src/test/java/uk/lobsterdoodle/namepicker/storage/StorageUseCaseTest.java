@@ -85,6 +85,14 @@ public class StorageUseCaseTest {
         verify(bus).post(new GroupNamesRetrievedEvent(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena"))));
     }
 
+    @Test
+    public void on_delete_name_event_remove_name_from_database() {
+        when(dbHelper.removeName(24L)).thenReturn(name(3L, "Bauer"));
+        useCase.on(new DeleteNameEvent(24L));
+        verify(dbHelper).removeName(24L);
+        verify(bus).post(new NameDeletedSuccessfullyEvent("Bauer"));
+    }
+
     private OverviewCardCellData cellData(long groupId, String groupName, int nameCount) {
         return new OverviewCardCellData(groupId, groupName, nameCount);
     }

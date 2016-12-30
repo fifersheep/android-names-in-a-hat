@@ -184,18 +184,29 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
     }
 
     @Override
-    public void removePupil(String pupilName, String classroomName) {
+    public Name removeName(long nameId) {
         SQLiteDatabase db = this.getReadableDatabase();
+        Name deletedName = null;
 
-        String selection = COLUMN_PUPIL_NAME + " LIKE ? AND " + COLUMN_CLASSROOM_ID + " LIKE ?";
-        String[] selectionArgs = { pupilName, String.valueOf(getClassroomId(classroomName)) };
+        String[] projection = { COLUMN_PUPIL_ID, COLUMN_PUPIL_NAME };
+        String selection = COLUMN_PUPIL_ID + " LIKE ?";
+        String[] selectionArgs = { String.valueOf(nameId) };
+        String sortOrder = COLUMN_CLASSROOM_ID + " DESC";
 
         if (db != null) {
+            Cursor cursor = db.query(TABLE_PUPIL, projection, selection, selectionArgs, null, null, sortOrder);
+            cursor.moveToFirst();
+            deletedName = new Name(
+                    cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_PUPIL_ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PUPIL_NAME)));
+            cursor.close();
+
             db.delete(TABLE_PUPIL, selection, selectionArgs);
             db.close();
         } else {
             Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > removePupil()");
         }
+        return deletedName;
 
         // Reset pupil id counter table is empty
         //TODO: Reset counter for pupil id in SQLite db table when empty

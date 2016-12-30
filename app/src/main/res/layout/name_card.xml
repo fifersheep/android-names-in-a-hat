@@ -15,10 +15,12 @@
         tools:text="Scott"
         tools:ignore="RtlHardcoded"/>
 
-    <TextView
+    <ImageView
         android:id="@+id/name_card_delete_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:text="X"/>
+        android:src="@drawable/ic_close"
+        android:tint="@color/grey_light"
+        android:contentDescription="@string/delete_name_button_description"/>
 </RelativeLayout>

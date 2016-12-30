@@ -28,10 +28,15 @@ import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.model.Name;
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
+import uk.lobsterdoodle.namepicker.storage.DeleteNameEvent;
 import uk.lobsterdoodle.namepicker.storage.GroupNamesRetrievedEvent;
+import uk.lobsterdoodle.namepicker.storage.NameDeletedSuccessfullyEvent;
 
-public class EditNamesActivity extends AppCompatActivity {
+public class EditNamesActivity extends AppCompatActivity implements NameCardActions {
     public static final String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
+
+    @InjectView(R.id.edit_names_root_layout)
+    ViewGroup root;
 
     @InjectView(R.id.edit_group_names_list)
     RecyclerView nameList;
@@ -86,14 +91,15 @@ public class EditNamesActivity extends AppCompatActivity {
         runOnUiThread(() -> nameListAdapter.notifyDataSetChanged());
     }
 
-    private Snackbar.Callback onDismissed(Runnable runnable) {
-        return new Snackbar.Callback() {
-            @Override
-            public void onDismissed(Snackbar snackbar, int event) {
-                super.onDismissed(snackbar, event);
-                runnable.run();
-            }
-        };
+    @Subscribe
+    public void on(NameDeletedSuccessfullyEvent event) {
+        bus.post(new RetrieveGroupNamesEvent(groupId));
+        Snackbar.make(root, String.format("%s deleted", event.name), Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void deleteName(long id) {
+        bus.post(new DeleteNameEvent(id));
     }
 
     public class NameListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -106,7 +112,7 @@ public class EditNamesActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             NameCardViewHolder cardViewHolder = (NameCardViewHolder) holder;
-            cardViewHolder.bind(cellData.get(position));
+            cardViewHolder.bind(EditNamesActivity.this, cellData.get(position));
         }
 
         @Override
@@ -123,8 +129,8 @@ public class EditNamesActivity extends AppCompatActivity {
             this.view = view;
         }
 
-        void bind(Name data) {
-            view.bind(data);
+        void bind(NameCardActions nameCardActions, Name data) {
+            view.bind(nameCardActions, data);
         }
     }
 

@@ -56,4 +56,10 @@ public class StorageUseCase {
         final List<Name> retrieveGroupNames = db.retrieveGroupNames(event.groupId);
         bus.post(new GroupNamesRetrievedEvent(retrieveGroupNames));
     }
+
+    @Subscribe
+    public void on(DeleteNameEvent event) {
+        final Name deletedName = db.removeName(event.id);
+        bus.post(new NameDeletedSuccessfullyEvent(deletedName.name));
+    }
 }
