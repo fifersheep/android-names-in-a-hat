@@ -137,33 +137,48 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
     }
 
     @Override
-    public void removeClassroom(String classroomName) {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        emptyClassroom(classroomName);
-//        String selection = COLUMN_CLASSROOM_NAME + " LIKE ?";
-//        String[] selectionArgs = { classroomName };
-//
-//        if (db != null) {
-//            db.delete(TABLE_CLASSROOM, selection, selectionArgs);
-//        } else {
-//            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > removeClassroom()");
-//        }
+    public Group removeGroup(long groupId) {
+        removePupilsForGroup(groupId);
+        SQLiteDatabase db = this.getReadableDatabase();
+        Group deletedGroup = null;
+
+        String[] projection = { COLUMN_CLASSROOM_ID, COLUMN_CLASSROOM_NAME };
+        String selection = COLUMN_CLASSROOM_ID + " LIKE ?";
+        String[] selectionArgs = { String.valueOf(groupId) };
+        String sortOrder = COLUMN_CLASSROOM_ID + " DESC";
+
+        if (db != null) {
+            Cursor cursor = db.query(TABLE_CLASSROOM, projection, selection, selectionArgs, null, null, sortOrder);
+            cursor.moveToFirst();
+            deletedGroup = new Group(
+                    cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_CLASSROOM_ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CLASSROOM_NAME)),
+                    Collections.emptyList());
+            cursor.close();
+
+
+            db.delete(TABLE_CLASSROOM, selection, selectionArgs);
+            db.close();
+        } else {
+            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > removeGroup()");
+        }
+        return deletedGroup;
 
         // Reset classroom id counter table is empty
         //TODO: Reset counter for classroom id in SQLite db table when empty
     }
 
-    private void emptyClassroom(String classroomName) {
+    private void removePupilsForGroup(long groupId) {
         SQLiteDatabase db = this.getReadableDatabase();
         String selection = COLUMN_CLASSROOM_ID + " LIKE ?";
-        String[] selectionArgs = { String.valueOf(getClassroomId(classroomName)) };
+        String[] selectionArgs = { String.valueOf(groupId) };
 
         // Issue SQL statement.
         if (db != null) {
             db.delete(TABLE_PUPIL, selection, selectionArgs);
             db.close();
         } else {
-            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > emptyClassroom()");
+            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > removePupilsForGroup()");
         }
     }
 

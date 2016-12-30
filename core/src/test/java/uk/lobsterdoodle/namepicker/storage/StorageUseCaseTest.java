@@ -3,6 +3,7 @@ package uk.lobsterdoodle.namepicker.storage;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 import uk.lobsterdoodle.namepicker.addgroup.AddNameToGroupEvent;
@@ -16,6 +17,7 @@ import uk.lobsterdoodle.namepicker.overview.OverviewCardCellData;
 import uk.lobsterdoodle.namepicker.overview.OverviewRetrievedEvent;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -91,6 +93,14 @@ public class StorageUseCaseTest {
         useCase.on(new DeleteNameEvent(24L));
         verify(dbHelper).removeName(24L);
         verify(bus).post(new NameDeletedSuccessfullyEvent("Bauer"));
+    }
+
+    @Test
+    public void on_delete_group_event_remove_group_from_database() {
+        when(dbHelper.removeGroup(24L)).thenReturn(new Group(24L, "CTU", emptyList()));
+        useCase.on(new DeleteGroupEvent(24L));
+        verify(dbHelper).removeGroup(24L);
+        verify(bus).post(new GroupDeletedSuccessfullyEvent("CTU"));
     }
 
     private OverviewCardCellData cellData(long groupId, String groupName, int nameCount) {

@@ -3,6 +3,7 @@ package uk.lobsterdoodle.namepicker.overview;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,9 +24,14 @@ import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.creategroup.CreateGroupActivity;
 import uk.lobsterdoodle.namepicker.edit.EditNamesActivity;
 import uk.lobsterdoodle.namepicker.events.EventBus;
+import uk.lobsterdoodle.namepicker.storage.DeleteGroupEvent;
+import uk.lobsterdoodle.namepicker.storage.GroupDeletedSuccessfullyEvent;
 import uk.lobsterdoodle.namepicker.ui.OverviewCard;
 
 public class OverviewActivity extends AppCompatActivity implements OverviewCardActionsCallback {
+
+    @InjectView(R.id.overview_root_layout)
+    ViewGroup root;
 
     @InjectView(R.id.overview_group_list)
     RecyclerView groupsRecyclerView;
@@ -72,6 +78,12 @@ public class OverviewActivity extends AppCompatActivity implements OverviewCardA
         runOnUiThread(() -> overviewAdapter.notifyDataSetChanged());
     }
 
+    @Subscribe
+    public void on(GroupDeletedSuccessfullyEvent event) {
+        bus.post(new OverviewBecameVisibleEvent());
+        Snackbar.make(root, String.format("%s deleted", event.groupName), Snackbar.LENGTH_SHORT).show();
+    }
+
     public static Intent launchIntent(Context context) {
         return new Intent(context, OverviewActivity.class);
     }
@@ -90,7 +102,7 @@ public class OverviewActivity extends AppCompatActivity implements OverviewCardA
 
     @Override
     public void launchDeleteGroupScreen(long groupId) {
-
+        bus.post(new DeleteGroupEvent(groupId));
     }
 
     private class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
