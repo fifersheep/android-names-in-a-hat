@@ -1,4 +1,4 @@
-package uk.lobsterdoodle.namepicker.creategroup;
+package uk.lobsterdoodle.namepicker.edit;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,12 +17,17 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.App;
-import uk.lobsterdoodle.namepicker.edit.EditNamesActivity;
+import uk.lobsterdoodle.namepicker.creategroup.CreateGroupDetailsEvent;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.overview.OverviewActivity;
+import uk.lobsterdoodle.namepicker.storage.EditGroupDetailsEvent;
 import uk.lobsterdoodle.namepicker.storage.GroupCreationSuccessfulEvent;
+import uk.lobsterdoodle.namepicker.storage.GroupDetailsRetrievedSuccessfullyEvent;
+import uk.lobsterdoodle.namepicker.storage.GroupNameEditedSuccessfullyEvent;
+import uk.lobsterdoodle.namepicker.storage.RetrieveGroupDetailsEvent;
 
-public class CreateGroupActivity extends AppCompatActivity {
+public class EditGroupDetailsActivity extends AppCompatActivity {
+    private static final String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
 
     @InjectView(R.id.create_group_name_input)
     TextInputEditText groupName;
@@ -33,6 +38,8 @@ public class CreateGroupActivity extends AppCompatActivity {
     @Inject
     EventBus bus;
 
+    private long groupId;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,19 +47,33 @@ public class CreateGroupActivity extends AppCompatActivity {
         App.get(this).component().inject(this);
         ButterKnife.inject(this);
 
-        done.setOnClickListener(v -> bus.post(new CreateGroupDoneSelectedEvent(groupName.getText().toString())));
+        groupId = getIntent().getLongExtra(EXTRA_GROUP_ID, -1);
+
+        done.setOnClickListener(v -> {
+            bus.post(groupId == -1 ?
+                    new CreateGroupDetailsEvent(groupName.getText().toString()) :
+                    new EditGroupDetailsEvent(groupId, groupName.getText().toString()));
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
         bus.register(this);
+        if (groupId != -1) {
+            bus.post(new RetrieveGroupDetailsEvent(groupId));
+        }
     }
 
     @Override
     public void onPause() {
         bus.unregister(this);
         super.onPause();
+    }
+
+    @Subscribe
+    public void on(GroupDetailsRetrievedSuccessfullyEvent event) {
+        groupName.setText(event.details.groupName);
     }
 
     @Subscribe
@@ -63,7 +84,20 @@ public class CreateGroupActivity extends AppCompatActivity {
                 .startActivities();
     }
 
+    @Subscribe
+    public void on(GroupNameEditedSuccessfullyEvent event) {
+        TaskStackBuilder.create(this)
+                .addNextIntent(OverviewActivity.launchIntent(this))
+                .startActivities();
+    }
+
     public static Intent launchIntent(Context context) {
-        return new Intent(context, CreateGroupActivity.class);
+        return new Intent(context, EditGroupDetailsActivity.class);
+    }
+
+    public static Intent launchIntent(Context context, long groupId) {
+        final Intent intent = new Intent(context, EditGroupDetailsActivity.class);
+        intent.putExtra(EXTRA_GROUP_ID, groupId);
+        return intent;
     }
 }

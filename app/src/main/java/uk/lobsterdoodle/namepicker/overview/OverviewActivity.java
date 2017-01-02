@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.App;
-import uk.lobsterdoodle.namepicker.creategroup.CreateGroupActivity;
+import uk.lobsterdoodle.namepicker.edit.EditGroupDetailsActivity;
 import uk.lobsterdoodle.namepicker.edit.EditNamesActivity;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.storage.DeleteGroupEvent;
@@ -55,7 +55,7 @@ public class OverviewActivity extends AppCompatActivity implements OverviewCardA
         overviewAdapter = new OverviewAdapter();
         groupsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         groupsRecyclerView.setAdapter(overviewAdapter);
-        addGroupButton.setOnClickListener((v) -> startActivity(CreateGroupActivity.launchIntent(this)));
+        addGroupButton.setOnClickListener((v) -> startActivity(EditGroupDetailsActivity.launchIntent(this)));
 
     }
 
@@ -90,14 +90,12 @@ public class OverviewActivity extends AppCompatActivity implements OverviewCardA
 
     @Override
     public void launchEditGroupNamesScreen(long groupId) {
-        final Intent intent = new Intent(this, EditNamesActivity.class);
-        intent.putExtra(EditNamesActivity.EXTRA_GROUP_ID, groupId);
-        startActivity(intent);
+        startActivity(EditNamesActivity.launchIntent(this, groupId));
     }
 
     @Override
     public void launchEditGroupDetailsScreen(long groupId) {
-
+        startActivity(EditGroupDetailsActivity.launchIntent(this, groupId));
     }
 
     @Override

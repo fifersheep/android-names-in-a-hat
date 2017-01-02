@@ -3,13 +3,13 @@ package uk.lobsterdoodle.namepicker.storage;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.List;
 
 import uk.lobsterdoodle.namepicker.addgroup.AddNameToGroupEvent;
-import uk.lobsterdoodle.namepicker.creategroup.CreateGroupDoneSelectedEvent;
+import uk.lobsterdoodle.namepicker.creategroup.CreateGroupDetailsEvent;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.model.Group;
+import uk.lobsterdoodle.namepicker.model.GroupDetails;
 import uk.lobsterdoodle.namepicker.model.Name;
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
 import uk.lobsterdoodle.namepicker.overview.OverviewBecameVisibleEvent;
@@ -42,15 +42,15 @@ public class StorageUseCaseTest {
     }
 
     @Test
-    public void on_create_group_done_selected_add_group_to_database() {
-        useCase.on(new CreateGroupDoneSelectedEvent("Group Name"));
+    public void on_create_group_details_event_add_group_to_database() {
+        useCase.on(new CreateGroupDetailsEvent("Group Name"));
         verify(dbHelper).createGroup("Group Name");
     }
 
     @Test
-    public void on_create_group_done_selected_event_post_group_creation_successful_event() {
+    public void on_create_group_details_event_post_group_creation_successful_event() {
         when(dbHelper.createGroup("Group Name")).thenReturn(24L);
-        useCase.on(new CreateGroupDoneSelectedEvent("Group Name"));
+        useCase.on(new CreateGroupDetailsEvent("Group Name"));
         verify(bus).post(new GroupCreationSuccessfulEvent(24L));
     }
 
@@ -101,6 +101,20 @@ public class StorageUseCaseTest {
         useCase.on(new DeleteGroupEvent(24L));
         verify(dbHelper).removeGroup(24L);
         verify(bus).post(new GroupDeletedSuccessfullyEvent("CTU"));
+    }
+
+    @Test
+    public void on_group_details_event_edit_group_name_in_database() {
+        useCase.on(new EditGroupDetailsEvent(24L, "CTU"));
+        verify(dbHelper).editGroupName(24L, "CTU");
+        verify(bus).post(new GroupNameEditedSuccessfullyEvent());
+    }
+
+    @Test
+    public void on_retrieve_group_details_event_post_group_details_retrieved_event_with_details_from_database() {
+        when(dbHelper.retrieveGroupDetails(24L)).thenReturn(new GroupDetails(24L, "CTU"));
+        useCase.on(new RetrieveGroupDetailsEvent(24L));
+        verify(bus).post(new GroupDetailsRetrievedSuccessfullyEvent(new GroupDetails(24L, "CTU")));
     }
 
     private OverviewCardCellData cellData(long groupId, String groupName, int nameCount) {

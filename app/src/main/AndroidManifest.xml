@@ -30,7 +30,7 @@
             android:name=".overview.OverviewActivity"
             android:label="@string/title_activity_overview"/>
 
-        <activity android:name=".creategroup.CreateGroupActivity"
+        <activity android:name=".edit.EditGroupDetailsActivity"
                   android:label="@string/title_activity_overview"/>
 
         <activity android:name=".edit.EditNamesActivity"

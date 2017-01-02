@@ -7,7 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import uk.lobsterdoodle.namepicker.addgroup.AddNameToGroupEvent;
-import uk.lobsterdoodle.namepicker.creategroup.CreateGroupDoneSelectedEvent;
+import uk.lobsterdoodle.namepicker.creategroup.CreateGroupDetailsEvent;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.model.Group;
 import uk.lobsterdoodle.namepicker.model.Name;
@@ -39,7 +39,7 @@ public class StorageUseCase {
     }
 
     @Subscribe
-    public void on(CreateGroupDoneSelectedEvent event) {
+    public void on(CreateGroupDetailsEvent event) {
         final long groupId = db.createGroup(event.groupName);
         bus.post(new GroupCreationSuccessfulEvent(groupId));
     }
@@ -67,5 +67,16 @@ public class StorageUseCase {
     public void on(DeleteGroupEvent event) {
         final Group deletedGroup = db.removeGroup(event.groupId);
         bus.post(new GroupDeletedSuccessfullyEvent(deletedGroup.name));
+    }
+
+    @Subscribe
+    public void on(EditGroupDetailsEvent event) {
+        db.editGroupName(event.groupId, event.groupName);
+        bus.post(new GroupNameEditedSuccessfullyEvent());
+    }
+
+    @Subscribe
+    public void on(RetrieveGroupDetailsEvent event) {
+        bus.post(new GroupDetailsRetrievedSuccessfullyEvent(db.retrieveGroupDetails(event.groupId)));
     }
 }

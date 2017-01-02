@@ -5,7 +5,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.application.AppService;
-import uk.lobsterdoodle.namepicker.creategroup.CreateGroupActivity;
+import uk.lobsterdoodle.namepicker.edit.EditGroupDetailsActivity;
 import uk.lobsterdoodle.namepicker.edit.EditNamesActivity;
 import uk.lobsterdoodle.namepicker.overview.OverviewActivity;
 
@@ -21,5 +21,5 @@ public interface DependencyInjectionComponent {
 
     void inject(EditNamesActivity editNamesActivity);
 
-    void inject(CreateGroupActivity createGroupActivity);
+    void inject(EditGroupDetailsActivity editGroupDetailsActivity);
 }
