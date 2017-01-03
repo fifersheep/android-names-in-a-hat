@@ -55,6 +55,7 @@ public class OverviewCard extends CardView {
     public void bind(OverviewCardActionsCallback callback, OverviewCardCellData data) {
         this.title.setText(data.listTitle);
         this.count.setText(String.format("%s names", String.valueOf(data.nameCount)));
+        setOnClickListener(v -> callback.launchSelectionScreen(data.groupId));
 
         PopupMenu popup = new PopupMenu(context, overflow);
         popup.inflate(R.menu.menu_overview_card);
@@ -67,7 +68,7 @@ public class OverviewCard extends CardView {
                     callback.launchEditGroupDetailsScreen(data.groupId);
                     return true;
                 case R.id.overview_card_overflow_delete_group:
-                    callback.launchDeleteGroupScreen(data.groupId);
+                    callback.deleteGroup(data.groupId);
                     return true;
                 default:
                     return true;

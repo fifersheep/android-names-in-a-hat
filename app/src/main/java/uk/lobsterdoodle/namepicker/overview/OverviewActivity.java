@@ -24,6 +24,7 @@ import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.edit.EditGroupDetailsActivity;
 import uk.lobsterdoodle.namepicker.edit.EditNamesActivity;
 import uk.lobsterdoodle.namepicker.events.EventBus;
+import uk.lobsterdoodle.namepicker.selection.SelectionActivity;
 import uk.lobsterdoodle.namepicker.storage.DeleteGroupEvent;
 import uk.lobsterdoodle.namepicker.storage.GroupDeletedSuccessfullyEvent;
 import uk.lobsterdoodle.namepicker.ui.OverviewCard;
@@ -99,8 +100,13 @@ public class OverviewActivity extends AppCompatActivity implements OverviewCardA
     }
 
     @Override
-    public void launchDeleteGroupScreen(long groupId) {
+    public void deleteGroup(long groupId) {
         bus.post(new DeleteGroupEvent(groupId));
+    }
+
+    @Override
+    public void launchSelectionScreen(long groupId) {
+        startActivity(SelectionActivity.launchIntent(this, groupId));
     }
 
     private class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

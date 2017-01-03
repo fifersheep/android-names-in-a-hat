@@ -36,6 +36,9 @@
         <activity android:name=".edit.EditNamesActivity"
                   android:label="@string/title_activity_overview"/>
 
+        <activity android:name=".selection.SelectionActivity"
+                  android:label="@string/title_activity_overview"/>
+
     </application>
 
 </manifest>
