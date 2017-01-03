@@ -13,7 +13,7 @@ public interface DbHelper {
     List<Name> retrieveGroupNames(long groupId);
     GroupDetails retrieveGroupDetails(long groupId);
     Name removeName(long nameId);
-    Group removeGroup(long groupId);
+    GroupDetails removeGroup(long groupId);
     void editGroupName(long groupId, String newName);
 
     void addClassroom (String classroomName, List<String> pupils);

@@ -1,12 +1,12 @@
 package uk.lobsterdoodle.namepicker.model;
 
 public class GroupDetails {
-    public final long groupId;
-    public final String groupName;
+    public final long id;
+    public final String name;
 
-    public GroupDetails(long groupId, String groupName) {
-        this.groupId = groupId;
-        this.groupName = groupName;
+    public GroupDetails(long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     @Override
@@ -16,23 +16,23 @@ public class GroupDetails {
 
         GroupDetails that = (GroupDetails) o;
 
-        if (groupId != that.groupId) return false;
-        return groupName != null ? groupName.equals(that.groupName) : that.groupName == null;
+        if (id != that.id) return false;
+        return name != null ? name.equals(that.name) : that.name == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (groupId ^ (groupId >>> 32));
-        result = 31 * result + (groupName != null ? groupName.hashCode() : 0);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "GroupDetails{" +
-                "groupId=" + groupId +
-                ", groupName='" + groupName + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

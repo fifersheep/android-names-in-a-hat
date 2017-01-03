@@ -73,7 +73,7 @@ public class EditGroupDetailsActivity extends AppCompatActivity {
 
     @Subscribe
     public void on(GroupDetailsRetrievedSuccessfullyEvent event) {
-        groupName.setText(event.details.groupName);
+        groupName.setText(event.details.name);
     }
 
     @Subscribe

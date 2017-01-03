@@ -97,7 +97,7 @@ public class StorageUseCaseTest {
 
     @Test
     public void on_delete_group_event_remove_group_from_database() {
-        when(dbHelper.removeGroup(24L)).thenReturn(new Group(24L, "CTU", emptyList()));
+        when(dbHelper.removeGroup(24L)).thenReturn(details(24L, "CTU"));
         useCase.on(new DeleteGroupEvent(24L));
         verify(dbHelper).removeGroup(24L);
         verify(bus).post(new GroupDeletedSuccessfullyEvent("CTU"));
@@ -121,8 +121,12 @@ public class StorageUseCaseTest {
         return new OverviewCardCellData(groupId, groupName, nameCount);
     }
 
+    private GroupDetails details(long id, String name) {
+        return new GroupDetails(id, name);
+    }
+
     private Group group(long groupId, String groupName, List<Name> nameList) {
-        return new Group(groupId, groupName, nameList);
+        return new Group(new GroupDetails(groupId, groupName), nameList);
     }
 
     private Name name(long id, String name) {

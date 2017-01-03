@@ -161,10 +161,10 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
     }
 
     @Override
-    public Group removeGroup(long groupId) {
+    public GroupDetails removeGroup(long groupId) {
         removePupilsForGroup(groupId);
         SQLiteDatabase db = this.getReadableDatabase();
-        Group deletedGroup = null;
+        GroupDetails deletedGroup = null;
 
         String[] projection = { COLUMN_CLASSROOM_ID, COLUMN_CLASSROOM_NAME };
         String selection = COLUMN_CLASSROOM_ID + " LIKE ?";
@@ -174,10 +174,9 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
         if (db != null) {
             Cursor cursor = db.query(TABLE_CLASSROOM, projection, selection, selectionArgs, null, null, sortOrder);
             cursor.moveToFirst();
-            deletedGroup = new Group(
+            deletedGroup = new GroupDetails(
                     cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_CLASSROOM_ID)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CLASSROOM_NAME)),
-                    Collections.emptyList());
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CLASSROOM_NAME)));
             cursor.close();
 
 
@@ -315,7 +314,7 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
 
             for (int i = 0; i < groupNamesById.size(); i++) {
                 final long groupId = groupNamesById.keyAt(i);
-                groups.add(new Group(groupId, groupNamesById.valueAt(i), retrieveGroupNames(groupId)));
+                groups.add(new Group(new GroupDetails(groupId, groupNamesById.valueAt(i)), retrieveGroupNames(groupId)));
             }
         }
         return groups;
