@@ -8,6 +8,7 @@ import uk.lobsterdoodle.namepicker.application.AppService;
 import uk.lobsterdoodle.namepicker.edit.EditGroupDetailsActivity;
 import uk.lobsterdoodle.namepicker.edit.EditNamesActivity;
 import uk.lobsterdoodle.namepicker.overview.OverviewActivity;
+import uk.lobsterdoodle.namepicker.selection.NameSelectionView;
 import uk.lobsterdoodle.namepicker.selection.SelectionActivity;
 
 @Singleton
@@ -25,4 +26,6 @@ public interface DependencyInjectionComponent {
     void inject(EditGroupDetailsActivity editGroupDetailsActivity);
 
     void inject(SelectionActivity selectionActivity);
+
+    void inject(NameSelectionView nameSelectionView);
 }
