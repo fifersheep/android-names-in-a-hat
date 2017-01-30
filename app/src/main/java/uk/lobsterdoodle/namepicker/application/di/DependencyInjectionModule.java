@@ -1,7 +1,6 @@
 package uk.lobsterdoodle.namepicker.application.di;
 
 import android.app.Application;
-import android.database.sqlite.SQLiteOpenHelper;
 
 import dagger.Module;
 import dagger.Provides;
@@ -9,6 +8,8 @@ import uk.lobsterdoodle.namepicker.Util;
 import uk.lobsterdoodle.namepicker.api.ClassroomDbHelper;
 import uk.lobsterdoodle.namepicker.events.AndroidEventBus;
 import uk.lobsterdoodle.namepicker.events.EventBus;
+import uk.lobsterdoodle.namepicker.selection.NumberGenerator;
+import uk.lobsterdoodle.namepicker.selection.RandomNumberGenerator;
 import uk.lobsterdoodle.namepicker.storage.DbHelper;
 import uk.lobsterdoodle.namepicker.storage.KeyValueStore;
 import uk.lobsterdoodle.namepicker.storage.SharedPrefsKeyValueStore;
@@ -36,5 +37,10 @@ public class DependencyInjectionModule {
     @Provides
     DbHelper providesSQLiteOpenHelper() {
         return ClassroomDbHelper.getInstance(app);
+    }
+
+    @Provides
+    NumberGenerator providesNumberGenerator() {
+        return new RandomNumberGenerator();
     }
 }

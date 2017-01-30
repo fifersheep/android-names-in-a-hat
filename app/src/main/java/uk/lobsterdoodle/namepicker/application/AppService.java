@@ -8,6 +8,7 @@ import android.os.IBinder;
 import javax.inject.Inject;
 
 import uk.lobsterdoodle.namepicker.events.EventBus;
+import uk.lobsterdoodle.namepicker.selection.SelectionUseCase;
 import uk.lobsterdoodle.namepicker.storage.StorageUseCase;
 
 public class AppService extends Service {
@@ -16,6 +17,8 @@ public class AppService extends Service {
     @Inject EventBus bus;
 
     @Inject StorageUseCase storageUseCase;
+
+    @Inject SelectionUseCase selectionUseCase;
 
     public AppService() {
     }

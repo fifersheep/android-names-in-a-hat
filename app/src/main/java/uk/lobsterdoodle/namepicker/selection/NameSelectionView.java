@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 
 import butterknife.ButterKnife;
@@ -36,7 +37,10 @@ public class NameSelectionView extends FrameLayout {
         ButterKnife.inject(this, LayoutInflater.from(context).inflate(R.layout.name_selection_view, this, true));
     }
 
-    public void bind(Name name) {
+    public void bind(Name name, CompoundButton.OnCheckedChangeListener listener) {
+        checkBox.setOnCheckedChangeListener(null);
         checkBox.setText(name.name);
+        checkBox.setChecked(name.toggledOn);
+        checkBox.setOnCheckedChangeListener(listener);
     }
 }

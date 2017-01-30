@@ -1,12 +1,22 @@
 package uk.lobsterdoodle.namepicker.model;
 
 public class Name {
-    public long id;
-    public String name;
+    final public long id;
+    final public String name;
+    final public boolean toggledOn;
 
     public Name(long id, String name) {
+        this(id, name, false);
+    }
+
+    public Name(long id, String name, boolean toggledOn) {
         this.id = id;
         this.name = name;
+        this.toggledOn = toggledOn;
+    }
+
+    public Name copyWith(boolean toggledOn) {
+        return new Name(id, name, toggledOn);
     }
 
     @Override
@@ -14,17 +24,17 @@ public class Name {
         if (this == o) return true;
         if (!(o instanceof Name)) return false;
 
-        Name name1 = (Name) o;
-
-        if (id != name1.id) return false;
-        return name != null ? name.equals(name1.name) : name1.name == null;
-
+        Name n = (Name) o;
+        return id == n.id
+                && toggledOn == n.toggledOn
+                && (name != null ? name.equals(n.name) : n.name == null);
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (toggledOn ? 1 : 0);
         return result;
     }
 
@@ -33,6 +43,7 @@ public class Name {
         return "Name{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", toggledOn=" + toggledOn +
                 '}';
     }
 }

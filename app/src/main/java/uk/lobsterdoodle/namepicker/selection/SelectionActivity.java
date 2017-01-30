@@ -5,13 +5,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Spinner;
+
+import com.avast.android.dialogs.fragment.SimpleDialogFragment;
+import com.google.common.collect.FluentIterable;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -22,6 +26,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.events.EventBus;
@@ -40,6 +45,17 @@ public class SelectionActivity extends AppCompatActivity {
 
     @InjectView(R.id.selection_draw_count)
     Spinner drawCount;
+
+    @InjectView(R.id.selection_button_toggle)
+    Button toggleButton;
+
+    @OnClick(R.id.selection_button_draw)
+    public void submit(Button drawButton) {
+        drawButton.setOnClickListener(v -> bus.post(new DrawNamesFromSelectionEvent(FluentIterable.from(data)
+                .filter(d -> d.toggledOn)
+                .transform(d -> d.name)
+                .toList())));
+    }
 
     @Inject
     EventBus bus;
@@ -77,6 +93,17 @@ public class SelectionActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    @Subscribe
+    public void on(NamesGeneratedEvent event) {
+        SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())
+                .setTitle(getString(event.generatedNames.size() > 1
+                        ? R.string.generated_names_dialog_title_multiple
+                        : R.string.generated_names_dialog_title_singular))
+                .setMessage(TextUtils.join("\n", event.generatedNames))
+                .setPositiveButtonText(getString(R.string.generated_names_dialog_positive_button))
+                .show();
+    }
+
     public static Intent launchIntent(Context context, long groupId) {
         final Intent intent = new Intent(context, SelectionActivity.class);
         intent.putExtra(EXTRA_GROUP_ID, groupId);
@@ -110,7 +137,9 @@ public class SelectionActivity extends AppCompatActivity {
             final NameSelectionView nameSelectionView = convertView == null
                     ? new NameSelectionView(context)
                     : (NameSelectionView) convertView;
-            nameSelectionView.bind(data.get(position));
+
+            nameSelectionView.bind(data.get(position),
+                    (buttonView, isChecked) -> data.set(position, data.get(position).copyWith(isChecked)));
             return nameSelectionView;
         }
     }
