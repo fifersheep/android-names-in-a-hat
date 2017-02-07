@@ -34,8 +34,12 @@ import uk.lobsterdoodle.namepicker.model.Name;
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
 import uk.lobsterdoodle.namepicker.storage.GroupNamesRetrievedEvent;
 
+import static com.google.common.collect.Collections2.filter;
+import static com.google.common.collect.ContiguousSet.create;
+import static com.google.common.collect.DiscreteDomain.integers;
+import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Lists.transform;
-import static java.util.Arrays.asList;
+import static com.google.common.collect.Range.closed;
 
 public class SelectionActivity extends AppCompatActivity {
     private static final String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
@@ -51,10 +55,11 @@ public class SelectionActivity extends AppCompatActivity {
 
     @OnClick(R.id.selection_button_draw)
     public void submit(Button drawButton) {
-        drawButton.setOnClickListener(v -> bus.post(new DrawNamesFromSelectionEvent(FluentIterable.from(data)
-                .filter(d -> d.toggledOn)
-                .transform(d -> d.name)
-                .toList())));
+        drawButton.setOnClickListener(v -> bus.post(new DrawNamesFromSelectionEvent((String) drawCount.getSelectedItem(),
+                FluentIterable.from(data)
+                        .filter(d -> d.toggledOn)
+                        .transform(d -> d.name)
+                        .toList())));
     }
 
     @Inject
@@ -62,7 +67,9 @@ public class SelectionActivity extends AppCompatActivity {
 
     private long groupId;
     private List<Name> data = new ArrayList<>();
-    private SelectionAdapter adapter;
+    private List<String> drawCountOptions = new ArrayList<>();
+    private SelectionAdapter selectionAdapter;
+    private ArrayAdapter<String> drawOptionsAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,12 +79,11 @@ public class SelectionActivity extends AppCompatActivity {
         ButterKnife.inject(this);
 
         groupId = getIntent().getLongExtra(EXTRA_GROUP_ID, -1);
-        adapter = new SelectionAdapter(this);
-        grid.setAdapter(adapter);
+        selectionAdapter = new SelectionAdapter(this);
+        grid.setAdapter(selectionAdapter);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_dropdown_item_1line, transform(asList(1, 2, 3, 4), String::valueOf));
-        drawCount.setAdapter(adapter);
+        drawOptionsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, drawCountOptions);
+        drawCount.setAdapter(drawOptionsAdapter);
     }
 
     @Override
@@ -90,7 +96,8 @@ public class SelectionActivity extends AppCompatActivity {
     @Subscribe
     public void on(GroupNamesRetrievedEvent event) {
         data = event.names;
-        adapter.notifyDataSetChanged();
+        selectionAdapter.notifyDataSetChanged();
+        updateDrawOptions();
     }
 
     @Subscribe
@@ -102,6 +109,12 @@ public class SelectionActivity extends AppCompatActivity {
                 .setMessage(TextUtils.join("\n", event.generatedNames))
                 .setPositiveButtonText(getString(R.string.generated_names_dialog_positive_button))
                 .show();
+    }
+
+    private void updateDrawOptions() {
+        drawOptionsAdapter.clear();
+        int checkedNameCount = filter(data, n -> n.toggledOn).size();
+        drawOptionsAdapter.addAll(transform(newArrayList(create(closed(Math.min(1, checkedNameCount), checkedNameCount), integers())), String::valueOf));
     }
 
     public static Intent launchIntent(Context context, long groupId) {
@@ -139,7 +152,10 @@ public class SelectionActivity extends AppCompatActivity {
                     : (NameSelectionView) convertView;
 
             nameSelectionView.bind(data.get(position),
-                    (buttonView, isChecked) -> data.set(position, data.get(position).copyWith(isChecked)));
+                    (buttonView, isChecked) -> {
+                        data.set(position, data.get(position).copyWith(isChecked));
+                        SelectionActivity.this.updateDrawOptions();
+                    });
             return nameSelectionView;
         }
     }

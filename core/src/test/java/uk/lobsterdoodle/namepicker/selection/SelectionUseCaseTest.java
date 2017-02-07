@@ -6,9 +6,9 @@ import org.junit.Test;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -31,15 +31,16 @@ public class SelectionUseCaseTest {
     }
 
     @Test
-    public void on_DrawNamesFromSelectionEvent_get_random_int_for_names_list_size() {
-        useCase.on(new DrawNamesFromSelectionEvent(asList("Scott", "Peter")));
-        verify(generator).randomInteger(2);
+    public void on_DrawNamesFromSelectionEvent_get_random_int_for_draw_count() {
+        useCase.on(new DrawNamesFromSelectionEvent("2", asList("Scott", "Peter", "Rob")));
+        verify(generator, times(2)).randomInteger(anyInt());
     }
 
     @Test
     public void on_DrawNamesFromSelectionEvent_post_NamesGeneratedEvent() {
-        when(generator.randomInteger(anyInt())).thenReturn(1);
-        useCase.on(new DrawNamesFromSelectionEvent(asList("Scott", "Peter")));
-        verify(bus).post(new NamesGeneratedEvent(singletonList("Peter")));
+        when(generator.randomInteger(6)).thenReturn(2);
+        when(generator.randomInteger(5)).thenReturn(4);
+        useCase.on(new DrawNamesFromSelectionEvent("2", asList("Scott", "Peter", "Rob", "Andy", "Anders", "Rachel")));
+        verify(bus).post(new NamesGeneratedEvent(asList("Rob", "Rachel")));
     }
 }
