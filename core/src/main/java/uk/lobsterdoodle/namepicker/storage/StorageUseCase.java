@@ -50,6 +50,7 @@ public class StorageUseCase {
         db.addNameToGroup(event.groupId, event.name);
         final List<Name> groupNames = db.retrieveGroupNames(event.groupId);
         bus.post(new GroupNamesRetrievedEvent(groupNames));
+        bus.post(new NameAddedSuccessfullyEvent());
     }
 
     @Subscribe

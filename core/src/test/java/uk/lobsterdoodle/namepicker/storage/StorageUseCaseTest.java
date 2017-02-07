@@ -42,33 +42,40 @@ public class StorageUseCaseTest {
     }
 
     @Test
-    public void on_create_group_details_event_add_group_to_database() {
+    public void on_CreateGroupDetailsEvent_add_group_to_database() {
         useCase.on(new CreateGroupDetailsEvent("Group Name"));
         verify(dbHelper).createGroup("Group Name");
     }
 
     @Test
-    public void on_create_group_details_event_post_group_creation_successful_event() {
+    public void on_CreateGroupDetailsEvent_post_GroupCreationSuccessfulEvent() {
         when(dbHelper.createGroup("Group Name")).thenReturn(24L);
         useCase.on(new CreateGroupDetailsEvent("Group Name"));
         verify(bus).post(new GroupCreationSuccessfulEvent(24L));
     }
 
     @Test
-    public void on_add_name_to_group_event_save_add_name_to_database() {
+    public void on_AddNameToGroupEvent_save_add_name_to_database() {
         useCase.on(new AddNameToGroupEvent(24L, "Scott"));
         verify(dbHelper).addNameToGroup(24L, "Scott");
     }
 
     @Test
-    public void on_add_name_to_group_event_post_name_added_successfully_event() {
+    public void on_AddNameToGroupEvent_post_GroupNamesRetrievedEvent() {
         when(dbHelper.retrieveGroupNames(24L)).thenReturn(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena")));
         useCase.on(new AddNameToGroupEvent(24L, "Scott"));
         verify(bus).post(new GroupNamesRetrievedEvent(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena"))));
     }
 
     @Test
-    public void on_overview_visible_event_post_overview_retrieved_event() {
+    public void on_AddNameToGroupEvent_post_NameAddedSuccessfullyEvent() {
+        when(dbHelper.retrieveGroupNames(24L)).thenReturn(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena")));
+        useCase.on(new AddNameToGroupEvent(24L, "Scott"));
+        verify(bus).post(new NameAddedSuccessfullyEvent());
+    }
+
+    @Test
+    public void on_OverviewBecameVisibleEvent_post_OverviewRetrievedEvent() {
         when(dbHelper.getAllGroups()).thenReturn(asList(
                 group(1L, "Group One", asList(name(1L, "Scott"), name(2L, "Peter"))),
                 group(2L, "Group Two", asList(name(3L, "Rob"), name(4L, "Andy"), name(5L, "Rachel")))));
@@ -81,14 +88,14 @@ public class StorageUseCaseTest {
     }
 
     @Test
-    public void on_retrieve_group_names_event_post_group_names_retrieved_event() {
+    public void on_RetrieveGroupNamesEvent_post_GroupNamesRetrievedEvent() {
         when(dbHelper.retrieveGroupNames(24L)).thenReturn(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena")));
         useCase.on(new RetrieveGroupNamesEvent(24L));
         verify(bus).post(new GroupNamesRetrievedEvent(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena"))));
     }
 
     @Test
-    public void on_delete_name_event_remove_name_from_database() {
+    public void on_DeleteNameEvent_remove_name_from_database() {
         when(dbHelper.removeName(24L)).thenReturn(name(3L, "Bauer"));
         useCase.on(new DeleteNameEvent(24L));
         verify(dbHelper).removeName(24L);
@@ -104,14 +111,14 @@ public class StorageUseCaseTest {
     }
 
     @Test
-    public void on_group_details_event_edit_group_name_in_database() {
+    public void on_EditGroupDetailsEvent_edit_group_name_in_database() {
         useCase.on(new EditGroupDetailsEvent(24L, "CTU"));
         verify(dbHelper).editGroupName(24L, "CTU");
         verify(bus).post(new GroupNameEditedSuccessfullyEvent());
     }
 
     @Test
-    public void on_retrieve_group_details_event_post_group_details_retrieved_event_with_details_from_database() {
+    public void on_RetrieveGroupDetailsEvent_post_GroupDetailsRetrievedSuccessfullyEvent_with_details_from_database() {
         when(dbHelper.retrieveGroupDetails(24L)).thenReturn(new GroupDetails(24L, "CTU"));
         useCase.on(new RetrieveGroupDetailsEvent(24L));
         verify(bus).post(new GroupDetailsRetrievedSuccessfullyEvent(new GroupDetails(24L, "CTU")));

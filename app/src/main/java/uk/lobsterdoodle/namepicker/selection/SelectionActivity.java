@@ -33,6 +33,7 @@ import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.model.Name;
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
 import uk.lobsterdoodle.namepicker.storage.GroupNamesRetrievedEvent;
+import uk.lobsterdoodle.namepicker.storage.NameAddedSuccessfullyEvent;
 
 import static com.google.common.collect.Collections2.filter;
 import static com.google.common.collect.ContiguousSet.create;

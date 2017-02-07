@@ -30,6 +30,7 @@ import uk.lobsterdoodle.namepicker.model.Name;
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
 import uk.lobsterdoodle.namepicker.storage.DeleteNameEvent;
 import uk.lobsterdoodle.namepicker.storage.GroupNamesRetrievedEvent;
+import uk.lobsterdoodle.namepicker.storage.NameAddedSuccessfullyEvent;
 import uk.lobsterdoodle.namepicker.storage.NameDeletedSuccessfullyEvent;
 
 public class EditNamesActivity extends AppCompatActivity implements NameCardActions {
@@ -89,6 +90,11 @@ public class EditNamesActivity extends AppCompatActivity implements NameCardActi
     public void on(GroupNamesRetrievedEvent event) {
         cellData = event.names;
         runOnUiThread(() -> nameListAdapter.notifyDataSetChanged());
+    }
+
+    @Subscribe
+    public void on(NameAddedSuccessfullyEvent event) {
+        nameInput.setText("");
     }
 
     @Subscribe
