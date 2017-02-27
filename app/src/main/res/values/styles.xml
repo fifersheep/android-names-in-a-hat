@@ -22,7 +22,7 @@
 
     <style name="AppText.Overview.Count">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/grey_light</item>
+        <item name="android:textColor">@color/palette_grey_light</item>
     </style>
 
     <style name="AppText.AddGroup">

@@ -1,30 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="old_dark_grey">#424138</color>
-
-    <color name="holo_blue_light">#33b5e5</color>
-
-    <!-- Adidas Colours -->
-    <color name="tan">#8F764B</color>
-    <color name="tan_dark">#665336</color>
-    <color name="grey_dark">#21211C</color>
-    <color name="grey_medium">#787669</color>
-    <color name="grey_light">#B3B5B4</color>
-    <color name="turquoise_dark_dark">#114c48</color>
-    <color name="turquoise_dark">#16625D</color>
-    <color name="turquoise_light">#2D8A84</color>
+    <color name="background_grey">#E8ECF0</color>
     <color name="transparent">#00FFFFFF</color>
 
-    <!-- Lobster Doodle Colours -->
-    <color name="doodle_red">#B32A33</color>
-    <color name="doodle_grey">#1F1F1A</color>
-
-    <!-- Test Colours -->
-    <color name="li_grey_trans">#66B3B5B4</color>
-    <color name="spinner_teal">#18C3EF</color>
-
-    <!-- Pallet Colours -->
+    <!-- Palette Colours -->
     <color name="palette_red">#B32A33</color>
-    <color name="palette_grey_light">#E8ECF0</color>
+    <color name="palette_grey_light">#B3B5B4</color>
     <color name="palette_grey_dark">#1F1F1A</color>
 </resources>

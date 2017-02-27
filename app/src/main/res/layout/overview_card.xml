@@ -40,7 +40,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginRight="4dp"
         android:src="@drawable/ic_more_horiz"
-        android:tint="@color/grey_light"
+        android:tint="@color/palette_grey_light"
         android:contentDescription="@string/overview_card_overflow_description"/>
 
 </RelativeLayout>

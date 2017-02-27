@@ -28,4 +28,5 @@
     <string name="generated_names_dialog_title_singular">The selected name is…</string>
     <string name="generated_names_dialog_title_multiple">The selected names are…</string>
     <string name="generated_names_dialog_positive_button">Okay</string>
+    <string name="selection_draw_button_label">Draw</string>
 </resources>

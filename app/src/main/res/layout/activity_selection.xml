@@ -2,30 +2,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/background_grey">
 
     <GridView
         android:id="@+id/selection_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="16dp"
+        android:layout_above="@+id/selection_actions_divider"
+        android:clipToPadding="false"
+        android:horizontalSpacing="10dp"
+        android:numColumns="2"
         android:paddingBottom="16dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:clipToPadding="false"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
-        android:stretchMode="columnWidth"
-        android:numColumns="2"
+        android:paddingTop="16dp"
         android:scrollbars="none"
-        android:layout_above="@+id/selection_actions_divider"/>
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp"/>
 
     <View
         android:id="@+id/selection_actions_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_above="@+id/selection_actions"
-        android:background="@color/grey_light"/>
+        android:background="@color/palette_grey_light"/>
 
     <RelativeLayout
         android:id="@+id/selection_actions"
@@ -33,36 +34,37 @@
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:paddingLeft="8dp"
+        android:background="@android:color/white"
         android:paddingRight="8dp">
 
         <Button
             android:id="@+id/selection_button_draw"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:textColor="@android:color/white"
-            android:text="Draw"/>
+            android:layout_centerVertical="true"
+            android:text="@string/selection_draw_button_label"
+            android:textColor="@android:color/white"/>
 
         <Button
             android:id="@+id/selection_button_toggle"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/selection_button_draw"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:text="Toggle Selection"/>
+            tools:text="Select All"/>
 
         <Spinner
             android:id="@+id/selection_draw_count"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/selection_button_toggle"
-            android:inputType="number"
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined"/>
+            android:inputType="number"/>
 
     </RelativeLayout>
 

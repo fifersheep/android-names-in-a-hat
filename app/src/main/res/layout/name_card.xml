@@ -21,6 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:src="@drawable/ic_close"
-        android:tint="@color/grey_light"
+        android:tint="@color/palette_grey_light"
         android:contentDescription="@string/delete_name_button_description"/>
 </RelativeLayout>
