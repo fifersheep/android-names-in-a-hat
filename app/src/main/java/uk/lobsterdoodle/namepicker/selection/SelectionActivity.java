@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -30,17 +29,8 @@ import butterknife.OnClick;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.events.EventBus;
-import uk.lobsterdoodle.namepicker.model.Name;
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
-import uk.lobsterdoodle.namepicker.storage.GroupNamesRetrievedEvent;
-import uk.lobsterdoodle.namepicker.storage.NameAddedSuccessfullyEvent;
-
-import static com.google.common.collect.Collections2.filter;
-import static com.google.common.collect.ContiguousSet.create;
-import static com.google.common.collect.DiscreteDomain.integers;
-import static com.google.common.collect.Lists.newArrayList;
-import static com.google.common.collect.Lists.transform;
-import static com.google.common.collect.Range.closed;
+import uk.lobsterdoodle.namepicker.ui.UpdateDrawActionsEvent;
 
 public class SelectionActivity extends AppCompatActivity {
     private static final String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
@@ -57,17 +47,19 @@ public class SelectionActivity extends AppCompatActivity {
     @OnClick(R.id.selection_button_draw)
     public void submit(Button drawButton) {
         drawButton.setOnClickListener(v -> bus.post(new DrawNamesFromSelectionEvent((String) drawCount.getSelectedItem(),
-                FluentIterable.from(data)
-                        .filter(d -> d.toggledOn)
-                        .transform(d -> d.name)
+                FluentIterable.from(dataWrapper.data())
+                        .filter(name -> name.toggledOn)
+                        .transform(name -> name.name)
                         .toList())));
     }
 
     @Inject
     EventBus bus;
 
+    @Inject
+    SelectionAdapterDataWrapper dataWrapper;
+
     private long groupId;
-    private List<Name> data = new ArrayList<>();
     private List<String> drawCountOptions = new ArrayList<>();
     private SelectionAdapter selectionAdapter;
     private ArrayAdapter<String> drawOptionsAdapter;
@@ -95,27 +87,28 @@ public class SelectionActivity extends AppCompatActivity {
     }
 
     @Subscribe
-    public void on(GroupNamesRetrievedEvent event) {
-        data = event.names;
-        selectionAdapter.notifyDataSetChanged();
-        updateDrawOptions();
+    public void on(UpdateDrawActionsEvent event) {
+        toggleButton.setText(event.toggleLabel);
+        toggleButton.setOnClickListener(v -> bus.post(event.selectionToggleEvent));
+
+        drawOptionsAdapter.clear();
+        drawOptionsAdapter.addAll(event.drawOptions);
     }
 
     @Subscribe
     public void on(NamesGeneratedEvent event) {
         SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())
-                .setTitle(getString(event.generatedNames.size() > 1
+                .setTitle(getString(event.multipleNames
                         ? R.string.generated_names_dialog_title_multiple
                         : R.string.generated_names_dialog_title_singular))
-                .setMessage(TextUtils.join("\n", event.generatedNames))
+                .setMessage(event.generatedNames)
                 .setPositiveButtonText(getString(R.string.generated_names_dialog_positive_button))
                 .show();
     }
 
-    private void updateDrawOptions() {
-        drawOptionsAdapter.clear();
-        int checkedNameCount = filter(data, n -> n.toggledOn).size();
-        drawOptionsAdapter.addAll(transform(newArrayList(create(closed(Math.min(1, checkedNameCount), checkedNameCount), integers())), String::valueOf));
+    @Subscribe
+    public void on(SelectionDataUpdatedEvent event) {
+        selectionAdapter.notifyDataSetChanged();
     }
 
     public static Intent launchIntent(Context context, long groupId) {
@@ -133,30 +126,26 @@ public class SelectionActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return data.size();
+            return dataWrapper.count();
         }
 
         @Override
         public Object getItem(int position) {
-            return data.get(position);
+            return dataWrapper.item(position);
         }
 
         @Override
         public long getItemId(int position) {
             return position;
         }
-
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             final NameSelectionView nameSelectionView = convertView == null
                     ? new NameSelectionView(context)
                     : (NameSelectionView) convertView;
 
-            nameSelectionView.bind(data.get(position),
-                    (buttonView, isChecked) -> {
-                        data.set(position, data.get(position).copyWith(isChecked));
-                        SelectionActivity.this.updateDrawOptions();
-                    });
+            nameSelectionView.bind(dataWrapper.item(position),
+                    (buttonView, isChecked) -> bus.post(new NameSelectionCheckChangedEvent(position, isChecked)));
             return nameSelectionView;
         }
     }

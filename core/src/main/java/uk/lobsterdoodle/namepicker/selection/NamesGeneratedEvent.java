@@ -1,12 +1,12 @@
 package uk.lobsterdoodle.namepicker.selection;
 
-import java.util.List;
-
 public class NamesGeneratedEvent {
-    public final List<String> generatedNames;
+    public final String generatedNames;
+    public final boolean multipleNames;
 
-    public NamesGeneratedEvent(List<String> generatedNames) {
+    public NamesGeneratedEvent(String generatedNames, boolean multipleNames) {
         this.generatedNames = generatedNames;
+        this.multipleNames = multipleNames;
     }
 
     @Override
@@ -16,18 +16,23 @@ public class NamesGeneratedEvent {
 
         NamesGeneratedEvent that = (NamesGeneratedEvent) o;
 
+        if (multipleNames != that.multipleNames) return false;
         return generatedNames != null ? generatedNames.equals(that.generatedNames) : that.generatedNames == null;
+
     }
 
     @Override
     public int hashCode() {
-        return generatedNames != null ? generatedNames.hashCode() : 0;
+        int result = generatedNames != null ? generatedNames.hashCode() : 0;
+        result = 31 * result + (multipleNames ? 1 : 0);
+        return result;
     }
 
     @Override
     public String toString() {
         return "NamesGeneratedEvent{" +
-                "generatedNames=" + generatedNames +
+                "generatedNames='" + generatedNames + '\'' +
+                ", multipleNames=" + multipleNames +
                 '}';
     }
 }

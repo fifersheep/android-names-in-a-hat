@@ -10,6 +10,7 @@ import uk.lobsterdoodle.namepicker.events.AndroidEventBus;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.selection.NumberGenerator;
 import uk.lobsterdoodle.namepicker.selection.RandomNumberGenerator;
+import uk.lobsterdoodle.namepicker.selection.SelectionAdapterDataWrapper;
 import uk.lobsterdoodle.namepicker.storage.DbHelper;
 import uk.lobsterdoodle.namepicker.storage.KeyValueStore;
 import uk.lobsterdoodle.namepicker.storage.SharedPrefsKeyValueStore;
@@ -27,6 +28,11 @@ public class DependencyInjectionModule {
     @Provides
     EventBus providesEventBus() {
         return bus;
+    }
+
+    @Provides
+    SelectionAdapterDataWrapper providesSelectionAdapterDataWrapper(EventBus bus) {
+        return new SelectionAdapterDataWrapper(bus);
     }
 
     @Provides
