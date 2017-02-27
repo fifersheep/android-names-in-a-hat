@@ -48,5 +48,6 @@ public class SelectionUseCase {
         final String toggleLabel = checkedNameCount == event.data.size() ? "Clear All" : "Select All";
         final SelectionToggleEvent toggleClickEvent = checkedNameCount == event.data.size() ? new ClearAllSelectionToggleEvent() : new SelectAllSelectionToggleEvent();
         bus.post(new UpdateDrawActionsEvent(drawOptions, toggleLabel, toggleClickEvent));
+        bus.post(checkedNameCount >= 2 ? new EnableDrawActionsEvent() : new DisableDrawActionsEvent());
     }
 }

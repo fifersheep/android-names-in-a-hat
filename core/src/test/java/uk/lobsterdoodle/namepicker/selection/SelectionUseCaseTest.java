@@ -55,21 +55,33 @@ public class SelectionUseCaseTest {
     }
 
     @Test
-    public void on_GroupNamesRetrievedEvent_post_UpdateDrawActionsEvent_with_some_selected_names() {
+    public void on_SelectionDataUpdatedEvent_post_UpdateDrawActionsEvent_with_some_selected_names() {
         useCase.on(new SelectionDataUpdatedEvent(asList(nameToggledOn(), nameToggledOn(), nameToggledOff(), nameToggledOff())));
         verify(bus).post(new UpdateDrawActionsEvent(asList("1", "2"), "Select All", new SelectAllSelectionToggleEvent()));
     }
 
     @Test
-    public void on_GroupNamesRetrievedEvent_post_UpdateDrawActionsEvent_with_all_selected_names() {
+    public void on_SelectionDataUpdatedEvent_post_UpdateDrawActionsEvent_with_all_selected_names() {
         useCase.on(new SelectionDataUpdatedEvent(asList(nameToggledOn(), nameToggledOn(), nameToggledOn(), nameToggledOn())));
         verify(bus).post(new UpdateDrawActionsEvent(asList("1", "2", "3", "4"), "Clear All", new ClearAllSelectionToggleEvent()));
     }
 
     @Test
-    public void on_GroupNamesRetrievedEvent_post_UpdateDrawActionsEvent_without_selected_names() {
+    public void on_SelectionDataUpdatedEvent_post_UpdateDrawActionsEvent_without_selected_names() {
         useCase.on(new SelectionDataUpdatedEvent(asList(nameToggledOff(), nameToggledOff(), nameToggledOff(), nameToggledOff())));
         verify(bus).post(new UpdateDrawActionsEvent(singletonList("0"), "Select All", new SelectAllSelectionToggleEvent()));
+    }
+
+    @Test
+    public void on_SelectionDataUpdatedEvent_post_DisableDrawActionsEvent_when_1_or_fewer_names_are_toggled_on() {
+        useCase.on(new SelectionDataUpdatedEvent(asList(nameToggledOn(), nameToggledOff(), nameToggledOff())));
+        verify(bus).post(new DisableDrawActionsEvent());
+    }
+
+    @Test
+    public void on_SelectionDataUpdatedEvent_post_EnableDrawActionsEvent_when_2_or_more_names_are_toggled_on() {
+        useCase.on(new SelectionDataUpdatedEvent(asList(nameToggledOn(), nameToggledOn(), nameToggledOff())));
+        verify(bus).post(new EnableDrawActionsEvent());
     }
 
     private Name nameToggledOn() {

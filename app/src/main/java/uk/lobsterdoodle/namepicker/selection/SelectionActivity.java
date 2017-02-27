@@ -44,6 +44,9 @@ public class SelectionActivity extends AppCompatActivity {
     @InjectView(R.id.selection_button_toggle)
     Button toggleButton;
 
+    @InjectView(R.id.selection_button_draw)
+    Button drawButton;
+
     @OnClick(R.id.selection_button_draw)
     public void submit(Button drawButton) {
         drawButton.setOnClickListener(v -> bus.post(new DrawNamesFromSelectionEvent((String) drawCount.getSelectedItem(),
@@ -109,6 +112,18 @@ public class SelectionActivity extends AppCompatActivity {
     @Subscribe
     public void on(SelectionDataUpdatedEvent event) {
         selectionAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe
+    public void on(DisableDrawActionsEvent event) {
+        drawCount.setEnabled(false);
+        drawButton.setEnabled(false);
+    }
+
+    @Subscribe
+    public void on(EnableDrawActionsEvent event) {
+        drawCount.setEnabled(true);
+        drawButton.setEnabled(true);
     }
 
     public static Intent launchIntent(Context context, long groupId) {
