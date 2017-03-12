@@ -32,8 +32,9 @@ import uk.lobsterdoodle.namepicker.storage.DeleteNameEvent;
 import uk.lobsterdoodle.namepicker.storage.GroupNamesRetrievedEvent;
 import uk.lobsterdoodle.namepicker.storage.NameAddedSuccessfullyEvent;
 import uk.lobsterdoodle.namepicker.storage.NameDeletedSuccessfullyEvent;
+import uk.lobsterdoodle.namepicker.ui.FlowActivity;
 
-public class EditNamesActivity extends AppCompatActivity implements NameCardActions {
+public class EditNamesActivity extends FlowActivity implements NameCardActions {
     public static final String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
 
     @InjectView(R.id.edit_names_root_layout)

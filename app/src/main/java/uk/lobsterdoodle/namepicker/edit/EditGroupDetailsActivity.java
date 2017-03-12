@@ -25,8 +25,9 @@ import uk.lobsterdoodle.namepicker.storage.GroupCreationSuccessfulEvent;
 import uk.lobsterdoodle.namepicker.storage.GroupDetailsRetrievedSuccessfullyEvent;
 import uk.lobsterdoodle.namepicker.storage.GroupNameEditedSuccessfullyEvent;
 import uk.lobsterdoodle.namepicker.storage.RetrieveGroupDetailsEvent;
+import uk.lobsterdoodle.namepicker.ui.FlowActivity;
 
-public class EditGroupDetailsActivity extends AppCompatActivity {
+public class EditGroupDetailsActivity extends FlowActivity {
     private static final String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
 
     @InjectView(R.id.create_group_name_input)

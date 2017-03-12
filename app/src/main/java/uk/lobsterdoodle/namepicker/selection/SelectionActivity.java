@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,9 +36,10 @@ import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
+import uk.lobsterdoodle.namepicker.ui.FlowActivity;
 import uk.lobsterdoodle.namepicker.ui.UpdateDrawActionsEvent;
 
-public class SelectionActivity extends AppCompatActivity {
+public class SelectionActivity extends FlowActivity {
     private static final String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
 
     @InjectView(R.id.selection_list)
