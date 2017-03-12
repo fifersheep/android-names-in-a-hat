@@ -54,13 +54,14 @@ public class SelectionActivity extends FlowActivity {
     @InjectView(R.id.selection_button_draw)
     Button drawButton;
 
+    @SuppressWarnings("UnusedParameters")
     @OnClick(R.id.selection_button_draw)
     public void submit(Button drawButton) {
-        drawButton.setOnClickListener(v -> bus.post(new DrawNamesFromSelectionEvent((String) drawCount.getSelectedItem(),
-                FluentIterable.from(dataWrapper.data())
-                        .filter(name -> name.toggledOn)
-                        .transform(name -> name.name)
-                        .toList())));
+        bus.post(new DrawNamesFromSelectionEvent((String) drawCount.getSelectedItem(),
+            FluentIterable.from(dataWrapper.data())
+                    .filter(name -> name.toggledOn)
+                    .transform(name -> name.name)
+                    .toList()));
     }
 
     @Inject
