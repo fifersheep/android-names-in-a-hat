@@ -9,18 +9,18 @@ public interface KeyValueStore {
 
     boolean contains(String key);
 
-    KeyValueEdit edit();
+    Edit edit();
 
-    interface KeyValueEdit {
-        KeyValueEdit put(String key, boolean value);
+    interface Edit {
+        Edit put(String key, boolean value);
 
-        KeyValueEdit put(String key, long value);
+        Edit put(String key, long value);
 
-        KeyValueEdit put(String key, String value);
+        Edit put(String key, String value);
 
-        KeyValueEdit remove(String key);
+        Edit remove(String key);
 
-        KeyValueEdit clear();
+        Edit clear();
 
         void commit();
     }

@@ -2,9 +2,14 @@ package uk.lobsterdoodle.namepicker.selection;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -15,11 +20,13 @@ import android.widget.Spinner;
 
 import com.avast.android.dialogs.fragment.SimpleDialogFragment;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableMap;
 
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -62,10 +69,16 @@ public class SelectionActivity extends AppCompatActivity {
     @Inject
     SelectionAdapterDataWrapper dataWrapper;
 
+    private Menu menu;
     private long groupId;
     private List<String> drawCountOptions = new ArrayList<>();
     private SelectionAdapter selectionAdapter;
     private ArrayAdapter<String> drawOptionsAdapter;
+
+    final ImmutableMap<Integer, Runnable> menuItems = ImmutableMap.<Integer, Runnable>builder()
+            .put(R.id.menu_action_grid_one, () -> bus.post(new GridColumnSelectedEvent(1)))
+            .put(R.id.menu_action_grid_two, () -> bus.post(new GridColumnSelectedEvent(2)))
+            .build();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +100,32 @@ public class SelectionActivity extends AppCompatActivity {
         super.onResume();
         bus.register(this);
         bus.post(new RetrieveGroupNamesEvent(groupId));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
+        getMenuInflater().inflate(R.menu.menu_grid, menu);
+
+        for (Map.Entry<Integer, Runnable> entry : menuItems.entrySet()) {
+            addMenuItem(entry.getKey(), entry.getValue());
+        }
+
+        bus.post(new LoadSelectionGridPreference());
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Subscribe
+    public void on(SelectionGridChangedEvent event) {
+        grid.setNumColumns(event.gridColumns);
+
+        final MenuItem one = menu.findItem(R.id.menu_action_grid_one);
+        one.setVisible(event.nextGridOption == 1);
+        one.setEnabled(event.nextGridOption == 1);
+
+        final MenuItem two = menu.findItem(R.id.menu_action_grid_two);
+        two.setVisible(event.nextGridOption == 2);
+        two.setEnabled(event.nextGridOption == 2);
     }
 
     @Subscribe
@@ -124,6 +163,17 @@ public class SelectionActivity extends AppCompatActivity {
     public void on(EnableDrawActionsEvent event) {
         drawCount.setEnabled(true);
         drawButton.setEnabled(true);
+    }
+
+    private void addMenuItem(int menuItemResId, Runnable runnable) {
+        final MenuItem menuItem = menu.findItem(menuItemResId);
+        final Drawable wrap = DrawableCompat.wrap(menuItem.getIcon()).mutate();
+        DrawableCompat.setTint(wrap, ContextCompat.getColor(this, android.R.color.white));
+        menuItem.setIcon(wrap);
+        menuItem.setOnMenuItemClickListener((item) -> {
+            runnable.run();
+            return true;
+        });
     }
 
     public static Intent launchIntent(Context context, long groupId) {

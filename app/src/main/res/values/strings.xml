@@ -29,4 +29,6 @@
     <string name="generated_names_dialog_title_multiple">The selected names are…</string>
     <string name="generated_names_dialog_positive_button">Okay</string>
     <string name="selection_draw_button_label">Draw</string>
+    <string name="menu_item_action_grid_one">One Column</string>
+    <string name="menu_item_action_grid_two">Two Columns</string>
 </resources>

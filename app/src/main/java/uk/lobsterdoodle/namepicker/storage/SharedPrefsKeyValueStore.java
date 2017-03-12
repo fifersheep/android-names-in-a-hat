@@ -30,11 +30,11 @@ public class SharedPrefsKeyValueStore implements KeyValueStore {
     }
 
     @Override
-    public KeyValueEdit edit() {
+    public Edit edit() {
         return new SharedPrefsEdit(sharedPreferences.edit());
     }
 
-    private class SharedPrefsEdit implements KeyValueEdit {
+    private class SharedPrefsEdit implements Edit {
         private final SharedPreferences.Editor edit;
 
         SharedPrefsEdit(SharedPreferences.Editor edit) {
@@ -42,31 +42,31 @@ public class SharedPrefsKeyValueStore implements KeyValueStore {
         }
 
         @Override
-        public KeyValueEdit put(String key, boolean value) {
+        public Edit put(String key, boolean value) {
             edit.putBoolean(key, value);
             return this;
         }
 
         @Override
-        public KeyValueEdit put(String key, long value) {
+        public Edit put(String key, long value) {
             edit.putLong(key, value);
             return this;
         }
 
         @Override
-        public KeyValueEdit put(String key, String value) {
+        public Edit put(String key, String value) {
             edit.putString(key, value);
             return this;
         }
 
         @Override
-        public KeyValueEdit remove(String key) {
+        public Edit remove(String key) {
             edit.remove(key);
             return this;
         }
 
         @Override
-        public KeyValueEdit clear() {
+        public Edit clear() {
             edit.clear();
             return this;
         }
