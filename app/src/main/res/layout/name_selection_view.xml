@@ -9,7 +9,7 @@
                                     app:cardElevation="2dp"
                                     app:cardUseCompatPadding="true">
 
-    <CheckBox
+    <CheckedTextView
         android:id="@+id/name_selection_view_checkbox"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,9 +18,9 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
         android:background="@color/transparent"
-        android:button="@null"
-        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
         tools:text="Scott"/>
 
 </android.support.v7.widget.CardView>

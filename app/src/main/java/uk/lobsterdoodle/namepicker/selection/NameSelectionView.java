@@ -3,8 +3,7 @@ package uk.lobsterdoodle.namepicker.selection;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
 
 import butterknife.ButterKnife;
@@ -14,8 +13,11 @@ import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.model.Name;
 
 public class NameSelectionView extends FrameLayout {
+
     @InjectView(R.id.name_selection_view_checkbox)
-    CheckBox checkBox;
+    CheckedTextView checkBox;
+
+    private CheckedChangeListener listener;
 
     public NameSelectionView(Context context) {
         super(context);
@@ -35,12 +37,18 @@ public class NameSelectionView extends FrameLayout {
     private void init(Context context) {
         App.get(context).component().inject(this);
         ButterKnife.inject(this, LayoutInflater.from(context).inflate(R.layout.name_selection_view, this, true));
+        setOnClickListener(v -> {
+            checkBox.toggle();
+            if (listener != null) {
+                listener.onCheckedChanged(checkBox.isChecked());
+            }
+        });
     }
 
-    public void bind(Name name, CompoundButton.OnCheckedChangeListener listener) {
-        checkBox.setOnCheckedChangeListener(null);
+    public void bind(Name name, CheckedChangeListener listener) {
+        this.listener = listener;
         checkBox.setText(name.name);
         checkBox.setChecked(name.toggledOn);
-        checkBox.setOnCheckedChangeListener(listener);
+        this.listener.onCheckedChanged(checkBox.isChecked());
     }
 }

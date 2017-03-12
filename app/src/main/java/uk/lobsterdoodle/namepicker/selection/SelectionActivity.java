@@ -210,7 +210,7 @@ public class SelectionActivity extends AppCompatActivity {
                     : (NameSelectionView) convertView;
 
             nameSelectionView.bind(dataWrapper.item(position),
-                    (buttonView, isChecked) -> bus.post(new NameSelectionCheckChangedEvent(position, isChecked)));
+                    (isChecked) -> bus.post(new NameSelectionCheckChangedEvent(position, isChecked)));
             return nameSelectionView;
         }
     }
