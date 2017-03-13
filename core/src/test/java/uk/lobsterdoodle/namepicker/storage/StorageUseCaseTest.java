@@ -15,9 +15,9 @@ import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
 import uk.lobsterdoodle.namepicker.overview.OverviewBecameVisibleEvent;
 import uk.lobsterdoodle.namepicker.overview.OverviewCardCellData;
 import uk.lobsterdoodle.namepicker.overview.OverviewRetrievedEvent;
+import uk.lobsterdoodle.namepicker.selection.NameStateChangedEvent;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -124,6 +124,12 @@ public class StorageUseCaseTest {
         verify(bus).post(new GroupDetailsRetrievedSuccessfullyEvent(new GroupDetails(24L, "CTU")));
     }
 
+    @Test
+    public void on_NameStateChangedEvent_update_name_in_database() {
+        useCase.on(new NameStateChangedEvent(name(24L, "Jack")));
+        verify(dbHelper).updateName(name(24L, "Jack"));
+    }
+
     private OverviewCardCellData cellData(long groupId, String groupName, int nameCount) {
         return new OverviewCardCellData(groupId, groupName, nameCount);
     }
@@ -137,6 +143,6 @@ public class StorageUseCaseTest {
     }
 
     private Name name(long id, String name) {
-        return new Name(id, name);
+        return new Name(id, name, false);
     }
 }

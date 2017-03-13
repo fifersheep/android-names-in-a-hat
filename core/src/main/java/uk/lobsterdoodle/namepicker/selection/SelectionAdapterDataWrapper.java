@@ -24,7 +24,9 @@ public class SelectionAdapterDataWrapper extends AdapterDataWrapper<Name> {
 
     @Subscribe
     public void on(NameSelectionCheckChangedEvent event) {
-        replaceItem(event.position, item(event.position).copyWith(event.isChecked));
+        final Name name = item(event.position).copyWith(event.isChecked);
+        replaceItem(event.position, name);
+        bus.post(new NameStateChangedEvent(name));
         bus.post(new SelectionDataUpdatedEvent(data()));
     }
 

@@ -5,10 +5,6 @@ public class Name {
     final public String name;
     final public boolean toggledOn;
 
-    public Name(long id, String name) {
-        this(id, name, false);
-    }
-
     public Name(long id, String name, boolean toggledOn) {
         this.id = id;
         this.name = name;

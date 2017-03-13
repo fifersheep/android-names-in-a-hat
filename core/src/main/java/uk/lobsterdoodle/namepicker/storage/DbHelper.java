@@ -15,10 +15,10 @@ public interface DbHelper {
     Name removeName(long nameId);
     GroupDetails removeGroup(long groupId);
     void editGroupName(long groupId, String newName);
+    void updateName(Name name);
 
     void addClassroom (String classroomName, List<String> pupils);
     void editGroupNames (long groupId, List<String> pupils);
     long getClassroomId(String classroomName);
-    void updatePupilName(String currentName, String classroomName, String newName);
     boolean sortPupils(String groupId);
 }

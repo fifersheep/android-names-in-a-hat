@@ -67,6 +67,14 @@ public class SelectionAdapterDataWrapperTest {
     }
 
     @Test
+    public void on_NameSelectionCheckChangedEvent_post_NameStateChangedEvent() {
+        wrapper.on(groupNamesRetrievedEvent(asList(name("Scott", false), name("Suzanne"))));
+        reset(bus);
+        wrapper.on(new NameSelectionCheckChangedEvent(0, true));
+        verify(bus).post(new NameStateChangedEvent(name("Scott", true)));
+    }
+
+    @Test
     public void on_SelectAllSelectionToggleEvent_select_all() {
         wrapper.on(groupNamesRetrievedEvent(asList(name("Scott"), name("Suzanne"))));
         wrapper.on(new SelectAllSelectionToggleEvent());
@@ -109,7 +117,7 @@ public class SelectionAdapterDataWrapperTest {
     }
 
     private Name name(String name) {
-        return new Name(0L, name);
+        return new Name(0L, name, false);
     }
 
     private Name name(String name, boolean toggledOn) {

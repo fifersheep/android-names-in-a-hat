@@ -16,6 +16,7 @@ import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
 import uk.lobsterdoodle.namepicker.overview.OverviewBecameVisibleEvent;
 import uk.lobsterdoodle.namepicker.overview.OverviewCardCellData;
 import uk.lobsterdoodle.namepicker.overview.OverviewRetrievedEvent;
+import uk.lobsterdoodle.namepicker.selection.NameStateChangedEvent;
 
 import static com.google.common.collect.Lists.transform;
 
@@ -80,5 +81,10 @@ public class StorageUseCase {
     @Subscribe
     public void on(RetrieveGroupDetailsEvent event) {
         bus.post(new GroupDetailsRetrievedSuccessfullyEvent(db.retrieveGroupDetails(event.groupId)));
+    }
+
+    @Subscribe
+    public void on(NameStateChangedEvent event) {
+        db.updateName(event.name);
     }
 }
