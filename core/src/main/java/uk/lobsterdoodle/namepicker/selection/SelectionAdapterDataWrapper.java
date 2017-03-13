@@ -20,6 +20,9 @@ public class SelectionAdapterDataWrapper extends AdapterDataWrapper<Name> {
     public void on(GroupNamesRetrievedEvent event) {
         replaceData(event.names);
         bus.post(new SelectionDataUpdatedEvent(data()));
+        bus.post(event.names.size() > 0
+                ? new DisableSelectionEmptyStateEvent()
+                : new EnableSelectionEmptyStateEvent());
     }
 
     @Subscribe

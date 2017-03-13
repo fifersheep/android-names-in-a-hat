@@ -68,4 +68,15 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/selection_empty_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/selection_actions"
+        android:layout_margin="24dp"
+        android:gravity="center"
+        android:text="@string/selection_empty_message"
+        android:textSize="18sp"/>
+
 </RelativeLayout>

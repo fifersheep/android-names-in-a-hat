@@ -31,4 +31,5 @@
     <string name="selection_draw_button_label">Draw</string>
     <string name="menu_item_action_grid_one">One Column</string>
     <string name="menu_item_action_grid_two">Two Columns</string>
+    <string name="selection_empty_message">This group contains no names.\n\nAdd names to the group using the group\'s menu button on the Overview screen.</string>
 </resources>

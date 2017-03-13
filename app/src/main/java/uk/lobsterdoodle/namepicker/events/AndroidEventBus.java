@@ -1,11 +1,18 @@
 package uk.lobsterdoodle.namepicker.events;
 
+import android.util.Log;
+
+import uk.lobsterdoodle.namepicker.BuildConfig;
+
 public class AndroidEventBus implements EventBus {
 
     private final org.greenrobot.eventbus.EventBus eventBus = org.greenrobot.eventbus.EventBus.getDefault();
 
     @Override
     public void post(Object event) {
+        if (BuildConfig.DEBUG) {
+            Log.v("EventBus", event.toString());
+        }
         eventBus.post(event);
     }
 

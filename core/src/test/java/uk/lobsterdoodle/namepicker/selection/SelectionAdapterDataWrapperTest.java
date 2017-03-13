@@ -12,6 +12,8 @@ import uk.lobsterdoodle.namepicker.model.Name;
 import uk.lobsterdoodle.namepicker.storage.GroupNamesRetrievedEvent;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -102,6 +104,18 @@ public class SelectionAdapterDataWrapperTest {
         reset(bus);
         wrapper.on(new ClearAllSelectionToggleEvent());
         verify(bus).post(new SelectionDataUpdatedEvent(asList(name("Scott"), name("Suzanne"))));
+    }
+
+    @Test
+    public void on_GroupNamesRetrievedEvent_post_EnableSelectionEmptyStateEvent_when_no_names() {
+        wrapper.on(groupNamesRetrievedEvent(emptyList()));
+        verify(bus).post(new EnableSelectionEmptyStateEvent());
+    }
+
+    @Test
+    public void on_GroupNamesRetrievedEvent_post_DisableSelectionEmptyStateEvent_when_contains_names() {
+        wrapper.on(groupNamesRetrievedEvent(singletonList(name(""))));
+        verify(bus).post(new DisableSelectionEmptyStateEvent());
     }
 
     private boolean allDataToggledOn(List<Name> names) {

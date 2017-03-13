@@ -45,6 +45,9 @@ public class SelectionActivity extends FlowActivity {
     @InjectView(R.id.selection_list)
     GridView grid;
 
+    @InjectView(R.id.selection_empty_text_view)
+    View emptyView;
+
     @InjectView(R.id.selection_draw_count)
     Spinner drawCount;
 
@@ -152,6 +155,18 @@ public class SelectionActivity extends FlowActivity {
     @Subscribe
     public void on(SelectionDataUpdatedEvent event) {
         selectionAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe
+    public void on(EnableSelectionEmptyStateEvent event) {
+        emptyView.setVisibility(View.VISIBLE);
+        toggleButton.setEnabled(false);
+    }
+
+    @Subscribe
+    public void on(DisableSelectionEmptyStateEvent event) {
+        emptyView.setVisibility(View.INVISIBLE);
+        toggleButton.setEnabled(true);
     }
 
     @Subscribe
