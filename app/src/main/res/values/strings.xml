@@ -5,8 +5,11 @@
     <string name="action_settings">Settings</string>
 
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_overview">Overview</string>
+    <string name="title_activity_create_group">Create Group</string>
+    <string name="title_activity_add_names">Add Names</string>
+    <string name="title_activity_selection">Draw Names</string>
 
-    <string name="title_activity_overview">Groups</string>
     <string name="overview_label">Select a group</string>
     <string name="overview_add_group">Add Group</string>
 

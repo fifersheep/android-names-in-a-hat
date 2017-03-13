@@ -34,19 +34,19 @@
         <activity
             android:name=".edit.EditGroupDetailsActivity"
             android:theme="@style/NamesTheme.Flow"
-            android:label="@string/title_activity_overview">
+            android:label="@string/title_activity_create_group">
         </activity>
 
         <activity
             android:name=".edit.EditNamesActivity"
             android:theme="@style/NamesTheme.Flow"
-            android:label="@string/title_activity_overview">
+            android:label="@string/title_activity_add_names">
         </activity>
 
         <activity
             android:name=".selection.SelectionActivity"
             android:theme="@style/NamesTheme.Flow"
-            android:label="@string/title_activity_overview">
+            android:label="@string/title_activity_selection">
         </activity>
 
     </application>
