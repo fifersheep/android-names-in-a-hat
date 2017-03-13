@@ -11,6 +11,15 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    signingConfigs {
+        release {
+            keyAlias niahKeyAlias
+            keyPassword niahKeyPassword
+            storeFile file(niahKeystoreFile)
+            storePassword niahKeystorePassword
+        }
+    }
+
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 24
@@ -21,6 +30,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles 'proguard-rules.txt'
+            signingConfig signingConfigs.release
         }
     }
     lintOptions {
