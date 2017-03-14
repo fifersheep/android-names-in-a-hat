@@ -238,7 +238,7 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Name deletedName = null;
 
-        String[] projection = { COLUMN_NAME_ID, COLUMN_NAME_NAME };
+        String[] projection = { COLUMN_NAME_ID, COLUMN_NAME_NAME, COLUMN_NAME_TOGGLED };
         String selection = COLUMN_NAME_ID + " LIKE ?";
         String[] selectionArgs = { String.valueOf(nameId) };
         String sortOrder = COLUMN_GROUP_ID + " DESC";
