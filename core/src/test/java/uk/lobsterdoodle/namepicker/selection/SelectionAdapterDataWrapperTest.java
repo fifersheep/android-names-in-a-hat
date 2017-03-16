@@ -10,6 +10,7 @@ import java.util.List;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.model.Name;
 import uk.lobsterdoodle.namepicker.storage.GroupNamesRetrievedEvent;
+import uk.lobsterdoodle.namepicker.storage.MassNameStateChangedEvent;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -104,6 +105,20 @@ public class SelectionAdapterDataWrapperTest {
         reset(bus);
         wrapper.on(new ClearAllSelectionToggleEvent());
         verify(bus).post(new SelectionDataUpdatedEvent(asList(name("Scott"), name("Suzanne"))));
+    }
+
+    @Test
+    public void on_SelectAllSelectionToggleEvent_post_MassNameStateChangedEvent() {
+        wrapper.forGroup(24L);
+        wrapper.on(new SelectAllSelectionToggleEvent());
+        verify(bus).post(MassNameStateChangedEvent.toggleOn(24L));
+    }
+
+    @Test
+    public void on_ClearAllSelectionToggleEvent_post_MassNameStateChangedEvent() {
+        wrapper.forGroup(24L);
+        wrapper.on(new ClearAllSelectionToggleEvent());
+        verify(bus).post(MassNameStateChangedEvent.toggleOff(24L));
     }
 
     @Test

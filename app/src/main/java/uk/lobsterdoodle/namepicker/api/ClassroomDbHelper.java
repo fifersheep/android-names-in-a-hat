@@ -110,7 +110,7 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
         GroupDetails group = null;
 
         String[] projection = { COLUMN_GROUP_ID, COLUMN_GROUP_NAME };
-        String selection = COLUMN_GROUP_ID + " LIKE ?";
+        String selection = COLUMN_GROUP_ID + "='?'";
         String[] selectionArgs = { String.valueOf(groupId) };
         String sortOrder = COLUMN_GROUP_ID + " DESC";
 
@@ -122,7 +122,7 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GROUP_NAME)));
             cursor.close();
         } else {
-            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > removePupil()");
+            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > retrieveGroupDetails()");
         }
         return group;
     }
@@ -159,7 +159,7 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
     @Override
     public void editGroupName(long groupId, String newName){
         SQLiteDatabase db = this.getReadableDatabase();
-        String selection = COLUMN_GROUP_ID + " LIKE ?";
+        String selection = COLUMN_GROUP_ID + "='?'";
         String[] selectionArgs = { String.valueOf(groupId) };
 
         ContentValues values = new ContentValues();
@@ -179,7 +179,7 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
         GroupDetails deletedGroup = null;
 
         String[] projection = { COLUMN_GROUP_ID, COLUMN_GROUP_NAME };
-        String selection = COLUMN_GROUP_ID + " LIKE ?";
+        String selection = COLUMN_GROUP_ID + "='?'";
         String[] selectionArgs = { String.valueOf(groupId) };
         String sortOrder = COLUMN_GROUP_ID + " DESC";
 
@@ -205,7 +205,7 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
 
     private void removeNamesForGroup(long groupId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String selection = COLUMN_GROUP_ID + " LIKE ?";
+        String selection = COLUMN_GROUP_ID + "='?'";
         String[] selectionArgs = { String.valueOf(groupId) };
 
         // Issue SQL statement.
@@ -213,7 +213,7 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
             db.delete(TABLE_NAMES, selection, selectionArgs);
             db.close();
         } else {
-            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > removePupilsForGroup()");
+            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > removeNamesForGroup()");
         }
     }
 
@@ -239,7 +239,7 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
         Name deletedName = null;
 
         String[] projection = { COLUMN_NAME_ID, COLUMN_NAME_NAME, COLUMN_NAME_TOGGLED };
-        String selection = COLUMN_NAME_ID + " LIKE ?";
+        String selection = COLUMN_NAME_ID + "='?'";
         String[] selectionArgs = { String.valueOf(nameId) };
         String sortOrder = COLUMN_GROUP_ID + " DESC";
 
@@ -255,7 +255,7 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
             db.delete(TABLE_NAMES, selection, selectionArgs);
             db.close();
         } else {
-            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > removePupil()");
+            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > removeName()");
         }
         return deletedName;
 
@@ -271,14 +271,14 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
         values.put(COLUMN_NAME_NAME, name.name);
         values.put(COLUMN_NAME_TOGGLED, name.toggledOn ? 1 : 0);
 
-        String selection = COLUMN_NAME_ID + " LIKE ?";
+        String selection = COLUMN_NAME_ID + "='?'";
         String[] selectionArgs = { String.valueOf(name.id)};
 
         if (db != null) {
             db.update(TABLE_NAMES, values, selection, selectionArgs);
             db.close();
         } else {
-            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > updatePupilName()");
+            Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > updateName()");
         }
     }
 
@@ -339,7 +339,7 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String[] projection = { COLUMN_NAME_ID, COLUMN_NAME_NAME, COLUMN_NAME_TOGGLED };
-        String selection = COLUMN_GROUP_ID + " LIKE ?";
+        String selection = COLUMN_GROUP_ID + "='?'";
         String[] selectionArgs = { String.valueOf(classroomId) };
         String sortOrder = COLUMN_GROUP_ID + " DESC";
 
@@ -387,7 +387,7 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
                 ContentValues values = new ContentValues();
                 values.put(COLUMN_NAME_NAME, sortedNames.get(i));
 
-                String sel = COLUMN_NAME_ID + " LIKE ?";
+                String sel = COLUMN_NAME_ID + "='?'";
                 String[] selArgs = { ids.get(i) };
 
                 db.update(TABLE_NAMES, values, sel, selArgs);
@@ -395,6 +395,22 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
             return true;
         } else {
             return false;
+        }
+    }
+
+    @Override
+    public void toggleAllNamesInGroup(long groupId, boolean toggleOn) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME_TOGGLED, toggleOn ? 1 : 0);
+
+        String selection = COLUMN_GROUP_ID + "='?'";
+        String[] selectionArgs = { String.valueOf(groupId)};
+
+        if (db != null) {
+            db.update(TABLE_NAMES, values, selection, selectionArgs);
+            db.close();
         }
     }
 

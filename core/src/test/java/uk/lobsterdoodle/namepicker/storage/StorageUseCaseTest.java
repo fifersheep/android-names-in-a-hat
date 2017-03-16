@@ -130,6 +130,12 @@ public class StorageUseCaseTest {
         verify(dbHelper).updateName(name(24L, "Jack"));
     }
 
+    @Test
+    public void on_MassNameStateChangedEvent_mass_toggle_names() {
+        useCase.on(MassNameStateChangedEvent.toggleOn(24L));
+        verify(dbHelper).toggleAllNamesInGroup(24L, true);
+    }
+
     private OverviewCardCellData cellData(long groupId, String groupName, int nameCount) {
         return new OverviewCardCellData(groupId, groupName, nameCount);
     }

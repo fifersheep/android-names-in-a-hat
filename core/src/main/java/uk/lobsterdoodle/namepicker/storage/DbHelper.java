@@ -16,6 +16,7 @@ public interface DbHelper {
     GroupDetails removeGroup(long groupId);
     void editGroupName(long groupId, String newName);
     void updateName(Name name);
+    void toggleAllNamesInGroup(long groupId, boolean toggleOn);
 
     void addClassroom (String classroomName, List<String> pupils);
     void editGroupNames (long groupId, List<String> pupils);

@@ -92,6 +92,7 @@ public class SelectionActivity extends FlowActivity {
         ButterKnife.inject(this);
 
         groupId = getIntent().getLongExtra(EXTRA_GROUP_ID, -1);
+        dataWrapper.forGroup(groupId);
         selectionAdapter = new SelectionAdapter(this);
         grid.setAdapter(selectionAdapter);
 

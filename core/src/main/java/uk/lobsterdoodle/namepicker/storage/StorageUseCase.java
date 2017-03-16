@@ -87,4 +87,9 @@ public class StorageUseCase {
     public void on(NameStateChangedEvent event) {
         db.updateName(event.name);
     }
+
+    @Subscribe
+    public void on(MassNameStateChangedEvent event) {
+        db.toggleAllNamesInGroup(event.groupId, event.toggleOn);
+    }
 }
