@@ -9,7 +9,6 @@ import java.util.List;
 
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.model.Name;
-import uk.lobsterdoodle.namepicker.storage.GroupNamesRetrievedEvent;
 import uk.lobsterdoodle.namepicker.storage.MassNameStateChangedEvent;
 
 import static java.util.Arrays.asList;
@@ -41,19 +40,19 @@ public class SelectionAdapterDataWrapperTest {
 
     @Test
     public void on_GroupNamesRetrievedEvent_store_data() {
-        wrapper.on(groupNamesRetrievedEvent(asList(name("Scott"), name("Suzanne"))));
+        wrapper.on(groupNamesSortedEvent(asList(name("Scott"), name("Suzanne"))));
         assertThat(wrapper.data(), is(equalTo(asList(name("Scott"), name("Suzanne")))));
     }
 
     @Test
     public void on_GroupNamesRetrievedEvent_post_SelectionDataUpdatedEvent() {
-        wrapper.on(groupNamesRetrievedEvent(asList(name("Scott"), name("Suzanne"))));
+        wrapper.on(groupNamesSortedEvent(asList(name("Scott"), name("Suzanne"))));
         verify(bus).post(new SelectionDataUpdatedEvent(asList(name("Scott"), name("Suzanne"))));
     }
 
     @Test
     public void on_NameSelectionCheckChangedEvent_toggle_selection() {
-        wrapper.on(groupNamesRetrievedEvent(asList(name("Scott"), name("Suzanne"))));
+        wrapper.on(groupNamesSortedEvent(asList(name("Scott"), name("Suzanne"))));
         assertThat(wrapper.item(0).toggledOn, is(equalTo(false)));
         wrapper.on(new NameSelectionCheckChangedEvent(0, true));
         assertThat(wrapper.item(0).toggledOn, is(equalTo(true)));
@@ -63,7 +62,7 @@ public class SelectionAdapterDataWrapperTest {
 
     @Test
     public void on_NameSelectionCheckChangedEvent_post_SelectionDataUpdatedEvent() {
-        wrapper.on(groupNamesRetrievedEvent(asList(name("Scott"), name("Suzanne"))));
+        wrapper.on(groupNamesSortedEvent(asList(name("Scott"), name("Suzanne"))));
         reset(bus);
         wrapper.on(new NameSelectionCheckChangedEvent(0, false));
         verify(bus).post(new SelectionDataUpdatedEvent(asList(name("Scott"), name("Suzanne"))));
@@ -71,7 +70,7 @@ public class SelectionAdapterDataWrapperTest {
 
     @Test
     public void on_NameSelectionCheckChangedEvent_post_NameStateChangedEvent() {
-        wrapper.on(groupNamesRetrievedEvent(asList(name("Scott", false), name("Suzanne"))));
+        wrapper.on(groupNamesSortedEvent(asList(name("Scott", false), name("Suzanne"))));
         reset(bus);
         wrapper.on(new NameSelectionCheckChangedEvent(0, true));
         verify(bus).post(new NameStateChangedEvent(name("Scott", true)));
@@ -79,14 +78,14 @@ public class SelectionAdapterDataWrapperTest {
 
     @Test
     public void on_SelectAllSelectionToggleEvent_select_all() {
-        wrapper.on(groupNamesRetrievedEvent(asList(name("Scott"), name("Suzanne"))));
+        wrapper.on(groupNamesSortedEvent(asList(name("Scott"), name("Suzanne"))));
         wrapper.on(new SelectAllSelectionToggleEvent());
         assertTrue(allDataToggledOn(wrapper.data()));
     }
 
     @Test
     public void on_SelectAllSelectionToggleEvent_post_SelectionDataUpdatedEvent() {
-        wrapper.on(groupNamesRetrievedEvent(asList(name("Scott"), name("Suzanne"))));
+        wrapper.on(groupNamesSortedEvent(asList(name("Scott"), name("Suzanne"))));
         reset(bus);
         wrapper.on(new SelectAllSelectionToggleEvent());
         verify(bus).post(new SelectionDataUpdatedEvent(asList(name("Scott", true), name("Suzanne", true))));
@@ -94,14 +93,14 @@ public class SelectionAdapterDataWrapperTest {
 
     @Test
     public void on_ClearAllSelectionToggleEvent_clear_all() {
-        wrapper.on(groupNamesRetrievedEvent(asList(name("Scott", true), name("Suzanne", true))));
+        wrapper.on(groupNamesSortedEvent(asList(name("Scott", true), name("Suzanne", true))));
         wrapper.on(new ClearAllSelectionToggleEvent());
         assertTrue(allDataToggledOff(wrapper.data()));
     }
 
     @Test
     public void on_ClearAllSelectionToggleEvent_post_SelectionDataUpdatedEvent() {
-        wrapper.on(groupNamesRetrievedEvent(asList(name("Scott", true), name("Suzanne", true))));
+        wrapper.on(groupNamesSortedEvent(asList(name("Scott", true), name("Suzanne", true))));
         reset(bus);
         wrapper.on(new ClearAllSelectionToggleEvent());
         verify(bus).post(new SelectionDataUpdatedEvent(asList(name("Scott"), name("Suzanne"))));
@@ -123,13 +122,13 @@ public class SelectionAdapterDataWrapperTest {
 
     @Test
     public void on_GroupNamesRetrievedEvent_post_EnableSelectionEmptyStateEvent_when_no_names() {
-        wrapper.on(groupNamesRetrievedEvent(emptyList()));
+        wrapper.on(groupNamesSortedEvent(emptyList()));
         verify(bus).post(new EnableSelectionEmptyStateEvent());
     }
 
     @Test
     public void on_GroupNamesRetrievedEvent_post_DisableSelectionEmptyStateEvent_when_contains_names() {
-        wrapper.on(groupNamesRetrievedEvent(singletonList(name(""))));
+        wrapper.on(groupNamesSortedEvent(singletonList(name(""))));
         verify(bus).post(new DisableSelectionEmptyStateEvent());
     }
 
@@ -141,8 +140,8 @@ public class SelectionAdapterDataWrapperTest {
         return !Iterables.tryFind(names, name -> name.toggledOn).isPresent();
     }
 
-    private GroupNamesRetrievedEvent groupNamesRetrievedEvent(List<Name> drawOptions) {
-        return new GroupNamesRetrievedEvent(drawOptions);
+    private GroupNamesSortedEvent groupNamesSortedEvent(List<Name> drawOptions) {
+        return new GroupNamesSortedEvent(drawOptions);
     }
 
     private Name name(String name) {

@@ -1,14 +1,14 @@
-package uk.lobsterdoodle.namepicker.storage;
+package uk.lobsterdoodle.namepicker.selection;
 
 import java.util.List;
 
 import uk.lobsterdoodle.namepicker.model.Name;
 
-public class GroupNamesRetrievedEvent {
+public class SortMenuItemSelectedEvent {
     public final long groupId;
     public final List<Name> names;
 
-    public GroupNamesRetrievedEvent(long groupId, List<Name> names) {
+    public SortMenuItemSelectedEvent(long groupId, List<Name> names) {
         this.groupId = groupId;
         this.names = names;
     }
@@ -16,9 +16,9 @@ public class GroupNamesRetrievedEvent {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof GroupNamesRetrievedEvent)) return false;
+        if (!(o instanceof SortMenuItemSelectedEvent)) return false;
 
-        GroupNamesRetrievedEvent that = (GroupNamesRetrievedEvent) o;
+        SortMenuItemSelectedEvent that = (SortMenuItemSelectedEvent) o;
 
         if (groupId != that.groupId) return false;
         return names != null ? names.equals(that.names) : that.names == null;
@@ -34,7 +34,7 @@ public class GroupNamesRetrievedEvent {
 
     @Override
     public String toString() {
-        return "GroupNamesRetrievedEvent{" +
+        return "SortMenuItemSelectedEvent{" +
                 "groupId=" + groupId +
                 ", names=" + names +
                 '}';

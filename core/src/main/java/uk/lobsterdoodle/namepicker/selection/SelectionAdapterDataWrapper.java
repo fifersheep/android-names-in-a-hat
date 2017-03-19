@@ -5,7 +5,6 @@ import org.greenrobot.eventbus.Subscribe;
 import uk.lobsterdoodle.namepicker.adapter.AdapterDataWrapper;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.model.Name;
-import uk.lobsterdoodle.namepicker.storage.GroupNamesRetrievedEvent;
 import uk.lobsterdoodle.namepicker.storage.MassNameStateChangedEvent;
 
 public class SelectionAdapterDataWrapper extends AdapterDataWrapper<Name> {
@@ -23,7 +22,7 @@ public class SelectionAdapterDataWrapper extends AdapterDataWrapper<Name> {
     }
 
     @Subscribe
-    public void on(GroupNamesRetrievedEvent event) {
+    public void on(GroupNamesSortedEvent event) {
         replaceData(event.names);
         bus.post(new SelectionDataUpdatedEvent(data()));
         bus.post(event.names.size() > 0

@@ -10,32 +10,41 @@ public class AdapterDataWrapper<T> {
     final private List<T> data = Collections.synchronizedList(new ArrayList<T>());
 
     public int count() {
-        return data.size();
+        synchronized (this.data) {
+            return this.data.size();
+        }
     }
 
     public T item(int position) {
-        return data.get(position);
+        synchronized (this.data) {
+            return this.data.get(position);
+        }
     }
 
     public List<T> data() {
-        return data;
+        synchronized (this.data) {
+            return new ArrayList<>(this.data);
+        }
     }
 
     public void replaceItem(int position, T item) {
-        data.set(position, item);
+        synchronized (this.data) {
+            this.data.set(position, item);
+        }
     }
 
-    public void replaceData(List<T> data) {
+    public List<T> replaceData(List<T> data) {
         synchronized (this.data) {
             this.data.clear();
             this.data.addAll(data);
+            return this.data;
         }
     }
 
     public void modifyData(Function<T, T> modification) {
-        synchronized (data) {
-            for (T item : data) {
-                data.set(data.indexOf(item), modification.apply(item));
+        synchronized (this.data) {
+            for (T item : this.data) {
+                this.data.set(this.data.indexOf(item), modification.apply(item));
             }
         }
     }

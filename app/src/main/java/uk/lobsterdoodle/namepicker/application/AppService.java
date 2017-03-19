@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.selection.SelectionGridUseCase;
+import uk.lobsterdoodle.namepicker.selection.SelectionNamesUseCase;
 import uk.lobsterdoodle.namepicker.selection.SelectionUseCase;
 import uk.lobsterdoodle.namepicker.storage.StorageUseCase;
 
@@ -22,6 +23,8 @@ public class AppService extends Service {
     @Inject SelectionUseCase selectionUseCase;
 
     @Inject SelectionGridUseCase selectionGridUseCase;
+
+    @Inject SelectionNamesUseCase selectionNamesUseCase;
 
     public AppService() {
     }

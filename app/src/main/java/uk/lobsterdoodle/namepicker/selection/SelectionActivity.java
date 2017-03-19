@@ -82,6 +82,7 @@ public class SelectionActivity extends FlowActivity {
     final ImmutableMap<Integer, Runnable> menuItems = ImmutableMap.<Integer, Runnable>builder()
             .put(R.id.menu_action_grid_one, () -> bus.post(new GridColumnSelectedEvent(1)))
             .put(R.id.menu_action_grid_two, () -> bus.post(new GridColumnSelectedEvent(2)))
+            .put(R.id.menu_action_sort, () -> bus.post(new SortMenuItemSelectedEvent(groupId, dataWrapper.data())))
             .build();
 
     @Override
@@ -110,7 +111,7 @@ public class SelectionActivity extends FlowActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
-        getMenuInflater().inflate(R.menu.menu_grid, menu);
+        getMenuInflater().inflate(R.menu.menu_selection, menu);
 
         for (Map.Entry<Integer, Runnable> entry : menuItems.entrySet()) {
             addMenuItem(entry.getKey(), entry.getValue());

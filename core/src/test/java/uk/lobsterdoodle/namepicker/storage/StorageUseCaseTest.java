@@ -64,7 +64,7 @@ public class StorageUseCaseTest {
     public void on_AddNameToGroupEvent_post_GroupNamesRetrievedEvent() {
         when(dbHelper.retrieveGroupNames(24L)).thenReturn(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena")));
         useCase.on(new AddNameToGroupEvent(24L, "Scott"));
-        verify(bus).post(new GroupNamesRetrievedEvent(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena"))));
+        verify(bus).post(new GroupNamesRetrievedEvent(24L, asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena"))));
     }
 
     @Test
@@ -91,7 +91,7 @@ public class StorageUseCaseTest {
     public void on_RetrieveGroupNamesEvent_post_GroupNamesRetrievedEvent() {
         when(dbHelper.retrieveGroupNames(24L)).thenReturn(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena")));
         useCase.on(new RetrieveGroupNamesEvent(24L));
-        verify(bus).post(new GroupNamesRetrievedEvent(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena"))));
+        verify(bus).post(new GroupNamesRetrievedEvent(24L, asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena"))));
     }
 
     @Test
