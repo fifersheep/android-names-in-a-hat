@@ -36,6 +36,8 @@ import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
+import uk.lobsterdoodle.namepicker.storage.GroupDetailsRetrievedSuccessfullyEvent;
+import uk.lobsterdoodle.namepicker.storage.RetrieveGroupDetailsEvent;
 import uk.lobsterdoodle.namepicker.ui.FlowActivity;
 import uk.lobsterdoodle.namepicker.ui.UpdateDrawActionsEvent;
 
@@ -106,6 +108,7 @@ public class SelectionActivity extends FlowActivity {
         super.onResume();
         bus.register(this);
         bus.post(new RetrieveGroupNamesEvent(groupId));
+        bus.post(new RetrieveGroupDetailsEvent(groupId));
     }
 
     @Override
@@ -119,6 +122,12 @@ public class SelectionActivity extends FlowActivity {
 
         bus.post(new LoadSelectionGridPreference());
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Subscribe
+    public void on(GroupDetailsRetrievedSuccessfullyEvent event) {
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setTitle(event.details.name);
     }
 
     @Subscribe

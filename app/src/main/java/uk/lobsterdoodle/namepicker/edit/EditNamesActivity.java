@@ -29,9 +29,11 @@ import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.model.Name;
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
 import uk.lobsterdoodle.namepicker.storage.DeleteNameEvent;
+import uk.lobsterdoodle.namepicker.storage.GroupDetailsRetrievedSuccessfullyEvent;
 import uk.lobsterdoodle.namepicker.storage.GroupNamesRetrievedEvent;
 import uk.lobsterdoodle.namepicker.storage.NameAddedSuccessfullyEvent;
 import uk.lobsterdoodle.namepicker.storage.NameDeletedSuccessfullyEvent;
+import uk.lobsterdoodle.namepicker.storage.RetrieveGroupDetailsEvent;
 import uk.lobsterdoodle.namepicker.ui.FlowActivity;
 
 public class EditNamesActivity extends FlowActivity implements NameCardActions {
@@ -79,12 +81,19 @@ public class EditNamesActivity extends FlowActivity implements NameCardActions {
         super.onResume();
         bus.register(this);
         bus.post(new RetrieveGroupNamesEvent(groupId));
+        bus.post(new RetrieveGroupDetailsEvent(groupId));
     }
 
     @Override
     public void onPause() {
         bus.unregister(this);
         super.onPause();
+    }
+
+    @Subscribe
+    public void on(GroupDetailsRetrievedSuccessfullyEvent event) {
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setTitle(String.format("Names: %s", event.details.name));
     }
 
     @Subscribe
