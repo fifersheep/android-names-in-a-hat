@@ -30,8 +30,8 @@ public class SelectionNamesUseCase {
 
     private Map<NameSortType, Comparator<Name>> comparatorsFor = ImmutableMap.<NameSortType, Comparator<Name>>builder()
             .put(NameSortType.NONE, (first, second) -> 0)
-            .put(NameSortType.ASC, (first, second) -> first.name.compareTo(second.name))
-            .put(NameSortType.DESC, (first, second) -> second.name.compareTo(first.name))
+            .put(NameSortType.ASC, (first, second) -> first.name.compareToIgnoreCase(second.name))
+            .put(NameSortType.DESC, (first, second) -> second.name.compareToIgnoreCase(first.name))
             .build();
 
     @Inject

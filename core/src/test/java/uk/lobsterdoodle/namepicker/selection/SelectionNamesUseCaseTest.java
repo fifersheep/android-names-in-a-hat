@@ -41,22 +41,22 @@ public class SelectionNamesUseCaseTest {
     @Test
     public void on_GroupNamesRetrievedEvent_when_sort_type_is_none_post_GroupNamesSortedEvent() {
         when(store.getString(String.format(GROUP_SORT_TYPE_FOR_GROUP_FORMAT, 24L), NameSortType.NONE.toString())).thenReturn(NameSortType.NONE.toString());
-        useCase.on(new GroupNamesRetrievedEvent(24L, asList(name(2L, "Kim"), name(1L, "Bauer"), name(3L, "Yelena"))));
-        verify(bus).post(new GroupNamesSortedEvent(asList(name(2L, "Kim"), name(1L, "Bauer"), name(3L, "Yelena"))));
+        useCase.on(new GroupNamesRetrievedEvent(24L, asList(name(2L, "kim"), name(1L, "Bauer"), name(3L, "Yelena"))));
+        verify(bus).post(new GroupNamesSortedEvent(asList(name(2L, "kim"), name(1L, "Bauer"), name(3L, "Yelena"))));
     }
 
     @Test
     public void on_GroupNamesRetrievedEvent_when_sort_type_is_asc_post_GroupNamesSortedEvent() {
         when(store.getString(String.format(GROUP_SORT_TYPE_FOR_GROUP_FORMAT, 24L), NameSortType.NONE.toString())).thenReturn(NameSortType.ASC.toString());
-        useCase.on(new GroupNamesRetrievedEvent(24L, asList(name(2L, "Kim"), name(1L, "Bauer"), name(3L, "Yelena"))));
-        verify(bus).post(new GroupNamesSortedEvent(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena"))));
+        useCase.on(new GroupNamesRetrievedEvent(24L, asList(name(2L, "kim"), name(1L, "Bauer"), name(3L, "Yelena"))));
+        verify(bus).post(new GroupNamesSortedEvent(asList(name(1L, "Bauer"), name(2L, "kim"), name(3L, "Yelena"))));
     }
 
     @Test
     public void on_GroupNamesRetrievedEvent_when_sort_type_is_desc_post_GroupNamesSortedEvent() {
         when(store.getString(String.format(GROUP_SORT_TYPE_FOR_GROUP_FORMAT, 24L), NameSortType.NONE.toString())).thenReturn(NameSortType.DESC.toString());
-        useCase.on(new GroupNamesRetrievedEvent(24L, asList(name(2L, "Kim"), name(1L, "Bauer"), name(3L, "Yelena"))));
-        verify(bus).post(new GroupNamesSortedEvent(asList(name(3L, "Yelena"), name(2L, "Kim"), name(1L, "Bauer"))));
+        useCase.on(new GroupNamesRetrievedEvent(24L, asList(name(2L, "kim"), name(1L, "Bauer"), name(3L, "Yelena"))));
+        verify(bus).post(new GroupNamesSortedEvent(asList(name(3L, "Yelena"), name(2L, "kim"), name(1L, "Bauer"))));
     }
 
     @Test
@@ -86,8 +86,8 @@ public class SelectionNamesUseCaseTest {
     @Test
     public void on_SortMenuItemSelectedEvent_post_GroupNamesSortedEvent() {
         when(store.getString(String.format(GROUP_SORT_TYPE_FOR_GROUP_FORMAT, 24L), NameSortType.NONE.toString())).thenReturn(NameSortType.NONE.toString());
-        useCase.on(new SortMenuItemSelectedEvent(24L, asList(name(2L, "Kim"), name(1L, "Bauer"), name(3L, "Yelena"))));
-        verify(bus).post(new GroupNamesSortedEvent(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena"))));
+        useCase.on(new SortMenuItemSelectedEvent(24L, asList(name(2L, "kim"), name(1L, "Bauer"), name(3L, "Yelena"))));
+        verify(bus).post(new GroupNamesSortedEvent(asList(name(1L, "Bauer"), name(2L, "kim"), name(3L, "Yelena"))));
     }
 
     private Name name(long id, String name) {
