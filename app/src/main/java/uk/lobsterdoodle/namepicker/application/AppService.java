@@ -11,6 +11,7 @@ import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.selection.SelectionGridUseCase;
 import uk.lobsterdoodle.namepicker.selection.SelectionNamesUseCase;
 import uk.lobsterdoodle.namepicker.selection.SelectionUseCase;
+import uk.lobsterdoodle.namepicker.storage.ActiveGroupUseCase;
 import uk.lobsterdoodle.namepicker.storage.StorageUseCase;
 
 public class AppService extends Service {
@@ -25,6 +26,8 @@ public class AppService extends Service {
     @Inject SelectionGridUseCase selectionGridUseCase;
 
     @Inject SelectionNamesUseCase selectionNamesUseCase;
+
+    @Inject ActiveGroupUseCase activeGroupUseCase;
 
     public AppService() {
     }

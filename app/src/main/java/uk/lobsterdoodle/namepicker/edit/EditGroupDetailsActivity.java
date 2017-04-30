@@ -85,6 +85,7 @@ public class EditGroupDetailsActivity extends FlowActivity {
                 .addNextIntent(OverviewActivity.launchIntent(this))
                 .addNextIntent(EditNamesActivity.launchIntent(this, event.groupId))
                 .startActivities();
+        finish();
     }
 
     @Subscribe
@@ -92,6 +93,7 @@ public class EditGroupDetailsActivity extends FlowActivity {
         TaskStackBuilder.create(this)
                 .addNextIntent(OverviewActivity.launchIntent(this))
                 .startActivities();
+        finish();
     }
 
     public static Intent launchIntent(Context context) {

@@ -25,6 +25,7 @@ import uk.lobsterdoodle.namepicker.edit.EditGroupDetailsActivity;
 import uk.lobsterdoodle.namepicker.edit.EditNamesActivity;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.selection.SelectionActivity;
+import uk.lobsterdoodle.namepicker.storage.ClearActiveGroupEvent;
 import uk.lobsterdoodle.namepicker.storage.DeleteGroupEvent;
 import uk.lobsterdoodle.namepicker.storage.GroupDeletedSuccessfullyEvent;
 import uk.lobsterdoodle.namepicker.ui.OverviewCard;
@@ -65,6 +66,7 @@ public class OverviewActivity extends AppCompatActivity implements OverviewCardA
         super.onResume();
         bus.register(this);
         bus.post(new OverviewBecameVisibleEvent());
+        bus.post(new ClearActiveGroupEvent());
     }
 
     @Override

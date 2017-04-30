@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.Menu;
@@ -36,8 +37,10 @@ import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
+import uk.lobsterdoodle.namepicker.overview.OverviewActivity;
 import uk.lobsterdoodle.namepicker.storage.GroupDetailsRetrievedSuccessfullyEvent;
 import uk.lobsterdoodle.namepicker.storage.RetrieveGroupDetailsEvent;
+import uk.lobsterdoodle.namepicker.storage.SetActiveGroupEvent;
 import uk.lobsterdoodle.namepicker.ui.FlowActivity;
 import uk.lobsterdoodle.namepicker.ui.UpdateDrawActionsEvent;
 
@@ -112,6 +115,12 @@ public class SelectionActivity extends FlowActivity {
     }
 
     @Override
+    protected void onPause() {
+        bus.unregister(this);
+        super.onPause();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_selection, menu);
@@ -124,10 +133,32 @@ public class SelectionActivity extends FlowActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            backToOverview();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        backToOverview();
+        super.onBackPressed();
+    }
+
+    private void backToOverview() {
+        TaskStackBuilder.create(this)
+                .addNextIntent(OverviewActivity.launchIntent(this))
+                .startActivities();
+        finish();
+    }
+
     @Subscribe
     public void on(GroupDetailsRetrievedSuccessfullyEvent event) {
         if (getSupportActionBar() != null)
             getSupportActionBar().setTitle(event.details.name);
+        bus.post(new SetActiveGroupEvent(groupId));
     }
 
     @Subscribe
