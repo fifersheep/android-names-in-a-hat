@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.util.As;
 import uk.lobsterdoodle.namepicker.edit.NameCardActions;
@@ -16,10 +16,10 @@ import uk.lobsterdoodle.namepicker.model.Name;
 
 public class NameCard extends CardView {
 
-    @InjectView(R.id.name_card_name)
+    @BindView(R.id.name_card_name)
     TextView name;
 
-    @InjectView(R.id.name_card_delete_icon)
+    @BindView(R.id.name_card_delete_icon)
     ImageView delete;
 
     public NameCard(Context context) {
@@ -38,7 +38,7 @@ public class NameCard extends CardView {
     }
 
     private void init() {
-        ButterKnife.inject(this, LayoutInflater.from(getContext()).inflate(R.layout.name_card, this, true));
+        ButterKnife.bind(this, LayoutInflater.from(getContext()).inflate(R.layout.name_card, this, true));
         setCardBackgroundColor(getContext().getResources().getColor(android.R.color.white));
         setUseCompatPadding(true);
         setCardElevation(As.px(getContext(), 2));

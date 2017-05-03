@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.util.As;
 import uk.lobsterdoodle.namepicker.overview.OverviewCardActionsCallback;
@@ -18,13 +18,13 @@ import uk.lobsterdoodle.namepicker.overview.OverviewCardCellData;
 public class OverviewCard extends CardView {
     private final Context context;
 
-    @InjectView(R.id.overview_card_title)
+    @BindView(R.id.overview_card_title)
     TextView title;
 
-    @InjectView(R.id.overview_card_count)
+    @BindView(R.id.overview_card_count)
     TextView count;
 
-    @InjectView(R.id.overview_card_overflow)
+    @BindView(R.id.overview_card_overflow)
     ImageView overflow;
 
     public OverviewCard(Context context) {
@@ -46,7 +46,7 @@ public class OverviewCard extends CardView {
     }
 
     private void init() {
-        ButterKnife.inject(this, LayoutInflater.from(getContext()).inflate(R.layout.overview_card, this, true));
+        ButterKnife.bind(this, LayoutInflater.from(getContext()).inflate(R.layout.overview_card, this, true));
         setCardBackgroundColor(getContext().getResources().getColor(android.R.color.white));
         setUseCompatPadding(true);
         setCardElevation(As.px(getContext(), 2));

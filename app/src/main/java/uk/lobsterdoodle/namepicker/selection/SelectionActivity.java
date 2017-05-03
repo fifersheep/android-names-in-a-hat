@@ -25,15 +25,17 @@ import com.google.common.collect.ImmutableMap;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import uk.lobsterdoodle.namepicker.R;
+import uk.lobsterdoodle.namepicker.analytics.AnalyticsEvent;
 import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
@@ -47,19 +49,19 @@ import uk.lobsterdoodle.namepicker.ui.UpdateDrawActionsEvent;
 public class SelectionActivity extends FlowActivity {
     private static final String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
 
-    @InjectView(R.id.selection_list)
+    @BindView(R.id.selection_list)
     GridView grid;
 
-    @InjectView(R.id.selection_empty_text_view)
+    @BindView(R.id.selection_empty_text_view)
     View emptyView;
 
-    @InjectView(R.id.selection_draw_count)
+    @BindView(R.id.selection_draw_count)
     Spinner drawCount;
 
-    @InjectView(R.id.selection_button_toggle)
+    @BindView(R.id.selection_button_toggle)
     Button toggleButton;
 
-    @InjectView(R.id.selection_button_draw)
+    @BindView(R.id.selection_button_draw)
     Button drawButton;
 
     @SuppressWarnings("UnusedParameters")
@@ -95,7 +97,7 @@ public class SelectionActivity extends FlowActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selection);
         App.get(this).component().inject(this);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         groupId = getIntent().getLongExtra(EXTRA_GROUP_ID, -1);
         dataWrapper.forGroup(groupId);

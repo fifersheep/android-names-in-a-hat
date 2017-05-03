@@ -17,8 +17,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.edit.EditGroupDetailsActivity;
@@ -32,13 +32,13 @@ import uk.lobsterdoodle.namepicker.ui.OverviewCard;
 
 public class OverviewActivity extends AppCompatActivity implements OverviewCardActionsCallback {
 
-    @InjectView(R.id.overview_root_layout)
+    @BindView(R.id.overview_root_layout)
     ViewGroup root;
 
-    @InjectView(R.id.overview_group_list)
+    @BindView(R.id.overview_group_list)
     RecyclerView groupsRecyclerView;
 
-    @InjectView(R.id.overview_add_group)
+    @BindView(R.id.overview_add_group)
     Button addGroupButton;
 
     @Inject
@@ -52,7 +52,7 @@ public class OverviewActivity extends AppCompatActivity implements OverviewCardA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overview);
         App.get(this).component().inject(this);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         overviewAdapter = new OverviewAdapter();
         groupsRecyclerView.setLayoutManager(new LinearLayoutManager(this));

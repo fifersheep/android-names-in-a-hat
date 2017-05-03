@@ -19,8 +19,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.addgroup.AddNameToGroupEvent;
 import uk.lobsterdoodle.namepicker.addgroup.NameCard;
@@ -39,19 +39,19 @@ import uk.lobsterdoodle.namepicker.ui.FlowActivity;
 public class EditNamesActivity extends FlowActivity implements NameCardActions {
     public static final String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
 
-    @InjectView(R.id.edit_names_root_layout)
+    @BindView(R.id.edit_names_root_layout)
     ViewGroup root;
 
-    @InjectView(R.id.edit_group_names_list)
+    @BindView(R.id.edit_group_names_list)
     RecyclerView nameList;
 
-    @InjectView(R.id.edit_group_names_button_add_name)
+    @BindView(R.id.edit_group_names_button_add_name)
     Button addName;
 
-    @InjectView(R.id.edit_group_names_done_button)
+    @BindView(R.id.edit_group_names_done_button)
     Button done;
 
-    @InjectView(R.id.edit_group_names_input)
+    @BindView(R.id.edit_group_names_input)
     TextInputEditText nameInput;
 
     @Inject
@@ -66,7 +66,7 @@ public class EditNamesActivity extends FlowActivity implements NameCardActions {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_names);
         App.get(this).component().inject(this);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         groupId = getIntent().getLongExtra(EXTRA_GROUP_ID, -1L);
         nameListAdapter = new NameListAdapter();

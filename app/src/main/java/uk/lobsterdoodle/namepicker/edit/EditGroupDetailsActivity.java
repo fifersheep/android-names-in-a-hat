@@ -6,15 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.TaskStackBuilder;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
 import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.creategroup.CreateGroupDetailsEvent;
@@ -30,10 +29,10 @@ import uk.lobsterdoodle.namepicker.ui.FlowActivity;
 public class EditGroupDetailsActivity extends FlowActivity {
     private static final String EXTRA_GROUP_ID = "EXTRA_GROUP_ID";
 
-    @InjectView(R.id.create_group_name_input)
+    @BindView(R.id.create_group_name_input)
     TextInputEditText groupName;
 
-    @InjectView(R.id.create_group_done_button)
+    @BindView(R.id.create_group_done_button)
     Button done;
 
     @Inject
@@ -46,7 +45,7 @@ public class EditGroupDetailsActivity extends FlowActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
         App.get(this).component().inject(this);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         groupId = getIntent().getLongExtra(EXTRA_GROUP_ID, -1);
 

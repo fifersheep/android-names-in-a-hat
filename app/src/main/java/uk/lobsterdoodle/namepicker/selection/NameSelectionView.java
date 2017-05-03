@@ -6,15 +6,15 @@ import android.view.LayoutInflater;
 import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import uk.lobsterdoodle.namepicker.R;
 import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.model.Name;
 
 public class NameSelectionView extends FrameLayout {
 
-    @InjectView(R.id.name_selection_view_checkbox)
+    @BindView(R.id.name_selection_view_checkbox)
     CheckedTextView checkBox;
 
     private CheckedChangeListener listener;
@@ -36,7 +36,7 @@ public class NameSelectionView extends FrameLayout {
 
     private void init(Context context) {
         App.get(context).component().inject(this);
-        ButterKnife.inject(this, LayoutInflater.from(context).inflate(R.layout.name_selection_view, this, true));
+        ButterKnife.bind(this, LayoutInflater.from(context).inflate(R.layout.name_selection_view, this, true));
         setOnClickListener(v -> {
             checkBox.toggle();
             if (listener != null) {
