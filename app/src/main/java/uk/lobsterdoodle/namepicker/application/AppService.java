@@ -48,5 +48,5 @@ public class AppService extends Service {
         return binder;
     }
 
-    public class LocalBinder extends Binder { }
+    private class LocalBinder extends Binder { }
 }

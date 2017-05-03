@@ -5,6 +5,7 @@ import android.app.Application;
 import dagger.Module;
 import dagger.Provides;
 import uk.lobsterdoodle.namepicker.Util;
+import uk.lobsterdoodle.namepicker.analytics.FirebaseAnalytics;
 import uk.lobsterdoodle.namepicker.api.ClassroomDbHelper;
 import uk.lobsterdoodle.namepicker.events.AndroidEventBus;
 import uk.lobsterdoodle.namepicker.events.EventBus;
@@ -48,5 +49,10 @@ public class DependencyInjectionModule {
     @Provides
     NumberGenerator providesNumberGenerator() {
         return new RandomNumberGenerator();
+    }
+
+    @Provides
+    FirebaseAnalytics providesFirebaseAnalytics(EventBus bus) {
+        return new FirebaseAnalytics(app.getApplicationContext(), bus);
     }
 }
