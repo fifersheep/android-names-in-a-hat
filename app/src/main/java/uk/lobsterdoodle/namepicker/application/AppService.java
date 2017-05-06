@@ -5,8 +5,15 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
-import javax.inject.Inject;
+import java.lang.reflect.Field;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import uk.lobsterdoodle.namepicker.Log;
+import uk.lobsterdoodle.namepicker.analytics.GroupAnalytics;
+import uk.lobsterdoodle.namepicker.analytics.ScreenAnalytics;
+import uk.lobsterdoodle.namepicker.analytics.SelectionAnalytics;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.selection.SelectionGridUseCase;
 import uk.lobsterdoodle.namepicker.selection.SelectionNamesUseCase;
@@ -29,6 +36,12 @@ public class AppService extends Service {
 
     @Inject ActiveGroupUseCase activeGroupUseCase;
 
+    @Inject GroupAnalytics groupAnalytics;
+
+    @Inject ScreenAnalytics screenAnalytics;
+
+    @Inject SelectionAnalytics selectionAnalytics;
+
     public AppService() {
     }
 
@@ -36,11 +49,6 @@ public class AppService extends Service {
     public void onCreate() {
         super.onCreate();
         App.get(this).component().inject(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     @Override

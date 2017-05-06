@@ -39,6 +39,19 @@ public class SelectionAdapterDataWrapperTest {
     }
 
     @Test
+    public void unregister_on_pause() {
+        wrapper.pause();
+        verify(bus).unregister(wrapper);
+    }
+
+    @Test
+    public void register_on_resume() {
+        reset(bus);
+        wrapper.resume();
+        verify(bus).register(wrapper);
+    }
+
+    @Test
     public void on_GroupNamesRetrievedEvent_store_data() {
         wrapper.on(groupNamesSortedEvent(asList(name("Scott"), name("Suzanne"))));
         assertThat(wrapper.data(), is(equalTo(asList(name("Scott"), name("Suzanne")))));
@@ -92,6 +105,14 @@ public class SelectionAdapterDataWrapperTest {
     }
 
     @Test
+    public void on_SelectAllSelectionToggleEvent_post_SelectAllEvent() {
+        wrapper.on(groupNamesSortedEvent(asList(name("Scott", true), name("Suzanne", false), name("Jack", true), name("Rena", false))));
+        reset(bus);
+        wrapper.on(new SelectAllSelectionToggleEvent());
+        verify(bus).post(new SelectAllEvent(2, 4));
+    }
+
+    @Test
     public void on_ClearAllSelectionToggleEvent_clear_all() {
         wrapper.on(groupNamesSortedEvent(asList(name("Scott", true), name("Suzanne", true))));
         wrapper.on(new ClearAllSelectionToggleEvent());
@@ -104,6 +125,14 @@ public class SelectionAdapterDataWrapperTest {
         reset(bus);
         wrapper.on(new ClearAllSelectionToggleEvent());
         verify(bus).post(new SelectionDataUpdatedEvent(asList(name("Scott"), name("Suzanne"))));
+    }
+
+    @Test
+    public void on_ClearAllSelectionToggleEvent_post_ClearAllEvent() {
+        wrapper.on(groupNamesSortedEvent(asList(name("Scott", true), name("Suzanne", true))));
+        reset(bus);
+        wrapper.on(new ClearAllSelectionToggleEvent());
+        verify(bus).post(new ClearAllEvent(2));
     }
 
     @Test

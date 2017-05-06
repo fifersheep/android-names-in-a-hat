@@ -43,7 +43,7 @@ public class StorageUseCase {
     @Subscribe
     public void on(CreateGroupDetailsEvent event) {
         final long groupId = db.createGroup(event.groupName);
-        bus.post(new GroupCreationSuccessfulEvent(groupId));
+        bus.post(new GroupCreationSuccessfulEvent(groupId, event.groupName));
     }
 
     @Subscribe

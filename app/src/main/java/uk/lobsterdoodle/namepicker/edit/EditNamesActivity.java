@@ -155,4 +155,9 @@ public class EditNamesActivity extends FlowActivity implements NameCardActions {
         intent.putExtra(EditNamesActivity.EXTRA_GROUP_ID, groupId);
         return intent;
     }
+
+    @Override
+    public String getScreenName() {
+        return "Edit Names Screen";
+    }
 }

@@ -7,7 +7,7 @@ import org.greenrobot.eventbus.Subscribe
 import uk.lobsterdoodle.namepicker.events.EventBus
 import javax.inject.Inject
 
-class FirebaseAnalytics @Inject constructor(val context: Context, bus: EventBus) {
+class FirebaseAnalytics constructor(val context: Context, bus: EventBus) {
     val analytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
 
     init { bus.register(this) }
@@ -18,5 +18,3 @@ class FirebaseAnalytics @Inject constructor(val context: Context, bus: EventBus)
         analytics.logEvent(event.key, bundle)
     }
 }
-
-class AnalyticsEvent(val key: String, val params: Map<String, String>)

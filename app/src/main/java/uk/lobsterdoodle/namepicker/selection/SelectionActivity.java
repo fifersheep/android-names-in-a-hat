@@ -111,6 +111,7 @@ public class SelectionActivity extends FlowActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        dataWrapper.resume();
         bus.register(this);
         bus.post(new RetrieveGroupNamesEvent(groupId));
         bus.post(new RetrieveGroupDetailsEvent(groupId));
@@ -118,6 +119,7 @@ public class SelectionActivity extends FlowActivity {
 
     @Override
     protected void onPause() {
+        dataWrapper.pause();
         bus.unregister(this);
         super.onPause();
     }
@@ -273,5 +275,10 @@ public class SelectionActivity extends FlowActivity {
                     (isChecked) -> bus.post(new NameSelectionCheckChangedEvent(position, isChecked)));
             return nameSelectionView;
         }
+    }
+
+    @Override
+    public String getScreenName() {
+        return "Selection Screen";
     }
 }

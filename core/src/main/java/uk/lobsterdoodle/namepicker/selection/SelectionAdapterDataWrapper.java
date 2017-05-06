@@ -2,10 +2,15 @@ package uk.lobsterdoodle.namepicker.selection;
 
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.Collection;
+import java.util.List;
+
 import uk.lobsterdoodle.namepicker.adapter.AdapterDataWrapper;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.model.Name;
 import uk.lobsterdoodle.namepicker.storage.MassNameStateChangedEvent;
+
+import static com.google.common.collect.Collections2.filter;
 
 public class SelectionAdapterDataWrapper extends AdapterDataWrapper<Name> {
 
@@ -15,6 +20,14 @@ public class SelectionAdapterDataWrapper extends AdapterDataWrapper<Name> {
     public SelectionAdapterDataWrapper(EventBus bus) {
         this.bus = bus;
         bus.register(this);
+    }
+
+    public void resume() {
+        bus.register(this);
+    }
+
+    public void pause() {
+        bus.unregister(this);
     }
 
     public void forGroup(long groupId) {
@@ -40,9 +53,11 @@ public class SelectionAdapterDataWrapper extends AdapterDataWrapper<Name> {
 
     @Subscribe
     public void on(SelectAllSelectionToggleEvent event) {
+        final Collection<Name> checkedNames = filter(data(), n -> n.toggledOn);
         modifyData(name -> name.copyWith(true));
         bus.post(new SelectionDataUpdatedEvent(data()));
         bus.post(MassNameStateChangedEvent.toggleOn(groupId));
+        bus.post(new SelectAllEvent(checkedNames.size(), data().size()));
     }
 
     @Subscribe
@@ -50,5 +65,6 @@ public class SelectionAdapterDataWrapper extends AdapterDataWrapper<Name> {
         modifyData(name -> name.copyWith(false));
         bus.post(new SelectionDataUpdatedEvent(data()));
         bus.post(MassNameStateChangedEvent.toggleOff(groupId));
+        bus.post(new ClearAllEvent(data().size()));
     }
 }

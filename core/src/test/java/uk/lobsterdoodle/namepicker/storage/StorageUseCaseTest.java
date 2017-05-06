@@ -51,7 +51,7 @@ public class StorageUseCaseTest {
     public void on_CreateGroupDetailsEvent_post_GroupCreationSuccessfulEvent() {
         when(dbHelper.createGroup("Group Name")).thenReturn(24L);
         useCase.on(new CreateGroupDetailsEvent("Group Name"));
-        verify(bus).post(new GroupCreationSuccessfulEvent(24L));
+        verify(bus).post(new GroupCreationSuccessfulEvent(24L, "Group Name"));
     }
 
     @Test

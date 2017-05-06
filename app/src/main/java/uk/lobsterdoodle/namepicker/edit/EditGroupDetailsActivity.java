@@ -82,7 +82,7 @@ public class EditGroupDetailsActivity extends FlowActivity {
     public void on(GroupCreationSuccessfulEvent event) {
         TaskStackBuilder.create(this)
                 .addNextIntent(OverviewActivity.launchIntent(this))
-                .addNextIntent(EditNamesActivity.launchIntent(this, event.groupId))
+                .addNextIntent(EditNamesActivity.launchIntent(this, event.getGroupId()))
                 .startActivities();
         finish();
     }
@@ -103,5 +103,10 @@ public class EditGroupDetailsActivity extends FlowActivity {
         final Intent intent = new Intent(context, EditGroupDetailsActivity.class);
         intent.putExtra(EXTRA_GROUP_ID, groupId);
         return intent;
+    }
+
+    @Override
+    public String getScreenName() {
+        return "Edit Group Details";
     }
 }
