@@ -38,34 +38,26 @@ public class StorageUseCase {
     @Subscribe
     public void on(OverviewBecameVisibleEvent event) {
         final List<Group> groupList = db.getAllGroups();
-        bus.post(new OverviewRetrievedEvent(transform(groupList,
-                group -> new OverviewCardCellData(group.details.id, group.details.name, group.names.size()))));
+        final List<OverviewCardCellData> cellData = transform(groupList,
+                group -> new OverviewCardCellData(group.details.id, group.details.name, group.names.size()));
 
-        if (!storage.getBool("has_uploaded_to_remote", false)) {
-            for (Group g : groupList) {
-                remoteDb.editGroupDetails(g.details.id, g.details.name);
-                for (Name n : g.names) {
-                    remoteDb.addName(g.details.id, n.id, n.name);
-                }
-            }
-            storage.edit().put("has_uploaded_to_remote", true);
-        }
+        bus.post(new OverviewRetrievedEvent(cellData));
+        for (OverviewCardCellData item : cellData)
+            remoteDb.editGroupDetails(item.groupId, item.listTitle, item.nameCount);
     }
 
     @Subscribe
     public void on(CreateGroupDetailsEvent event) {
         final long groupId = db.createGroup(event.groupName);
-        remoteDb.editGroupDetails(groupId, event.groupName);
         bus.post(new GroupCreationSuccessfulEvent(groupId, event.groupName));
     }
 
     @Subscribe
     public void on(AddNameToGroupEvent event) {
-        final long nameId = db.addNameToGroup(event.groupId, event.name);
+        db.addNameToGroup(event.groupId, event.name);
         final List<Name> groupNames = db.retrieveGroupNames(event.groupId);
         bus.post(new GroupNamesRetrievedEvent(event.groupId, groupNames));
         bus.post(new NameAddedSuccessfullyEvent());
-        remoteDb.addName(event.groupId, nameId, event.name);
     }
 
     @Subscribe
@@ -78,20 +70,17 @@ public class StorageUseCase {
     public void on(DeleteNameEvent event) {
         final Name deletedName = db.removeName(event.getNameId());
         bus.post(new NameDeletedSuccessfullyEvent(deletedName.name));
-        remoteDb.deleteName(event.getGroupId(), event.getNameId());
     }
 
     @Subscribe
     public void on(DeleteGroupEvent event) {
         final GroupDetails details = db.removeGroup(event.groupId);
-        remoteDb.removeGroup(event.groupId);
         bus.post(new GroupDeletedSuccessfullyEvent(details.name));
     }
 
     @Subscribe
     public void on(EditGroupDetailsEvent event) {
         db.editGroupName(event.groupId, event.groupName);
-        remoteDb.editGroupDetails(event.groupId, event.groupName);
         bus.post(new GroupNameEditedSuccessfullyEvent());
     }
 

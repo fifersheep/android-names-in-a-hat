@@ -27,13 +27,15 @@ public class StorageUseCaseTest {
     private DbHelper dbHelper;
     private EventBus bus;
     private StorageUseCase useCase;
+    private RemoteDb remoteDb;
 
     @Before
     public void setUp() {
         storage = mock(KeyValueStore.class);
         dbHelper = mock(DbHelper.class);
         bus = mock(EventBus.class);
-        useCase = new StorageUseCase(storage, dbHelper, bus);
+        remoteDb = mock(RemoteDb.class);
+        useCase = new StorageUseCase(storage, remoteDb, dbHelper, bus);
     }
 
     @Test
@@ -88,6 +90,18 @@ public class StorageUseCaseTest {
     }
 
     @Test
+    public void on_OverviewBecameVisibleEvent_update_remote_db() {
+        when(dbHelper.getAllGroups()).thenReturn(asList(
+                group(1L, "Group One", asList(name(11L, "Scott"), name(12L, "Peter"))),
+                group(2L, "Group Two", asList(name(21L, "Rob"), name(22L, "Andy"), name(23L, "Rachel")))));
+
+        useCase.on(new OverviewBecameVisibleEvent());
+
+        verify(remoteDb).editGroupDetails(1L, "Group One", 2);
+        verify(remoteDb).editGroupDetails(2L, "Group Two", 3);
+    }
+
+    @Test
     public void on_RetrieveGroupNamesEvent_post_GroupNamesRetrievedEvent() {
         when(dbHelper.retrieveGroupNames(24L)).thenReturn(asList(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena")));
         useCase.on(new RetrieveGroupNamesEvent(24L));
@@ -96,8 +110,8 @@ public class StorageUseCaseTest {
 
     @Test
     public void on_DeleteNameEvent_remove_name_from_database() {
-        when(dbHelper.removeName(24L)).thenReturn(name(3L, "Bauer"));
-        useCase.on(new DeleteNameEvent(24L));
+        when(dbHelper.removeName(24L)).thenReturn(name(24L, "Bauer"));
+        useCase.on(new DeleteNameEvent(3L, 24L));
         verify(dbHelper).removeName(24L);
         verify(bus).post(new NameDeletedSuccessfullyEvent("Bauer"));
     }
