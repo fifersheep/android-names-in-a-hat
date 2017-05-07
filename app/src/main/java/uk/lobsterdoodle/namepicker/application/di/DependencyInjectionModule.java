@@ -2,6 +2,8 @@ package uk.lobsterdoodle.namepicker.application.di;
 
 import android.app.Application;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import uk.lobsterdoodle.namepicker.Util;
@@ -13,7 +15,9 @@ import uk.lobsterdoodle.namepicker.selection.NumberGenerator;
 import uk.lobsterdoodle.namepicker.selection.RandomNumberGenerator;
 import uk.lobsterdoodle.namepicker.selection.SelectionAdapterDataWrapper;
 import uk.lobsterdoodle.namepicker.storage.DbHelper;
+import uk.lobsterdoodle.namepicker.storage.FirebaseDb;
 import uk.lobsterdoodle.namepicker.storage.KeyValueStore;
+import uk.lobsterdoodle.namepicker.storage.RemoteDb;
 import uk.lobsterdoodle.namepicker.storage.SharedPrefsKeyValueStore;
 
 @Module
@@ -52,7 +56,14 @@ public class DependencyInjectionModule {
     }
 
     @Provides
+    @Singleton
     FirebaseAnalytics providesFirebaseAnalytics(EventBus bus) {
         return new FirebaseAnalytics(app.getApplicationContext(), bus);
+    }
+
+    @Provides
+    @Singleton
+    RemoteDb providesFirebaseDb() {
+        return new FirebaseDb();
     }
 }

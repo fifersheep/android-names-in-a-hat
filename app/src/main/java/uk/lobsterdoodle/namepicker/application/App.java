@@ -3,6 +3,8 @@ package uk.lobsterdoodle.namepicker.application;
 import android.app.Application;
 import android.content.Context;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import javax.inject.Inject;
 
 import uk.lobsterdoodle.namepicker.AndroidLogWrapper;
@@ -12,6 +14,7 @@ import uk.lobsterdoodle.namepicker.application.di.DaggerDependencyInjectionCompo
 import uk.lobsterdoodle.namepicker.application.di.DependencyInjectionComponent;
 import uk.lobsterdoodle.namepicker.application.di.DependencyInjectionModule;
 import uk.lobsterdoodle.namepicker.events.EventBus;
+import uk.lobsterdoodle.namepicker.storage.RemoteDb;
 
 public class App extends Application {
     private DependencyInjectionComponent component;
@@ -19,6 +22,8 @@ public class App extends Application {
     @Inject EventBus bus;
 
     @Inject FirebaseAnalytics firebaseAnalytics;
+
+    @Inject RemoteDb remoteDb;
 
     public static App get(Context context) {
         return (App) context.getApplicationContext();
@@ -33,6 +38,7 @@ public class App extends Application {
                 .build();
 
         component.inject(this);
+        remoteDb.createUser(FirebaseInstanceId.getInstance().getId());
     }
 
     public DependencyInjectionComponent component() {

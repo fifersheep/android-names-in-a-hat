@@ -214,19 +214,21 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
     }
 
     @Override
-    public void addNameToGroup(long groupId, String name) {
+    public long addNameToGroup(long groupId, String name) {
         SQLiteDatabase db = this.getWritableDatabase();
+        long nameId = -1;
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_GROUP_ID, groupId);
         values.put(COLUMN_NAME_NAME, name);
 
         if (db != null) {
-            db.insert(TABLE_NAMES, null, values);
+            nameId = db.insert(TABLE_NAMES, null, values);
             db.close();
         } else {
             Log.e("Names in a Hat",  "Null Pointer: " + getClass().getName() + " > addNameToGroup()");
         }
+        return nameId;
     }
 
     @Override

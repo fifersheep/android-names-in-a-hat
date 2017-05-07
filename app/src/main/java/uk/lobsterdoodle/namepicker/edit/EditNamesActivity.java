@@ -114,8 +114,8 @@ public class EditNamesActivity extends FlowActivity implements NameCardActions {
     }
 
     @Override
-    public void deleteName(long id) {
-        bus.post(new DeleteNameEvent(id));
+    public void deleteName(long nameId) {
+        bus.post(new DeleteNameEvent(groupId, nameId));
     }
 
     public class NameListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
