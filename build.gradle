@@ -1,16 +1,14 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.1.2-2'
+    ext.kotlin_version = '1.1.2-3'
     ext.butterknife_version = '8.5.1'
     ext.dagger_version = '2.5'
     repositories {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+        classpath 'com.android.tools.build:gradle:2.4.0-alpha7'
         classpath 'com.google.gms:google-services:3.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.jakewharton:butterknife-gradle-plugin:$butterknife_version"
@@ -27,5 +25,5 @@ allprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.14.1'
+    gradleVersion = '3.5'
 }
