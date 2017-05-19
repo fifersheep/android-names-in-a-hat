@@ -139,6 +139,14 @@ public class StorageUseCaseTest {
     }
 
     @Test
+    public void on_RetrieveGroupDetailsEvent_update_remote_db_with_group_details() {
+        when(dbHelper.retrieveGroupDetails(24L)).thenReturn(new GroupDetails(24L, "CTU"));
+        when(dbHelper.retrieveGroupNames(24L)).thenReturn(asList(name(1L, "One"), name(2L, "Two")));
+        useCase.on(new RetrieveGroupDetailsEvent(24L));
+        verify(remoteDb).editGroupDetails(24L, "CTU", 2);
+    }
+
+    @Test
     public void on_NameStateChangedEvent_update_name_in_database() {
         useCase.on(new NameStateChangedEvent(name(24L, "Jack")));
         verify(dbHelper).updateName(name(24L, "Jack"));

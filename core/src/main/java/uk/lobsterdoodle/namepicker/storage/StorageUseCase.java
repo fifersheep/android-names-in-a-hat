@@ -86,7 +86,10 @@ public class StorageUseCase {
 
     @Subscribe
     public void on(RetrieveGroupDetailsEvent event) {
-        bus.post(new GroupDetailsRetrievedSuccessfullyEvent(db.retrieveGroupDetails(event.groupId)));
+        final GroupDetails details = db.retrieveGroupDetails(event.groupId);
+        final List<Name> names = db.retrieveGroupNames(event.groupId);
+        bus.post(new GroupDetailsRetrievedSuccessfullyEvent(details));
+        remoteDb.editGroupDetails(event.groupId, details.name, names.size());
     }
 
     @Subscribe
