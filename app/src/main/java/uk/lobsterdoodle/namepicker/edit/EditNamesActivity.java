@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
@@ -93,12 +92,12 @@ public class EditNamesActivity extends FlowActivity implements NameCardActions {
     @Subscribe
     public void on(GroupDetailsRetrievedSuccessfullyEvent event) {
         if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle(String.format("Names: %s", event.details.name));
+            getSupportActionBar().setTitle(String.format("Names: %s", event.getDetails().getName()));
     }
 
     @Subscribe
     public void on(GroupNamesRetrievedEvent event) {
-        cellData = event.names;
+        cellData = event.getNames();
         runOnUiThread(() -> nameListAdapter.notifyDataSetChanged());
     }
 
@@ -110,7 +109,7 @@ public class EditNamesActivity extends FlowActivity implements NameCardActions {
     @Subscribe
     public void on(NameDeletedSuccessfullyEvent event) {
         bus.post(new RetrieveGroupNamesEvent(groupId));
-        Snackbar.make(root, String.format("%s deleted", event.name), Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(root, String.format("%s deleted", event.getName()), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

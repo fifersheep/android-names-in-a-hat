@@ -66,11 +66,11 @@ public class SelectionAdapterDataWrapperTest {
     @Test
     public void on_NameSelectionCheckChangedEvent_toggle_selection() {
         wrapper.on(groupNamesSortedEvent(asList(name("Scott"), name("Suzanne"))));
-        assertThat(wrapper.item(0).toggledOn, is(equalTo(false)));
+        assertThat(wrapper.item(0).getToggledOn(), is(equalTo(false)));
         wrapper.on(new NameSelectionCheckChangedEvent(0, true));
-        assertThat(wrapper.item(0).toggledOn, is(equalTo(true)));
+        assertThat(wrapper.item(0).getToggledOn(), is(equalTo(true)));
         wrapper.on(new NameSelectionCheckChangedEvent(0, false));
-        assertThat(wrapper.item(0).toggledOn, is(equalTo(false)));
+        assertThat(wrapper.item(0).getToggledOn(), is(equalTo(false)));
     }
 
     @Test
@@ -139,14 +139,14 @@ public class SelectionAdapterDataWrapperTest {
     public void on_SelectAllSelectionToggleEvent_post_MassNameStateChangedEvent() {
         wrapper.forGroup(24L);
         wrapper.on(new SelectAllSelectionToggleEvent());
-        verify(bus).post(MassNameStateChangedEvent.toggleOn(24L));
+        verify(bus).post(MassNameStateChangedEvent.Toggle.on(24L));
     }
 
     @Test
     public void on_ClearAllSelectionToggleEvent_post_MassNameStateChangedEvent() {
         wrapper.forGroup(24L);
         wrapper.on(new ClearAllSelectionToggleEvent());
-        verify(bus).post(MassNameStateChangedEvent.toggleOff(24L));
+        verify(bus).post(MassNameStateChangedEvent.Toggle.off(24L));
     }
 
     @Test
@@ -162,11 +162,11 @@ public class SelectionAdapterDataWrapperTest {
     }
 
     private boolean allDataToggledOn(List<Name> names) {
-        return !Iterables.tryFind(names, name -> !name.toggledOn).isPresent();
+        return !Iterables.tryFind(names, name -> !name.getToggledOn()).isPresent();
     }
 
     private boolean allDataToggledOff(List<Name> names) {
-        return !Iterables.tryFind(names, name -> name.toggledOn).isPresent();
+        return !Iterables.tryFind(names, name -> name.getToggledOn()).isPresent();
     }
 
     private GroupNamesSortedEvent groupNamesSortedEvent(List<Name> drawOptions) {

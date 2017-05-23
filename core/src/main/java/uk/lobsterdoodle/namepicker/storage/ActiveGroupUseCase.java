@@ -20,7 +20,7 @@ public class ActiveGroupUseCase {
 
     @Subscribe
     public void on(SetActiveGroupEvent event) {
-        store.edit().put(KEY, event.groupId).commit();
+        store.edit().put(KEY, event.getGroupId()).commit();
     }
 
     @Subscribe

@@ -30,8 +30,8 @@ public class SelectionNamesUseCase {
 
     private Map<NameSortType, Comparator<Name>> comparatorsFor = ImmutableMap.<NameSortType, Comparator<Name>>builder()
             .put(NameSortType.NONE, (first, second) -> 0)
-            .put(NameSortType.ASC, (first, second) -> first.name.compareToIgnoreCase(second.name))
-            .put(NameSortType.DESC, (first, second) -> second.name.compareToIgnoreCase(first.name))
+            .put(NameSortType.ASC, (first, second) -> first.getName().compareToIgnoreCase(second.getName()))
+            .put(NameSortType.DESC, (first, second) -> second.getName().compareToIgnoreCase(first.getName()))
             .build();
 
     @Inject
@@ -43,8 +43,8 @@ public class SelectionNamesUseCase {
 
     @Subscribe
     public void on(GroupNamesRetrievedEvent event) {
-        final List<Name> names = event.names;
-        final String key = String.format(GROUP_SORT_TYPE_FOR_GROUP_FORMAT, event.groupId);
+        final List<Name> names = event.getNames();
+        final String key = String.format(GROUP_SORT_TYPE_FOR_GROUP_FORMAT, event.getGroupId());
         final NameSortType currentSortType = currentSortType(key);
 
         Collections.sort(names, comparatorsFor.get(currentSortType));
@@ -53,8 +53,8 @@ public class SelectionNamesUseCase {
 
     @Subscribe
     public void on(SortMenuItemSelectedEvent event) {
-        final List<Name> names = event.names;
-        final String key = String.format(GROUP_SORT_TYPE_FOR_GROUP_FORMAT, event.groupId);
+        final List<Name> names = event.getNames();
+        final String key = String.format(GROUP_SORT_TYPE_FOR_GROUP_FORMAT, event.getGroupId());
         final NameSortType currentSortType = currentSortType(key);
         final NameSortType nextSortType = nextSortFor.get(currentSortType);
 

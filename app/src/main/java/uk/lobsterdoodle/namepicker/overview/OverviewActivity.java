@@ -77,14 +77,14 @@ public class OverviewActivity extends AppCompatActivity implements OverviewCardA
 
     @Subscribe
     public void onEvent(OverviewRetrievedEvent retrievedEvent) {
-        cellData = retrievedEvent.cellData;
+        cellData = retrievedEvent.getCellData();
         runOnUiThread(() -> overviewAdapter.notifyDataSetChanged());
     }
 
     @Subscribe
     public void on(GroupDeletedSuccessfullyEvent event) {
         bus.post(new OverviewBecameVisibleEvent());
-        Snackbar.make(root, String.format("%s deleted", event.groupName), Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(root, String.format("%s deleted", event.getGroupName()), Snackbar.LENGTH_SHORT).show();
     }
 
     public static Intent launchIntent(Context context) {

@@ -47,7 +47,7 @@ public class NameSelectionView extends FrameLayout {
 
     public void bind(Name name, CheckedChangeListener listener) {
         this.listener = listener;
-        checkBox.setText(name.name);
-        checkBox.setChecked(name.toggledOn);
+        checkBox.setText(name.getName());
+        checkBox.setChecked(name.getToggledOn());
     }
 }

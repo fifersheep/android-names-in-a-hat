@@ -24,8 +24,8 @@ public class SelectionGridUseCase {
 
     @Subscribe
     public void on(GridColumnSelectedEvent event) {
-        bus.post(new SelectionGridChangedEvent(event.columnCount, nextOptionFor(event.columnCount)));
-        storage.edit().put(CURRENT_GRID_COLUMN_COUNT, event.columnCount).commit();
+        bus.post(new SelectionGridChangedEvent(event.getColumnCount(), nextOptionFor(event.getColumnCount())));
+        storage.edit().put(CURRENT_GRID_COLUMN_COUNT, event.getColumnCount()).commit();
     }
 
     @Subscribe

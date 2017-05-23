@@ -154,7 +154,7 @@ public class StorageUseCaseTest {
 
     @Test
     public void on_MassNameStateChangedEvent_mass_toggle_names() {
-        useCase.on(MassNameStateChangedEvent.toggleOn(24L));
+        useCase.on(MassNameStateChangedEvent.Companion.toggleOn(24L));
         verify(dbHelper).toggleAllNamesInGroup(24L, true);
     }
 

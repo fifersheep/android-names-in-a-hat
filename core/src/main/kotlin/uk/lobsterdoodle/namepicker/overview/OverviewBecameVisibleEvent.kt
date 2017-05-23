@@ -1,0 +1,3 @@
+package uk.lobsterdoodle.namepicker.overview
+
+class OverviewBecameVisibleEvent

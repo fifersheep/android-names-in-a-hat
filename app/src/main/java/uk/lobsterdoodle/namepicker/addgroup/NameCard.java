@@ -45,7 +45,7 @@ public class NameCard extends CardView {
     }
 
     public void bind(NameCardActions nameCardActions, Name name) {
-        this.name.setText(name.name);
-        delete.setOnClickListener(v -> nameCardActions.deleteName(name.id));
+        this.name.setText(name.getName());
+        delete.setOnClickListener(v -> nameCardActions.deleteName(name.getId()));
     }
 }

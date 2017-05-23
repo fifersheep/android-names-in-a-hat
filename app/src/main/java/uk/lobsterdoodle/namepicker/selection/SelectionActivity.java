@@ -25,7 +25,6 @@ import com.google.common.collect.ImmutableMap;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +34,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import uk.lobsterdoodle.namepicker.R;
-import uk.lobsterdoodle.namepicker.analytics.AnalyticsEvent;
 import uk.lobsterdoodle.namepicker.application.App;
 import uk.lobsterdoodle.namepicker.events.EventBus;
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent;
@@ -69,8 +67,8 @@ public class SelectionActivity extends FlowActivity {
     public void submit(Button drawButton) {
         bus.post(new DrawNamesFromSelectionEvent((String) drawCount.getSelectedItem(),
             FluentIterable.from(dataWrapper.data())
-                    .filter(name -> name.toggledOn)
-                    .transform(name -> name.name)
+                    .filter(name -> name.getToggledOn())
+                    .transform(name -> name.getName())
                     .toList()));
     }
 
@@ -161,39 +159,39 @@ public class SelectionActivity extends FlowActivity {
     @Subscribe
     public void on(GroupDetailsRetrievedSuccessfullyEvent event) {
         if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle(event.details.name);
+            getSupportActionBar().setTitle(event.getDetails().getName());
         bus.post(new SetActiveGroupEvent(groupId));
     }
 
     @Subscribe
     public void on(SelectionGridChangedEvent event) {
-        grid.setNumColumns(event.gridColumns);
+        grid.setNumColumns(event.getGridColumns());
 
         final MenuItem one = menu.findItem(R.id.menu_action_grid_one);
-        one.setVisible(event.nextGridOption == 1);
-        one.setEnabled(event.nextGridOption == 1);
+        one.setVisible(event.getNextGridOption() == 1);
+        one.setEnabled(event.getNextGridOption() == 1);
 
         final MenuItem two = menu.findItem(R.id.menu_action_grid_two);
-        two.setVisible(event.nextGridOption == 2);
-        two.setEnabled(event.nextGridOption == 2);
+        two.setVisible(event.getNextGridOption() == 2);
+        two.setEnabled(event.getNextGridOption() == 2);
     }
 
     @Subscribe
     public void on(UpdateDrawActionsEvent event) {
-        toggleButton.setText(event.toggleLabel);
-        toggleButton.setOnClickListener(v -> bus.post(event.selectionToggleEvent));
+        toggleButton.setText(event.getToggleLabel());
+        toggleButton.setOnClickListener(v -> bus.post(event.getSelectionToggleEvent()));
 
         drawOptionsAdapter.clear();
-        drawOptionsAdapter.addAll(event.drawOptions);
+        drawOptionsAdapter.addAll(event.getDrawOptions());
     }
 
     @Subscribe
     public void on(NamesGeneratedEvent event) {
         SimpleDialogFragment.createBuilder(this, getSupportFragmentManager())
-                .setTitle(getString(event.multipleNames
+                .setTitle(getString(event.getMultipleNames()
                         ? R.string.generated_names_dialog_title_multiple
                         : R.string.generated_names_dialog_title_singular))
-                .setMessage(event.generatedNames)
+                .setMessage(event.getGeneratedNames())
                 .setPositiveButtonText(getString(R.string.generated_names_dialog_positive_button))
                 .show();
     }

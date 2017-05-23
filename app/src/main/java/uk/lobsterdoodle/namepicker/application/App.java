@@ -32,7 +32,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.install(new AndroidLogWrapper());
+        Log.INSTANCE.install(new AndroidLogWrapper());
         component = DaggerDependencyInjectionComponent.builder()
                 .dependencyInjectionModule(new DependencyInjectionModule(this))
                 .build();

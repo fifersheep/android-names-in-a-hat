@@ -39,66 +39,66 @@ public class StorageUseCase {
     public void on(OverviewBecameVisibleEvent event) {
         final List<Group> groupList = db.getAllGroups();
         final List<OverviewCardCellData> cellData = transform(groupList,
-                group -> new OverviewCardCellData(group.details.id, group.details.name, group.names.size()));
+                group -> new OverviewCardCellData(group.getDetails().getId(), group.getDetails().getName(), group.getNames().size()));
 
         bus.post(new OverviewRetrievedEvent(cellData));
         for (OverviewCardCellData item : cellData)
-            remoteDb.editGroupDetails(item.groupId, item.listTitle, item.nameCount);
+            remoteDb.editGroupDetails(item.getGroupId(), item.getListTitle(), item.getNameCount());
     }
 
     @Subscribe
     public void on(CreateGroupDetailsEvent event) {
-        final long groupId = db.createGroup(event.groupName);
-        bus.post(new GroupCreationSuccessfulEvent(groupId, event.groupName));
+        final long groupId = db.createGroup(event.getGroupName());
+        bus.post(new GroupCreationSuccessfulEvent(groupId, event.getGroupName()));
     }
 
     @Subscribe
     public void on(AddNameToGroupEvent event) {
-        db.addNameToGroup(event.groupId, event.name);
-        final List<Name> groupNames = db.retrieveGroupNames(event.groupId);
-        bus.post(new GroupNamesRetrievedEvent(event.groupId, groupNames));
+        db.addNameToGroup(event.getGroupId(), event.getName());
+        final List<Name> groupNames = db.retrieveGroupNames(event.getGroupId());
+        bus.post(new GroupNamesRetrievedEvent(event.getGroupId(), groupNames));
         bus.post(new NameAddedSuccessfullyEvent());
     }
 
     @Subscribe
     public void on(RetrieveGroupNamesEvent event) {
-        final List<Name> retrieveGroupNames = db.retrieveGroupNames(event.groupId);
-        bus.post(new GroupNamesRetrievedEvent(event.groupId, retrieveGroupNames));
+        final List<Name> retrieveGroupNames = db.retrieveGroupNames(event.getGroupId());
+        bus.post(new GroupNamesRetrievedEvent(event.getGroupId(), retrieveGroupNames));
     }
 
     @Subscribe
     public void on(DeleteNameEvent event) {
         final Name deletedName = db.removeName(event.getNameId());
-        bus.post(new NameDeletedSuccessfullyEvent(deletedName.name));
+        bus.post(new NameDeletedSuccessfullyEvent(deletedName.getName()));
     }
 
     @Subscribe
     public void on(DeleteGroupEvent event) {
-        final GroupDetails details = db.removeGroup(event.groupId);
-        bus.post(new GroupDeletedSuccessfullyEvent(details.name));
+        final GroupDetails details = db.removeGroup(event.getGroupId());
+        bus.post(new GroupDeletedSuccessfullyEvent(details.getName()));
     }
 
     @Subscribe
     public void on(EditGroupDetailsEvent event) {
-        db.editGroupName(event.groupId, event.groupName);
+        db.editGroupName(event.getGroupId(), event.getGroupName());
         bus.post(new GroupNameEditedSuccessfullyEvent());
     }
 
     @Subscribe
     public void on(RetrieveGroupDetailsEvent event) {
-        final GroupDetails details = db.retrieveGroupDetails(event.groupId);
-        final List<Name> names = db.retrieveGroupNames(event.groupId);
+        final GroupDetails details = db.retrieveGroupDetails(event.getGroupId());
+        final List<Name> names = db.retrieveGroupNames(event.getGroupId());
         bus.post(new GroupDetailsRetrievedSuccessfullyEvent(details));
-        remoteDb.editGroupDetails(event.groupId, details.name, names.size());
+        remoteDb.editGroupDetails(event.getGroupId(), details.getName(), names.size());
     }
 
     @Subscribe
     public void on(NameStateChangedEvent event) {
-        db.updateName(event.name);
+        db.updateName(event.getName());
     }
 
     @Subscribe
     public void on(MassNameStateChangedEvent event) {
-        db.toggleAllNamesInGroup(event.groupId, event.toggleOn);
+        db.toggleAllNamesInGroup(event.getGroupId(), event.getToggleOn());
     }
 }

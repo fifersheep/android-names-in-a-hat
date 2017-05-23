@@ -53,22 +53,22 @@ public class OverviewCard extends CardView {
     }
 
     public void bind(OverviewCardActionsCallback callback, OverviewCardCellData data) {
-        this.title.setText(data.listTitle);
-        this.count.setText(String.format("%s names", String.valueOf(data.nameCount)));
-        setOnClickListener(v -> callback.launchSelectionScreen(data.groupId));
+        this.title.setText(data.getListTitle());
+        this.count.setText(String.format("%s names", String.valueOf(data.getNameCount())));
+        setOnClickListener(v -> callback.launchSelectionScreen(data.getGroupId()));
 
         PopupMenu popup = new PopupMenu(context, overflow);
         popup.inflate(R.menu.menu_overview_card);
         popup.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.overview_card_overflow_edit_names:
-                    callback.launchEditGroupNamesScreen(data.groupId);
+                    callback.launchEditGroupNamesScreen(data.getGroupId());
                     return true;
                 case R.id.overview_card_overflow_edit_group:
-                    callback.launchEditGroupDetailsScreen(data.groupId);
+                    callback.launchEditGroupDetailsScreen(data.getGroupId());
                     return true;
                 case R.id.overview_card_overflow_delete_group:
-                    callback.deleteGroup(data.groupId);
+                    callback.deleteGroup(data.getGroupId());
                     return true;
                 default:
                     return true;

@@ -74,8 +74,8 @@ public class EditGroupDetailsActivity extends FlowActivity {
     @Subscribe
     public void on(GroupDetailsRetrievedSuccessfullyEvent event) {
         if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle(String.format("Edit: %s", event.details.name));
-        groupName.setText(event.details.name);
+            getSupportActionBar().setTitle(String.format("Edit: %s", event.getDetails().getName()));
+        groupName.setText(event.getDetails().getName());
     }
 
     @Subscribe

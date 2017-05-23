@@ -265,10 +265,10 @@ public class ClassroomDbHelper extends SQLiteOpenHelper implements DbHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME_NAME, name.name);
-        values.put(COLUMN_NAME_TOGGLED, name.toggledOn ? 1 : 0);
+        values.put(COLUMN_NAME_NAME, name.getName());
+        values.put(COLUMN_NAME_TOGGLED, name.getToggledOn() ? 1 : 0);
 
-        String selection = String.format(" %s = %s ", COLUMN_NAME_ID, name.id);
+        String selection = String.format(" %s = %s ", COLUMN_NAME_ID, name.getId());
 
         if (db != null) {
             db.update(TABLE_NAMES, values, selection, new String[0]);

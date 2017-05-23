@@ -46,7 +46,7 @@ public class SplashActivity extends AppCompatActivity implements ServiceConnecti
     @Subscribe
     public void on(GroupActiveEvent event) {
         bus.unregister(this);
-        startActivity(SelectionActivity.launchIntent(this, event.groupId));
+        startActivity(SelectionActivity.launchIntent(this, event.getGroupId()));
         finish();
     }
 
