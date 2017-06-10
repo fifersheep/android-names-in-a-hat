@@ -1,22 +1,15 @@
 package uk.lobsterdoodle.namepicker.storage
 
 import org.greenrobot.eventbus.Subscribe
-
-import javax.inject.Inject
-
 import uk.lobsterdoodle.namepicker.addgroup.AddNameToGroupEvent
 import uk.lobsterdoodle.namepicker.creategroup.CreateGroupDetailsEvent
 import uk.lobsterdoodle.namepicker.events.EventBus
-import uk.lobsterdoodle.namepicker.model.Group
-import uk.lobsterdoodle.namepicker.model.GroupDetails
-import uk.lobsterdoodle.namepicker.model.Name
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent
 import uk.lobsterdoodle.namepicker.overview.OverviewBecameVisibleEvent
 import uk.lobsterdoodle.namepicker.overview.OverviewCardCellData
 import uk.lobsterdoodle.namepicker.overview.OverviewRetrievedEvent
 import uk.lobsterdoodle.namepicker.selection.NameStateChangedEvent
-
-import com.google.common.collect.Lists.transform
+import javax.inject.Inject
 
 class StorageUseCase @Inject
 constructor(private val storage: KeyValueStore, private val remoteDb: RemoteDb, private val db: DbHelper, private val bus: EventBus) {
@@ -28,8 +21,7 @@ constructor(private val storage: KeyValueStore, private val remoteDb: RemoteDb, 
     @Subscribe
     fun on(event: OverviewBecameVisibleEvent) {
         val groupList = db.allGroups
-        val cellData = transform(groupList
-        ) { group -> OverviewCardCellData(group!!.details.id, group.details.name, group.names.size) }
+        val cellData = groupList.map { (details, names) -> OverviewCardCellData(details.id, details.name, names.size) }
 
         bus.post(OverviewRetrievedEvent(cellData))
         for ((groupId, listTitle, nameCount) in cellData)
@@ -58,14 +50,14 @@ constructor(private val storage: KeyValueStore, private val remoteDb: RemoteDb, 
 
     @Subscribe
     fun on(event: DeleteNameEvent) {
-        val (_, name) = db.removeName(event.nameId)
-        bus.post(NameDeletedSuccessfullyEvent(name))
+        val name = db.removeName(event.nameId)
+        name?.let { bus.post(NameDeletedSuccessfullyEvent(name.name)) }
     }
 
     @Subscribe
     fun on(event: DeleteGroupEvent) {
-        val (_, name) = db.removeGroup(event.groupId)
-        bus.post(GroupDeletedSuccessfullyEvent(name))
+        val name = db.removeGroup(event.groupId)
+        name?.let { bus.post(GroupDeletedSuccessfullyEvent(name.name)) }
     }
 
     @Subscribe
@@ -78,8 +70,10 @@ constructor(private val storage: KeyValueStore, private val remoteDb: RemoteDb, 
     fun on(event: RetrieveGroupDetailsEvent) {
         val details = db.retrieveGroupDetails(event.groupId)
         val names = db.retrieveGroupNames(event.groupId)
-        bus.post(GroupDetailsRetrievedSuccessfullyEvent(details))
-        remoteDb.editGroupDetails(event.groupId, details.name, names.size)
+        details?.let {
+            bus.post(GroupDetailsRetrievedSuccessfullyEvent(details))
+            remoteDb.editGroupDetails(event.groupId, details.name, names.size)
+        }
     }
 
     @Subscribe
