@@ -10,29 +10,15 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
-import android.widget.Button
-import android.widget.GridView
-import android.widget.Spinner
-
-import com.avast.android.dialogs.fragment.SimpleDialogFragment
-import com.google.common.collect.FluentIterable
-import com.google.common.collect.ImmutableMap
-
-import org.greenrobot.eventbus.Subscribe
-
-import java.util.ArrayList
-
-import javax.inject.Inject
-
+import android.widget.*
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import com.avast.android.dialogs.fragment.SimpleDialogFragment
+import org.greenrobot.eventbus.Subscribe
 import uk.lobsterdoodle.namepicker.R
 import uk.lobsterdoodle.namepicker.application.App
 import uk.lobsterdoodle.namepicker.events.EventBus
-import uk.lobsterdoodle.namepicker.model.Name
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent
 import uk.lobsterdoodle.namepicker.overview.OverviewActivity
 import uk.lobsterdoodle.namepicker.storage.GroupDetailsRetrievedSuccessfullyEvent
@@ -40,6 +26,8 @@ import uk.lobsterdoodle.namepicker.storage.RetrieveGroupDetailsEvent
 import uk.lobsterdoodle.namepicker.storage.SetActiveGroupEvent
 import uk.lobsterdoodle.namepicker.ui.FlowActivity
 import uk.lobsterdoodle.namepicker.ui.UpdateDrawActionsEvent
+import java.util.*
+import javax.inject.Inject
 
 class SelectionActivity : FlowActivity() {
 
@@ -57,10 +45,10 @@ class SelectionActivity : FlowActivity() {
     @OnClick(R.id.selection_button_draw)
     fun submit(drawButton: Button) {
         bus.post(DrawNamesFromSelectionEvent(drawCount.selectedItem as String,
-                FluentIterable.from<Name>(dataWrapper.data())
-                        .filter { name -> name!!.toggledOn }
-                        .transform { name -> name!!.name }
-                        .toList()))
+            dataWrapper.data()
+                    .filter { it.toggledOn }
+                    .map { it.name }
+                    .toList()))
     }
 
     @Inject lateinit var bus: EventBus
@@ -74,11 +62,10 @@ class SelectionActivity : FlowActivity() {
     private var groupId: Long = 0
     private val drawCountOptions = ArrayList<String>()
 
-    internal val menuItems = ImmutableMap.builder<Int, Runnable>()
-            .put(R.id.menu_action_grid_one, Runnable { bus.post(GridColumnSelectedEvent(1)) })
-            .put(R.id.menu_action_grid_two, Runnable { bus.post(GridColumnSelectedEvent(2)) })
-            .put(R.id.menu_action_sort, Runnable { bus.post(SortMenuItemSelectedEvent(groupId, dataWrapper.data())) })
-            .build()
+    internal val menuItems = mapOf(
+            R.id.menu_action_grid_one to Runnable { bus.post(GridColumnSelectedEvent(1)) },
+            R.id.menu_action_grid_two to Runnable { bus.post(GridColumnSelectedEvent(2)) },
+            R.id.menu_action_sort to Runnable { bus.post(SortMenuItemSelectedEvent(groupId, dataWrapper.data())) })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

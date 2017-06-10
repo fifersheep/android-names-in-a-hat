@@ -1,3 +1,3 @@
 package uk.lobsterdoodle.namepicker.selection
 
-class DisableSelectionEmptyStateEvent
+object DisableSelectionEmptyStateEvent

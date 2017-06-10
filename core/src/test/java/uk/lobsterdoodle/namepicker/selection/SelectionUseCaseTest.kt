@@ -54,31 +54,31 @@ class SelectionUseCaseTest {
     @Test
     fun on_SelectionDataUpdatedEvent_post_UpdateDrawActionsEvent_with_some_selected_names() {
         useCase.on(SelectionDataUpdatedEvent(listOf(nameToggledOn(), nameToggledOn(), nameToggledOff(), nameToggledOff())))
-        verify(bus).post(UpdateDrawActionsEvent(listOf("1", "2"), "Select All", SelectAllSelectionToggleEvent()))
+        verify(bus).post(UpdateDrawActionsEvent(listOf("1", "2"), "Select All", SelectAllSelectionToggleEvent))
     }
 
     @Test
     fun on_SelectionDataUpdatedEvent_post_UpdateDrawActionsEvent_with_all_selected_names() {
         useCase.on(SelectionDataUpdatedEvent(listOf(nameToggledOn(), nameToggledOn(), nameToggledOn(), nameToggledOn())))
-        verify(bus).post(UpdateDrawActionsEvent(listOf("1", "2", "3", "4"), "Clear All", ClearAllSelectionToggleEvent()))
+        verify(bus).post(UpdateDrawActionsEvent(listOf("1", "2", "3", "4"), "Clear All", ClearAllSelectionToggleEvent))
     }
 
     @Test
     fun on_SelectionDataUpdatedEvent_post_UpdateDrawActionsEvent_without_selected_names() {
         useCase.on(SelectionDataUpdatedEvent(listOf(nameToggledOff(), nameToggledOff(), nameToggledOff(), nameToggledOff())))
-        verify(bus).post(UpdateDrawActionsEvent(listOf("0"), "Select All", SelectAllSelectionToggleEvent()))
+        verify(bus).post(UpdateDrawActionsEvent(listOf("0"), "Select All", SelectAllSelectionToggleEvent))
     }
 
     @Test
     fun on_SelectionDataUpdatedEvent_post_DisableDrawActionsEvent_when_1_or_fewer_names_are_toggled_on() {
         useCase.on(SelectionDataUpdatedEvent(listOf(nameToggledOn(), nameToggledOff(), nameToggledOff())))
-        verify(bus).post(DisableDrawActionsEvent())
+        verify(bus).post(DisableDrawActionsEvent)
     }
 
     @Test
     fun on_SelectionDataUpdatedEvent_post_EnableDrawActionsEvent_when_2_or_more_names_are_toggled_on() {
         useCase.on(SelectionDataUpdatedEvent(listOf(nameToggledOn(), nameToggledOn(), nameToggledOff())))
-        verify(bus).post(EnableDrawActionsEvent())
+        verify(bus).post(EnableDrawActionsEvent)
     }
 
     private fun nameToggledOn(): Name = Name(0, "name", true)

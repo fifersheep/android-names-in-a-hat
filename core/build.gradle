@@ -9,7 +9,6 @@ dependencies {
 
     compile "com.google.dagger:dagger:$dagger_version"
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile 'com.google.guava:guava:21.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 buildscript {

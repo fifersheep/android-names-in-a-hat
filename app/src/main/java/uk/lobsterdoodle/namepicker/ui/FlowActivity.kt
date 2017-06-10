@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 
-import com.google.common.collect.ImmutableMap
-
 import javax.inject.Inject
 
 import uk.lobsterdoodle.namepicker.R
@@ -17,10 +15,10 @@ abstract class FlowActivity : AppCompatActivity() {
 
     @Inject lateinit var eventBus: EventBus
 
-    internal var orientations = ImmutableMap.of(
-            Configuration.ORIENTATION_UNDEFINED, "Undefined",
-            Configuration.ORIENTATION_PORTRAIT, "Portrait",
-            Configuration.ORIENTATION_LANDSCAPE, "Landscape")
+    internal var orientations = mapOf(
+            Configuration.ORIENTATION_UNDEFINED to "Undefined",
+            Configuration.ORIENTATION_PORTRAIT to "Portrait",
+            Configuration.ORIENTATION_LANDSCAPE to "Landscape")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

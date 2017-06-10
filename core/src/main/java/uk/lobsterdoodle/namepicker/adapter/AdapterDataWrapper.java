@@ -1,10 +1,10 @@
 package uk.lobsterdoodle.namepicker.adapter;
 
-import com.google.common.base.Function;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import kotlin.jvm.functions.Function1;
 
 public class AdapterDataWrapper<T> {
     final private List<T> data = Collections.synchronizedList(new ArrayList<T>());
@@ -41,10 +41,10 @@ public class AdapterDataWrapper<T> {
         }
     }
 
-    public void modifyData(Function<T, T> modification) {
+    public void modifyData(Function1<T, T> modification) {
         synchronized (this.data) {
             for (T item : this.data) {
-                this.data.set(this.data.indexOf(item), modification.apply(item));
+                this.data.set(this.data.indexOf(item), modification.invoke(item));
             }
         }
     }
