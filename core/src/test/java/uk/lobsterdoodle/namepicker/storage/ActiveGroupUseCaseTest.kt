@@ -51,7 +51,7 @@ class ActiveGroupUseCaseTest {
     fun on_CheckForActiveGroupEvent_post_GroupNotActiveEvent_if_store_does_not_contain_key() {
         whenever(store.contains("active_group_id")).thenReturn(false)
         useCase.on(CheckForActiveGroupEvent())
-        verify(bus).post(GroupNotActiveEvent())
+        verify(bus).post(GroupNotActiveEvent)
     }
 
     @Test

@@ -69,7 +69,7 @@ class StorageUseCaseTest {
     fun on_AddNameToGroupEvent_post_NameAddedSuccessfullyEvent() {
         whenever(dbHelper.retrieveGroupNames(24L)).thenReturn(listOf(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena")))
         useCase.on(AddNameToGroupEvent(24L, "Scott"))
-        verify(bus).post(NameAddedSuccessfullyEvent())
+        verify(bus).post(NameAddedSuccessfullyEvent)
     }
 
     @Test
@@ -124,7 +124,7 @@ class StorageUseCaseTest {
     fun on_EditGroupDetailsEvent_edit_group_name_in_database() {
         useCase.on(EditGroupDetailsEvent(24L, "CTU"))
         verify(dbHelper).editGroupName(24L, "CTU")
-        verify(bus).post(GroupNameEditedSuccessfullyEvent())
+        verify(bus).post(GroupNameEditedSuccessfullyEvent)
     }
 
     @Test

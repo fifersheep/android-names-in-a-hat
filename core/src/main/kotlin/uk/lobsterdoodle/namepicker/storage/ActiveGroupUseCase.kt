@@ -28,7 +28,7 @@ constructor(private val bus: EventBus, private val store: KeyValueStore) {
         bus.post(if (store.contains(KEY))
             GroupActiveEvent(store.getLong(KEY, 0L))
         else
-            GroupNotActiveEvent())
+            GroupNotActiveEvent)
     }
 
     companion object {

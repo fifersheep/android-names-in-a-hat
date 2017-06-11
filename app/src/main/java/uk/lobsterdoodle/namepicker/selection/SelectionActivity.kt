@@ -101,7 +101,7 @@ class SelectionActivity : FlowActivity() {
         menuInflater.inflate(R.menu.menu_selection, menu)
         menuItems.forEach { addMenuItem(it.key, it.value) }
 
-        bus.post(LoadSelectionGridPreference())
+        bus.post(LoadSelectionGridPreference)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -217,7 +217,9 @@ class SelectionActivity : FlowActivity() {
                 else convertView as NameSelectionView
 
             nameSelectionView.bind(dataWrapper.item(position),
-                    CheckedChangeListener { isChecked -> bus.post(NameSelectionCheckChangedEvent(position, isChecked)) })
+                object : CheckedChangeListener {
+                    override fun onCheckedChanged(isChecked: Boolean) {
+                        bus.post(NameSelectionCheckChangedEvent(position, isChecked))}})
 
             return nameSelectionView
         }

@@ -11,7 +11,7 @@ import uk.lobsterdoodle.namepicker.Testing.Util.anyString
 import uk.lobsterdoodle.namepicker.events.EventBus
 import uk.lobsterdoodle.namepicker.storage.KeyValueStore
 
-import uk.lobsterdoodle.namepicker.selection.SelectionGridUseCase.CURRENT_GRID_COLUMN_COUNT
+import uk.lobsterdoodle.namepicker.selection.SelectionGridUseCase.Companion.CURRENT_GRID_COLUMN_COUNT
 
 class SelectionGridUseCaseTest {
     private lateinit var edit: KeyValueStore.Edit
@@ -63,7 +63,7 @@ class SelectionGridUseCaseTest {
     @Test
     fun on_LoadSelectionGridPreference_post_SelectionGridChangedEvent_with_preference() {
         whenever(storage.getLong(CURRENT_GRID_COLUMN_COUNT, 2)).thenReturn(1L)
-        useCase.on(LoadSelectionGridPreference())
+        useCase.on(LoadSelectionGridPreference)
         verify(bus).post(SelectionGridChangedEvent(1, 2))
     }
 }

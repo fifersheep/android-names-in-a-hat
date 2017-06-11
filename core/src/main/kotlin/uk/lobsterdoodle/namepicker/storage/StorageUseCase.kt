@@ -39,7 +39,7 @@ constructor(private val storage: KeyValueStore, private val remoteDb: RemoteDb, 
         db.addNameToGroup(event.groupId, event.name)
         val groupNames = db.retrieveGroupNames(event.groupId)
         bus.post(GroupNamesRetrievedEvent(event.groupId, groupNames))
-        bus.post(NameAddedSuccessfullyEvent())
+        bus.post(NameAddedSuccessfullyEvent)
     }
 
     @Subscribe
@@ -63,7 +63,7 @@ constructor(private val storage: KeyValueStore, private val remoteDb: RemoteDb, 
     @Subscribe
     fun on(event: EditGroupDetailsEvent) {
         db.editGroupName(event.groupId, event.groupName)
-        bus.post(GroupNameEditedSuccessfullyEvent())
+        bus.post(GroupNameEditedSuccessfullyEvent)
     }
 
     @Subscribe

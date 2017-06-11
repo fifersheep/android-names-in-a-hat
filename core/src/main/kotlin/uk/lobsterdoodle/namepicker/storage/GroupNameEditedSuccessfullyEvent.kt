@@ -1,3 +1,3 @@
 package uk.lobsterdoodle.namepicker.storage
 
-class GroupNameEditedSuccessfullyEvent
+object GroupNameEditedSuccessfullyEvent
