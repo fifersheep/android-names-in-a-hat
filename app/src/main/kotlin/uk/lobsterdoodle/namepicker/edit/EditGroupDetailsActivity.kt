@@ -38,13 +38,14 @@ class EditGroupDetailsActivity : FlowActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_group)
-        App.get(this).component().inject(this)
+        App[this].component().inject(this)
         ButterKnife.bind(this)
 
-        val event: Any = if (intent.hasExtra(EXTRA_GROUP_ID)) CreateGroupDetailsEvent(editGroupName.text.toString())
-        else EditGroupDetailsEvent(intent.getLongExtra(EXTRA_GROUP_ID, -1), editGroupName.text.toString())
-
-        done.setOnClickListener { bus.post(event) }
+        done.setOnClickListener {
+            val event: Any = if (!intent.hasExtra(EXTRA_GROUP_ID)) CreateGroupDetailsEvent(editGroupName.text.toString())
+            else EditGroupDetailsEvent(intent.getLongExtra(EXTRA_GROUP_ID, -1), editGroupName.text.toString())
+            bus.post(event)
+        }
     }
 
     public override fun onResume() {

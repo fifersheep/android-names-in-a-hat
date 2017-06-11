@@ -16,8 +16,8 @@ class AndroidEventBus : EventBus {
     override fun postSticky(event: Any)
             = eventBus.postSticky(event)
 
-    override fun <T> getStickyEvent(eventType: Class<T>): T
-            = eventBus.getStickyEvent(eventType)
+    override fun <T> getStickyEvent(clazz: Class<T>): T
+            = eventBus.getStickyEvent(clazz)
 
     override fun register(subscriber: Any) {
         if (!eventBus.isRegistered(subscriber)) {
@@ -31,8 +31,8 @@ class AndroidEventBus : EventBus {
         }
     }
 
-    override fun removeStickyEvent(clazz: Class<Any>) {
-        eventBus.removeStickyEvent<Any>(clazz)
+    override fun <T> removeStickyEvent(clazz: Class<T>) {
+        eventBus.removeStickyEvent<T>(clazz)
     }
 
     override fun isRegistered(subscriber: Any): Boolean
