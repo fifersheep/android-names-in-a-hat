@@ -12,6 +12,7 @@
 
     <string name="overview_label">Select a group</string>
     <string name="overview_add_group">Add Group</string>
+    <string name="overview_add_group_hint">Begin by adding a group. This is where you\'ll group names together.</string>
 
     <string name="add_group_input_label_name">Group Name</string>
     <string name="add_group_button_done">Done</string>

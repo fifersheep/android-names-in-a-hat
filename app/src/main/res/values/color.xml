@@ -2,6 +2,7 @@
 <resources>
     <color name="background_grey">#E8ECF0</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="semi_trans_grey_dark">#881F1F1A</color>
 
     <!-- Palette Colours -->
     <color name="palette_red">#B32A33</color>

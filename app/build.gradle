@@ -50,6 +50,8 @@ dependencies {
     compile 'com.avast:android-styled-dialogs:2.2.0'
     compile 'com.google.firebase:firebase-core:10.2.4'
     compile 'com.google.firebase:firebase-database:10.2.4'
+    compile 'com.joanfuentes:HintCase:1.0.4'
+    compile 'com.joanfuentes:HintCaseAssets:1.0.4'
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 

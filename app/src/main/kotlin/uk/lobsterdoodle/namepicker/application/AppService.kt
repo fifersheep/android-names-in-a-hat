@@ -15,6 +15,7 @@ import uk.lobsterdoodle.namepicker.analytics.GroupAnalytics
 import uk.lobsterdoodle.namepicker.analytics.ScreenAnalytics
 import uk.lobsterdoodle.namepicker.analytics.SelectionAnalytics
 import uk.lobsterdoodle.namepicker.events.EventBus
+import uk.lobsterdoodle.namepicker.overview.OverviewHintUseCase
 import uk.lobsterdoodle.namepicker.selection.SelectionGridUseCase
 import uk.lobsterdoodle.namepicker.selection.SelectionNamesUseCase
 import uk.lobsterdoodle.namepicker.selection.SelectionUseCase
@@ -34,6 +35,8 @@ class AppService : Service() {
     @Inject lateinit var selectionNamesUseCase: SelectionNamesUseCase
 
     @Inject lateinit var activeGroupUseCase: ActiveGroupUseCase
+
+    @Inject lateinit var overviewHintUseCase: OverviewHintUseCase
 
     @Inject lateinit var groupAnalytics: GroupAnalytics
 

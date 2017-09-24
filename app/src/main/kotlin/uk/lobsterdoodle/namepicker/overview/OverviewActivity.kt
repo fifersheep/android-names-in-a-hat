@@ -7,18 +7,20 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.Button
-
-import org.greenrobot.eventbus.Subscribe
-
-import java.util.ArrayList
-
-import javax.inject.Inject
-
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.joanfuentes.hintcase.HintCase
+import com.joanfuentes.hintcase.RectangularShape
+import com.joanfuentes.hintcaseassets.contentholderanimators.FadeInContentHolderAnimator
+import com.joanfuentes.hintcaseassets.hintcontentholders.SimpleHintContentHolder
+import com.joanfuentes.hintcaseassets.shapeanimators.RevealRectangularShapeAnimator
+import com.joanfuentes.hintcaseassets.shapeanimators.UnrevealRectangularShapeAnimator
+import org.greenrobot.eventbus.Subscribe
 import uk.lobsterdoodle.namepicker.R
+import uk.lobsterdoodle.namepicker.Util
 import uk.lobsterdoodle.namepicker.application.App
 import uk.lobsterdoodle.namepicker.edit.EditGroupDetailsActivity
 import uk.lobsterdoodle.namepicker.edit.EditNamesActivity
@@ -28,6 +30,8 @@ import uk.lobsterdoodle.namepicker.storage.ClearActiveGroupEvent
 import uk.lobsterdoodle.namepicker.storage.DeleteGroupEvent
 import uk.lobsterdoodle.namepicker.storage.GroupDeletedSuccessfullyEvent
 import uk.lobsterdoodle.namepicker.ui.OverviewCard
+import java.util.*
+import javax.inject.Inject
 
 class OverviewActivity : AppCompatActivity(), OverviewCardActionsCallback {
 
@@ -48,7 +52,7 @@ class OverviewActivity : AppCompatActivity(), OverviewCardActionsCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_overview)
-        App.get(this).component().inject(this)
+        App[this].component().inject(this)
         ButterKnife.bind(this)
 
         overviewAdapter = OverviewAdapter()
@@ -80,6 +84,29 @@ class OverviewActivity : AppCompatActivity(), OverviewCardActionsCallback {
     fun on(event: GroupDeletedSuccessfullyEvent) {
         bus.post(OverviewBecameVisibleEvent())
         Snackbar.make(root, "${event.groupName} deleted", Snackbar.LENGTH_SHORT).show()
+    }
+
+    @Subscribe
+    fun on(event: ShowAddGroupHintEvent) {
+        addGroupButton.post {
+            val blockInfo = SimpleHintContentHolder.Builder(addGroupButton.context)
+                    .setContentText(resources.getString(R.string.overview_add_group_hint))
+                    .setContentStyle(R.style.AppText_Tooltip)
+                    .setGravity(Gravity.TOP)
+                    .setMargin(
+                            Util.pxForDp(this, 16),
+                            Util.pxForDp(this, 32),
+                            Util.pxForDp(this, 16),
+                            Util.pxForDp(this, 16))
+                    .build()
+
+            HintCase(addGroupButton.rootView)
+                    .setTarget(addGroupButton, RectangularShape(), HintCase.TARGET_IS_CLICKABLE)
+                    .setBackgroundColorByResourceId(R.color.semi_trans_grey_dark)
+                    .setShapeAnimators(RevealRectangularShapeAnimator(), UnrevealRectangularShapeAnimator())
+                    .setHintBlock(blockInfo, FadeInContentHolderAnimator())
+                    .show()
+        }
     }
 
     override fun launchEditGroupNamesScreen(groupId: Long)
