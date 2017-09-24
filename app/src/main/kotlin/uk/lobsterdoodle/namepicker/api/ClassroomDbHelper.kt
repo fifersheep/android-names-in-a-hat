@@ -102,6 +102,7 @@ class ClassroomDbHelper constructor(context: Context) :
             val values = ContentValues()
             values.put(Column.GROUP_ID, groupId)
             values.put(Column.NAME_NAME, name)
+            values.put(Column.NAME_TOGGLED, 1)
             val nameId = db.insert(Table.NAMES, null, values)
             db.close()
             nameId
