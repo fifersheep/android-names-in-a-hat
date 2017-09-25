@@ -35,16 +35,18 @@ class SelectionActivity : FlowActivity() {
 
     @BindView(R.id.selection_empty_text_view) lateinit var emptyView: View
 
-    @BindView(R.id.selection_draw_count) lateinit var drawCount: Spinner
+    @BindView(R.id.selection_draw_count_selector) lateinit var drawCountSelector: Spinner
 
     @BindView(R.id.selection_button_toggle) lateinit var toggleButton: Button
 
     @BindView(R.id.selection_button_draw) lateinit var drawButton: Button
 
+    @BindView(R.id.selection_draw_counter) lateinit var drawCounter: TextView
+
     @Suppress("UNUSED_PARAMETER")
     @OnClick(R.id.selection_button_draw)
     fun submit(drawButton: Button) {
-        bus.post(DrawNamesFromSelectionEvent(drawCount.selectedItem as String,
+        bus.post(DrawNamesFromSelectionEvent(drawCountSelector.selectedItem as String,
             dataWrapper.data()
                     .filter { it.toggledOn }
                     .map { it.name }
@@ -79,7 +81,7 @@ class SelectionActivity : FlowActivity() {
         grid.adapter = selectionAdapter
 
         drawOptionsAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, drawCountOptions)
-        drawCount.adapter = drawOptionsAdapter
+        drawCountSelector.adapter = drawOptionsAdapter
     }
 
     override fun onResume() {
@@ -148,6 +150,8 @@ class SelectionActivity : FlowActivity() {
 
         drawOptionsAdapter.clear()
         drawOptionsAdapter.addAll(event.drawOptions)
+
+        drawCounter.text = event.drawCounterText
     }
 
     @Subscribe
@@ -182,13 +186,13 @@ class SelectionActivity : FlowActivity() {
 
     @Subscribe
     fun on(event: DisableDrawActionsEvent) {
-        drawCount.isEnabled = false
+        drawCountSelector.isEnabled = false
         drawButton.isEnabled = false
     }
 
     @Subscribe
     fun on(event: EnableDrawActionsEvent) {
-        drawCount.isEnabled = true
+        drawCountSelector.isEnabled = true
         drawButton.isEnabled = true
     }
 

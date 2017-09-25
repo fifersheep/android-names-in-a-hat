@@ -54,19 +54,19 @@ class SelectionUseCaseTest {
     @Test
     fun on_SelectionDataUpdatedEvent_post_UpdateDrawActionsEvent_with_some_selected_names() {
         useCase.on(SelectionDataUpdatedEvent(listOf(nameToggledOn(), nameToggledOn(), nameToggledOff(), nameToggledOff())))
-        verify(bus).post(UpdateDrawActionsEvent(listOf("1", "2"), "Select All", SelectAllSelectionToggleEvent))
+        verify(bus).post(UpdateDrawActionsEvent("2 out of 4 names selected", listOf("1", "2"), "Select All", SelectAllSelectionToggleEvent))
     }
 
     @Test
     fun on_SelectionDataUpdatedEvent_post_UpdateDrawActionsEvent_with_all_selected_names() {
         useCase.on(SelectionDataUpdatedEvent(listOf(nameToggledOn(), nameToggledOn(), nameToggledOn(), nameToggledOn())))
-        verify(bus).post(UpdateDrawActionsEvent(listOf("1", "2", "3", "4"), "Clear All", ClearAllSelectionToggleEvent))
+        verify(bus).post(UpdateDrawActionsEvent("4 out of 4 names selected", listOf("1", "2", "3", "4"), "Clear All", ClearAllSelectionToggleEvent))
     }
 
     @Test
     fun on_SelectionDataUpdatedEvent_post_UpdateDrawActionsEvent_without_selected_names() {
         useCase.on(SelectionDataUpdatedEvent(listOf(nameToggledOff(), nameToggledOff(), nameToggledOff(), nameToggledOff())))
-        verify(bus).post(UpdateDrawActionsEvent(listOf("0"), "Select All", SelectAllSelectionToggleEvent))
+        verify(bus).post(UpdateDrawActionsEvent("0 out of 4 names selected", listOf("0"), "Select All", SelectAllSelectionToggleEvent))
     }
 
     @Test

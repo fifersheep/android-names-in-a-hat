@@ -34,7 +34,7 @@ constructor(private val generator: NumberGenerator, private val bus: EventBus) {
         val drawOptions: List<String> = range.toList().map { it.toString() }
         val toggleLabel = if (checkedNameCount == event.data.size) "Clear All" else "Select All"
         val toggleClickEvent = if (checkedNameCount == event.data.size) ClearAllSelectionToggleEvent else SelectAllSelectionToggleEvent
-        bus.post(UpdateDrawActionsEvent(drawOptions, toggleLabel, toggleClickEvent))
+        bus.post(UpdateDrawActionsEvent("$checkedNameCount out of ${event.data.size} names selected", drawOptions, toggleLabel, toggleClickEvent))
         bus.post(if (checkedNameCount >= 2) EnableDrawActionsEvent else DisableDrawActionsEvent)
     }
 }

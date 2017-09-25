@@ -25,8 +25,17 @@
         android:id="@+id/selection_actions_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_above="@+id/selection_actions"
+        android:layout_above="@+id/selection_draw_counter"
         android:background="@color/palette_grey_light"/>
+
+    <TextView
+        android:id="@+id/selection_draw_counter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/selection_actions"
+        android:background="@android:color/white"
+        android:padding="6dp"
+        android:gravity="center"/>
 
     <RelativeLayout
         android:id="@+id/selection_actions"
@@ -57,7 +66,7 @@
             tools:text="Select All"/>
 
         <Spinner
-            android:id="@+id/selection_draw_count"
+            android:id="@+id/selection_draw_count_selector"
             style="@style/Base.Widget.AppCompat.Spinner.Underlined"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
