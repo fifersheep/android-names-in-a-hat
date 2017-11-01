@@ -1,3 +1,13 @@
+Project Summary
+=======
+
+An app for drawing names from groups. The original project being written in Java, with the latest iteration written in Kotlin.
+
+Play Store
+==========
+
+https://play.google.com/store/apps/details?id=uk.scottydawg.zoo.staffpicker
+
 License
 =======
 
