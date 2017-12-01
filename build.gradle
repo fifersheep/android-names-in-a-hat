@@ -4,12 +4,14 @@ buildscript {
     ext.kotlin_version = '1.1.51'
     ext.butterknife_version = '8.8.1'
     ext.dagger_version = '2.5'
+    ext.firebase_version = '11.6.2'
     repositories {
         maven {
             url 'https://maven.fabric.io/public'
         }
         mavenCentral()
         google()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0'
@@ -17,6 +19,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.jakewharton:butterknife-gradle-plugin:$butterknife_version"
         classpath 'io.fabric.tools:gradle:1.24.4'
+        classpath 'com.google.firebase:firebase-plugins:1.1.5'
 
     }
 }
