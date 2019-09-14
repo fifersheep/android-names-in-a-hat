@@ -12,7 +12,7 @@ import uk.lobsterdoodle.namepicker.selection.NameStateChangedEvent
 import javax.inject.Inject
 
 class StorageUseCase @Inject
-constructor(private val storage: KeyValueStore, private val remoteDb: RemoteDb, private val db: DbHelper, private val bus: EventBus) {
+constructor(private val storage: KeyValueStore, private val db: DbHelper, private val bus: EventBus) {
 
     init {
         bus.register(this)
@@ -24,8 +24,6 @@ constructor(private val storage: KeyValueStore, private val remoteDb: RemoteDb, 
         val cellData = groupList.map { (details, names) -> OverviewCardCellData(details.id, details.name, names.size) }
 
         bus.post(OverviewRetrievedEvent(cellData))
-        for ((groupId, listTitle, nameCount) in cellData)
-            remoteDb.editGroupDetails(groupId, listTitle, nameCount)
     }
 
     @Subscribe
@@ -69,10 +67,8 @@ constructor(private val storage: KeyValueStore, private val remoteDb: RemoteDb, 
     @Subscribe
     fun on(event: RetrieveGroupDetailsEvent) {
         val details = db.retrieveGroupDetails(event.groupId)
-        val names = db.retrieveGroupNames(event.groupId)
         details?.let {
             bus.post(GroupDetailsRetrievedSuccessfullyEvent(details))
-            remoteDb.editGroupDetails(event.groupId, details.name, names.size)
         }
     }
 

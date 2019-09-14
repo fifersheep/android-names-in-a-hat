@@ -23,15 +23,13 @@ class StorageUseCaseTest {
     private lateinit var dbHelper: DbHelper
     private lateinit var bus: EventBus
     private lateinit var useCase: StorageUseCase
-    private lateinit var remoteDb: RemoteDb
 
     @Before
     fun setUp() {
         storage = mock()
         dbHelper = mock()
         bus = mock()
-        remoteDb = mock()
-        useCase = StorageUseCase(storage, remoteDb, dbHelper, bus)
+        useCase = StorageUseCase(storage, dbHelper, bus)
     }
 
     @Test
@@ -86,18 +84,6 @@ class StorageUseCaseTest {
     }
 
     @Test
-    fun on_OverviewBecameVisibleEvent_update_remote_db() {
-        whenever(dbHelper.allGroups).thenReturn(listOf(
-                group(1L, "Group One", listOf(name(11L, "Scott"), name(12L, "Peter"))),
-                group(2L, "Group Two", listOf(name(21L, "Rob"), name(22L, "Andy"), name(23L, "Rachel")))))
-
-        useCase.on(OverviewBecameVisibleEvent())
-
-        verify(remoteDb).editGroupDetails(1L, "Group One", 2)
-        verify(remoteDb).editGroupDetails(2L, "Group Two", 3)
-    }
-
-    @Test
     fun on_RetrieveGroupNamesEvent_post_GroupNamesRetrievedEvent() {
         whenever(dbHelper.retrieveGroupNames(24L)).thenReturn(listOf(name(1L, "Bauer"), name(2L, "Kim"), name(3L, "Yelena")))
         useCase.on(RetrieveGroupNamesEvent(24L))
@@ -135,14 +121,6 @@ class StorageUseCaseTest {
     }
 
     @Test
-    fun on_RetrieveGroupDetailsEvent_update_remote_db_with_group_details() {
-        whenever(dbHelper.retrieveGroupDetails(24L)).thenReturn(GroupDetails(24L, "CTU"))
-        whenever(dbHelper.retrieveGroupNames(24L)).thenReturn(listOf(name(1L, "One"), name(2L, "Two")))
-        useCase.on(RetrieveGroupDetailsEvent(24L))
-        verify(remoteDb).editGroupDetails(24L, "CTU", 2)
-    }
-
-    @Test
     fun on_NameStateChangedEvent_update_name_in_database() {
         useCase.on(NameStateChangedEvent(name(24L, "Jack")))
         verify(dbHelper).updateName(name(24L, "Jack"))
@@ -150,7 +128,7 @@ class StorageUseCaseTest {
 
     @Test
     fun on_MassNameStateChangedEvent_mass_toggle_names() {
-        useCase.on(MassNameStateChangedEvent.Toggle.on(24L))
+        useCase.on(MassNameStateChangedEvent.on(24L))
         verify(dbHelper).toggleAllNamesInGroup(24L, true)
     }
 

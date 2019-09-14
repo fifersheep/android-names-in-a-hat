@@ -2,12 +2,9 @@ package uk.lobsterdoodle.namepicker.application.di
 
 import android.app.Application
 
-import javax.inject.Singleton
-
 import dagger.Module
 import dagger.Provides
 import uk.lobsterdoodle.namepicker.Util
-import uk.lobsterdoodle.namepicker.analytics.FirebaseAnalytics
 import uk.lobsterdoodle.namepicker.api.ClassroomDbHelper
 import uk.lobsterdoodle.namepicker.events.AndroidEventBus
 import uk.lobsterdoodle.namepicker.events.EventBus
@@ -15,9 +12,7 @@ import uk.lobsterdoodle.namepicker.selection.NumberGenerator
 import uk.lobsterdoodle.namepicker.selection.RandomNumberGenerator
 import uk.lobsterdoodle.namepicker.selection.SelectionAdapterDataWrapper
 import uk.lobsterdoodle.namepicker.storage.DbHelper
-import uk.lobsterdoodle.namepicker.storage.FirebaseDb
 import uk.lobsterdoodle.namepicker.storage.KeyValueStore
-import uk.lobsterdoodle.namepicker.storage.RemoteDb
 import uk.lobsterdoodle.namepicker.storage.SharedPrefsKeyValueStore
 
 @Module
@@ -42,14 +37,4 @@ class DependencyInjectionModule(private val app: Application) {
     @Provides
     internal fun providesNumberGenerator(): NumberGenerator
             = RandomNumberGenerator()
-
-    @Provides
-    @Singleton
-    internal fun providesFirebaseAnalytics(bus: EventBus): FirebaseAnalytics
-            = FirebaseAnalytics(app.applicationContext, bus)
-
-    @Provides
-    @Singleton
-    internal fun providesFirebaseDb(): RemoteDb
-            = FirebaseDb()
 }
