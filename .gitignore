@@ -7,6 +7,7 @@ local.properties
 .gradle
 gen/
 build/
+release/
 
 # Android artifacts
 *.apk
