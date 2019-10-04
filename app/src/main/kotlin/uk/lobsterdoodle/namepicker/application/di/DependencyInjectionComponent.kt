@@ -1,9 +1,6 @@
 package uk.lobsterdoodle.namepicker.application.di
 
-import javax.inject.Singleton
-
 import dagger.Component
-import uk.lobsterdoodle.namepicker.SplashActivity
 import uk.lobsterdoodle.namepicker.application.App
 import uk.lobsterdoodle.namepicker.application.AppService
 import uk.lobsterdoodle.namepicker.edit.EditGroupDetailsActivity
@@ -12,16 +9,15 @@ import uk.lobsterdoodle.namepicker.overview.OverviewActivity
 import uk.lobsterdoodle.namepicker.selection.NameSelectionView
 import uk.lobsterdoodle.namepicker.selection.SelectionActivity
 import uk.lobsterdoodle.namepicker.ui.FlowActivity
+import javax.inject.Singleton
 
 @Singleton
-@Component(modules = arrayOf(DependencyInjectionModule::class))
+@Component(modules = [DependencyInjectionModule::class])
 interface DependencyInjectionComponent {
 
     fun inject(app: App)
 
     fun inject(service: AppService)
-
-    fun inject(splashActivity: SplashActivity)
 
     fun inject(flowActivity: FlowActivity)
 

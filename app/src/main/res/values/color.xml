@@ -6,6 +6,7 @@
 
     <!-- Palette Colours -->
     <color name="palette_red">#B32A33</color>
+    <color name="palette_red_soft">#B9414A</color>
     <color name="palette_grey_light">#B3B5B4</color>
     <color name="palette_grey_dark">#1F1F1A</color>
 </resources>
