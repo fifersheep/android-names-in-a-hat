@@ -6,7 +6,11 @@
         <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
     </style>
 
-    <style name="NamesTheme.Flow" parent="NamesTheme">
+    <style name="NamesTheme.Splash">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
+    <style name="NamesTheme.Flow">
         <item name="actionBarStyle">@style/NamesActionBar</item>
     </style>
 
