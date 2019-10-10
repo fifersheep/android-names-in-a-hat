@@ -4,29 +4,28 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="title_activity_splash">SplashActivity</string>
-    <string name="title_activity_overview">Overview</string>
-    <string name="title_activity_create_group">Create Group</string>
+    <string name="title_activity_overview">Draws</string>
+    <string name="title_activity_create_group">Create Draw</string>
     <string name="title_activity_add_names">Add Names</string>
     <string name="title_activity_selection">Draw Names</string>
 
-    <string name="overview_label">Select a group</string>
-    <string name="overview_add_group">Add Group</string>
-    <string name="overview_add_group_hint">Begin by adding a group. This is where you\'ll group names together.</string>
+    <string name="overview_label">Select a draw</string>
+    <string name="overview_add_group">Add Draw</string>
+    <string name="overview_add_group_hint">Begin by adding a draw. This is where you\'ll create a list of names to draw from.</string>
 
-    <string name="add_group_input_label_name">Group Name</string>
+    <string name="add_group_input_label_name">Draw Title</string>
     <string name="add_group_button_done">Done</string>
     <string name="add_group_button_add_name">Add Name</string>
     <string name="add_group_label_names">Names</string>
     <string name="add_group_group_name_input_hint">e.g. Team Lobster Doodle</string>
     <string name="add_group_name_input_hint">e.g. Sebastian</string>
 
-    <string name="group_saved_successfully">Group Saved</string>
+    <string name="group_saved_successfully">Draw Saved</string>
 
-    <string name="overview_card_overflow_description">Group Options</string>
+    <string name="overview_card_overflow_description">Draw Options</string>
     <string name="overview_card_overflow_edit_names">Edit Names</string>
-    <string name="overview_card_overflow_edit_group">Edit Group Details</string>
-    <string name="overview_card_overflow_delete_group">Delete Group</string>
+    <string name="overview_card_overflow_edit_group">Edit Draw Details</string>
+    <string name="overview_card_overflow_delete_group">Delete Draw</string>
     <string name="delete_name_button_description">Delete Name</string>
 
     <string name="generated_names_dialog_title_singular">The selected name is…</string>
@@ -35,6 +34,6 @@
     <string name="selection_draw_button_label">Draw</string>
     <string name="menu_item_action_grid_one">One Column</string>
     <string name="menu_item_action_grid_two">Two Columns</string>
-    <string name="selection_empty_message">This group contains no names.\n\nAdd names to the group using the group\'s menu button on the Overview screen.</string>
+    <string name="selection_empty_message">This draw contains no names.\n\nAdd names to the draw using the draw\'s menu button on the Overview screen.</string>
     <string name="sort_alphabetically">Sort Alphabetically</string>
 </resources>
