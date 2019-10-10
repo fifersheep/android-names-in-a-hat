@@ -18,8 +18,7 @@
 
         <activity
             android:name=".overview.OverviewActivity"
-            android:theme="@style/NamesTheme.Splash"
-            android:label="@string/title_activity_overview">
+            android:theme="@style/NamesTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

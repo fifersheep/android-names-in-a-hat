@@ -57,6 +57,8 @@ class OverviewActivity : AppCompatActivity(), OverviewCardActionsCallback, Servi
         App[this].component().inject(this)
         ButterKnife.bind(this)
 
+        supportActionBar?.title = getString(R.string.title_activity_overview)
+        
         val intent = Intent(applicationContext, AppService::class.java)
         startService(intent)
         bindService(intent, this, Context.BIND_ABOVE_CLIENT)
