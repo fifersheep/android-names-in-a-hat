@@ -1,8 +1,11 @@
 package uk.lobsterdoodle.namepicker.overview
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -22,18 +25,17 @@ import org.greenrobot.eventbus.Subscribe
 import uk.lobsterdoodle.namepicker.R
 import uk.lobsterdoodle.namepicker.Util
 import uk.lobsterdoodle.namepicker.application.App
+import uk.lobsterdoodle.namepicker.application.AppService
 import uk.lobsterdoodle.namepicker.edit.EditGroupDetailsActivity
 import uk.lobsterdoodle.namepicker.edit.EditNamesActivity
 import uk.lobsterdoodle.namepicker.events.EventBus
 import uk.lobsterdoodle.namepicker.selection.SelectionActivity
-import uk.lobsterdoodle.namepicker.storage.ClearActiveGroupEvent
-import uk.lobsterdoodle.namepicker.storage.DeleteGroupEvent
-import uk.lobsterdoodle.namepicker.storage.GroupDeletedSuccessfullyEvent
+import uk.lobsterdoodle.namepicker.storage.*
 import uk.lobsterdoodle.namepicker.ui.OverviewCard
 import java.util.*
 import javax.inject.Inject
 
-class OverviewActivity : AppCompatActivity(), OverviewCardActionsCallback {
+class OverviewActivity : AppCompatActivity(), OverviewCardActionsCallback, ServiceConnection {
 
     @BindView(R.id.overview_root_layout)
     lateinit var root: ViewGroup
@@ -55,6 +57,10 @@ class OverviewActivity : AppCompatActivity(), OverviewCardActionsCallback {
         App[this].component().inject(this)
         ButterKnife.bind(this)
 
+        val intent = Intent(applicationContext, AppService::class.java)
+        startService(intent)
+        bindService(intent, this, Context.BIND_ABOVE_CLIENT)
+
         overviewAdapter = OverviewAdapter()
         groupsRecyclerView.layoutManager = LinearLayoutManager(this)
         groupsRecyclerView.adapter = overviewAdapter
@@ -73,6 +79,25 @@ class OverviewActivity : AppCompatActivity(), OverviewCardActionsCallback {
         bus.unregister(this)
         super.onPause()
     }
+
+    override fun onDestroy() {
+        unbindService(this)
+        super.onDestroy()
+    }
+
+    @Subscribe
+    fun on(event: GroupActiveEvent) {
+        bus.unregister(this)
+        startActivity(SelectionActivity.launchIntent(this, event.groupId))
+        finish()
+    }
+
+    override fun onServiceConnected(name: ComponentName, service: IBinder) {
+        bus.register(this)
+        bus.post(CheckForActiveGroupEvent())
+    }
+
+    override fun onServiceDisconnected(name: ComponentName) {}
 
     @Subscribe
     fun onEvent(retrievedEvent: OverviewRetrievedEvent) {

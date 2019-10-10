@@ -4,13 +4,6 @@ import android.app.Service
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
-
-import java.lang.reflect.Field
-
-import javax.inject.Inject
-import javax.inject.Singleton
-
-import uk.lobsterdoodle.namepicker.Log
 import uk.lobsterdoodle.namepicker.analytics.GroupAnalytics
 import uk.lobsterdoodle.namepicker.analytics.ScreenAnalytics
 import uk.lobsterdoodle.namepicker.analytics.SelectionAnalytics
@@ -21,6 +14,7 @@ import uk.lobsterdoodle.namepicker.selection.SelectionNamesUseCase
 import uk.lobsterdoodle.namepicker.selection.SelectionUseCase
 import uk.lobsterdoodle.namepicker.storage.ActiveGroupUseCase
 import uk.lobsterdoodle.namepicker.storage.StorageUseCase
+import javax.inject.Inject
 
 class AppService : Service() {
 
