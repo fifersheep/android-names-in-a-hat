@@ -7,20 +7,15 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.joanfuentes.hintcase.HintCase
-import com.joanfuentes.hintcase.RectangularShape
-import com.joanfuentes.hintcaseassets.contentholderanimators.FadeInContentHolderAnimator
-import com.joanfuentes.hintcaseassets.hintcontentholders.SimpleHintContentHolder
-import com.joanfuentes.hintcaseassets.shapeanimators.RevealRectangularShapeAnimator
-import com.joanfuentes.hintcaseassets.shapeanimators.UnrevealRectangularShapeAnimator
 import org.greenrobot.eventbus.Subscribe
 import uk.lobsterdoodle.namepicker.R
-import uk.lobsterdoodle.namepicker.Util
 import uk.lobsterdoodle.namepicker.application.App
 import uk.lobsterdoodle.namepicker.edit.EditGroupDetailsActivity
 import uk.lobsterdoodle.namepicker.edit.EditNamesActivity
@@ -43,6 +38,12 @@ class OverviewActivity : AppCompatActivity(), OverviewCardActionsCallback {
 
     @BindView(R.id.overview_add_group)
     lateinit var addGroupButton: Button
+
+    @BindView(R.id.overview_hint_arrow)
+    lateinit var hintArrow: ImageView
+
+    @BindView(R.id.overview_hint_text)
+    lateinit var hintText: TextView
 
     @Inject lateinit var bus: EventBus
 
@@ -90,25 +91,8 @@ class OverviewActivity : AppCompatActivity(), OverviewCardActionsCallback {
 
     @Subscribe
     fun on(event: ShowAddGroupHintEvent) {
-        addGroupButton.post {
-            val blockInfo = SimpleHintContentHolder.Builder(addGroupButton.context)
-                    .setContentText(resources.getString(R.string.overview_add_group_hint))
-                    .setContentStyle(R.style.AppText_Tooltip)
-                    .setGravity(Gravity.TOP)
-                    .setMargin(
-                            Util.pxForDp(this, 16),
-                            Util.pxForDp(this, 32),
-                            Util.pxForDp(this, 16),
-                            Util.pxForDp(this, 16))
-                    .build()
-
-            HintCase(addGroupButton.rootView)
-                    .setTarget(addGroupButton, RectangularShape(), HintCase.TARGET_IS_CLICKABLE)
-                    .setBackgroundColorByResourceId(R.color.semi_trans_grey_dark)
-                    .setShapeAnimators(RevealRectangularShapeAnimator(), UnrevealRectangularShapeAnimator())
-                    .setHintBlock(blockInfo, FadeInContentHolderAnimator())
-                    .show()
-        }
+        hintArrow.visibility = View.VISIBLE
+        hintText.visibility = View.VISIBLE
     }
 
     override fun launchEditGroupNamesScreen(groupId: Long) = startActivity(EditNamesActivity.launchIntent(this, groupId))
