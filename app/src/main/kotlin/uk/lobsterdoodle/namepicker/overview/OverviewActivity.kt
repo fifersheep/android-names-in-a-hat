@@ -1,11 +1,8 @@
 package uk.lobsterdoodle.namepicker.overview
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
-import android.os.IBinder
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -25,17 +22,18 @@ import org.greenrobot.eventbus.Subscribe
 import uk.lobsterdoodle.namepicker.R
 import uk.lobsterdoodle.namepicker.Util
 import uk.lobsterdoodle.namepicker.application.App
-import uk.lobsterdoodle.namepicker.application.AppService
 import uk.lobsterdoodle.namepicker.edit.EditGroupDetailsActivity
 import uk.lobsterdoodle.namepicker.edit.EditNamesActivity
 import uk.lobsterdoodle.namepicker.events.EventBus
 import uk.lobsterdoodle.namepicker.selection.SelectionActivity
-import uk.lobsterdoodle.namepicker.storage.*
+import uk.lobsterdoodle.namepicker.storage.ClearActiveGroupEvent
+import uk.lobsterdoodle.namepicker.storage.DeleteGroupEvent
+import uk.lobsterdoodle.namepicker.storage.GroupDeletedSuccessfullyEvent
 import uk.lobsterdoodle.namepicker.ui.OverviewCard
 import java.util.*
 import javax.inject.Inject
 
-class OverviewActivity : AppCompatActivity(), OverviewCardActionsCallback, ServiceConnection {
+class OverviewActivity : AppCompatActivity(), OverviewCardActionsCallback {
 
     @BindView(R.id.overview_root_layout)
     lateinit var root: ViewGroup
@@ -58,10 +56,6 @@ class OverviewActivity : AppCompatActivity(), OverviewCardActionsCallback, Servi
         ButterKnife.bind(this)
 
         supportActionBar?.title = getString(R.string.title_activity_overview)
-        
-        val intent = Intent(applicationContext, AppService::class.java)
-        startService(intent)
-        bindService(intent, this, Context.BIND_ABOVE_CLIENT)
 
         overviewAdapter = OverviewAdapter()
         groupsRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -81,25 +75,6 @@ class OverviewActivity : AppCompatActivity(), OverviewCardActionsCallback, Servi
         bus.unregister(this)
         super.onPause()
     }
-
-    override fun onDestroy() {
-        unbindService(this)
-        super.onDestroy()
-    }
-
-    @Subscribe
-    fun on(event: GroupActiveEvent) {
-        bus.unregister(this)
-        startActivity(SelectionActivity.launchIntent(this, event.groupId))
-        finish()
-    }
-
-    override fun onServiceConnected(name: ComponentName, service: IBinder) {
-        bus.register(this)
-        bus.post(CheckForActiveGroupEvent())
-    }
-
-    override fun onServiceDisconnected(name: ComponentName) {}
 
     @Subscribe
     fun onEvent(retrievedEvent: OverviewRetrievedEvent) {
@@ -136,25 +111,19 @@ class OverviewActivity : AppCompatActivity(), OverviewCardActionsCallback, Servi
         }
     }
 
-    override fun launchEditGroupNamesScreen(groupId: Long)
-            = startActivity(EditNamesActivity.launchIntent(this, groupId))
+    override fun launchEditGroupNamesScreen(groupId: Long) = startActivity(EditNamesActivity.launchIntent(this, groupId))
 
-    override fun launchEditGroupDetailsScreen(groupId: Long)
-            = startActivity(EditGroupDetailsActivity.launchIntent(this, groupId))
+    override fun launchEditGroupDetailsScreen(groupId: Long) = startActivity(EditGroupDetailsActivity.launchIntent(this, groupId))
 
-    override fun deleteGroup(groupId: Long)
-            = bus.post(DeleteGroupEvent(groupId))
+    override fun deleteGroup(groupId: Long) = bus.post(DeleteGroupEvent(groupId))
 
-    override fun launchSelectionScreen(groupId: Long)
-            = startActivity(SelectionActivity.launchIntent(this, groupId))
+    override fun launchSelectionScreen(groupId: Long) = startActivity(SelectionActivity.launchIntent(this, groupId))
 
     private inner class OverviewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
-                = OverviewCardViewHolder(OverviewCard(this@OverviewActivity))
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = OverviewCardViewHolder(OverviewCard(this@OverviewActivity))
 
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int)
-                = (holder as OverviewCardViewHolder).bind(cellData[position])
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = (holder as OverviewCardViewHolder).bind(cellData[position])
 
         override fun getItemCount(): Int = cellData.size
     }
