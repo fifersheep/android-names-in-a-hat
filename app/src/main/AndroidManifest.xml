@@ -17,7 +17,8 @@
             android:exported="false"/>
 
         <activity
-            android:name=".overview.OverviewActivity"
+            android:name=".SplashActivity"
+            android:label="@string/app_name"
             android:theme="@style/NamesTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,6 +40,12 @@
                     android:path="/projects/names-in-a-hat-android/" />
             </intent-filter>
         </activity>
+
+
+        <activity
+            android:name=".overview.OverviewActivity"
+            android:theme="@style/NamesTheme"
+            android:label="@string/title_activity_overview" />
 
         <activity
             android:name=".edit.EditGroupDetailsActivity"

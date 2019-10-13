@@ -1,6 +1,7 @@
 package uk.lobsterdoodle.namepicker.application.di
 
 import dagger.Component
+import uk.lobsterdoodle.namepicker.SplashActivity
 import uk.lobsterdoodle.namepicker.application.App
 import uk.lobsterdoodle.namepicker.application.AppService
 import uk.lobsterdoodle.namepicker.edit.EditGroupDetailsActivity
@@ -18,6 +19,8 @@ interface DependencyInjectionComponent {
     fun inject(app: App)
 
     fun inject(service: AppService)
+
+    fun inject(splashActivity: SplashActivity)
 
     fun inject(flowActivity: FlowActivity)
 
