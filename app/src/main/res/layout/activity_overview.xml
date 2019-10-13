@@ -1,24 +1,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/overview_root_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:background="@color/background_grey"
-                tools:context="uk.lobsterdoodle.namepicker.overview.OverviewActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/overview_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_grey"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="uk.lobsterdoodle.namepicker.overview.OverviewActivity">
 
     <TextView
         android:id="@+id/overview_label"
+        style="@style/AppText.Label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/overview_label"
         android:layout_alignBaseline="@+id/overview_add_group"
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@id/overview_add_group"
-        style="@style/AppText.Label"/>
+        android:text="@string/overview_label" />
 
     <Button
         android:id="@+id/overview_add_group"
@@ -27,12 +27,36 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="8dp"
         android:text="@string/overview_add_group"
-        tools:ignore="RtlHardcoded"/>
+        tools:ignore="RtlHardcoded" />
+
+    <ImageView
+        android:id="@+id/overview_hint_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/overview_add_group"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:contentDescription="@string/overview_add_group_hint"
+        android:src="@drawable/helper_arrow"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/overview_hint_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/overview_hint_arrow"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="8dp"
+        android:maxWidth="250dp"
+        android:text="@string/overview_add_group_hint"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/overview_group_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/overview_add_group"/>
+        android:layout_below="@+id/overview_add_group" />
 
 </RelativeLayout>
