@@ -1,9 +1,9 @@
 package uk.lobsterdoodle.namepicker.ui
 
 import android.content.Context
-import android.support.v4.content.ContextCompat.getColor
-import android.support.v7.widget.CardView
-import android.support.v7.widget.PopupMenu
+import androidx.core.content.ContextCompat.getColor
+import androidx.cardview.widget.CardView
+import androidx.appcompat.widget.PopupMenu
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MenuItem
