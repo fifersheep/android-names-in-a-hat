@@ -33,7 +33,7 @@
             android:text="@string/add_group_button_add_name"
             tools:ignore="RtlHardcoded"/>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/edit_group_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,17 +42,17 @@
             android:paddingLeft="4dp"
             app:hintEnabled="false">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_group_names_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/add_group_name_input_hint"
                 tools:text="Sebastian"/>
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/edit_group_names_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

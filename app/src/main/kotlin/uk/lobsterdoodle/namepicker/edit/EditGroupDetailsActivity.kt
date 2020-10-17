@@ -3,8 +3,8 @@ package uk.lobsterdoodle.namepicker.edit
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.TextInputEditText
-import android.support.v4.app.TaskStackBuilder
+import com.google.android.material.textfield.TextInputEditText
+import androidx.core.app.TaskStackBuilder
 import android.widget.Button
 
 import org.greenrobot.eventbus.Subscribe

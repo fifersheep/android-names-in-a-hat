@@ -19,20 +19,20 @@
         android:layout_marginBottom="0dp"
         android:text="@string/add_group_input_label_name"/>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="4dp"
         app:hintEnabled="false">
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/create_group_name_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/add_group_group_name_input_hint"
             tools:text="The Android Team"/>
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/create_group_done_button"
