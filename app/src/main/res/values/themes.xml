@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="NamesTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/palette_red</item>
-        <item name="colorAccent">@color/palette_red</item>
-        <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
-    </style>
 
-    <style name="NamesTheme.Splash">
-        <item name="android:windowBackground">@drawable/splash_background</item>
+    <style name="Theme.NamesInAHat" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/red_700</item>
     </style>
-
-    <style name="NamesTheme.Flow">
-        <item name="actionBarStyle">@style/NamesActionBar</item>
-    </style>
-
-    <style name="NamesActionBar" parent="Widget.AppCompat.Light.ActionBar">
-        <item name="background">?colorPrimary</item>
-        <item name="displayOptions">showHome|homeAsUp|showTitle</item>
-    </style>
-
 </resources>

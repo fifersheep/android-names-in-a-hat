@@ -1,19 +1,11 @@
-# Android Studio
-.idea/
 *.iml
-local.properties
-
-# Gradle project directories
 .gradle
-gen/
-build/
-release/
-
-# Android artifacts
-*.apk
-
-# Project specific
-captures/
-databases/
-projectFilesBackup/
 android-keystore
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
