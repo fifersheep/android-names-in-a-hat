@@ -6,7 +6,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import uk.lobsterdoodle.namepicker.ui.groups.GroupsPage
+import uk.lobsterdoodle.namepicker.ui.lists.ListsPage
 import uk.lobsterdoodle.namepicker.ui.theme.NamesInAHatTheme
 
 @Composable
@@ -16,7 +16,7 @@ fun App() {
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colors.background
         ) {
-            GroupsPage()
+            ListsPage()
         }
     }
 }
