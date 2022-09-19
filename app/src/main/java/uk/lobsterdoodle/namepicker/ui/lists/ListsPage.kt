@@ -18,10 +18,9 @@ fun ListsPage(
 
     when (val _state = state) {
         is ViewState.Loading -> Text(text = "Loading")
-        is ViewState.Loaded -> if (_state.data.lists.isEmpty()) NoListsContent() else Text(text = _state.data.lists.joinToString())
+        is ViewState.LoadedNoData -> NoListsContent()
+        is ViewState.LoadedWithData -> Text(text = _state.data.lists.joinToString())
     }
-
-    viewModel.loadLists()
 }
 
 @Preview(showBackground = true)

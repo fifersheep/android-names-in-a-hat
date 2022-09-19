@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "Names in a Hat"
 include ':app'
 include ':presentation'
+include ':data'

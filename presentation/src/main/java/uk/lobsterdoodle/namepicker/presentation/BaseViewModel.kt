@@ -8,7 +8,8 @@ import kotlinx.coroutines.launch
 
 sealed class ViewState<out T> {
     object Loading: ViewState<Nothing>()
-    data class Loaded<T>(val data: T): ViewState<T>()
+    object LoadedNoData: ViewState<Nothing>()
+    data class LoadedWithData<T>(val data: T): ViewState<T>()
 }
 
 abstract class BaseViewModel<S>(
