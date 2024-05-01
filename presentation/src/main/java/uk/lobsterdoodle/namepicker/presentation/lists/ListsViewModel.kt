@@ -34,7 +34,7 @@ class ListsViewModel @Inject constructor(
                         } else {
                             updateState(
                                 ViewState.LoadedWithData(
-                                    ListsViewModelData(_data.payload)
+                                    ListsViewModelData(_data.payload.map { it.structureOfDatabase })
                                 )
                             )
                         }

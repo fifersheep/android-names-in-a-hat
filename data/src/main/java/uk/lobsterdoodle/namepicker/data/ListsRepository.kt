@@ -5,11 +5,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import uk.lobsterdoodle.namepicker.data.model.ListsEntity
 import javax.inject.Inject
 
 sealed class ListsData {
     object Loading: ListsData()
-    data class Loaded(val payload: List<String>): ListsData()
+    data class Loaded(val payload: List<ListsEntity>): ListsData()
 }
 
 class ListsRepository @Inject constructor(
@@ -21,7 +22,7 @@ class ListsRepository @Inject constructor(
     init {
         scope.launch {
             delay(2_000)
-            _state.emit(ListsData.Loaded(listOf("One", "Two", "Three", "Four")))
+            _state.emit(ListsData.Loaded(listOf("One", "Two", "Three", "Four").map { ListsEntity(it) }))
         }
     }
 }
