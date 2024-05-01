@@ -2,14 +2,14 @@ package uk.lobsterdoodle.namepicker.events
 
 import android.util.Log
 
-import uk.lobsterdoodle.namepicker.BuildConfig
+//import uk.lobsterdoodle.namepicker.BuildConfig
 
 class AndroidEventBus : EventBus {
 
     private val eventBus = org.greenrobot.eventbus.EventBus.getDefault()
 
     override fun post(event: Any) {
-        if (BuildConfig.DEBUG) Log.v("EventBus", event.toString())
+//        if (BuildConfig.DEBUG) Log.v("EventBus", event.toString())
         eventBus.post(event)
     }
 

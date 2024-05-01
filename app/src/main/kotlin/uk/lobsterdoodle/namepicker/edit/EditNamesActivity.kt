@@ -16,12 +16,12 @@ import java.util.ArrayList
 
 import javax.inject.Inject
 
-import butterknife.BindView
-import butterknife.ButterKnife
 import uk.lobsterdoodle.namepicker.R
 import uk.lobsterdoodle.namepicker.addgroup.AddNameToGroupEvent
 import uk.lobsterdoodle.namepicker.addgroup.NameCard
 import uk.lobsterdoodle.namepicker.application.App
+import uk.lobsterdoodle.namepicker.databinding.ActivityEditNamesBinding
+import uk.lobsterdoodle.namepicker.databinding.ActivityOverviewBinding
 import uk.lobsterdoodle.namepicker.events.EventBus
 import uk.lobsterdoodle.namepicker.model.Name
 import uk.lobsterdoodle.namepicker.namelist.RetrieveGroupNamesEvent
@@ -35,22 +35,25 @@ import uk.lobsterdoodle.namepicker.ui.FlowActivity
 
 class EditNamesActivity : FlowActivity(), NameCardActions {
 
-    @BindView(R.id.edit_names_root_layout)
-    lateinit var root: ViewGroup
+    private lateinit var binding: ActivityEditNamesBinding
 
-    @BindView(R.id.edit_group_names_list)
-    lateinit var nameList: RecyclerView
+    private val root: ViewGroup
+        get() = binding.editNamesRootLayout
 
-    @BindView(R.id.edit_group_names_button_add_name)
-    lateinit var addName: Button
+    private val nameList: RecyclerView
+        get() = binding.editGroupNamesList
 
-    @BindView(R.id.edit_group_names_done_button)
-    lateinit var done: Button
+    private val addName: Button
+        get() = binding.editGroupNamesButtonAddName
 
-    @BindView(R.id.edit_group_names_input)
-    lateinit var nameInput: TextInputEditText
+    private val done: Button
+        get() = binding.editGroupNamesDoneButton
 
-    @Inject lateinit var bus: EventBus
+    private val nameInput: TextInputEditText
+        get() = binding.editGroupNamesInput
+
+    @Inject
+    lateinit var bus: EventBus
 
     private lateinit var nameListAdapter: NameListAdapter
 
@@ -59,15 +62,24 @@ class EditNamesActivity : FlowActivity(), NameCardActions {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_names)
+
+        binding = ActivityEditNamesBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         App.get(this).component().inject(this)
-        ButterKnife.bind(this)
 
         groupId = intent.getLongExtra(EXTRA_GROUP_ID, -1L)
         nameListAdapter = NameListAdapter()
         nameList.layoutManager = LinearLayoutManager(this)
         nameList.adapter = nameListAdapter
-        addName.setOnClickListener { bus.post(AddNameToGroupEvent(groupId, nameInput.text.toString())) }
+        addName.setOnClickListener {
+            bus.post(
+                AddNameToGroupEvent(
+                    groupId,
+                    nameInput.text.toString()
+                )
+            )
+        }
         done.setOnClickListener { finish() }
     }
 
@@ -110,8 +122,8 @@ class EditNamesActivity : FlowActivity(), NameCardActions {
 
     inner class NameListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
-                = NameCardViewHolder(NameCard(this@EditNamesActivity))
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+            NameCardViewHolder(NameCard(this@EditNamesActivity))
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val cardViewHolder = holder as NameCardViewHolder
@@ -121,7 +133,8 @@ class EditNamesActivity : FlowActivity(), NameCardActions {
         override fun getItemCount(): Int = cellData.size
     }
 
-    inner class NameCardViewHolder internal constructor(var view: NameCard) : RecyclerView.ViewHolder(view) {
+    inner class NameCardViewHolder internal constructor(var view: NameCard) :
+        RecyclerView.ViewHolder(view) {
 
         internal fun bind(nameCardActions: NameCardActions, data: Name) {
             view.bind(nameCardActions, data)

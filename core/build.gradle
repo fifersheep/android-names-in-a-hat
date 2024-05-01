@@ -2,14 +2,14 @@ apply plugin: 'java'
 apply plugin: 'kotlin'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'org.mockito:mockito-core:2.7.22'
-    testCompile("com.nhaarman:mockito-kotlin:1.4.0")
-    testCompile 'junit:junit:4.11'
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'org.mockito:mockito-core:2.7.22'
+    testImplementation("com.nhaarman:mockito-kotlin:1.4.0")
+    testImplementation 'junit:junit:4.11'
 
-    compile "com.google.dagger:dagger:$dagger_version"
-    compile 'org.greenrobot:eventbus:3.0.0'
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    api "com.google.dagger:dagger:$dagger_version"
+    api 'org.greenrobot:eventbus:3.0.0'
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 buildscript {
     repositories {
