@@ -11,11 +11,9 @@ import org.greenrobot.eventbus.Subscribe
 
 import javax.inject.Inject
 
-import butterknife.BindView
-import butterknife.ButterKnife
-import uk.lobsterdoodle.namepicker.R
 import uk.lobsterdoodle.namepicker.application.App
 import uk.lobsterdoodle.namepicker.creategroup.CreateGroupDetailsEvent
+import uk.lobsterdoodle.namepicker.databinding.ActivityCreateGroupBinding
 import uk.lobsterdoodle.namepicker.events.EventBus
 import uk.lobsterdoodle.namepicker.overview.OverviewActivity
 import uk.lobsterdoodle.namepicker.storage.EditGroupDetailsEvent
@@ -27,23 +25,33 @@ import uk.lobsterdoodle.namepicker.ui.FlowActivity
 
 class EditGroupDetailsActivity : FlowActivity() {
 
-    @BindView(R.id.create_group_name_input)
-    lateinit var editGroupName: TextInputEditText
+    private lateinit var binding: ActivityCreateGroupBinding
 
-    @BindView(R.id.create_group_done_button)
-    lateinit var done: Button
+    private val editGroupName: TextInputEditText
+        get() = binding.createGroupNameInput
 
-    @Inject lateinit var bus: EventBus
+    private val done: Button
+        get() = binding.createGroupDoneButton
+
+    @Inject
+    lateinit var bus: EventBus
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_create_group)
+
+        binding = ActivityCreateGroupBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         App[this].component().inject(this)
-        ButterKnife.bind(this)
 
         done.setOnClickListener {
-            val event: Any = if (!intent.hasExtra(EXTRA_GROUP_ID)) CreateGroupDetailsEvent(editGroupName.text.toString())
-            else EditGroupDetailsEvent(intent.getLongExtra(EXTRA_GROUP_ID, -1), editGroupName.text.toString())
+            val event: Any =
+                if (!intent.hasExtra(EXTRA_GROUP_ID)) CreateGroupDetailsEvent(editGroupName.text.toString())
+                else EditGroupDetailsEvent(
+                    intent.getLongExtra(EXTRA_GROUP_ID, -1),
+                    editGroupName.text.toString()
+                )
             bus.post(event)
         }
     }
@@ -70,17 +78,17 @@ class EditGroupDetailsActivity : FlowActivity() {
     @Subscribe
     fun on(event: GroupCreationSuccessfulEvent) {
         TaskStackBuilder.create(this)
-                .addNextIntent(OverviewActivity.launchIntent(this))
-                .addNextIntent(EditNamesActivity.launchIntent(this, event.groupId))
-                .startActivities()
+            .addNextIntent(OverviewActivity.launchIntent(this))
+            .addNextIntent(EditNamesActivity.launchIntent(this, event.groupId))
+            .startActivities()
         finish()
     }
 
     @Subscribe
     fun on(event: GroupNameEditedSuccessfullyEvent) {
         TaskStackBuilder.create(this)
-                .addNextIntent(OverviewActivity.launchIntent(this))
-                .startActivities()
+            .addNextIntent(OverviewActivity.launchIntent(this))
+            .startActivities()
         finish()
     }
 
@@ -90,8 +98,8 @@ class EditGroupDetailsActivity : FlowActivity() {
     companion object {
         private val EXTRA_GROUP_ID = "EXTRA_GROUP_ID"
 
-        fun launchIntent(context: Context): Intent
-                = Intent(context, EditGroupDetailsActivity::class.java)
+        fun launchIntent(context: Context): Intent =
+            Intent(context, EditGroupDetailsActivity::class.java)
 
         fun launchIntent(context: Context, groupId: Long): Intent {
             val intent = Intent(context, EditGroupDetailsActivity::class.java)

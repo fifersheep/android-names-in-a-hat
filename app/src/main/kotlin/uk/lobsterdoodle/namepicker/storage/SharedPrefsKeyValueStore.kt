@@ -12,7 +12,7 @@ class SharedPrefsKeyValueStore(private val sharedPreferences: SharedPreferences)
             = sharedPreferences.getLong(key, defaultValue)
 
     override fun getString(key: String, defaultValue: String): String
-            = sharedPreferences.getString(key, defaultValue)
+            = sharedPreferences.getString(key, defaultValue) ?: defaultValue
 
     override fun contains(key: String): Boolean
             = sharedPreferences.contains(key)
