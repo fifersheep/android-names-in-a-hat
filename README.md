@@ -6,7 +6,19 @@ An app for drawing names from groups. The original project being written in Java
 Play Store
 ==========
 
-https://play.google.com/store/apps/details?id=uk.scottydawg.zoo.staffpicker
+https://play.google.com/store/apps/details?id=uk.lobsterdoodle.namepicker
+
+Privacy
+=======
+
+The app collects no data — everything you type stays on the device. The privacy policy that Google
+Play links to lives in [`docs/privacy-policy.html`](docs/privacy-policy.html) and is published at
+https://fifersheep.github.io/android-names-in-a-hat/privacy-policy.html via GitHub Pages
+(Settings → Pages → deploy from `main`, `/docs`).
+
+[`docs/play-store-compliance.md`](docs/play-store-compliance.md) covers the Families Policy
+checklist for resubmitting the app, including the Data safety answers that must stay in step with
+the policy.
 
 License
 =======
