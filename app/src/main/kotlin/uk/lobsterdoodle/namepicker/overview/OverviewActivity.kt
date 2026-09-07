@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import org.greenrobot.eventbus.Subscribe
 import uk.lobsterdoodle.namepicker.R
+import uk.lobsterdoodle.namepicker.ui.applySystemBarInsets
 import uk.lobsterdoodle.namepicker.application.App
 import uk.lobsterdoodle.namepicker.databinding.ActivityOverviewBinding
 import uk.lobsterdoodle.namepicker.edit.EditGroupDetailsActivity
@@ -51,6 +52,11 @@ class OverviewActivity : AppCompatActivity(), OverviewCardActionsCallback {
 
     private lateinit var overviewAdapter: OverviewAdapter
     private var cellData: List<OverviewCardCellData> = ArrayList()
+
+    override fun onContentChanged() {
+        super.onContentChanged()
+        applySystemBarInsets()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

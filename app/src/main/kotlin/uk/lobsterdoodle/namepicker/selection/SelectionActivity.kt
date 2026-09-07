@@ -11,7 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.avast.android.dialogs.fragment.SimpleDialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.greenrobot.eventbus.Subscribe
 import uk.lobsterdoodle.namepicker.R
 import uk.lobsterdoodle.namepicker.application.App
@@ -177,10 +177,10 @@ class SelectionActivity : FlowActivity() {
             R.string.generated_names_dialog_title_multiple
         else R.string.generated_names_dialog_title_singular
 
-        SimpleDialogFragment.createBuilder(this, supportFragmentManager)
-            .setTitle(getString(title))
+        MaterialAlertDialogBuilder(this)
+            .setTitle(title)
             .setMessage(event.generatedNames)
-            .setPositiveButtonText(getString(R.string.generated_names_dialog_positive_button))
+            .setPositiveButton(R.string.generated_names_dialog_positive_button, null)
             .show()
     }
 

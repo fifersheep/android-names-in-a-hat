@@ -27,6 +27,11 @@ abstract class FlowActivity : AppCompatActivity() {
         eventBus.post(ScreenLaunchedEvent(screenName, orientations[resources.configuration.orientation]!!))
     }
 
+    override fun onContentChanged() {
+        super.onContentChanged()
+        applySystemBarInsets()
+    }
+
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.flow_activity_close_enter, R.anim.flow_activity_close_exit)

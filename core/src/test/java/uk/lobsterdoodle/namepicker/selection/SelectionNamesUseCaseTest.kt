@@ -1,8 +1,8 @@
 package uk.lobsterdoodle.namepicker.selection
 
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import org.junit.Before
 import org.junit.Test
 import uk.lobsterdoodle.namepicker.Testing.Util.anyString
