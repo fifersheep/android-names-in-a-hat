@@ -1,6 +1,6 @@
 package uk.lobsterdoodle.namepicker
 
-import com.nhaarman.mockito_kotlin.any
+import org.mockito.kotlin.any
 
 class Testing {
     companion object Util {

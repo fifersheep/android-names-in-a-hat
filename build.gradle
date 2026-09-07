@@ -4,18 +4,12 @@ buildscript {
     ext.kotlin_version = '1.8.20'
     ext.dagger_version = '2.5'
     repositories {
-        maven {
-            url 'https://maven.fabric.io/public'
-        }
         mavenCentral()
         google()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.2.2'
-        classpath 'com.google.gms:google-services:4.3.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'io.fabric.tools:gradle:1.28.0'
-
     }
 }
 
@@ -23,7 +17,17 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        jcenter()
         google()
+    }
+
+    // Pin every Java and Kotlin compile task to the same bytecode target. Without this the
+    // Kotlin tasks follow whatever JDK Gradle happens to run on, and kapt's stub generation
+    // fails the build when it disagrees with compileOptions.
+    tasks.withType(JavaCompile).configureEach {
+        sourceCompatibility = '17'
+        targetCompatibility = '17'
+    }
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions.jvmTarget = '17'
     }
 }

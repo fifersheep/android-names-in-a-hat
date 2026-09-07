@@ -1,7 +1,7 @@
 package uk.lobsterdoodle.namepicker.analytics
 
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.junit.Before
 import org.junit.Test
 import uk.lobsterdoodle.namepicker.events.EventBus
