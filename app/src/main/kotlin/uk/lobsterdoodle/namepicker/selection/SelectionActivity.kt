@@ -11,7 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import androidx.appcompat.app.AlertDialog
 import org.greenrobot.eventbus.Subscribe
 import uk.lobsterdoodle.namepicker.R
 import uk.lobsterdoodle.namepicker.application.App
@@ -177,7 +177,7 @@ class SelectionActivity : FlowActivity() {
             R.string.generated_names_dialog_title_multiple
         else R.string.generated_names_dialog_title_singular
 
-        MaterialAlertDialogBuilder(this)
+        AlertDialog.Builder(this)
             .setTitle(title)
             .setMessage(event.generatedNames)
             .setPositiveButton(R.string.generated_names_dialog_positive_button, null)
