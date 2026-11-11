@@ -5,7 +5,7 @@ ticket: NAM-1 — Unify the trunk and stand up the modern build (https://linear.
 ticket-id: NAM-1
 tracker-synced: In Review
 mode: full
-phase: reporting
+phase: complete
 branch: flow/unify-trunk-modern-build
 worktree:
 created: 2026-11-11
@@ -13,7 +13,7 @@ updated: 2026-11-11
 ---
 
 ## Next action
-Review done (review.md): 0 blocking, 2 advisory (1 fixed, 1 carried to NAM-3); verify GREEN. PR #22 is open (https://github.com/fifersheep/android-names-in-a-hat/pull/22), CI green (AC7), Linear set to In Review. Holding at gate 2. The merge must be a MERGE COMMIT, after the user OKs relaxing linear history on main (decision log). After merge, check AC5 on origin/main. Baseline verify (`./gradlew :app:assembleDebug :shared:allTests`) is RED: `Project 'shared' not found` (expected, because `:shared` doesn't exist yet). `:app:assembleDebug` alone is GREEN on main with JDK 17.0.21. This contradicts the ticket's "nothing can be built" for main.
+Review done (review.md): 0 blocking, 2 advisory (1 fixed, 1 carried to NAM-3); verify GREEN. Complete. Learnings went to memory (branch protection; the api36_niah emulator holds 2.7.0 data). PR #22 was merged as a merge commit. Baseline verify (`./gradlew :app:assembleDebug :shared:allTests`) is RED: `Project 'shared' not found` (expected, because `:shared` doesn't exist yet). `:app:assembleDebug` alone is GREEN on main with JDK 17.0.21. This contradicts the ticket's "nothing can be built" for main.
 
 ## Decision log
 - 2026-11-11 mode: full (confirmed by user): history merge, new KMP module, build-stack decisions
@@ -23,6 +23,7 @@ Review done (review.md): 0 blocking, 2 advisory (1 fixed, 1 carried to NAM-3); v
 - 2026-11-11 Q: versionCode for 3.0.0? A: 2000000002, +1 per release (Play ceiling 2100000000)
 - 2026-11-11 Q: main requires linear history (enforced for admins), so squash/rebase would drop the 2.7.0 parent. How to land it? A: at gate 2, switch the linear-history rule off for this PR, merge with a MERGE COMMIT, then switch it back on. Each gh protection change needs the user's OK at that moment
 - 2026-11-11 gate 1: plan approved by user
+- 2026-11-11 gate 2: merge approved by user. The user also OK'd switching linear history off on main, merging #22 as a merge commit, switching it back on, and checking AC5 on origin/main
 
 ## Progress
 - [x] 1. Merge history (-s ours origin/master): d407579 (AC5 on branch OK)
