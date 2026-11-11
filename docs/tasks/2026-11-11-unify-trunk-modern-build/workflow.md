@@ -5,7 +5,7 @@ ticket: NAM-1 — Unify the trunk and stand up the modern build (https://linear.
 ticket-id: NAM-1
 tracker-synced: In Engineering
 mode: full
-phase: implementation
+phase: code-review
 branch: flow/unify-trunk-modern-build
 worktree:
 created: 2026-11-11
@@ -13,7 +13,7 @@ updated: 2026-11-11
 ---
 
 ## Next action
-Implement plan.md Task 1 (the `-s ours` merge of origin/master), then Tasks 2–7 in order, committing per task. Baseline verify (`./gradlew :app:assembleDebug :shared:allTests`) is RED: `Project 'shared' not found` (expected, because `:shared` doesn't exist yet). `:app:assembleDebug` alone is GREEN on main with JDK 17.0.21. This contradicts the ticket's "nothing can be built" for main.
+All 7 tasks done; verify GREEN (`:app:assembleDebug :shared:allTests`). Run code review on the diff `d407579..HEAD`. The merge commit itself carries no tree change, so review `git diff d407579 HEAD` against plan.md. Baseline verify (`./gradlew :app:assembleDebug :shared:allTests`) is RED: `Project 'shared' not found` (expected, because `:shared` doesn't exist yet). `:app:assembleDebug` alone is GREEN on main with JDK 17.0.21. This contradicts the ticket's "nothing can be built" for main.
 
 ## Decision log
 - 2026-11-11 mode: full (confirmed by user): history merge, new KMP module, build-stack decisions
@@ -25,13 +25,19 @@ Implement plan.md Task 1 (the `-s ours` merge of origin/master), then Tasks 2–
 - 2026-11-11 gate 1: plan approved by user
 
 ## Progress
-- [ ] 1. Merge history (-s ours origin/master)
-- [ ] 2. Clear the old skeleton
-- [ ] 3. Gradle skeleton (wrapper 9.7.1, catalog, settings, SDK packages)
-- [ ] 4. `:shared` module
-- [ ] 5. `:app` module
-- [ ] 6. CI minimal bump
-- [ ] 7. Device + signing checks
+- [x] 1. Merge history (-s ours origin/master): d407579 (AC5 on branch OK)
+- [x] 2. Clear the old skeleton: e0aeae1 (flow artifacts committed separately in the commit before it)
+- [x] 3. Gradle skeleton (wrapper 9.7.1, catalog, settings, SDK packages): 00895d4. KGP resolves 2.2.10 → 2.4.21
+- [x] 4. `:shared` module: cfa5244. allTests is green (jvm, iosSimulatorArm64, androidHostTest: 1 test each); iOS compiles on Xcode 16.4 with no warning
+- [x] 5. `:app` module: 7b420d1. kspDebugKotlin generated Hilt injectors on Kotlin 2.4.21 (no fallback needed); assembleDebug, lintDebug (0 errors, 34 warnings) and testDebug are green
+- [x] 6. CI minimal bump: daffd49. All three CI commands green locally on JDK 17; `:app:testDebug` still resolves
+- [x] 7. Device + signing checks (no commit). AC1: API 26 debug (launch 1042 ms) and API 36 release (709 ms) show the placeholder, 0 FATAL, survive rotation; screenshots in the session scratchpad. AC3: aapt2 shows uk.lobsterdoodle.namepicker / 2000000002 / 3.0.0 / min 26 / target 36. AC4: release cert SHA-256 4fa5cd07…ae951 matches the 2.7.0 APK; with `-PniahKeyAlias=` the build outputs app-release-unsigned.apk and debug still builds. AC6: grep is empty, no google-services.json. Update path: `adb install -r` over 2.7.0 (vc 2000000000) on API 36 succeeds
 
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
+- 2026-11-11 Task 3: settings includes only `:app` until Task 4. Gradle 9 rejects an `include` for a project directory that doesn't exist yet. Also installed `build-tools;36.1.0` (the newest 36.x) rather than 36.0.0
+- 2026-11-11 Task 3: `.gitignore` also gets `build/` and `.kotlin/`, so module build dirs and the KGP 2.x project cache stay untracked (the old ignore only covered `/build`)
+- 2026-11-11 Task 4: enabled `withHostTest {}` on `:shared`'s android target (the plan said off). AGP warns without it, and `allTests` then includes `testAndroidHostTest`, which resolves the open question
+- 2026-11-11 Task 5: dropped the planned JUnit SmokeTest and the junit catalog entry. `:app:testDebug` resolves to testDebugUnitTest and passes as NO-SOURCE; the real tests are in `:shared`
+- 2026-11-11 Task 5: added `lint { disable += "HighAppVersionCode" }`. Lint errored on versionCode 2000000002, which is forced by Play history. The other 34 warnings are mostly UnusedResources (strings carried from 2.7.0) plus items for NAM-13
+- 2026-11-11 Task 5: kept `tools:targetApi="31"` in the manifest (the plan said drop it). Removing it would add an UnusedAttribute lint warning for `dataExtractionRules`; only `package=` was removed. Added the `placeholder_message` string
