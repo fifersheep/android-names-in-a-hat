@@ -112,8 +112,8 @@ Legacy root is `core/src/test/java/uk/lobsterdoodle/namepicker/` on `origin/mast
 | …EnableDrawActions_when_2_or_more | `DrawStateTest` can draw at the minimum |
 | **SelectionNamesUseCaseTest** registers_on_bus | drop: bus |
 | …when_sort_type_is_none / asc / desc (3) | `SortNamesTest` NONE keeps order / ASC ignores case / DESC ignores case |
-| …SortMenuItemSelected none→ASC, asc→DESC, desc→ASC write (3) | `SortOrderTest` cycle from NONE stores ASC / from ASC stores DESC / from DESC stores ASC |
-| …SortMenuItemSelected_post_GroupNamesSortedEvent | `SortOrderTest` cycle returns the new order, which sorts the names |
+| …SortMenuItemSelected none→ASC, asc→DESC, desc→ASC write (3) | `SortOrderTest` cycle from NONE stores ASC / cycle from ASC stores DESC / cycle from DESC stores ASC |
+| …SortMenuItemSelected_post_GroupNamesSortedEvent | `SortOrderTest` cycle returns the new order that sorts the names |
 | **SelectionGridUseCaseTest** register_on_bus | drop: bus |
 | …GridColumnSelected one → (1,2), two → (2,1) (2) | `GridColumnsTest` one column toggles to two / two toggles to one |
 | …GridColumnSelected One/Two write (2) | `GridLayoutTest` selecting 1 stores 1 / selecting 2 stores 2 |
@@ -129,12 +129,12 @@ Legacy root is `core/src/test/java/uk/lobsterdoodle/namepicker/` on `origin/mast
 | …ClearAll_clear_all, …post_SelectionDataUpdated (2) | `NameEditorTest` clearAll deselects every name in the group |
 | …ClearAll_post_ClearAllEvent | drop: analytics |
 | …ClearAll_post_MassNameStateChanged | `NameEditorTest` clearAll writes in bulk for the group only |
-| …EnableSelectionEmptyState / DisableSelectionEmptyState (2) | `DrawStateTest` hasNames false when empty / true with names |
+| …EnableSelectionEmptyState / DisableSelectionEmptyState (2) | `DrawStateTest` hasNames false when empty / hasNames true with names |
 | **ActiveGroupUseCaseTest** register_to_bus | drop: bus |
 | …SetActiveGroup / ClearActiveGroup / NotActive / Active (4) | `ActiveGroupTest` open stores the id / close clears it / observe is null when none / observe returns the id |
 | **StorageUseCaseTest** registers_on_bus | drop: bus |
 | …CreateGroupDetails add + post success (2) | `GroupEditorTest` create stores the trimmed label and returns its id |
-| …AddNameToGroup save | `NameEditorTest` add stores the trimmed text, selected |
+| …AddNameToGroup save | `NameEditorTest` add stores the trimmed text as selected |
 | …AddNameToGroup post GroupNamesRetrieved | drop: read pass-through (the names `Flow` re-emits) |
 | …AddNameToGroup post NameAddedSuccessfully | `NameEditorTest` add returns Saved with the new id |
 | …OverviewBecameVisible post OverviewRetrieved | drop: read pass-through (`GroupSummary.nameCount` is supplied by NAM-5's query and tested there) |

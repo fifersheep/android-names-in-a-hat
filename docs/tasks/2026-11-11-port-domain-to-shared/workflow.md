@@ -31,8 +31,8 @@ Implement plan.md task 1 (coroutines dependency in `:shared`). Baseline 2026-11-
 - [x] 2. Models, sort type and validation (test-first) — 956b51d (NameSortTypeTest 4, LabelsTest 6)
 - [x] 3. Draw rules: NameDraw (clamp, drawFrom), DrawState, generators (test-first) — cc31af1 (NameDrawTest 9, DrawStateTest 7)
 - [x] 4. Sorting and grid pure rules (test-first) — red seen, then green; f51af5d (SortNamesTest 4, GridColumnsTest 4)
-- [x] 5. Repository interfaces (contract KDoc) + test fakes — compiles (`:shared:compileTestKotlinJvm`); see next commit
-- [ ] 6. Use cases: GroupEditor, NameEditor, SortOrder, GridLayout, ActiveGroup (test-first)
+- [x] 5. Repository interfaces (contract KDoc) + test fakes — compiles (`:shared:compileTestKotlinJvm`); 2691235
+- [x] 6. Use cases: GroupEditor, NameEditor, SortOrder, GridLayout, ActiveGroup (test-first) — red seen; `:shared:allTests` green: 12 classes / 69 tests on each of jvmTest, testAndroidHostTest and iosSimulatorArm64Test; see next commit
 - [ ] 7. Final checks: AC1 grep, full build + iOS compile, mapping-name grep
 
 ## Deviations
@@ -40,3 +40,4 @@ Implement plan.md task 1 (coroutines dependency in `:shared`). Baseline 2026-11-
 - 2026-11-11 task 2 (tooling, not scope): right after new files were written, `:shared:jvmTest` twice reported a stale result: first BUILD SUCCESSFUL with the new tests not compiled, then "Unresolved reference" with the new main files present. A standalone `:shared:compileKotlinJvm` picked them up. Green is now confirmed from the per-class counts in `shared/build/test-results/jvmTest/*.xml`, not the BUILD line.
 - 2026-11-11 task 3: the cause of the staleness is Gradle file-system watching, which misses newly created files in this daemon. `--no-watch-fs` fixes it; every verify run from now on uses `./gradlew --no-watch-fs …`.
 - 2026-11-11 task 3: the tests and the implementation were written in the same batch, so no red run was observed for NameDrawTest/DrawStateTest (TDD red step skipped). Tasks 4 and 6 run red first.
+- 2026-11-11 task 6: Kotlin/Native rejects `,` in backtick test names (`compileTestKotlinIosSimulatorArm64`: "Name contains illegal characters"). Two mapped tests were renamed: `add stores the trimmed text as selected` and `cycle returns the new order that sorts the names`. plan.md's mapping table was updated to match.
