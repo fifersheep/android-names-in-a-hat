@@ -28,8 +28,8 @@ Implement plan.md task 1 (rewrite `.github/workflows/android.yml`). Baseline 202
 - 2026-11-11 gate 1: plan approved by user
 
 ## Progress
-- [ ] 1. Rewrite `.github/workflows/android.yml` (four jobs, frequency comment)
-- [ ] 2. Push branch, open draft PR, all four jobs green (AC1)
+- [x] 1. Rewrite `.github/workflows/android.yml` (four jobs, frequency comment) — 851b5bd
+- [x] 2. Push branch, open draft PR, all four jobs green (AC1) — PR #23, run https://github.com/fifersheep/android-names-in-a-hat/actions/runs/43085406431 (all 4 pass)
 - [ ] 3. Red proofs: failing commonTest (AC2), iosMain compile error (AC3), reverted
 - [ ] 4. Required status checks on `main` (AC6) — needs user OK
 

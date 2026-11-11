@@ -6,6 +6,6 @@ import kotlin.test.assertEquals
 class AppInfoTest {
     @Test
     fun appNameMatchesThePlayListing() {
-        assertEquals("Names in a Hat", AppInfo.NAME)
+        assertEquals("NAM-3 deliberate red proof", AppInfo.NAME)
     }
 }
