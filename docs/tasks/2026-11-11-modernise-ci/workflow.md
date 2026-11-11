@@ -13,7 +13,7 @@ updated: 2026-11-11
 ---
 
 ## Next action
-Code review: dispatch flow-reviewer on 82285a1..HEAD against plan.md. Implementation done; verify `./gradlew :app:assembleDebug :shared:allTests` PASS 2026-11-11. Baseline 2026-11-11: `./gradlew :app:assembleDebug :shared:allTests` PASS on flow/modernise-ci @ 82285a1.
+Review done (review.md: no Blocking, all 6 AC MET; konan cache key fixed in 5ff21e3, run 43103836715 green, PR #23 CLEAN). Next: flow-wrap (lite) — learnings, mark complete, gate 2, then `gh pr ready 23` + `gh pr merge 23 --squash` only with user approval; re-check head is green first. Baseline 2026-11-11: `./gradlew :app:assembleDebug :shared:allTests` PASS on flow/modernise-ci @ 82285a1.
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
