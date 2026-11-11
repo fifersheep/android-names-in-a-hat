@@ -37,6 +37,12 @@ Review done (review.md: no Blocking, all 6 AC MET; konan cache key fixed in 5ff2
   - cleanup: Broken.kt removed in c5dbc64; final head green → https://github.com/fifersheep/android-names-in-a-hat/actions/runs/43087070902 (all 4 pass)
 - [x] 4. Required status checks on `main` (AC6) — user OK 2026-11-11; contexts = lint, unit-tests, assemble, ios-compile (strict: false); PR #23 mergeStateStatus CLEAN
 
+## Quick report
+- Changed: `.github/workflows/android.yml` rewritten as `lint`, `unit-tests`, `assemble` (ubuntu) and `ios-compile` (macOS, ~/.konan cached on the Kotlin version), JDK 17, current action majors, no secrets; `main` now requires those four checks. PR #23.
+- Verify: `./gradlew :app:assembleDebug :shared:allTests` → `BUILD SUCCESSFUL in 3s` (after 9872c5d). CI on 5ff21e3: run 43103836715, lint/unit-tests/assemble/ios-compile all success.
+- Red proofs: AC2 run 43085988075 (`AppInfoTest[jvm] > appNameMatchesThePlayListing[jvm] FAILED`), AC3 run 43086529337 (`Broken.kt:4:17 Initializer type mismatch`). Both temp changes reverted; `git diff origin/main HEAD -- shared/ app/` empty.
+- Review: no Blocking; all 6 AC MET (review.md). Deviations below: comment rewording, temp-commit cleanup by restore not revert. Merge must be **squash**.
+
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
 - 2026-11-11 task 1: the workflow comment originally said "niah* properties", which tripped the AC4 grep; reworded to "keystore properties" before the commit.
