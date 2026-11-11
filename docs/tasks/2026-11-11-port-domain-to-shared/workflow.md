@@ -5,7 +5,7 @@ ticket: NAM-4: Port the domain logic and its tests into `:shared` (https://linea
 ticket-id: NAM-4
 tracker-synced: In Engineering
 mode: full
-phase: code-review
+phase: reporting
 branch: flow/port-domain-to-shared
 worktree:
 created: 2026-11-11
@@ -13,7 +13,7 @@ updated: 2026-11-11
 ---
 
 ## Next action
-Code review: dispatch flow-reviewer on origin/main...HEAD against plan.md. Verify `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests` PASS 2026-11-11 (69 tests × 3 targets). Baseline 2026-11-11: `./gradlew :app:assembleDebug :shared:allTests` PASS on flow/port-domain-to-shared @ 9eedd6d.
+Reporting: write report.md (evidence from review.md, follow-ups for NAM-5/NAM-6 and Native tests in CI), push, open PR, move ticket to In Review, then gate 2. Review done: no Blocking, AC1–AC9 MET; fixes in c7bb28d; verify PASS (70 tests × 3 targets). Baseline 2026-11-11: `./gradlew :app:assembleDebug :shared:allTests` PASS on flow/port-domain-to-shared @ 9eedd6d.
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
@@ -41,3 +41,6 @@ Code review: dispatch flow-reviewer on origin/main...HEAD against plan.md. Verif
 - 2026-11-11 task 3: the cause of the staleness is Gradle file-system watching, which misses newly created files in this daemon. `--no-watch-fs` fixes it; every verify run from now on uses `./gradlew --no-watch-fs …`.
 - 2026-11-11 task 3: the tests and the implementation were written in the same batch, so no red run was observed for NameDrawTest/DrawStateTest (TDD red step skipped). Tasks 4 and 6 run red first.
 - 2026-11-11 task 6: Kotlin/Native rejects `,` in backtick test names (`compileTestKotlinIosSimulatorArm64`: "Name contains illegal characters"). Two mapped tests were renamed: `add stores the trimmed text as selected` and `cycle returns the new order that sorts the names`. plan.md's mapping table was updated to match.
+- 2026-11-11 tasks 6–7: three more mapping-table cells were expanded from shortened forms to the real test names: "/ from ASC stores DESC" → "/ cycle from ASC stores DESC"; "/ true with names" → "/ hasNames true with names"; "covered by … selectAll writes in bulk" → "… for the group only". No meaning changed (flagged in review).
+- 2026-11-11 file layout differs from Tasks 2 and 3: `GroupSummary` is in `model/Group.kt`, and `RandomNumberGenerator` is in `draw/NumberGenerator.kt`, rather than separate files. No API effect.
+- 2026-11-11 review fix (c7bb28d): added `PreferencesRepository.clearActiveGroupIf(id)`, which is not in plan.md's interface list. It replaces the read-then-clear in `GroupEditor.delete`, which had a race; NAM-6 implements it.
