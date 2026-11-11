@@ -9,3 +9,8 @@ android-keystore
 .externalNativeBuild
 .cxx
 local.properties
+build/
+.kotlin/
+*.apk
+*.aab
+release/
