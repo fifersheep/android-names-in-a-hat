@@ -1,3 +1,15 @@
+# CI for the Names in a Hat 3.0 build: :app (Android) + :shared (Kotlin Multiplatform).
+#
+# iOS compile frequency: every pull request to main and every push to main.
+# Why: the repository is public, so standard GitHub-hosted macOS runner minutes
+# are free. If the repository goes private (macOS bills at a multiplier) or the
+# job becomes a bottleneck, move ios-compile to a nightly schedule plus pushes to main.
+#
+# No job needs signing secrets: CI builds debug only, and release signing is
+# configured only when the keystore properties are present (app/build.gradle.kts).
+#
+# Job IDs are the required status-check names on main; do not add a `name:` to a job.
+
 name: CI
 
 on:
@@ -5,7 +17,7 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-    
+
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -13,57 +25,54 @@ concurrency:
 jobs:
   lint:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: gradle
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Lint
+        run: ./gradlew :app:lintDebug
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-      
-    - name: Lint
-      run: ./gradlew :app:lintDebug -PbuildDir=lint
-      
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Unit tests
+        run: ./gradlew :shared:jvmTest :app:testDebugUnitTest
+
   assemble:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: gradle
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Assemble debug
+        run: ./gradlew :app:assembleDebug
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-      
-    - name: Assemble
-      run: ./gradlew :app:assembleDebug
-      
-  test:
-    runs-on: ubuntu-latest
-
+  ios-compile:
+    runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: gradle
-
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-      
-    - name: Unit Tests
-      run: ./gradlew :app:testDebug
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Cache Kotlin/Native toolchain
+        uses: actions/cache@v6
+        with:
+          path: ~/.konan
+          key: konan-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('gradle/libs.versions.toml') }}
+          restore-keys: konan-${{ runner.os }}-${{ runner.arch }}-
+      - name: Compile shared iOS targets
+        run: ./gradlew :shared:compileKotlinIosArm64 :shared:compileKotlinIosSimulatorArm64
