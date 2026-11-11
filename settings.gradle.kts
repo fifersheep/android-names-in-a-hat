@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Names in a Hat"
-include(":app")
+include(":app", ":shared")
