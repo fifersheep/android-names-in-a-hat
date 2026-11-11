@@ -60,7 +60,7 @@ With `-PniahKeyAlias=` the build outputs `app-release-unsigned.apk` and `assembl
 
 **AC6:** the cruft grep over `*.gradle*`, `*.properties` and `*.toml` returns nothing (exit 1), and no `google-services.json` is tracked.
 
-**AC7:** pending the PR's CI run.
+**AC7:** PR #22 CI run 43059997906: lint pass (2m15s), test pass (1m49s), assemble pass (3m1s), on ubuntu-latest with JDK 17.
 
 Review: [review.md](review.md). 0 blocking, 2 advisory (1 fixed, 1 → NAM-3).
 
