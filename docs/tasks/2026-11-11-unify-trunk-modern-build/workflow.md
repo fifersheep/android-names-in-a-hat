@@ -5,7 +5,7 @@ ticket: NAM-1 — Unify the trunk and stand up the modern build (https://linear.
 ticket-id: NAM-1
 tracker-synced: In Engineering
 mode: full
-phase: code-review
+phase: reporting
 branch: flow/unify-trunk-modern-build
 worktree:
 created: 2026-11-11
@@ -13,7 +13,7 @@ updated: 2026-11-11
 ---
 
 ## Next action
-All 7 tasks done; verify GREEN (`:app:assembleDebug :shared:allTests`). Run code review on the diff `d407579..HEAD`. The merge commit itself carries no tree change, so review `git diff d407579 HEAD` against plan.md. Baseline verify (`./gradlew :app:assembleDebug :shared:allTests`) is RED: `Project 'shared' not found` (expected, because `:shared` doesn't exist yet). `:app:assembleDebug` alone is GREEN on main with JDK 17.0.21. This contradicts the ticket's "nothing can be built" for main.
+Review done (review.md): 0 blocking, 2 advisory (1 fixed, 1 carried to NAM-3); verify GREEN. Write report.md and open the PR. Then gate 2: MERGE-COMMIT merge only, after the user OKs relaxing linear history on main (decision log). Remaining checks: AC7 (PR CI) and AC5 on origin/main after merge. Baseline verify (`./gradlew :app:assembleDebug :shared:allTests`) is RED: `Project 'shared' not found` (expected, because `:shared` doesn't exist yet). `:app:assembleDebug` alone is GREEN on main with JDK 17.0.21. This contradicts the ticket's "nothing can be built" for main.
 
 ## Decision log
 - 2026-11-11 mode: full (confirmed by user): history merge, new KMP module, build-stack decisions
@@ -36,6 +36,7 @@ All 7 tasks done; verify GREEN (`:app:assembleDebug :shared:allTests`). Run code
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
 - 2026-11-11 Task 3: settings includes only `:app` until Task 4. Gradle 9 rejects an `include` for a project directory that doesn't exist yet. Also installed `build-tools;36.1.0` (the newest 36.x) rather than 36.0.0
+- 2026-11-11 Task 3: dropped `android.nonTransitiveRClass=true` from gradle.properties (the plan said keep main's settings). It's the AGP ≥ 8 default, so nothing changes. Logged at code review
 - 2026-11-11 Task 3: `.gitignore` also gets `build/` and `.kotlin/`, so module build dirs and the KGP 2.x project cache stay untracked (the old ignore only covered `/build`)
 - 2026-11-11 Task 4: enabled `withHostTest {}` on `:shared`'s android target (the plan said off). AGP warns without it, and `allTests` then includes `testAndroidHostTest`, which resolves the open question
 - 2026-11-11 Task 5: dropped the planned JUnit SmokeTest and the junit catalog entry. `:app:testDebug` resolves to testDebugUnitTest and passes as NO-SOURCE; the real tests are in `:shared`
