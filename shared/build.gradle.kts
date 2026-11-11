@@ -18,8 +18,13 @@ kotlin {
 
     sourceSets {
         // commonMain stays free of Android-only and DI libraries: Hilt lives in :app only.
+        commonMain.dependencies {
+            // api: the public repository interfaces expose Flow.
+            api(libs.kotlinx.coroutines.core)
+        }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
         }
     }
 }
