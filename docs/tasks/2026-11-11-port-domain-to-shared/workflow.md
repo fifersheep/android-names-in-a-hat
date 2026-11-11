@@ -37,3 +37,4 @@ Implement plan.md task 1 (coroutines dependency in `:shared`). Baseline 2026-11-
 
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
+- 2026-11-11 task 2 (tooling, not scope): right after new files were written, `:shared:jvmTest` twice reported a stale result: first BUILD SUCCESSFUL with the new tests not compiled, then "Unresolved reference" with the new main files present. A standalone `:shared:compileKotlinJvm` picked them up. Green is now confirmed from the per-class counts in `shared/build/test-results/jvmTest/*.xml`, not the BUILD line.
