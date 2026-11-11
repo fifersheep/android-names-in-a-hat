@@ -144,7 +144,7 @@ Legacy root is `core/src/test/java/uk/lobsterdoodle/namepicker/` on `origin/mast
 | …EditGroupDetails edit + post | `GroupEditorTest` rename stores the trimmed label |
 | …RetrieveGroupDetails post details | drop: read pass-through (`observeGroup`) |
 | …NameStateChanged update | covered by `NameEditorTest` setSelected persists only that name |
-| …MassNameStateChanged toggle | covered by `NameEditorTest` selectAll writes in bulk |
+| …MassNameStateChanged toggle | covered by `NameEditorTest` selectAll writes in bulk for the group only |
 | **AdapterDataWrapperTest** (5) | drop: AdapterDataWrapper not ported (ticket) |
 | **OverviewHintUseCaseTest** (2) | drop: overview hint has no domain code (ticket) |
 

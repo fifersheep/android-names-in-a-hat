@@ -5,7 +5,7 @@ ticket: NAM-4: Port the domain logic and its tests into `:shared` (https://linea
 ticket-id: NAM-4
 tracker-synced: In Engineering
 mode: full
-phase: implementation
+phase: code-review
 branch: flow/port-domain-to-shared
 worktree:
 created: 2026-11-11
@@ -13,7 +13,7 @@ updated: 2026-11-11
 ---
 
 ## Next action
-Implement plan.md task 1 (coroutines dependency in `:shared`). Baseline 2026-11-11: `./gradlew :app:assembleDebug :shared:allTests` PASS on flow/port-domain-to-shared @ 9eedd6d.
+Code review: dispatch flow-reviewer on origin/main...HEAD against plan.md. Verify `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests` PASS 2026-11-11 (69 tests × 3 targets). Baseline 2026-11-11: `./gradlew :app:assembleDebug :shared:allTests` PASS on flow/port-domain-to-shared @ 9eedd6d.
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
@@ -32,8 +32,8 @@ Implement plan.md task 1 (coroutines dependency in `:shared`). Baseline 2026-11-
 - [x] 3. Draw rules: NameDraw (clamp, drawFrom), DrawState, generators (test-first) — cc31af1 (NameDrawTest 9, DrawStateTest 7)
 - [x] 4. Sorting and grid pure rules (test-first) — red seen, then green; f51af5d (SortNamesTest 4, GridColumnsTest 4)
 - [x] 5. Repository interfaces (contract KDoc) + test fakes — compiles (`:shared:compileTestKotlinJvm`); 2691235
-- [x] 6. Use cases: GroupEditor, NameEditor, SortOrder, GridLayout, ActiveGroup (test-first) — red seen; `:shared:allTests` green: 12 classes / 69 tests on each of jvmTest, testAndroidHostTest and iosSimulatorArm64Test; see next commit
-- [ ] 7. Final checks: AC1 grep, full build + iOS compile, mapping-name grep
+- [x] 6. Use cases: GroupEditor, NameEditor, SortOrder, GridLayout, ActiveGroup (test-first) — red seen; `:shared:allTests` green: 12 classes / 69 tests on each of jvmTest, testAndroidHostTest and iosSimulatorArm64Test; ddb76fb
+- [x] 7. Final checks: AC1 grep, full build + iOS compile, mapping-name grep — AC1 grep empty; `--no-watch-fs :app:assembleDebug :shared:allTests :shared:compileKotlinIosArm64 :shared:compileKotlinIosSimulatorArm64` BUILD SUCCESSFUL; all mapped test names resolve (one shortened "covered by" cell in plan.md fixed to the full name)
 
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
