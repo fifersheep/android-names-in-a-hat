@@ -5,7 +5,7 @@ ticket: NAM-4: Port the domain logic and its tests into `:shared` (https://linea
 ticket-id: NAM-4
 tracker-synced: In Review
 mode: full
-phase: reporting
+phase: complete
 branch: flow/port-domain-to-shared
 worktree:
 created: 2026-11-11
@@ -13,7 +13,7 @@ updated: 2026-11-11
 ---
 
 ## Next action
-Gate 2: PR #24 open, CI green (run 43117399128), CLEAN; ticket In Review. Awaiting user approve-merge / request-changes. Merge with `gh pr merge 24 --squash` after wind-down commits. Baseline 2026-11-11: `./gradlew :app:assembleDebug :shared:allTests` PASS on flow/port-domain-to-shared @ 9eedd6d.
+Complete. PR #24 squash-merged into `main` after gate 2. Learnings: `.flow.md` verify now uses `--no-watch-fs` (this branch); memory `names-build-gotchas` saved. Ticket moves to Done after the merge. Baseline 2026-11-11: `./gradlew :app:assembleDebug :shared:allTests` PASS on flow/port-domain-to-shared @ 9eedd6d.
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
@@ -25,6 +25,7 @@ Gate 2: PR #24 open, CI green (run 43117399128), CLEAN; ticket In Review. Awaiti
 - 2026-11-11 Q: draw more names than available? A: clamp to min(count, available); never throws.
 - 2026-11-11 plan-critic: no Blocking; mapping covers all 67 non-analytics legacy cases. Folded in: literal test names, whitespace kinds (#5/#6), negative count, selected-only `drawFrom`, grid out-of-range → 2, delete clears active group + only-if-deleted, repo KDoc contracts (ordering, cascade, setAllSelected keeps drawn), atomic `updateSortType`, `NameEditor.rename` returns WriteResult, coroutines as `api`; research.md counts fixed (18/14).
 - 2026-11-11 gate 1: plan approved by user
+- 2026-11-11 gate 2: merge approved by user (squash-merge PR #24)
 
 ## Progress
 - [x] 1. Add coroutines to `:shared` (core as `api`, test in commonTest) — 037c60a
