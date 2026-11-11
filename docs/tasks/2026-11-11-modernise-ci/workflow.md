@@ -3,9 +3,9 @@ task: modernise-ci
 title: Bring CI up to date for the new build
 ticket: NAM-3: Bring CI up to date for the new build (https://linear.app/northtrack/issue/NAM-3/bring-ci-up-to-date-for-the-new-build)
 ticket-id: NAM-3
-tracker-synced: In Engineering
+tracker-synced: In Review
 mode: lite
-phase: code-review
+phase: complete
 branch: flow/modernise-ci
 worktree:
 created: 2026-11-11
@@ -13,7 +13,7 @@ updated: 2026-11-11
 ---
 
 ## Next action
-Review done (review.md: no Blocking, all 6 AC MET; konan cache key fixed in 5ff21e3, run 43103836715 green, PR #23 CLEAN). Next: flow-wrap (lite) — learnings, mark complete, gate 2, then `gh pr ready 23` + `gh pr merge 23 --squash` only with user approval; re-check head is green first. Baseline 2026-11-11: `./gradlew :app:assembleDebug :shared:allTests` PASS on flow/modernise-ci @ 82285a1.
+Complete. PR #23 squash-merged into `main` after gate 2; learning saved to the names-repo-layout memory (required checks = job IDs). Ticket moves to Done after the merge. Baseline 2026-11-11: `./gradlew :app:assembleDebug :shared:allTests` PASS on flow/modernise-ci @ 82285a1.
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
@@ -27,6 +27,7 @@ Review done (review.md: no Blocking, all 6 AC MET; konan cache key fixed in 5ff2
 - 2026-11-11 plan-critic: no Blocking; advisories folded in (citations, squash-merge required, wait for red runs, no job `name:`).
 - 2026-11-11 gate 1: plan approved by user
 - 2026-11-11 Q: apply required status checks on `main` now? A: yes — applied (lint, unit-tests, assemble, ios-compile; strict false)
+- 2026-11-11 gate 2: merge approved by user (squash-merge PR #23)
 
 ## Progress
 - [x] 1. Rewrite `.github/workflows/android.yml` (four jobs, frequency comment) — 851b5bd
