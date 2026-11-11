@@ -59,6 +59,13 @@ class GroupEditorTest {
     }
 
     @Test
+    fun `deleting a group clears the active group with one conditional write`() = runTest {
+        editor.delete(24)
+        // A read-then-clear could wipe a group opened in between; the conditional clear cannot.
+        assertEquals(listOf("removeSortType(24)", "clearActiveGroupIf(24)"), prefs.calls)
+    }
+
+    @Test
     fun `deleting another group keeps the active group`() = runTest {
         prefs.activeGroup.value = 25
         editor.delete(24)

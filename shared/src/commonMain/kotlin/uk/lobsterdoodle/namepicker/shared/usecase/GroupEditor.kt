@@ -1,6 +1,5 @@
 package uk.lobsterdoodle.namepicker.shared.usecase
 
-import kotlinx.coroutines.flow.first
 import uk.lobsterdoodle.namepicker.shared.model.Group
 import uk.lobsterdoodle.namepicker.shared.repository.GroupRepository
 import uk.lobsterdoodle.namepicker.shared.repository.PreferencesRepository
@@ -30,7 +29,7 @@ class GroupEditor(
     suspend fun delete(id: Long): Group? {
         val deleted = groups.delete(id) ?: return null
         prefs.removeSortType(id)
-        if (prefs.activeGroupId.first() == id) prefs.clearActiveGroup()
+        prefs.clearActiveGroupIf(id)
         return deleted
     }
 }

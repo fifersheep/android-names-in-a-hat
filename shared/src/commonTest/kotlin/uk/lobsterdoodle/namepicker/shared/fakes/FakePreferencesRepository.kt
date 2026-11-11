@@ -30,6 +30,11 @@ class FakePreferencesRepository(
         activeGroup.value = null
     }
 
+    override suspend fun clearActiveGroupIf(id: Long) {
+        calls += "clearActiveGroupIf($id)"
+        if (activeGroup.value == id) activeGroup.value = null
+    }
+
     override suspend fun setGridColumns(count: Int) {
         calls += "setGridColumns($count)"
         columns.value = count

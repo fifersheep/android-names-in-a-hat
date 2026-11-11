@@ -15,6 +15,12 @@ interface PreferencesRepository {
 
     suspend fun clearActiveGroup()
 
+    /**
+     * Atomically clears the active group only if it is [id]; used when that group is deleted.
+     * An active group set to a different id in the meantime must be kept.
+     */
+    suspend fun clearActiveGroupIf(id: Long)
+
     /** The stored draw-screen column count, or 2 when nothing is stored. Not range-checked here. */
     val gridColumns: Flow<Int>
 

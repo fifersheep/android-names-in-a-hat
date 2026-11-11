@@ -23,6 +23,7 @@ class LabelsTest {
     @Test
     fun `line breaks only label is rejected`() {
         assertNull(validateLabel("\n"))
+        assertNull(validateLabel("\r"))
         assertNull(validateLabel("\r\n"))
         assertNull(validateLabel(" \t\r\n "))
     }

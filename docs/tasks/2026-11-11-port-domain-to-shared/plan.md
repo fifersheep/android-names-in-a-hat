@@ -95,7 +95,7 @@ Alternatives considered:
 7. Final checks. Files: none (fix-ups only). Verify: the AC1 grep is empty; `./gradlew :app:assembleDebug :shared:allTests :shared:compileKotlinIosArm64 :shared:compileKotlinIosSimulatorArm64`; `grep -rF` every mapped test name from the table under `shared/src/commonTest` and confirm each one hits.
 
 ## Test mapping (AC2)
-Legacy root is `core/src/test/java/uk/lobsterdoodle/namepicker/` on `origin/master`; there are 67 non-analytics cases. New tests are under `shared/src/commonTest/kotlin/uk/lobsterdoodle/namepicker/shared/`.
+Legacy root is `core/src/test/java/uk/lobsterdoodle/namepicker/` on `origin/master`; the non-analytics test files hold 67 cases (including the two analytics-event cases dropped below). New tests are under `shared/src/commonTest/kotlin/uk/lobsterdoodle/namepicker/shared/`.
 
 **Each phrase after the class name is the literal backtick test function name.** Cells with " / " name several tests. Task 7 greps each name. Beyond the mapping, there are new tests for AC3–AC9 (seeded draw, clamp, zero/negative, whitespace kinds, sort-type format, drawn untouched, selected-only pool) plus `ASC keeps ties in input order`, `out-of-range stored columns read as 2` and `deleting the active group clears it`.
 
