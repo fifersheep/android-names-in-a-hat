@@ -30,8 +30,13 @@ Implement plan.md task 1 (rewrite `.github/workflows/android.yml`). Baseline 202
 ## Progress
 - [x] 1. Rewrite `.github/workflows/android.yml` (four jobs, frequency comment) — 851b5bd
 - [x] 2. Push branch, open draft PR, all four jobs green (AC1) — PR #23, run https://github.com/fifersheep/android-names-in-a-hat/actions/runs/43085406431 (all 4 pass)
-- [ ] 3. Red proofs: failing commonTest (AC2), iosMain compile error (AC3), reverted
+- [x] 3. Red proofs: failing commonTest (AC2), iosMain compile error (AC3), reverted
+  - AC2: fb601c6 → https://github.com/fifersheep/android-names-in-a-hat/actions/runs/43085988075 — `unit-tests` failure (`AppInfoTest[jvm] > appNameMatchesThePlayListing[jvm] FAILED`), other 3 green
+  - AC3: c342bee → https://github.com/fifersheep/android-names-in-a-hat/actions/runs/43086529337 — `ios-compile` failure (`Broken.kt:4:17 Initializer type mismatch`), other 3 green
+  - cleanup: Broken.kt removed in the following commit; final head green (see below)
 - [ ] 4. Required status checks on `main` (AC6) — needs user OK
 
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
+- 2026-11-11 task 1: the workflow comment originally said "niah* properties", which tripped the AC4 grep; reworded to "keystore properties" before the commit.
+- 2026-11-11 task 3: the AC2 temp commit (fb601c6) also swept in the workflow.md progress tick (`commit -a`), so it was undone by restoring the test file in the AC3 commit, not by `git revert`. The AC3 commit both restored the test and added Broken.kt, so its run isolates the iOS failure (unit-tests green). Squash-merge still drops all of it from `main`.
