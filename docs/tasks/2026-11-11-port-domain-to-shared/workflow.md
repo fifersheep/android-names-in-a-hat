@@ -29,8 +29,8 @@ Implement plan.md task 1 (coroutines dependency in `:shared`). Baseline 2026-11-
 ## Progress
 - [x] 1. Add coroutines to `:shared` (core as `api`, test in commonTest) — 037c60a
 - [x] 2. Models, sort type and validation (test-first) — 956b51d (NameSortTypeTest 4, LabelsTest 6)
-- [x] 3. Draw rules: NameDraw (clamp, drawFrom), DrawState, generators (test-first) — see next commit (NameDrawTest 9, DrawStateTest 7)
-- [ ] 4. Sorting and grid pure rules (test-first)
+- [x] 3. Draw rules: NameDraw (clamp, drawFrom), DrawState, generators (test-first) — cc31af1 (NameDrawTest 9, DrawStateTest 7)
+- [x] 4. Sorting and grid pure rules (test-first) — red seen, then green; see next commit (SortNamesTest 4, GridColumnsTest 4)
 - [ ] 5. Repository interfaces (contract KDoc) + test fakes
 - [ ] 6. Use cases: GroupEditor, NameEditor, SortOrder, GridLayout, ActiveGroup (test-first)
 - [ ] 7. Final checks: AC1 grep, full build + iOS compile, mapping-name grep
