@@ -68,11 +68,15 @@ jobs:
           distribution: temurin
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v6
+      # Key on the Kotlin version only, with no restore-keys fallback, so a Kotlin bump
+      # starts a fresh ~/.konan instead of stacking a new toolchain onto the old one.
+      - name: Read Kotlin version
+        id: kotlin
+        run: echo "version=$(sed -nE 's/^kotlin = "([^"]+)"/\1/p' gradle/libs.versions.toml)" >> "$GITHUB_OUTPUT"
       - name: Cache Kotlin/Native toolchain
         uses: actions/cache@v6
         with:
           path: ~/.konan
-          key: konan-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('gradle/libs.versions.toml') }}
-          restore-keys: konan-${{ runner.os }}-${{ runner.arch }}-
+          key: konan-${{ runner.os }}-${{ runner.arch }}-kotlin-${{ steps.kotlin.outputs.version }}
       - name: Compile shared iOS targets
         run: ./gradlew :shared:compileKotlinIosArm64 :shared:compileKotlinIosSimulatorArm64
