@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.NamesInAHat" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/red_700</item>
-    </style>
+    <!-- Window theme only; Compose draws edge-to-edge. The real theme arrives with the app shell (NAM-7). -->
+    <style name="Theme.NamesInAHat" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>
