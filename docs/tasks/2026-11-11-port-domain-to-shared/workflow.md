@@ -3,7 +3,7 @@ task: port-domain-to-shared
 title: Port the domain logic and its tests into `:shared`
 ticket: NAM-4: Port the domain logic and its tests into `:shared` (https://linear.app/northtrack/issue/NAM-4/port-the-domain-logic-and-its-tests-into-shared)
 ticket-id: NAM-4
-tracker-synced: In Engineering
+tracker-synced: In Review
 mode: full
 phase: reporting
 branch: flow/port-domain-to-shared
@@ -13,7 +13,7 @@ updated: 2026-11-11
 ---
 
 ## Next action
-Reporting: write report.md (evidence from review.md, follow-ups for NAM-5/NAM-6 and Native tests in CI), push, open PR, move ticket to In Review, then gate 2. Review done: no Blocking, AC1–AC9 MET; fixes in c7bb28d; verify PASS (70 tests × 3 targets). Baseline 2026-11-11: `./gradlew :app:assembleDebug :shared:allTests` PASS on flow/port-domain-to-shared @ 9eedd6d.
+Gate 2: PR #24 open, CI green (run 43117399128), CLEAN; ticket In Review. Awaiting user approve-merge / request-changes. Merge with `gh pr merge 24 --squash` after wind-down commits. Baseline 2026-11-11: `./gradlew :app:assembleDebug :shared:allTests` PASS on flow/port-domain-to-shared @ 9eedd6d.
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"

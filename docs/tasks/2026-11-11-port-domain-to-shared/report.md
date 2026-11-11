@@ -60,7 +60,8 @@ Per-class counts, from `shared/build/reports/tests/jvmTest/index.html`, which I 
 Other checks:
 - **AC1:** `grep -rnE 'import (android|org\.greenrobot|dagger|javax|java\.)' shared/src/commonMain` returns no output (exit 1).
 - **AC2:** all 38 distinct test names in plan.md's Test mapping resolve to exactly one `fun` in commonTest (Task 7 grep, independently repeated by the reviewer). The 67 legacy cases are each ported or dropped for an allowed reason.
-- **Acceptance criteria:** AC1–AC9 are MET, with evidence in [review.md](review.md). AC7 is MET locally; CI `ios-compile` on the PR is the remaining confirmation.
+- **Acceptance criteria:** AC1–AC9 are MET, with evidence in [review.md](review.md).
+- **CI on PR #24** (head 72c49bc, run https://github.com/fifersheep/android-names-in-a-hat/actions/runs/43117399128): lint, unit-tests, assemble and ios-compile all pass, and the merge state is CLEAN. That confirms AC7 in CI.
 
 ## Follow-ups
 - **NAM-5:**
