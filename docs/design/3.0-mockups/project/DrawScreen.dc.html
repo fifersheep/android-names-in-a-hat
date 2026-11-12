@@ -137,9 +137,13 @@ class Component extends DCLogic {
     var drawn = items.filter(function (x) { return x.s === 'drawn'; }).length;
     var selected = items.filter(function (x) { return x.s !== 'out'; }).length;
     var counter = inHat + ' of ' + items.length + ' in the hat' + (drawn > 0 ? ' · ' + drawn + ' drawn' : '');
+    // The box reflects only not-drawn names (spec: Select-all header); disabled when every name is drawn.
+    var notDrawn = items.filter(function (x) { return x.s !== 'drawn'; });
+    var selNotDrawn = notDrawn.filter(function (x) { return x.s === 'in'; }).length;
     var box;
-    if (selected === items.length) box = {aria: 'true', fill: t.primary, edge: t.primary, check: true, dash: false};
-    else if (selected === 0) box = {aria: 'false', fill: 'transparent', edge: t.onSurfaceVariant, check: false, dash: false};
+    if (notDrawn.length === 0) box = {aria: 'false', fill: 'transparent', edge: t.outlineVariant, check: false, dash: false};
+    else if (selNotDrawn === notDrawn.length) box = {aria: 'true', fill: t.primary, edge: t.primary, check: true, dash: false};
+    else if (selNotDrawn === 0) box = {aria: 'false', fill: 'transparent', edge: t.onSurfaceVariant, check: false, dash: false};
     else box = {aria: 'mixed', fill: t.primaryContainer, edge: t.primary, check: false, dash: true};
     var chips = items.map(function (x) {
       var menu = screen === 'putback' && x.text === 'Hamza';

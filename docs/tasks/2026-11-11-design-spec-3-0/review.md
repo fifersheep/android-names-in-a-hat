@@ -47,3 +47,11 @@ None.
 
 ## Checked
 The reviewer read plan, workflow, research, the spec, the ticket comments, the check scripts and all component and wrapper artboards. They checked the code claims against `:shared` at HEAD, origin/master (2.7.0) and origin/main (NAM-5), and the role→hex mappings against the palette (0 mismatches). They re-ran all three scripts and checked commit order.
+
+## Outcome verification (2026-11-12)
+Viewed the live canvas in Chrome; screenshots are in `screens/`.
+- **Rendering:** all 30 artboards render. The blank frame seen earlier was the background tab not painting; it rendered once the tab was in front.
+- **Draw** (`draw-phone-grid.jpg`, `draw-phone-a-z-light.png`): chip states In, Out and Drawn (struck through, with the ticket icon), the tonal mixed box, the counter "17 of 24 in the hat · 4 drawn", the sort labels A–Z / Unsorted / Z–A, the put-back menu, and the [− 2 +] stepper with "Draw 2", in light and dark. All as specified.
+- **Found and fixed while looking:** in the "Everyone drawn" state (`draw-phone-states-light.png` was captured *before* the fix), the box showed the mixed dash. That contradicts review fix 20 (the box is computed over not-drawn names). `DrawScreen.dc.html` now computes it over not-drawn names, with the disabled state when every name is drawn. Republished and re-checked: the box is empty.
+- **Reveal** (`reveal-phone.jpg`): the end layout for 1 and 3 names, light and dark. Outlined Done, filled "Draw n more", and the hat with sparkles, all as specified. The animation timing is **not** verified from screenshots: two frames a second apart were identical (the 3 s hold in the loop, or the editor showing the canvas without Play).
+- **Large screens** (`large-draw.jpg`): list-detail with the selected list highlighted, no back arrow in the detail pane, and the Draw button width-capped. Light and dark.
