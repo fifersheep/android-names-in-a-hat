@@ -4,31 +4,31 @@
 3.0 must open the `Classrooms.db` that 2.7.0 (schema v2), or a pre-2017 install (v1), leaves on the device and keep every group and name. The database moves to Room 3 in `:shared`, at schema v3 with a `drawn` flag. `GroupRepository` and `NameRepository` (NAM-4) are implemented on top of it, with reads as `Flow` and writes as `suspend`, all off the caller's thread.
 
 ## Acceptance criteria
-- [ ] **AC1** A v2 fixture built with the legacy DDL verbatim migrates to v3. It holds 3+ groups and names with mixed 0/1 selected values. After migration every group and name keeps its id and text, every name keeps the **same group id**, `selected` is unchanged, and `drawn` = 0 everywhere. This is asserted as an exact set of `(id, group_id, text, selected, drawn)` tuples (`MigrationTest`).
-- [ ] **AC2** The same holds for a v1 fixture built with the 2014 DDL (`git show 200e6ef:…/ClassroomDbHelper.java:55-63`) and migrated 1→2→3. The exact tuple set is asserted, and every v1 pupil comes out `selected = 0`, as 2.7.0 showed them. The fixture also holds the orphans that the v1 code really produced: a pupil with classroom id `-1` (from `getClassroomId` on a miss, `200e6ef:…:171,178,277-278`) and one with a NULL classroom id. Both are absent afterwards, and nothing throws (`MigrationTest`).
-- [ ] **AC3** A v2 fixture with these rows migrates without throwing (`MigrationTest`):
+- [x] **AC1** A v2 fixture built with the legacy DDL verbatim migrates to v3. It holds 3+ groups and names with mixed 0/1 selected values. After migration every group and name keeps its id and text, every name keeps the **same group id**, `selected` is unchanged, and `drawn` = 0 everywhere. This is asserted as an exact set of `(id, group_id, text, selected, drawn)` tuples (`MigrationTest`).
+- [x] **AC2** The same holds for a v1 fixture built with the 2014 DDL (`git show 200e6ef:…/ClassroomDbHelper.java:55-63`) and migrated 1→2→3. The exact tuple set is asserted, and every v1 pupil comes out `selected = 0`, as 2.7.0 showed them. The fixture also holds the orphans that the v1 code really produced: a pupil with classroom id `-1` (from `getClassroomId` on a miss, `200e6ef:…:171,178,277-278`) and one with a NULL classroom id. Both are absent afterwards, and nothing throws (`MigrationTest`).
+- [x] **AC3** A v2 fixture with these rows migrates without throwing (`MigrationTest`):
   - `column_name_toggled` NULL and `'false'` (text) both become `selected = 0`.
   - A name whose group id doesn't exist is absent after migration.
   - A name with a NULL group id is absent after migration.
-- [ ] **AC4** Schema validation passes in two places:
+- [x] **AC4** Schema validation passes in two places:
   - `MigrationTestHelper.runMigrationsAndValidate(3, …)` on each fixture.
   - An end-to-end open with the production builder (`buildNamesDatabase`, `DATABASE_NAME`) reads the migrated data through the repositories, for **each** of the v2, v1 and dirty fixtures.
   - `git ls-files shared/schemas` lists `uk.lobsterdoodle.namepicker.shared.data.NamesDatabase/3.json`.
   - `DATABASE_NAME` (commonMain, used by `NamesStorage(context)` and by the end-to-end test) is asserted to equal `"Classrooms.db"`.
-- [ ] **AC5** `GroupRepository.delete(id)` removes the group's names and returns the group; another group's names are untouched (`RoomRepositoryTest`).
-- [ ] **AC6** With the production builder given a named query dispatcher and a recording driver, every repository method records **at least one** `prepare`, and every recorded `prepare` runs on that dispatcher's thread, never on the calling test thread (`DatabaseThreadingTest`).
-- [ ] **AC-ids** Ids are never reused, including ids of groups and names deleted before the upgrade (per-group 2.7.0 prefs keyed by id outlive their group; see `master:core/.../StorageUseCase.kt:56-59`).
+- [x] **AC5** `GroupRepository.delete(id)` removes the group's names and returns the group; another group's names are untouched (`RoomRepositoryTest`).
+- [x] **AC6** With the production builder given a named query dispatcher and a recording driver, every repository method records **at least one** `prepare`, and every recorded `prepare` runs on that dispatcher's thread, never on the calling test thread (`DatabaseThreadingTest`).
+- [x] **AC-ids** Ids are never reused, including ids of groups and names deleted before the upgrade (per-group 2.7.0 prefs keyed by id outlive their group; see `master:core/.../StorageUseCase.kt:56-59`).
   - Fixture setup: the v2 (and v1) fixtures delete the highest-id group and name, so `sqlite_sequence.seq` is greater than the largest surviving id.
   - Assertion: after migration, the next `create`/`add` returns an id greater than the **legacy `seq`** (`MigrationTest`).
-- [ ] **AC-repo** Repository behaviour matches the interface docs (`RoomRepositoryTest`):
+- [x] **AC-repo** Repository behaviour matches the interface docs (`RoomRepositoryTest`):
   - Groups come newest first with correct name counts.
   - Names come in insertion order.
   - `add` stores the given `selected` and `drawn = false`.
   - `setSelected` and `setAllSelected` never change `drawn`; `markDrawn` and `clearDrawn` never change `selected`.
   - `delete(name)` returns the name; deleting a missing id returns null.
   - The Flows re-emit after writes.
-- [ ] **AC-nodestroy** `git grep -n -i "fallbackToDestructive" shared/` returns nothing.
-- [ ] **AC8** `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests :shared:compileKotlinIosArm64 :app:lintDebug` exits 0. The `shared/build/test-results` XML shows 0 failures/errors and includes results for `MigrationTest`, `RoomRepositoryTest` and `DatabaseThreadingTest`, each with a non-zero test count.
+- [x] **AC-nodestroy** `git grep -n -i "fallbackToDestructive" shared/` returns nothing.
+- [x] **AC8** `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests :shared:compileKotlinIosArm64 :app:lintDebug` exits 0. The `shared/build/test-results` XML shows 0 failures/errors and includes results for `MigrationTest`, `RoomRepositoryTest` and `DatabaseThreadingTest`, each with a non-zero test count.
 - AC7 (on-device check: install 2.7.0, then install this build over it) is **deferred to NAM-8** by user decision. It is not checked here.
 
 ## Approach
