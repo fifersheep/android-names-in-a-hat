@@ -37,7 +37,7 @@ Gate 1 passed 2026-11-12. Implementation, task 1: quickstart the Design type, cr
 - [x] 3. Phone portrait artboards (light + dark, states, dynamic sample) — d488434
 - [x] 4. Phone landscape + large-screen artboards — e609765
 - [x] 5. Reveal artboards (animated, reduced motion, end states) — b3b50b9
-- [ ] 6. Link and freeze; draft ticket comments
+- [x] 6. Link and freeze; draft ticket comments — 64ce613
 
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
