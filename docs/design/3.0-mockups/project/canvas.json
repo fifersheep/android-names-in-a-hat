@@ -135,6 +135,48 @@
       "w": 1740,
       "h": 1860,
       "title": "Edit list — phone: new · edit · rename inline · blank error + undo"
+    },
+    "LargeScreen.dc.html": {
+      "x": 2350,
+      "y": 4820,
+      "w": 1280,
+      "h": 800,
+      "title": "Component — large-screen list-detail"
+    },
+    "LandScreen.dc.html": {
+      "x": 3710,
+      "y": 4820,
+      "w": 844,
+      "h": 390,
+      "title": "Component — phone landscape"
+    },
+    "LargeDraw.dc.html": {
+      "x": 0,
+      "y": 10980,
+      "w": 2660,
+      "h": 888,
+      "title": "Large — list-detail with Draw, light | dark"
+    },
+    "LargeEdit.dc.html": {
+      "x": 0,
+      "y": 11988,
+      "w": 2660,
+      "h": 888,
+      "title": "Large — list-detail with Edit list, light | dark"
+    },
+    "LargeEmpty.dc.html": {
+      "x": 0,
+      "y": 12996,
+      "w": 2660,
+      "h": 1768,
+      "title": "Large — no list open · no lists"
+    },
+    "LandPhone.dc.html": {
+      "x": 0,
+      "y": 15300,
+      "w": 2672,
+      "h": 948,
+      "title": "Phone landscape — Lists · Edit list · Draw"
     }
   },
   "order": [
@@ -155,7 +197,13 @@
     "PhoneDrawStates.dc.html",
     "DynamicSample.dc.html",
     "PhoneLists.dc.html",
-    "PhoneEdit.dc.html"
+    "PhoneEdit.dc.html",
+    "LargeScreen.dc.html",
+    "LandScreen.dc.html",
+    "LargeDraw.dc.html",
+    "LargeEdit.dc.html",
+    "LargeEmpty.dc.html",
+    "LandPhone.dc.html"
   ],
   "notes": {
     "brandTitle": {
@@ -206,6 +254,20 @@
       "text": "Components",
       "kind": "title1",
       "maxW": 2270
+    },
+    "largeTitle": {
+      "x": 0,
+      "y": 10720,
+      "text": "Large screens — list-detail (≥ 840 dp wide and ≥ 480 dp tall)",
+      "kind": "title1",
+      "maxW": 2660
+    },
+    "landTitle": {
+      "x": 0,
+      "y": 15040,
+      "text": "Phone landscape (compact height)",
+      "kind": "title1",
+      "maxW": 2672
     }
   },
   "designSystems": []

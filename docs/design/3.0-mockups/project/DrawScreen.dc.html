@@ -14,11 +14,13 @@ body{margin:0}
 button{font:inherit;cursor:pointer}
 </style>
 </helmet>
-<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; display: flex; flex-direction: column; overflow: hidden; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; background: {{t.surface}}; color: {{t.onSurface}}">
+<div style="width: {{w}}px; height: {{h}}px; box-sizing: border-box; position: relative; display: flex; flex-direction: column; overflow: hidden; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; background: {{t.surface}}; color: {{t.onSurface}}">
   <div style="height: 64px; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+    <sc-if value="{{showBack}}" hint-placeholder-val="{{ true }}">
     <button aria-label="Back to lists" style="width: 48px; height: 48px; border: 0; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; color: {{t.onSurface}}">
       <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M19 12 H5 M11 6 L5 12 L11 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
     </button>
+    </sc-if>
     <div style="flex-grow: 1"></div>
     <sc-if value="{{hasNames}}" hint-placeholder-val="{{ true }}">
       <button aria-label="Sort: {{sortLabel}}" style="height: 40px; padding: 0 16px 0 12px; border: 0; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; border-radius: 999px; background: {{t.secondaryContainer}}; color: {{t.onSecondaryContainer}}">
@@ -81,7 +83,7 @@ button{font:inherit;cursor:pointer}
       <sc-if value="{{bar.message}}" hint-placeholder-val="{{ false }}">
         <span style="flex-grow: 1; font-size: 15px; font-weight: 500; line-height: 1.3">{{bar.messageText}}</span>
       </sc-if>
-      <button style="flex-grow: {{bar.grow}}; height: 56px; padding: 0 24px; border: 0; font-size: 19px; font-weight: 700; border-radius: 999px; background: {{bar.btnBg}}; color: {{bar.btnFg}}">{{bar.label}}</button>
+      <button style="flex-grow: {{bar.grow}}; max-width: {{btnMax}}; height: 56px; padding: 0 24px; border: 0; font-size: 19px; font-weight: 700; border-radius: 999px; background: {{bar.btnBg}}; color: {{bar.btnFg}}">{{bar.label}}</button>
     </div>
   </sc-if>
 
@@ -104,7 +106,7 @@ button{font:inherit;cursor:pointer}
   </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark","dynamic"],"default":"light"},"screen":{"editor":"enum","options":["default","unsorted","za","putback","nothing","alldrawn","empty"],"default":"default"},"$preview":{"width":390,"height":844}}'>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark","dynamic"],"default":"light"},"screen":{"editor":"enum","options":["default","unsorted","za","putback","nothing","alldrawn","empty"],"default":"default"},"w":{"editor":"int","default":390},"h":{"editor":"int","default":844},"pane":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
 var TH = {
   light: {primary:'#4D4BB3',onPrimary:'#FFFFFF',primaryContainer:'#E2DFFF',onPrimaryContainer:'#0B006B',secondaryContainer:'#E3E0F9',onSecondaryContainer:'#1A1A2C',tertiary:'#7A5900',surface:'#FCF8FF',surfaceContainer:'#F0ECF7',surfaceContainerHigh:'#EAE6F1',onSurface:'#1B1B21',onSurfaceVariant:'#47464F',outline:'#787680',outlineVariant:'#C8C5D0'},
   dark: {primary:'#C3C0FF',onPrimary:'#1F1A86',primaryContainer:'#35319A',onPrimaryContainer:'#E2DFFF',secondaryContainer:'#46455A',onSecondaryContainer:'#E3E0F9',tertiary:'#F5BE48',surface:'#131318',surfaceContainer:'#1F1F25',surfaceContainerHigh:'#2A292F',onSurface:'#E4E1E9',onSurfaceVariant:'#C8C5D0',outline:'#928F99',outlineVariant:'#47464F'},
@@ -152,7 +154,9 @@ class Component extends DCLogic {
     var isEmpty = screen === 'empty';
     return {
       t: t, sortLabel: sortLabel, counter: counter, box: box, chips: chips, bar: bar,
-      hasNames: !isEmpty, isEmpty: isEmpty, resetOpacity: drawn > 0 ? '1' : '0.38'
+      hasNames: !isEmpty, isEmpty: isEmpty, resetOpacity: drawn > 0 ? '1' : '0.38',
+      w: this.props.w ?? 390, h: this.props.h ?? 844, showBack: !(this.props.pane ?? false),
+      btnMax: (this.props.pane ?? false) ? '360px' : 'none'
     };
   }
 }

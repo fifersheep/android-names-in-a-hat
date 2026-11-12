@@ -14,7 +14,7 @@ body{margin:0}
 button{font:inherit;cursor:pointer}
 </style>
 </helmet>
-<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; display: flex; flex-direction: column; overflow: hidden; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; background: {{t.surface}}; color: {{t.onSurface}}">
+<div style="width: {{w}}px; height: {{h}}px; box-sizing: border-box; position: relative; display: flex; flex-direction: column; overflow: hidden; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; background: {{t.surface}}; color: {{t.onSurface}}">
   <div style="height: 64px; padding: 0 8px 0 4px; display: flex; align-items: center; gap: 4px">
     <button aria-label="Back" style="width: 48px; height: 48px; border: 0; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; color: {{t.onSurface}}">
       <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M19 12 H5 M11 6 L5 12 L11 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
@@ -90,7 +90,7 @@ button{font:inherit;cursor:pointer}
   </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"screen":{"editor":"enum","options":["new","edit","rename","error"],"default":"edit"},"$preview":{"width":390,"height":844}}'>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"screen":{"editor":"enum","options":["new","edit","rename","error"],"default":"edit"},"w":{"editor":"int","default":390},"h":{"editor":"int","default":844},"$preview":{"width":390,"height":844}}'>
 var TH = {
   light: {primary:'#4D4BB3',onPrimary:'#FFFFFF',error:'#BA1A1A',surface:'#FCF8FF',surfaceContainer:'#F0ECF7',surfaceContainerHighest:'#E4E1E9',onSurface:'#1B1B21',onSurfaceVariant:'#47464F',outline:'#787680',outlineVariant:'#C8C5D0',inverseSurface:'#303036',inverseOnSurface:'#F3EFF7',inversePrimary:'#C3C0FF'},
   dark: {primary:'#C3C0FF',onPrimary:'#1F1A86',error:'#FFB4AB',surface:'#131318',surfaceContainer:'#1F1F25',surfaceContainerHighest:'#35343A',onSurface:'#E4E1E9',onSurfaceVariant:'#C8C5D0',outline:'#928F99',outlineVariant:'#47464F',inverseSurface:'#E4E1E9',inverseOnSurface:'#303036',inversePrimary:'#4D4BB3'}
@@ -118,7 +118,8 @@ class Component extends DCLogic {
         : {border: '1px solid ' + t.outline, labelColor: t.onSurfaceVariant, filled: true, focused: false},
       hasNames: !isNew, isNew: isNew, countLabel: names.length + ' names', rows: rows,
       add: add, keyboard: keyboard, snackbar: s === 'error',
-      snackBottom: (keyboard ? 260 : 0) + (add.hasSupport ? 108 : 88) + 'px'
+      snackBottom: (keyboard ? 260 : 0) + (add.hasSupport ? 108 : 88) + 'px',
+      w: this.props.w ?? 390, h: this.props.h ?? 844
     };
   }
 }

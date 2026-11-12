@@ -14,7 +14,7 @@ body{margin:0}
 button{font:inherit;cursor:pointer}
 </style>
 </helmet>
-<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; display: flex; flex-direction: column; overflow: hidden; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; background: {{t.surface}}; color: {{t.onSurface}}">
+<div style="width: {{w}}px; height: {{h}}px; box-sizing: border-box; position: relative; display: flex; flex-direction: column; overflow: hidden; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; background: {{t.surface}}; color: {{t.onSurface}}">
   <div style="height: 64px; padding: 0 4px; display: flex; align-items: center; justify-content: flex-end">
     <button aria-label="More options" style="width: 48px; height: 48px; border: 0; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; color: {{t.onSurfaceVariant}}">
       <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="12" cy="5" r="1.8" fill="currentColor"></circle><circle cx="12" cy="12" r="1.8" fill="currentColor"></circle><circle cx="12" cy="19" r="1.8" fill="currentColor"></circle></svg>
@@ -85,7 +85,7 @@ button{font:inherit;cursor:pointer}
   </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"screen":{"editor":"enum","options":["populated","empty","about"],"default":"populated"},"$preview":{"width":390,"height":844}}'>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"screen":{"editor":"enum","options":["populated","empty","about"],"default":"populated"},"w":{"editor":"int","default":390},"h":{"editor":"int","default":844},"selected":{"editor":"int","default":-1},"$preview":{"width":390,"height":844}}'>
 var TH = {
   light: {primary:'#4D4BB3',onPrimary:'#FFFFFF',primaryContainer:'#E2DFFF',onPrimaryContainer:'#0B006B',secondaryContainer:'#E3E0F9',tertiary:'#7A5900',surface:'#FCF8FF',surfaceContainerLow:'#F6F2FA',surfaceContainer:'#F0ECF7',onSurface:'#1B1B21',onSurfaceVariant:'#47464F',outline:'#787680'},
   dark: {primary:'#C3C0FF',onPrimary:'#1F1A86',primaryContainer:'#35319A',onPrimaryContainer:'#E2DFFF',secondaryContainer:'#46455A',tertiary:'#F5BE48',surface:'#131318',surfaceContainerLow:'#1B1B21',surfaceContainer:'#1F1F25',onSurface:'#E4E1E9',onSurfaceVariant:'#C8C5D0',outline:'#928F99'}
@@ -102,12 +102,14 @@ class Component extends DCLogic {
     var t = TH[this.props.theme ?? 'light'] || TH.light;
     var screen = this.props.screen ?? 'populated';
     var last = LISTS.length - 1;
+    var sel = this.props.selected ?? -1;
     var lists = LISTS.map(function (l, i) {
       var top = i === 0 ? '24px' : '6px';
       var bottom = i === last ? '24px' : '6px';
-      return {name: l[0], meta: l[1], bg: t.surfaceContainer, radius: top + ' ' + top + ' ' + bottom + ' ' + bottom};
+      return {name: l[0], meta: l[1], bg: i === sel ? t.secondaryContainer : t.surfaceContainer, radius: top + ' ' + top + ' ' + bottom + ' ' + bottom};
     });
-    return {t: t, lists: lists, hasLists: screen !== 'empty', isEmpty: screen === 'empty', isAbout: screen === 'about'};
+    return {t: t, lists: lists, hasLists: screen !== 'empty', isEmpty: screen === 'empty', isAbout: screen === 'about',
+      w: this.props.w ?? 390, h: this.props.h ?? 844};
   }
 }
 </script>
