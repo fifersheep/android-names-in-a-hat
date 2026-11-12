@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Brand direction sheet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&amp;family=DM+Serif+Display&amp;family=Nunito:wght@800&amp;family=Roboto+Flex:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#4D4BB3}a:hover{color:#35319A}
+</style>
+</helmet>
+<div style="width: 880px; height: 1040px; box-sizing: border-box; padding: 48px; display: flex; flex-direction: column; gap: 28px; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; background: {{L.surface}}; color: {{L.onSurface}}">
+  <header style="display: flex; flex-direction: column; gap: 8px">
+    <div style="font-size: 14px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: {{L.onSurfaceVariant}}">{{label}} · seed {{seed}}</div>
+    <h1 style="margin: 0; font-size: 60px; line-height: 1; font-family: {{display}}; color: {{L.primary}}">{{dirName}}</h1>
+    <p style="margin: 4px 0 0; font-size: 18px; line-height: 1.45; max-width: 700px; color: {{L.onSurfaceVariant}}">{{mood}}</p>
+  </header>
+
+  <section style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+    <div style="border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 8px; background: {{L.surfaceContainer}}">
+      <div style="font-size: 14px; font-weight: 700; color: {{L.onSurface}}">Fallback palette · Light</div>
+      <sc-for list="{{lightSwatches}}" as="s" hint-placeholder-count="7">
+        <div style="height: 40px; border-radius: 10px; padding: 0 14px; display: flex; align-items: center; justify-content: space-between; font-size: 14px; background: {{s.bg}}; color: {{s.fg}}; border: 1px solid {{s.edge}}">
+          <span style="font-weight: 500">{{s.role}}</span><span style="font-family: ui-monospace, monospace">{{s.bg}}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 8px; background: {{D.surfaceContainer}}">
+      <div style="font-size: 14px; font-weight: 700; color: {{D.onSurface}}">Fallback palette · Dark</div>
+      <sc-for list="{{darkSwatches}}" as="s" hint-placeholder-count="7">
+        <div style="height: 40px; border-radius: 10px; padding: 0 14px; display: flex; align-items: center; justify-content: space-between; font-size: 14px; background: {{s.bg}}; color: {{s.fg}}; border: 1px solid {{s.edge}}">
+          <span style="font-weight: 500">{{s.role}}</span><span style="font-family: ui-monospace, monospace">{{s.bg}}</span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; flex-grow: 1">
+    <div style="border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 10px; border: 1px solid {{L.outlineVariant}}">
+      <div style="font-size: 14px; font-weight: 700">Type</div>
+      <div style="font-size: 72px; line-height: 1; font-family: {{display}}; color: {{L.primary}}">Aa</div>
+      <div style="font-size: 28px; line-height: 1.1; font-family: {{display}}">Names in a Hat</div>
+      <div style="font-size: 16px; line-height: 1.4">17 of 24 in the hat · 4 drawn</div>
+      <div style="margin-top: auto; font-size: 13px; line-height: 1.4; color: {{L.onSurfaceVariant}}">Display: {{displayName}} (bundled, one weight). UI: Roboto, the system face.</div>
+    </div>
+
+    <div style="border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 12px; border: 1px solid {{L.outlineVariant}}">
+      <div style="font-size: 14px; font-weight: 700">Icon concept</div>
+      <div style="display: flex; gap: 14px; align-items: center">
+        <div style="width: 96px; height: 96px; border-radius: 50%; overflow: hidden">
+          <sc-if value="{{isTicket}}" hint-placeholder-val="{{ true }}">
+            <svg viewBox="0 0 108 108" width="96" height="96" role="img" aria-label="Ticket icon: a ticket rising out of a top hat">
+              <rect width="108" height="108" fill="#E8702A"></rect>
+              <g transform="rotate(-14 58 34)"><rect x="46" y="16" width="26" height="34" rx="3" fill="#FFF3EC"></rect><line x1="46" y1="26" x2="72" y2="26" stroke="#E8702A" stroke-width="2" stroke-dasharray="3 3"></line></g>
+              <path d="M38 36 L70 36 L68 66 L40 66 Z" fill="#2B1A12"></path>
+              <rect x="39.5" y="56" width="29" height="6" fill="#FFDBCA"></rect>
+              <rect x="26" y="64" width="56" height="8" rx="4" fill="#2B1A12"></rect>
+            </svg>
+          </sc-if>
+          <sc-if value="{{isTopHat}}" hint-placeholder-val="{{ false }}">
+            <svg viewBox="0 0 108 108" width="96" height="96" role="img" aria-label="Top Hat icon: a white top hat with a gold band and sparkles">
+              <rect width="108" height="108" fill="#35319A"></rect>
+              <path d="M30 24 L31.5 28.5 L36 30 L31.5 31.5 L30 36 L28.5 31.5 L24 30 L28.5 28.5 Z" fill="#F5BE48"></path>
+              <path d="M78 19 L79.2 22.8 L83 24 L79.2 25.2 L78 29 L76.8 25.2 L73 24 L76.8 22.8 Z" fill="#F5BE48"></path>
+              <path d="M84 38 L85 41 L88 42 L85 43 L84 46 L83 43 L80 42 L83 41 Z" fill="#F5BE48"></path>
+              <path d="M38 32 L70 32 L68 66 L40 66 Z" fill="#F4F2FF"></path>
+              <rect x="39.5" y="56" width="29" height="6" fill="#F5BE48"></rect>
+              <rect x="26" y="64" width="56" height="8" rx="4" fill="#F4F2FF"></rect>
+            </svg>
+          </sc-if>
+          <sc-if value="{{isChalk}}" hint-placeholder-val="{{ false }}">
+            <svg viewBox="0 0 108 108" width="96" height="96" role="img" aria-label="Chalkboard icon: a chalk-drawn hat with a yellow slip of paper">
+              <rect width="108" height="108" fill="#1F3B36"></rect>
+              <g transform="rotate(10 58 31)"><rect x="48" y="16" width="20" height="28" rx="2" fill="#F7E570"></rect><line x1="52" y1="24" x2="64" y2="24" stroke="#1F3B36" stroke-width="2"></line><line x1="52" y1="30" x2="61" y2="30" stroke="#1F3B36" stroke-width="2"></line></g>
+              <path d="M38 36 L70 36 L68 66 L40 66 Z" fill="#1F3B36" stroke="#F2EFD9" stroke-width="3" stroke-linejoin="round"></path>
+              <line x1="40" y1="58" x2="68" y2="58" stroke="#F2EFD9" stroke-width="2" stroke-dasharray="4 3"></line>
+              <rect x="26" y="64" width="56" height="8" rx="4" fill="#1F3B36" stroke="#F2EFD9" stroke-width="3"></rect>
+            </svg>
+          </sc-if>
+        </div>
+        <div style="width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: {{L.primaryContainer}}; color: {{L.onPrimaryContainer}}">
+          <svg viewBox="0 0 108 108" width="64" height="64" role="img" aria-label="Themed (monochrome) icon">
+            <rect x="46" y="18" width="24" height="30" rx="3" fill="currentColor" opacity="0.5"></rect>
+            <path d="M38 36 L70 36 L68 66 L40 66 Z" fill="currentColor"></path>
+            <rect x="26" y="64" width="56" height="8" rx="4" fill="currentColor"></rect>
+          </svg>
+        </div>
+      </div>
+      <div style="margin-top: auto; font-size: 13px; line-height: 1.4; color: {{L.onSurfaceVariant}}">Adaptive icon (left) and the Android 13+ themed monochrome layer (right). Concept only: NAM-7 makes the resources.</div>
+    </div>
+
+    <div style="border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 10px; border: 1px solid {{L.outlineVariant}}">
+      <div style="font-size: 14px; font-weight: 700">Name chips</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <sc-for list="{{lightChips}}" as="c" hint-placeholder-count="3">
+          <span style="height: 36px; padding: 0 12px; display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 500; box-sizing: border-box; border-radius: {{chipRadius}}; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid {{c.edge}}; text-decoration: {{c.deco}}">
+            <sc-if value="{{c.isIn}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12.5 L10 17.5 L19 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+            <sc-if value="{{c.isDrawn}}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 7 H20 V10 A2 2 0 0 0 20 14 V17 H4 V14 A2 2 0 0 0 4 10 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path></svg></sc-if>
+            {{c.text}}
+          </span>
+        </sc-for>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; border-radius: 14px; background: {{D.surface}}">
+        <sc-for list="{{darkChips}}" as="c" hint-placeholder-count="3">
+          <span style="height: 36px; padding: 0 12px; display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 500; box-sizing: border-box; border-radius: {{chipRadius}}; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid {{c.edge}}; text-decoration: {{c.deco}}">
+            <sc-if value="{{c.isIn}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12.5 L10 17.5 L19 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+            <sc-if value="{{c.isDrawn}}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 7 H20 V10 A2 2 0 0 0 20 14 V17 H4 V14 A2 2 0 0 0 4 10 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path></svg></sc-if>
+            {{c.text}}
+          </span>
+        </sc-for>
+      </div>
+      <div style="margin-top: auto; font-size: 13px; line-height: 1.4; color: {{L.onSurfaceVariant}}">In (tick), Out (outline), Drawn (ticket icon + strikethrough). Never colour alone.</div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"direction":{"editor":"enum","options":["ticket","tophat","chalk"],"default":"ticket"},"$preview":{"width":880,"height":1040}}'>
+var NIAH = {
+  ticket: {
+    label: 'Direction A', name: 'Ticket', seed: '#E8702A', displayName: 'Bricolage Grotesque',
+    display: '"Bricolage Grotesque", "Roboto Flex", sans-serif', chipRadius: '8px',
+    mood: 'Raffle-night warm. A tangerine seed on warm paper neutrals, with teal for accents. Friendly and a little loud, at home at a prize draw or in a classroom.',
+    light: {primary:'#9C4400',onPrimary:'#FFFFFF',primaryContainer:'#FFDBCA',onPrimaryContainer:'#341100',secondaryContainer:'#F6DED3',onSecondaryContainer:'#2C160D',tertiary:'#006874',tertiaryContainer:'#9EEFFD',onTertiaryContainer:'#001F24',surface:'#FFF8F5',surfaceContainer:'#F9EBE4',surfaceContainerHigh:'#F3E5DE',onSurface:'#221A16',onSurfaceVariant:'#53443C',outline:'#85736A',outlineVariant:'#D8C2B8'},
+    dark: {primary:'#FFB68F',onPrimary:'#552000',primaryContainer:'#773300',onPrimaryContainer:'#FFDBCA',secondaryContainer:'#5B4135',onSecondaryContainer:'#FFDBCC',tertiary:'#82D3E0',tertiaryContainer:'#004F58',onTertiaryContainer:'#9EEFFD',surface:'#1A120E',surfaceContainer:'#271E1A',surfaceContainerHigh:'#322824',onSurface:'#F0DFD8',onSurfaceVariant:'#D8C2B8',outline:'#A08D84',outlineVariant:'#53443C'}
+  },
+  tophat: {
+    label: 'Direction B', name: 'Top Hat', seed: '#4D4BB3', displayName: 'DM Serif Display',
+    display: '"DM Serif Display", Georgia, serif', chipRadius: '999px',
+    mood: 'The magician’s reveal. Deep indigo with a gold band, and a classic display serif for the moment a name comes out of the hat.',
+    light: {primary:'#4D4BB3',onPrimary:'#FFFFFF',primaryContainer:'#E2DFFF',onPrimaryContainer:'#0B006B',secondaryContainer:'#E3E0F9',onSecondaryContainer:'#1A1A2C',tertiary:'#7A5900',tertiaryContainer:'#FFDEA3',onTertiaryContainer:'#261900',surface:'#FCF8FF',surfaceContainer:'#F0ECF7',surfaceContainerHigh:'#EAE6F1',onSurface:'#1B1B21',onSurfaceVariant:'#47464F',outline:'#787680',outlineVariant:'#C8C5D0'},
+    dark: {primary:'#C3C0FF',onPrimary:'#1F1A86',primaryContainer:'#35319A',onPrimaryContainer:'#E2DFFF',secondaryContainer:'#46455A',onSecondaryContainer:'#E3E0F9',tertiary:'#F5BE48',tertiaryContainer:'#5C4200',onTertiaryContainer:'#FFDEA3',surface:'#131318',surfaceContainer:'#1F1F25',surfaceContainerHigh:'#2A292F',onSurface:'#E4E1E9',onSurfaceVariant:'#C8C5D0',outline:'#928F99',outlineVariant:'#47464F'}
+  },
+  chalk: {
+    label: 'Direction C', name: 'Chalkboard', seed: '#006B5F', displayName: 'Nunito ExtraBold',
+    display: 'Nunito, "Roboto Flex", sans-serif', chipRadius: '12px',
+    mood: 'Calm and classroom-first. Board green with chalk-yellow highlights, and a rounded, friendly display face.',
+    light: {primary:'#006B5F',onPrimary:'#FFFFFF',primaryContainer:'#9FF2E2',onPrimaryContainer:'#00201C',secondaryContainer:'#CCE8E2',onSecondaryContainer:'#051F1C',tertiary:'#6A5F00',tertiaryContainer:'#F7E570',onTertiaryContainer:'#201C00',surface:'#F5FBF8',surfaceContainer:'#E9EFEC',surfaceContainerHigh:'#E3EAE7',onSurface:'#171D1B',onSurfaceVariant:'#3F4946',outline:'#6F7976',outlineVariant:'#BEC9C5'},
+    dark: {primary:'#83D5C6',onPrimary:'#003731',primaryContainer:'#005047',onPrimaryContainer:'#9FF2E2',secondaryContainer:'#334B47',onSecondaryContainer:'#CCE8E2',tertiary:'#DAC957',tertiaryContainer:'#4F4800',onTertiaryContainer:'#F7E570',surface:'#0E1513',surfaceContainer:'#1B2120',surfaceContainerHigh:'#252B2A',onSurface:'#DEE4E1',onSurfaceVariant:'#BEC9C5',outline:'#899390',outlineVariant:'#3F4946'}
+  }
+};
+function swatches(t) {
+  return [
+    {role: 'primary', bg: t.primary, fg: t.onPrimary, edge: t.primary},
+    {role: 'primaryContainer', bg: t.primaryContainer, fg: t.onPrimaryContainer, edge: t.primaryContainer},
+    {role: 'secondaryContainer', bg: t.secondaryContainer, fg: t.onSecondaryContainer, edge: t.secondaryContainer},
+    {role: 'tertiaryContainer', bg: t.tertiaryContainer, fg: t.onTertiaryContainer, edge: t.tertiaryContainer},
+    {role: 'surface', bg: t.surface, fg: t.onSurface, edge: t.outlineVariant},
+    {role: 'surfaceContainerHigh', bg: t.surfaceContainerHigh, fg: t.onSurfaceVariant, edge: t.surfaceContainerHigh},
+    {role: 'outline', bg: t.outline, fg: t.surface, edge: t.outline}
+  ];
+}
+function chips(t) {
+  return [
+    {text: 'Ada', isIn: true, isDrawn: false, bg: t.secondaryContainer, fg: t.onSecondaryContainer, edge: t.secondaryContainer, deco: 'none'},
+    {text: 'Ben', isIn: false, isDrawn: false, bg: 'transparent', fg: t.onSurfaceVariant, edge: t.outline, deco: 'none'},
+    {text: 'Chloe', isIn: false, isDrawn: true, bg: t.surfaceContainerHigh, fg: t.onSurfaceVariant, edge: t.surfaceContainerHigh, deco: 'line-through'}
+  ];
+}
+class Component extends DCLogic {
+  renderVals() {
+    var key = this.props.direction ?? 'ticket';
+    var d = NIAH[key] || NIAH.ticket;
+    return {
+      L: d.light, D: d.dark, label: d.label, dirName: d.name, seed: d.seed, mood: d.mood,
+      display: d.display, displayName: d.displayName, chipRadius: d.chipRadius,
+      lightSwatches: swatches(d.light), darkSwatches: swatches(d.dark),
+      lightChips: chips(d.light), darkChips: chips(d.dark),
+      isTicket: key === 'ticket', isTopHat: key === 'tophat', isChalk: key === 'chalk'
+    };
+  }
+}
+</script>
+</body>
+</html>
