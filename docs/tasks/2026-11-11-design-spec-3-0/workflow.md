@@ -27,6 +27,9 @@ Gate 1 passed 2026-11-12. Implementation, task 1: quickstart the Design type, cr
 - 2026-11-12 Q (gate 1 review): D17 sort? A: cycle Unsorted → A–Z → Z–A → Unsorted (a cycle, not a menu), labelled "Unsorted". Display-only, saved per list. Hand-off: NAM-10 changes NameSortType.next() DESC → NONE.
 - 2026-11-12 Q (gate 1 review): D18 select all? A: the owner wants the tri-state checkbox and the text button side by side before choosing. Both go on the brand board (task 1), picked with the brand direction.
 - 2026-11-12 gate 1: plan approved by user (D1–D20; D17 revised; D18 deferred to the task 1 board)
+- 2026-11-12 Q (task 1 checkpoint): brand direction? A: **B — Top Hat** (indigo #4D4BB3 seed, gold tertiary, DM Serif Display display face, full-pill shapes).
+- 2026-11-12 Q (task 1 checkpoint): D18 variant? A: **(a) tri-state checkbox**. The owner wants the mixed-state box to look more distinct from checked than a filled-primary dash does: explore a few options (MixedOptions artboard) and the owner picks.
+- 2026-11-12 Q: mixed-state box? A: **option 2, tonal dash**: primaryContainer fill, 2px primary border, primary dash. Checked = primary fill + onPrimary check; none = onSurfaceVariant border. (A tonal fill alone is 1.23:1 against surface, so the border is required.)
 
 ## Progress
 - [ ] 1. Brand board (3 directions + D18 comparison), owner pick logged
@@ -39,3 +42,4 @@ Gate 1 passed 2026-11-12. Implementation, task 1: quickstart the Design type, cr
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
 - 2026-11-12 task 1: the Design type dictates the canvas file layout: `project/canvas.json` plus one `project/<Name>.dc.html` per artboard, each self-contained, with no shared stylesheet. The planned `tokens.css`/`components.css`/`brand-board.html` became component artboards (`Main` = the brand sheet, `DrawHero`, `SelectHeader`), with the token table copied into each and the spec as the source of truth. Sources are committed under `docs/design/3.0-mockups/project/` and published with root `docs/design/3.0-mockups`. Canvas: https://claude.ai/artifact/V3SwNVHPd4UNUtz6YDk15q
+- 2026-11-12 task 1: added an extra `MixedOptions` artboard (five mixed-state checkbox designs), which wasn't in the plan, at the owner's request after picking D18 (a).

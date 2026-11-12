@@ -1,19 +1,85 @@
 {
   "v": 3,
-  "createdOnFiles": {"v": 1, "at": "2026-11-12T09:30:00Z"},
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-11-12T09:30:00Z"
+  },
   "title": "Names in a Hat 3.0 — Design",
-  "launch": {"view": "canvas"},
+  "launch": {
+    "view": "canvas"
+  },
   "pages": [],
   "boards": {
-    "Main.dc.html": {"x": 0, "y": 0, "w": 880, "h": 1040, "title": "Direction A — Ticket"},
-    "BrandTopHat.dc.html": {"x": 960, "y": 0, "w": 880, "h": 1040, "title": "Direction B — Top Hat"},
-    "BrandChalk.dc.html": {"x": 1920, "y": 0, "w": 880, "h": 1040, "title": "Direction C — Chalkboard"},
-    "HeroTicket.dc.html": {"x": 0, "y": 1580, "w": 880, "h": 932, "title": "Ticket — Draw screen, light | dark"},
-    "HeroTopHat.dc.html": {"x": 960, "y": 1580, "w": 880, "h": 932, "title": "Top Hat — Draw screen, light | dark"},
-    "HeroChalk.dc.html": {"x": 1920, "y": 1580, "w": 880, "h": 932, "title": "Chalkboard — Draw screen, light | dark"},
-    "SelectCompare.dc.html": {"x": 0, "y": 3060, "w": 1864, "h": 480, "title": "D18 — select-all control, (a) vs (b)"},
-    "DrawHero.dc.html": {"x": 0, "y": 3860, "w": 390, "h": 844, "title": "Component — Draw screen"},
-    "SelectHeader.dc.html": {"x": 470, "y": 3860, "w": 390, "h": 64, "title": "Component — select header"}
+    "Main.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 880,
+      "h": 1040,
+      "title": "Direction A — Ticket"
+    },
+    "BrandTopHat.dc.html": {
+      "x": 960,
+      "y": 0,
+      "w": 880,
+      "h": 1040,
+      "title": "Direction B — Top Hat"
+    },
+    "BrandChalk.dc.html": {
+      "x": 1920,
+      "y": 0,
+      "w": 880,
+      "h": 1040,
+      "title": "Direction C — Chalkboard"
+    },
+    "HeroTicket.dc.html": {
+      "x": 0,
+      "y": 1580,
+      "w": 880,
+      "h": 932,
+      "title": "Ticket — Draw screen, light | dark"
+    },
+    "HeroTopHat.dc.html": {
+      "x": 960,
+      "y": 1580,
+      "w": 880,
+      "h": 932,
+      "title": "Top Hat — Draw screen, light | dark"
+    },
+    "HeroChalk.dc.html": {
+      "x": 1920,
+      "y": 1580,
+      "w": 880,
+      "h": 932,
+      "title": "Chalkboard — Draw screen, light | dark"
+    },
+    "SelectCompare.dc.html": {
+      "x": 0,
+      "y": 3060,
+      "w": 1864,
+      "h": 480,
+      "title": "D18 — select-all control, (a) vs (b)"
+    },
+    "DrawHero.dc.html": {
+      "x": 0,
+      "y": 4820,
+      "w": 390,
+      "h": 844,
+      "title": "Component — Draw screen"
+    },
+    "SelectHeader.dc.html": {
+      "x": 470,
+      "y": 4820,
+      "w": 390,
+      "h": 64,
+      "title": "Component — select header"
+    },
+    "MixedOptions.dc.html": {
+      "x": 0,
+      "y": 3820,
+      "w": 1252,
+      "h": 720,
+      "title": "D18 — mixed-state box options"
+    }
   },
   "order": [
     "Main.dc.html",
@@ -23,13 +89,39 @@
     "HeroTopHat.dc.html",
     "HeroChalk.dc.html",
     "SelectCompare.dc.html",
+    "MixedOptions.dc.html",
     "DrawHero.dc.html",
     "SelectHeader.dc.html"
   ],
   "notes": {
-    "brandTitle": {"x": 0, "y": -260, "text": "Pick a direction", "kind": "title1", "maxW": 2800},
-    "heroTitle": {"x": 0, "y": 1300, "text": "The Draw screen in each direction", "kind": "title1", "maxW": 2800},
-    "d18Title": {"x": 0, "y": 2780, "text": "Select all: (a) tri-state checkbox vs (b) text button", "kind": "title1", "maxW": 1864}
+    "brandTitle": {
+      "x": 0,
+      "y": -260,
+      "text": "Pick a direction",
+      "kind": "title1",
+      "maxW": 2800
+    },
+    "heroTitle": {
+      "x": 0,
+      "y": 1300,
+      "text": "The Draw screen in each direction",
+      "kind": "title1",
+      "maxW": 2800
+    },
+    "d18Title": {
+      "x": 0,
+      "y": 2780,
+      "text": "Select all: (a) tri-state checkbox vs (b) text button",
+      "kind": "title1",
+      "maxW": 1864
+    },
+    "mixedTitle": {
+      "x": 0,
+      "y": 3580,
+      "text": "The \"some selected\" box: five options",
+      "kind": "title1",
+      "maxW": 1252
+    }
   },
   "designSystems": []
 }
