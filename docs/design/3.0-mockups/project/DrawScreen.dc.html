@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Draw screen (Top Hat)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Roboto+Flex:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; display: flex; flex-direction: column; overflow: hidden; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; background: {{t.surface}}; color: {{t.onSurface}}">
+  <div style="height: 64px; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+    <button aria-label="Back to lists" style="width: 48px; height: 48px; border: 0; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; color: {{t.onSurface}}">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M19 12 H5 M11 6 L5 12 L11 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+    <div style="flex-grow: 1"></div>
+    <sc-if value="{{hasNames}}" hint-placeholder-val="{{ true }}">
+      <button aria-label="Sort: {{sortLabel}}" style="height: 40px; padding: 0 16px 0 12px; border: 0; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; border-radius: 999px; background: {{t.secondaryContainer}}; color: {{t.onSecondaryContainer}}">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 7 H20 M4 12 H15 M4 17 H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+        {{sortLabel}}
+      </button>
+      <button aria-label="Reset drawn names" style="width: 48px; height: 48px; border: 0; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; color: {{t.onSurfaceVariant}}; opacity: {{resetOpacity}}">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M5 12 A7 7 0 1 0 7.5 6.6 M5 4 V9 H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </button>
+    </sc-if>
+    <button aria-label="More options" style="width: 48px; height: 48px; border: 0; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; color: {{t.onSurfaceVariant}}">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="12" cy="5" r="1.8" fill="currentColor"></circle><circle cx="12" cy="12" r="1.8" fill="currentColor"></circle><circle cx="12" cy="19" r="1.8" fill="currentColor"></circle></svg>
+    </button>
+  </div>
+  <h1 style="margin: 0; padding: 0 20px 12px; font-size: 34px; line-height: 1.1; font-weight: 400; font-family: 'DM Serif Display', Georgia, serif">Year 5 Maple</h1>
+
+  <sc-if value="{{hasNames}}" hint-placeholder-val="{{ true }}">
+    <div style="height: 56px; padding: 0 16px; display: flex; align-items: center; border-bottom: 1px solid {{t.outlineVariant}}">
+      <label style="display: flex; align-items: center; gap: 14px; height: 48px; font-size: 15px; font-weight: 600">
+        <span role="checkbox" aria-checked="{{box.aria}}" aria-label="Select all, {{counter}}" tabindex="0" style="width: 22px; height: 22px; box-sizing: border-box; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; background: {{box.fill}}; border: 2px solid {{box.edge}}">
+          <sc-if value="{{box.check}}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12.5 L10 17.5 L19 7" fill="none" stroke="{{t.onPrimary}}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+          <sc-if value="{{box.dash}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 12 H18" stroke="{{t.primary}}" stroke-width="3" stroke-linecap="round"></path></svg></sc-if>
+        </span>
+        {{counter}}
+      </label>
+    </div>
+
+    <div style="flex-grow: 1; padding: 16px; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; overflow: hidden">
+      <sc-for list="{{chips}}" as="c" hint-placeholder-count="24">
+        <span style="position: relative; display: inline-flex">
+          <button aria-pressed="{{c.pressed}}" aria-label="{{c.a11y}}" style="height: 40px; padding: 0 16px; display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 500; box-sizing: border-box; border-radius: 999px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid {{c.edge}}; text-decoration: {{c.deco}}; outline: {{c.ring}}; outline-offset: 2px">
+            <sc-if value="{{c.isIn}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12.5 L10 17.5 L19 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+            <sc-if value="{{c.isDrawn}}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 7 H20 V10 A2 2 0 0 0 20 14 V17 H4 V14 A2 2 0 0 0 4 10 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path></svg></sc-if>
+            {{c.text}}
+          </button>
+          <sc-if value="{{c.menu}}" hint-placeholder-val="{{ false }}">
+            <div role="menu" style="position: absolute; top: 46px; left: 0; z-index: 2; width: 232px; padding: 6px 0; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.22); background: {{t.surfaceContainer}}">
+              <button role="menuitem" style="width: 100%; height: 48px; padding: 0 16px; border: 0; background: transparent; display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 500; text-align: left; color: {{t.onSurface}}">
+                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 14 L4 9 L9 4 M4 9 H14 A6 6 0 0 1 14 21 H11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                Put back in the hat
+              </button>
+            </div>
+          </sc-if>
+        </span>
+      </sc-for>
+    </div>
+
+    <div style="padding: 12px 16px 28px; display: flex; gap: 12px; align-items: center; background: {{t.surfaceContainer}}">
+      <sc-if value="{{bar.stepper}}" hint-placeholder-val="{{ true }}">
+        <div role="group" aria-label="How many to draw" style="display: flex; gap: 2px">
+          <button aria-label="Draw fewer" style="width: 48px; height: 56px; border: 0; display: flex; align-items: center; justify-content: center; border-radius: 28px 6px 6px 28px; background: {{t.surfaceContainerHigh}}; color: {{t.onSurface}}">
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 12 H18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path></svg>
+          </button>
+          <span aria-live="polite" style="width: 44px; height: 56px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; background: {{t.surfaceContainerHigh}}">{{bar.n}}</span>
+          <button aria-label="Draw more" style="width: 48px; height: 56px; border: 0; display: flex; align-items: center; justify-content: center; border-radius: 6px 28px 28px 6px; background: {{t.surfaceContainerHigh}}; color: {{t.onSurface}}">
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 6 V18 M6 12 H18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path></svg>
+          </button>
+        </div>
+      </sc-if>
+      <sc-if value="{{bar.message}}" hint-placeholder-val="{{ false }}">
+        <span style="flex-grow: 1; font-size: 15px; font-weight: 500; line-height: 1.3">{{bar.messageText}}</span>
+      </sc-if>
+      <button style="flex-grow: {{bar.grow}}; height: 56px; padding: 0 24px; border: 0; font-size: 19px; font-weight: 700; border-radius: 999px; background: {{bar.btnBg}}; color: {{bar.btnFg}}">{{bar.label}}</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}">
+    <div style="flex-grow: 1; padding: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center">
+      <svg viewBox="0 0 108 108" width="132" height="132" role="img" aria-label="An empty top hat">
+        <path d="M30 24 L31.5 28.5 L36 30 L31.5 31.5 L30 36 L28.5 31.5 L24 30 L28.5 28.5 Z" fill="{{t.tertiary}}"></path>
+        <path d="M78 19 L79.2 22.8 L83 24 L79.2 25.2 L78 29 L76.8 25.2 L73 24 L76.8 22.8 Z" fill="{{t.tertiary}}"></path>
+        <path d="M38 32 L70 32 L68 66 L40 66 Z" fill="{{t.primary}}"></path>
+        <rect x="39.5" y="56" width="29" height="6" fill="{{t.tertiary}}"></rect>
+        <rect x="26" y="64" width="56" height="8" rx="4" fill="{{t.primary}}"></rect>
+      </svg>
+      <h2 style="margin: 0; font-size: 28px; font-weight: 400; font-family: 'DM Serif Display', Georgia, serif">This hat is empty</h2>
+      <p style="margin: 0; font-size: 16px; line-height: 1.45; color: {{t.onSurfaceVariant}}">Add some names to start drawing.</p>
+      <button style="margin-top: 12px; height: 56px; padding: 0 28px; border: 0; border-radius: 999px; font-size: 17px; font-weight: 700; display: flex; align-items: center; gap: 8px; background: {{t.primary}}; color: {{t.onPrimary}}">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 5 V19 M5 12 H19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path></svg>
+        Add names
+      </button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark","dynamic"],"default":"light"},"screen":{"editor":"enum","options":["default","unsorted","za","putback","nothing","alldrawn","empty"],"default":"default"},"$preview":{"width":390,"height":844}}'>
+var TH = {
+  light: {primary:'#4D4BB3',onPrimary:'#FFFFFF',primaryContainer:'#E2DFFF',onPrimaryContainer:'#0B006B',secondaryContainer:'#E3E0F9',onSecondaryContainer:'#1A1A2C',tertiary:'#7A5900',surface:'#FCF8FF',surfaceContainer:'#F0ECF7',surfaceContainerHigh:'#EAE6F1',onSurface:'#1B1B21',onSurfaceVariant:'#47464F',outline:'#787680',outlineVariant:'#C8C5D0'},
+  dark: {primary:'#C3C0FF',onPrimary:'#1F1A86',primaryContainer:'#35319A',onPrimaryContainer:'#E2DFFF',secondaryContainer:'#46455A',onSecondaryContainer:'#E3E0F9',tertiary:'#F5BE48',surface:'#131318',surfaceContainer:'#1F1F25',surfaceContainerHigh:'#2A292F',onSurface:'#E4E1E9',onSurfaceVariant:'#C8C5D0',outline:'#928F99',outlineVariant:'#47464F'},
+  dynamic: {primary:'#386A20',onPrimary:'#FFFFFF',primaryContainer:'#B7F397',onPrimaryContainer:'#042100',secondaryContainer:'#D7E8CD',onSecondaryContainer:'#121F0E',tertiary:'#386666',surface:'#F8FAF0',surfaceContainer:'#ECEFE4',surfaceContainerHigh:'#E6E9DF',onSurface:'#191D16',onSurfaceVariant:'#43483E',outline:'#74796D',outlineVariant:'#C3C8BB'}
+};
+// Insertion order (what "Unsorted" shows).
+var NAMES = ['Zara','Ada','Tom','Priya','Ben','Kai','Chloe','Sam','Isla','Hamza','Leah','Dev','Uma','Femi','Jack','Sam','Nia','Oscar','Grace','Rory','Mo','Eilidh','Quinn','Will'];
+var OUT = {Ben: 1, Oscar: 1, Uma: 1};
+var DRAWN = {Priya: 1, Chloe: 1, Hamza: 1};
+function stateOf(name, i, screen) {
+  if (screen === 'nothing') return 'out';
+  if (OUT[name]) return 'out';
+  if (screen === 'alldrawn') return 'drawn';
+  if (DRAWN[name] || (name === 'Sam' && i === 7)) return 'drawn';
+  return 'in';
+}
+function cmp(a, b) { return a.text.localeCompare(b.text, 'en', {sensitivity: 'base'}); }
+class Component extends DCLogic {
+  renderVals() {
+    var t = TH[this.props.theme ?? 'light'] || TH.light;
+    var screen = this.props.screen ?? 'default';
+    var items = NAMES.map(function (n, i) { return {text: n, s: stateOf(n, i, screen)}; });
+    var sortLabel = 'A–Z';
+    if (screen === 'unsorted') sortLabel = 'Unsorted';
+    else if (screen === 'za') { sortLabel = 'Z–A'; items = items.slice().sort(function (a, b) { return cmp(b, a); }); }
+    else items = items.slice().sort(cmp);
+    var inHat = items.filter(function (x) { return x.s === 'in'; }).length;
+    var drawn = items.filter(function (x) { return x.s === 'drawn'; }).length;
+    var selected = items.filter(function (x) { return x.s !== 'out'; }).length;
+    var counter = inHat + ' of ' + items.length + ' in the hat' + (drawn > 0 ? ' · ' + drawn + ' drawn' : '');
+    var box;
+    if (selected === items.length) box = {aria: 'true', fill: t.primary, edge: t.primary, check: true, dash: false};
+    else if (selected === 0) box = {aria: 'false', fill: 'transparent', edge: t.onSurfaceVariant, check: false, dash: false};
+    else box = {aria: 'mixed', fill: t.primaryContainer, edge: t.primary, check: false, dash: true};
+    var chips = items.map(function (x) {
+      var menu = screen === 'putback' && x.text === 'Hamza';
+      if (x.s === 'in') return {text: x.text, isIn: true, isDrawn: false, menu: false, pressed: 'true', a11y: x.text + ', in the hat', bg: t.secondaryContainer, fg: t.onSecondaryContainer, edge: t.secondaryContainer, deco: 'none', ring: 'none'};
+      if (x.s === 'out') return {text: x.text, isIn: false, isDrawn: false, menu: false, pressed: 'false', a11y: x.text + ', out of the hat', bg: 'transparent', fg: t.onSurfaceVariant, edge: t.outline, deco: 'none', ring: 'none'};
+      return {text: x.text, isIn: false, isDrawn: true, menu: menu, pressed: 'false', a11y: x.text + ', drawn', bg: t.surfaceContainerHigh, fg: t.onSurfaceVariant, edge: t.surfaceContainerHigh, deco: 'line-through', ring: menu ? '2px solid ' + t.primary : 'none'};
+    });
+    var bar;
+    if (inHat > 0) bar = {stepper: true, message: false, messageText: '', n: 2, label: 'Draw 2', grow: 1, btnBg: t.primary, btnFg: t.onPrimary};
+    else if (drawn > 0) bar = {stepper: false, message: true, messageText: 'Everyone’s been drawn', n: 0, label: 'Reset', grow: 0, btnBg: t.primary, btnFg: t.onPrimary};
+    else bar = {stepper: false, message: true, messageText: 'Tap names to put them in the hat', n: 0, label: 'Draw', grow: 0, btnBg: t.surfaceContainerHigh, btnFg: t.onSurfaceVariant};
+    var isEmpty = screen === 'empty';
+    return {
+      t: t, sortLabel: sortLabel, counter: counter, box: box, chips: chips, bar: bar,
+      hasNames: !isEmpty, isEmpty: isEmpty, resetOpacity: drawn > 0 ? '1' : '0.38'
+    };
+  }
+}
+</script>
+</body>
+</html>

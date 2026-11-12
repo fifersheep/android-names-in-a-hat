@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Edit list screen (Top Hat)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Roboto+Flex:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; display: flex; flex-direction: column; overflow: hidden; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; background: {{t.surface}}; color: {{t.onSurface}}">
+  <div style="height: 64px; padding: 0 8px 0 4px; display: flex; align-items: center; gap: 4px">
+    <button aria-label="Back" style="width: 48px; height: 48px; border: 0; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; color: {{t.onSurface}}">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M19 12 H5 M11 6 L5 12 L11 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+    <div style="flex-grow: 1; font-size: 22px; font-weight: 500">{{title}}</div>
+    <button style="height: 40px; padding: 0 14px; border: 0; border-radius: 999px; background: transparent; font-size: 15px; font-weight: 700; color: {{t.primary}}; opacity: {{doneOpacity}}">Done</button>
+  </div>
+
+  <div style="padding: 8px 16px 12px">
+    <div style="position: relative; height: 64px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; border-radius: 4px; border: {{nameField.border}}">
+      <span style="position: absolute; top: -9px; left: 12px; padding: 0 4px; font-size: 12px; font-weight: 500; background: {{t.surface}}; color: {{nameField.labelColor}}">List name</span>
+      <sc-if value="{{nameField.filled}}" hint-placeholder-val="{{ true }}"><span style="font-size: 22px">Year 5 Maple</span></sc-if>
+      <sc-if value="{{nameField.focused}}" hint-placeholder-val="{{ false }}"><span style="width: 2px; height: 28px; background: {{t.primary}}"></span><span style="margin-left: 2px; font-size: 22px; color: {{t.onSurfaceVariant}}">e.g. Year 5 Maple</span></sc-if>
+    </div>
+  </div>
+
+  <sc-if value="{{hasNames}}" hint-placeholder-val="{{ true }}">
+    <div style="padding: 4px 20px 6px; font-size: 13px; font-weight: 700; letter-spacing: 0.04em; color: {{t.onSurfaceVariant}}">{{countLabel}}</div>
+    <div role="list" style="flex-grow: 1; overflow: hidden; display: flex; flex-direction: column">
+      <sc-for list="{{rows}}" as="r" hint-placeholder-count="10">
+        <div role="listitem" style="min-height: 56px; padding: 0 4px 0 20px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid {{t.outlineVariant}}">
+          <sc-if value="{{r.plain}}" hint-placeholder-val="{{ true }}">
+            <button aria-label="Rename {{r.name}}" style="flex-grow: 1; height: 48px; border: 0; padding: 0; background: transparent; text-align: left; font-size: 17px; color: {{t.onSurface}}">{{r.name}}</button>
+            <button aria-label="Delete {{r.name}}" style="width: 48px; height: 48px; border: 0; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; color: {{t.onSurfaceVariant}}">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 7 H19 M10 7 V5 H14 V7 M7 7 L8 19 H16 L17 7 M10 11 V16 M14 11 V16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </button>
+          </sc-if>
+          <sc-if value="{{r.editing}}" hint-placeholder-val="{{ false }}">
+            <div style="flex-grow: 1; height: 48px; margin: 4px 0; box-sizing: border-box; padding: 0 12px; display: flex; align-items: center; border-radius: 4px; border: 2px solid {{t.primary}}; font-size: 17px">{{r.name}}<span style="width: 2px; height: 22px; margin-left: 1px; background: {{t.primary}}"></span></div>
+            <button aria-label="Save name" style="width: 48px; height: 48px; border: 0; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; color: {{t.primary}}">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 12.5 L10 17.5 L19 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </button>
+            <button aria-label="Cancel rename" style="width: 48px; height: 48px; border: 0; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; color: {{t.onSurfaceVariant}}">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6 L18 18 M18 6 L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path></svg>
+            </button>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+  <sc-if value="{{isNew}}" hint-placeholder-val="{{ false }}">
+    <div style="flex-grow: 1"></div>
+  </sc-if>
+
+  <sc-if value="{{snackbar}}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position: absolute; left: 12px; right: 12px; bottom: {{snackBottom}}; height: 52px; padding: 0 8px 0 16px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 3px 8px rgba(0,0,0,0.25); background: {{t.inverseSurface}}; color: {{t.inverseOnSurface}}; font-size: 15px">
+      Ben deleted
+      <button style="height: 40px; padding: 0 12px; border: 0; border-radius: 999px; background: transparent; font-size: 15px; font-weight: 700; color: {{t.inversePrimary}}">Undo</button>
+    </div>
+  </sc-if>
+
+  <div style="padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; background: {{t.surfaceContainer}}">
+    <div style="display: flex; align-items: center; gap: 10px; opacity: {{add.opacity}}">
+      <div style="position: relative; flex-grow: 1; height: 56px; box-sizing: border-box; padding: 0 14px; display: flex; align-items: center; border-radius: 4px; border: {{add.border}}">
+        <span style="position: absolute; top: -9px; left: 10px; padding: 0 4px; font-size: 12px; font-weight: 500; background: {{t.surfaceContainer}}; color: {{add.labelColor}}">Add a name</span>
+        <sc-if value="{{add.caret}}" hint-placeholder-val="{{ false }}"><span style="width: 2px; height: 24px; background: {{add.caretColor}}"></span></sc-if>
+        <span style="font-size: 17px; color: {{t.onSurfaceVariant}}">e.g. Ada</span>
+      </div>
+      <button aria-label="Add" style="width: 48px; height: 48px; border: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: {{t.primary}}; color: {{t.onPrimary}}">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 5 V19 M5 12 H19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path></svg>
+      </button>
+    </div>
+    <sc-if value="{{add.hasSupport}}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 0 16px; display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: {{add.supportColor}}">
+        <sc-if value="{{add.isError}}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="M12 7.5 V13 M12 16.2 V16.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path></svg></sc-if>
+        {{add.support}}
+      </div>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{keyboard}}" hint-placeholder-val="{{ false }}">
+    <div aria-hidden="true" style="height: 260px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; background: {{t.surfaceContainerHighest}}; color: {{t.onSurfaceVariant}}">Keyboard</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"screen":{"editor":"enum","options":["new","edit","rename","error"],"default":"edit"},"$preview":{"width":390,"height":844}}'>
+var TH = {
+  light: {primary:'#4D4BB3',onPrimary:'#FFFFFF',error:'#BA1A1A',surface:'#FCF8FF',surfaceContainer:'#F0ECF7',surfaceContainerHighest:'#E4E1E9',onSurface:'#1B1B21',onSurfaceVariant:'#47464F',outline:'#787680',outlineVariant:'#C8C5D0',inverseSurface:'#303036',inverseOnSurface:'#F3EFF7',inversePrimary:'#C3C0FF'},
+  dark: {primary:'#C3C0FF',onPrimary:'#1F1A86',error:'#FFB4AB',surface:'#131318',surfaceContainer:'#1F1F25',surfaceContainerHighest:'#35343A',onSurface:'#E4E1E9',onSurfaceVariant:'#C8C5D0',outline:'#928F99',outlineVariant:'#47464F',inverseSurface:'#E4E1E9',inverseOnSurface:'#303036',inversePrimary:'#4D4BB3'}
+};
+var NAMES = ['Zara','Ada','Tom','Priya','Ben','Kai','Chloe','Sam','Isla','Hamza','Leah','Dev','Uma','Femi'];
+class Component extends DCLogic {
+  renderVals() {
+    var t = TH[this.props.theme ?? 'light'] || TH.light;
+    var s = this.props.screen ?? 'edit';
+    var isNew = s === 'new';
+    var names = s === 'error' ? NAMES.filter(function (n) { return n !== 'Ben'; }) : NAMES;
+    var rows = names.map(function (n) {
+      var editing = s === 'rename' && n === 'Isla';
+      return {name: n, plain: !editing, editing: editing};
+    });
+    var add;
+    if (isNew) add = {opacity: '0.38', border: '1px solid ' + t.onSurfaceVariant, labelColor: t.onSurfaceVariant, caret: false, caretColor: t.primary, hasSupport: true, isError: false, support: 'Name the list first', supportColor: t.onSurfaceVariant};
+    else if (s === 'error') add = {opacity: '1', border: '2px solid ' + t.error, labelColor: t.error, caret: true, caretColor: t.error, hasSupport: true, isError: true, support: 'Enter a name', supportColor: t.error};
+    else add = {opacity: '1', border: '1px solid ' + t.outline, labelColor: t.onSurfaceVariant, caret: false, caretColor: t.primary, hasSupport: false, isError: false, support: '', supportColor: t.onSurfaceVariant};
+    var keyboard = s !== 'edit';
+    return {
+      t: t, title: isNew ? 'New list' : 'Edit list', doneOpacity: isNew ? '0.38' : '1',
+      nameField: isNew
+        ? {border: '2px solid ' + t.primary, labelColor: t.primary, filled: false, focused: true}
+        : {border: '1px solid ' + t.outline, labelColor: t.onSurfaceVariant, filled: true, focused: false},
+      hasNames: !isNew, isNew: isNew, countLabel: names.length + ' names', rows: rows,
+      add: add, keyboard: keyboard, snackbar: s === 'error',
+      snackBottom: (keyboard ? 260 : 0) + (add.hasSupport ? 108 : 88) + 'px'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -79,6 +79,62 @@
       "w": 1252,
       "h": 720,
       "title": "D18 — mixed-state box options"
+    },
+    "DrawScreen.dc.html": {
+      "x": 940,
+      "y": 4820,
+      "w": 390,
+      "h": 844,
+      "title": "Component — Draw (Top Hat)"
+    },
+    "ListsScreen.dc.html": {
+      "x": 1410,
+      "y": 4820,
+      "w": 390,
+      "h": 844,
+      "title": "Component — Lists (Top Hat)"
+    },
+    "EditScreen.dc.html": {
+      "x": 1880,
+      "y": 4820,
+      "w": 390,
+      "h": 844,
+      "title": "Component — Edit list (Top Hat)"
+    },
+    "PhoneDraw.dc.html": {
+      "x": 0,
+      "y": 6200,
+      "w": 1740,
+      "h": 1860,
+      "title": "Draw — phone: A–Z · Unsorted · Z–A · put back"
+    },
+    "PhoneDrawStates.dc.html": {
+      "x": 1820,
+      "y": 6200,
+      "w": 1310,
+      "h": 1860,
+      "title": "Draw — phone: nothing in the hat · all drawn · empty list"
+    },
+    "DynamicSample.dc.html": {
+      "x": 3210,
+      "y": 6200,
+      "w": 450,
+      "h": 932,
+      "title": "Draw — sample dynamic colour scheme"
+    },
+    "PhoneLists.dc.html": {
+      "x": 0,
+      "y": 8580,
+      "w": 1310,
+      "h": 1860,
+      "title": "Lists — phone: populated · empty · About"
+    },
+    "PhoneEdit.dc.html": {
+      "x": 1390,
+      "y": 8580,
+      "w": 1740,
+      "h": 1860,
+      "title": "Edit list — phone: new · edit · rename inline · blank error + undo"
     }
   },
   "order": [
@@ -91,7 +147,15 @@
     "SelectCompare.dc.html",
     "MixedOptions.dc.html",
     "DrawHero.dc.html",
-    "SelectHeader.dc.html"
+    "SelectHeader.dc.html",
+    "DrawScreen.dc.html",
+    "ListsScreen.dc.html",
+    "EditScreen.dc.html",
+    "PhoneDraw.dc.html",
+    "PhoneDrawStates.dc.html",
+    "DynamicSample.dc.html",
+    "PhoneLists.dc.html",
+    "PhoneEdit.dc.html"
   ],
   "notes": {
     "brandTitle": {
@@ -121,6 +185,27 @@
       "text": "The \"some selected\" box: five options",
       "kind": "title1",
       "maxW": 1252
+    },
+    "phoneDrawTitle": {
+      "x": 0,
+      "y": 5940,
+      "text": "Draw — phone portrait (light above, dark below)",
+      "kind": "title1",
+      "maxW": 3660
+    },
+    "phoneListsTitle": {
+      "x": 0,
+      "y": 8320,
+      "text": "Lists and Edit list — phone portrait",
+      "kind": "title1",
+      "maxW": 2700
+    },
+    "componentsTitle": {
+      "x": 0,
+      "y": 4560,
+      "text": "Components",
+      "kind": "title1",
+      "maxW": 2270
     }
   },
   "designSystems": []
