@@ -3,7 +3,7 @@ task: design-spec-3-0
 title: Produce the 3.0 design spec
 ticket: NAM-2 — Produce the 3.0 design spec (https://linear.app/northtrack/issue/NAM-2/produce-the-30-design-spec)
 ticket-id: NAM-2
-tracker-synced: In Engineering
+tracker-synced: In Review
 mode: full
 phase: reporting
 branch: flow/design-spec-3-0
@@ -13,7 +13,7 @@ updated: 2026-11-12
 ---
 
 ## Next action
-Code review done (review.md): 0 blocking, 20 advisory (19 fixed, 1 recorded). Outcome check on the live canvas found and fixed one mock-up mismatch (select-all box), with screenshots in screens/. Verify GREEN after review fixes (210 tests / 0 failures; docs-only since). Reporting: write report.md, open the PR, move NAM-2 to In Review, then gate 2. Gate 2 needs the owner's NAM-2 approval comment (AC4) and confirmation of the review refinements (D18 box over not-drawn names, 'Everyone's been drawn' condition, back discards a new list).
+report.md written; PR #26 open (https://github.com/fifersheep/android-names-in-a-hat/pull/26), CI running; NAM-2 is In Review. Gate 2: the owner reviews the spec and canvas, confirms the three review refinements, and approves the merge. NAM-2 AC4 needs the owner's approval comment on NAM-2. Verify GREEN @ 6f3f46e (210 tests / 0 failures).
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
