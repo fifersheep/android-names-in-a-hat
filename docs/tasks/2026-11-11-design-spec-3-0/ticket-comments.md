@@ -14,7 +14,7 @@ The design spec for 3.0 is merged: [3.0-spec.md](S).
 - **Large screens:** list-detail when the window is at least 840 dp wide **and** 480 dp tall. See [Large screens](S#large-screens). Phones in landscape stay single-pane.
 - **Theme:** Top Hat. Dynamic colour on 12+; the fallback scheme and contrast are in [Theme](S#theme) and [Palette](S#palette). Type is DM Serif Display (bundled) for display and headlines; see [Type](S#type). The icon concept is in [Icon](S#icon).
 - **Motion:** `MotionScheme.expressive()`. See [Motion](S#motion) and [Reduced motion](S#reduced-motion).
-- ⚠ **Changes your ticket:** pin `material3:1.5.0-rc01` (or 1.5.0 final) outside the BOM. Stable material3 is 1.4.0, and the spec uses Expressive APIs that are stable only in 1.5. `ListDetailSceneStrategy` needs `@ExperimentalMaterial3AdaptiveApi`. See [API stability](S#api-stability).
+- ⚠ **Changes your ticket:** pin `material3:1.5.0-rc01` (or 1.5.0 final) outside the BOM; the adaptive artifacts use stable 1.3.0, and no navigation suite is used. Stable material3 is 1.4.0, and the spec uses Expressive APIs that are stable only in 1.5. `ListDetailSceneStrategy` needs `@ExperimentalMaterial3AdaptiveApi`. See [API stability](S#api-stability).
 
 ## NAM-8 — groups screen
 
@@ -22,7 +22,8 @@ Spec: [Lists](S#screen-lists) and the list-name header of [Edit list](S#screen-e
 
 - ⚠ **Vocabulary:** a group is a **list** in the UI ("Your lists", "New list", "Delete list"). The validation message is **"Enter a list name"**, not "List names cannot be blank". See [Vocabulary](S#vocabulary) and [States](S#states).
 - ⚠ **Create and add names are one screen:** `EditList(null)`. The list is created when its name is first committed, and Done goes to Draw. NAM-8 owns the list-name header; NAM-9 owns the names section. See [Navigation](S#navigation).
-- **Delete:** an undo snackbar, implemented as a **delayed delete** (no re-insert). See [Delayed delete](S#delayed-delete).
+- **Delete:** an undo snackbar, implemented as a **delayed delete** (no re-insert). See [Delayed delete](S#delayed-delete). On large screens, deleting the open list closes the detail; Undo reopens it.
+- ⚠ **List cards show "24 names · 4 drawn".** `GroupSummary` has only `nameCount`, so add a drawn count to it and to the groups query.
 - **Empty state** and **large-screen selection:** [States](S#states), [Large screens](S#large-screens).
 - **Copy:** [Copy deck](S#copy-deck).
 
@@ -33,7 +34,8 @@ Spec: [Edit list](S#screen-edit-list).
 - ⚠ Merged with list creation (see NAM-8). The add field is disabled until the list exists.
 - **Rename a name:** yes, inline (tap the name).
 - **Delete:** an undo snackbar with a delayed delete. See [Delayed delete](S#delayed-delete).
-- ⚠ **Validation:** "Enter a name" (was "Names cannot be blank"). See [States](S#states).
+- ⚠ **Validation:** "Enter a name" (was "Names cannot be blank"). See [States](S#states). Replace inner line breaks and tabs with spaces before `validateLabel`, which trims only the ends.
+- **Back on a new list** before its name is committed discards the typed text and creates nothing.
 - **Duplicates:** allowed. Bulk paste stays out of scope. The add field is docked above the keyboard.
 
 ## NAM-10 — draw screen
@@ -42,8 +44,8 @@ Spec: [Draw](S#screen-draw), [Select-all header](S#select-header), [Chip states]
 
 - ⚠ **Names are wrapping chips.** The 1/2 column toggle is retired: delete `GridLayout`/`GridColumns` and `PreferencesRepository.gridColumns` from `:shared`. AC1's column clause drops.
 - ⚠ **Count control:** a connected stepper [− n +] plus **Draw n**, replacing the spinner. The edge cases are in [Draw bar](S#draw-bar).
-- ⚠ **Counter:** "8 of 30 in the hat · 4 drawn", where *in the hat* means selected and not drawn. It replaces "n out of t names selected" and is the label of a **tri-state select-all checkbox**, whose "some" state is a tonal dash.
-- ⚠ **Sort cycles Unsorted → A–Z → Z–A → Unsorted.** Change `NameSortType.next()` so DESC → NONE (was DESC → ASC), and update `NameSortTypeTest`.
+- ⚠ **Counter:** "8 of 30 in the hat · 4 drawn", where *in the hat* means selected and not drawn. It replaces "n out of t names selected" and is the label of a **tri-state select-all checkbox**, whose "some" state is a tonal dash. The box state is computed over **not-drawn** names only. It is disabled when every name is drawn.
+- ⚠ **Sort cycles Unsorted → A–Z → Z–A → Unsorted.** Change `NameSortType.next()` so DESC → NONE (was DESC → ASC), and update `NameSortTypeTest`, `SortOrderTest` ("cycle from DESC stores ASC") and the `SortOrder` KDoc.
 - ⚠ **Minimum to draw = 1** (`MIN_NAMES_TO_DRAW`).
 - **Reveal:** a full-window takeover with expressive motion and a reduced-motion crossfade. See [Reveal](S#reveal) and [Reduced motion](S#reduced-motion).
 
@@ -54,7 +56,8 @@ Spec: [Draw from remaining](S#draw-from-remaining), [Chip states](S#chip-states)
 - **Always on.** Reset sits in the top bar with an **undo** snackbar, and there is no confirmation.
 - **Drawn names:** strikethrough, a ticket icon and the TalkBack state "drawn". They are never shown by colour alone.
 - ⚠ **Put back in the hat** (undraw one name): clears drawn **and** sets selected. NAM-5 shipped `NameRepository` with only `markDrawn(ids)` and `clearDrawn(groupId)`, so this ticket adds a per-name un-draw (e.g. `clearDrawn(ids: Collection<Long>)`) to `NameRepository` and `RoomNameRepository`, with tests.
-- **Counter and stepper** count *in the hat* (selected and not drawn). The minimum is 1 on the remaining pool.
+- ⚠ **Counter, stepper and draw** use *in the hat* (selected and not drawn). `DrawState` and `NameDraw.drawFrom` currently count drawn-but-selected names, so make them use the remaining pool. The minimum is 1 on that pool.
+- **"Everyone's been drawn" + Reset** shows only when the hat is empty **and** at least one selected name is drawn. Otherwise the bar shows the "Tap names" hint.
 
 ## NAM-6 — DataStore
 

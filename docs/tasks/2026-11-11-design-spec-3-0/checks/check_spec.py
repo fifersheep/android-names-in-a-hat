@@ -1,6 +1,9 @@
 """Checks docs/design/3.0-spec.md. Usage: python3 -I check_spec.py <spec.md> <strings.xml from origin/master>"""
 import re, sys
 spec = open(sys.argv[1]).read()
+# The embedded output of this script (section "spec-checks") is not checked against itself.
+if '<a id="spec-checks"></a>' in spec:
+    spec = spec.split('<a id="spec-checks"></a>')[0] + '<a id="links"></a>' + spec.split('<a id="links"></a>')[1]
 strings_xml = open(sys.argv[2]).read()
 gaps = 0
 

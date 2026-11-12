@@ -104,7 +104,7 @@ button{font:inherit;cursor:pointer}
         </div>
         <div style="flex-grow: 1; padding: 12px 16px; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; overflow: hidden">
           <sc-for list="{{chips}}" as="c" hint-placeholder-count="24">
-            <button aria-pressed="{{c.pressed}}" aria-label="{{c.a11y}}" style="height: 36px; padding: 0 14px; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; box-sizing: border-box; border-radius: 999px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid {{c.edge}}; text-decoration: {{c.deco}}">
+            <button aria-pressed="{{c.pressed}}" aria-label="{{c.a11y}}" style="height: 40px; padding: 0 14px; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; box-sizing: border-box; border-radius: 999px; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid {{c.edge}}; text-decoration: {{c.deco}}">
               <sc-if value="{{c.isIn}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M5 12.5 L10 17.5 L19 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
               <sc-if value="{{c.isDrawn}}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M4 7 H20 V10 A2 2 0 0 0 20 14 V17 H4 V14 A2 2 0 0 0 4 10 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path></svg></sc-if>
               {{c.text}}
