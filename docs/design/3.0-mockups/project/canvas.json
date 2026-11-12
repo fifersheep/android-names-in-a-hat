@@ -177,6 +177,52 @@
       "w": 2672,
       "h": 948,
       "title": "Phone landscape — Lists · Edit list · Draw"
+    },
+    "Reveal.dc.html": {
+      "x": 4634,
+      "y": 4820,
+      "w": 390,
+      "h": 844,
+      "title": "Component — reveal"
+    },
+    "RevealPhone.dc.html": {
+      "x": 0,
+      "y": 16780,
+      "w": 1740,
+      "h": 932,
+      "title": "Reveal — phone, animated: 1 and 3 names, light | dark",
+      "is_interactive": true
+    },
+    "RevealReduced.dc.html": {
+      "x": 1820,
+      "y": 16780,
+      "w": 880,
+      "h": 932,
+      "title": "Reveal — reduced motion (one crossfade)",
+      "is_interactive": true
+    },
+    "RevealEnds.dc.html": {
+      "x": 0,
+      "y": 17832,
+      "w": 1310,
+      "h": 1860,
+      "title": "Reveal — end states: more left · fewer left than n · none left"
+    },
+    "RevealLand.dc.html": {
+      "x": 1390,
+      "y": 17832,
+      "w": 1788,
+      "h": 480,
+      "title": "Reveal — phone landscape, animated",
+      "is_interactive": true
+    },
+    "RevealLarge.dc.html": {
+      "x": 0,
+      "y": 19812,
+      "w": 2660,
+      "h": 888,
+      "title": "Reveal — large screen, animated",
+      "is_interactive": true
     }
   },
   "order": [
@@ -203,7 +249,13 @@
     "LargeDraw.dc.html",
     "LargeEdit.dc.html",
     "LargeEmpty.dc.html",
-    "LandPhone.dc.html"
+    "LandPhone.dc.html",
+    "Reveal.dc.html",
+    "RevealPhone.dc.html",
+    "RevealReduced.dc.html",
+    "RevealEnds.dc.html",
+    "RevealLand.dc.html",
+    "RevealLarge.dc.html"
   ],
   "notes": {
     "brandTitle": {
@@ -268,6 +320,13 @@
       "text": "Phone landscape (compact height)",
       "kind": "title1",
       "maxW": 2672
+    },
+    "revealTitle": {
+      "x": 0,
+      "y": 16520,
+      "text": "The reveal — the draw moment",
+      "kind": "title1",
+      "maxW": 2700
     }
   },
   "designSystems": []
