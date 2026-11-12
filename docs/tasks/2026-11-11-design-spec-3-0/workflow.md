@@ -5,7 +5,7 @@ ticket: NAM-2 — Produce the 3.0 design spec (https://linear.app/northtrack/iss
 ticket-id: NAM-2
 tracker-synced: In Review
 mode: full
-phase: reporting
+phase: complete
 branch: flow/design-spec-3-0
 worktree: ../android-names-in-a-hat-nam2
 created: 2026-11-11
@@ -13,7 +13,7 @@ updated: 2026-11-12
 ---
 
 ## Next action
-report.md written; PR #26 open (https://github.com/fifersheep/android-names-in-a-hat/pull/26), CI running; NAM-2 is In Review. Gate 2: the owner reviews the spec and canvas, confirms the three review refinements, and approves the merge. NAM-2 AC4 needs the owner's approval comment on NAM-2. Verify GREEN @ 6f3f46e (210 tests / 0 failures).
+Complete. PR #26 squash-merged into `main` after gate 2. Learnings went to memory (names-3-0-design, design-canvas-background-tab). After the merge: post ticket-comments.md to NAM-6/7/8/9/10/12 and move NAM-2 to Done. The owner posts the AC4 approval comment on NAM-2. Final verify 2026-11-12 @ 6f3f46e: `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests` PASS, 210 tests / 0 failures. Docs-only change.
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
@@ -30,6 +30,7 @@ report.md written; PR #26 open (https://github.com/fifersheep/android-names-in-a
 - 2026-11-12 Q (task 1 checkpoint): brand direction? A: **B — Top Hat** (indigo #4D4BB3 seed, gold tertiary, DM Serif Display display face, full-pill shapes).
 - 2026-11-12 Q (task 1 checkpoint): D18 variant? A: **(a) tri-state checkbox**. The owner wants the mixed-state box to look more distinct from checked than a filled-primary dash does: explore a few options (MixedOptions artboard) and the owner picks.
 - 2026-11-12 Q: mixed-state box? A: **option 2, tonal dash**: primaryContainer fill, 2px primary border, primary dash. Checked = primary fill + onPrimary check; none = onSurfaceVariant border. (A tonal fill alone is 1.23:1 against surface, so the border is required.)
+- 2026-11-12 gate 2: merge approved by user (including review refinements: select-all box over not-drawn names, the 'Everyone's been drawn' condition, back discards a new list)
 
 ## Progress
 - [x] 1. Brand board (3 directions + D18 comparison), owner pick logged — dd1d1f4, ebaad3d
