@@ -5,7 +5,7 @@ ticket: NAM-5 — Open the existing database with Room and migrate it to v3 (htt
 ticket-id: NAM-5
 tracker-synced: In Review
 mode: full
-phase: reporting
+phase: complete
 branch: flow/room-migration-to-v3
 worktree:
 created: 2026-11-11
@@ -13,13 +13,14 @@ updated: 2026-11-12
 ---
 
 ## Next action
-Baseline verify passed (`./gradlew --no-watch-fs :app:assembleDebug :shared:allTests`, exit 0, 210 tests / 0 failures). Review done (review.md: 0 blocking, 1 advisory fixed in 5ea9261; outcome verified on an API 26 SQLite-written file). Verify green at 5ea9261: 234 tests / 0 failures. report.md written; PR #25 open (https://github.com/fifersheep/android-names-in-a-hat/pull/25); NAM-5 → In Review; AC7 carried to NAM-8 as a comment. Awaiting gate 2 (merge approval).
+Baseline verify passed (`./gradlew --no-watch-fs :app:assembleDebug :shared:allTests`, exit 0, 210 tests / 0 failures). Review done (review.md: 0 blocking, 1 advisory fixed in 5ea9261; outcome verified on an API 26 SQLite-written file). Verify green at 5ea9261: 234 tests / 0 failures. report.md written; PR #25 open (https://github.com/fifersheep/android-names-in-a-hat/pull/25); NAM-5 → In Review; AC7 carried to NAM-8 as a comment. Complete. Learnings saved to memory (names-3-0-rebuild update, new names-device-verification); no repo-file learnings. PR #25 merged after this commit; NAM-5 → Done.
 
 ## Decision log
 - 2026-11-11 mode: full (user confirmed). Reason: High data-loss risk, adds KMP Room/KSP, two migrations plus fixtures, open design questions.
 - 2026-11-11 Q: Room 3 (androidx.room3 3.0.3) or Room 2.8.5? A: Room 3.0.3.
 - 2026-11-11 Q: how to support AC7 (2.7.0 → this build on device) with no screens yet? A: defer AC7 to NAM-8 (groups screen). NAM-5 proves migrations with JVM tests only; no `:app` changes. Carry AC7 onto NAM-8 at reporting.
 - 2026-11-12 gate 1: plan approved by user
+- 2026-11-12 gate 2: merge approved by user
 
 ## Progress
 - [x] 1. Build wiring — f117ba6
