@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidx.room3)
 }
 
 kotlin {
@@ -21,10 +23,29 @@ kotlin {
         commonMain.dependencies {
             // api: the public repository interfaces expose Flow.
             api(libs.kotlinx.coroutines.core)
+            // implementation: Room stays behind NamesStorage and the repository interfaces.
+            implementation(libs.androidx.room3.runtime)
+            implementation(libs.androidx.sqlite.bundled)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)
         }
+        // Database tests run on the JVM only: Android host tests can't load the bundled
+        // SQLite native library, and MigrationTestHelper is a JVM JUnit4 rule.
+        jvmTest.dependencies {
+            implementation(libs.androidx.room3.testing)
+        }
+    }
+}
+
+// Exported schemas are checked in; migration tests validate against them.
+room3 {
+    schemaDirectory("$projectDir/schemas")
+}
+
+dependencies {
+    listOf("kspAndroid", "kspJvm", "kspIosArm64", "kspIosSimulatorArm64").forEach {
+        add(it, libs.androidx.room3.compiler)
     }
 }
