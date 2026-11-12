@@ -98,6 +98,9 @@ internal val ALL_MIGRATIONS = arrayOf(MIGRATION_1_2, MIGRATION_2_3)
  * deleted group's settings.
  */
 private fun SQLiteConnection.carrySequence(from: String, to: String) {
+    // Safety net only: every caller runs an INSERT … SELECT into [to] first, and SQLite creates
+    // the sqlite_sequence row on any INSERT into an AUTOINCREMENT table, even one that copies
+    // zero rows. Kept so this helper stays correct if a migration ever calls it differently.
     execSQL(
         "INSERT INTO sqlite_sequence(name, seq) SELECT '$to', 0 " +
             "WHERE NOT EXISTS (SELECT 1 FROM sqlite_sequence WHERE name = '$to')",

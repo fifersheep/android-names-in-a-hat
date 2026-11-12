@@ -58,6 +58,9 @@ class MigrationTest {
     @Test
     fun `dirty v2 migrates without throwing and normalises selection`() = migrateAndValidate(DIRTY_V2)
 
+    @Test
+    fun `emptied v2 keeps its id sequences with no rows left`() = migrateAndValidate(EMPTIED_V2)
+
     private fun migrateAndValidate(fixture: LegacyFixture) = runBlocking {
         fixture.writeTo(dbFile)
 
@@ -80,6 +83,9 @@ class MigrationTest {
 
     @Test
     fun `dirty v2 opens end to end through the repositories`() = openEndToEnd(DIRTY_V2)
+
+    @Test
+    fun `emptied v2 opens end to end and does not reuse deleted ids`() = openEndToEnd(EMPTIED_V2)
 
     private fun openEndToEnd(fixture: LegacyFixture) = runBlocking {
         withTimeout(10_000) {

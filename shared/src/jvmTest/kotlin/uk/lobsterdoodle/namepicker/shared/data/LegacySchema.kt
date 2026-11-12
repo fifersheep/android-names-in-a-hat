@@ -136,6 +136,29 @@ internal val DIRTY_V2 = LegacyFixture(
     nameSeq = 8,
 )
 
+/**
+ * A 2.7.0 user who deleted every group. The legacy tables are empty but their sequences are
+ * not, so the v3 tables have no rows to lift their own sequences: the carry-over must create
+ * them, or the first new group would reuse id 1 and inherit its old preferences.
+ */
+internal val EMPTIED_V2 = LegacyFixture(
+    description = "emptied v2",
+    version = 2,
+    statements = V2_DDL + listOf(
+        v2Group(1, "Old A"),
+        v2Group(2, "Old B"),
+        v2Name(1, "Ann", "1", "1"),
+        v2Name(2, "Bob", "1", "2"),
+        v2Name(3, "Cara", "0", "2"),
+        "DELETE FROM table_names",
+        "DELETE FROM table_groups",
+    ),
+    expectedGroups = emptyList(),
+    expectedNames = emptySet(),
+    groupSeq = 2,
+    nameSeq = 3,
+)
+
 private fun v1Classroom(id: Long, name: String) =
     "INSERT INTO table_classroom_names(column_classroom_ID, column_classroom_name) VALUES ($id, '$name')"
 
@@ -174,4 +197,4 @@ internal val V1 = LegacyFixture(
     nameSeq = 6,
 )
 
-internal val ALL_FIXTURES = listOf(CLEAN_V2, DIRTY_V2, V1)
+internal val ALL_FIXTURES = listOf(CLEAN_V2, DIRTY_V2, EMPTIED_V2, V1)
