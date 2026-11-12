@@ -34,7 +34,7 @@ Gate 1 passed 2026-11-12. Implementation, task 1: quickstart the Design type, cr
 ## Progress
 - [x] 1. Brand board (3 directions + D18 comparison), owner pick logged — dd1d1f4, ebaad3d
 - [x] 2. Spec draft docs/design/3.0-spec.md — 5667e25 (checks: 0 gaps)
-- [ ] 3. Phone portrait artboards (light + dark, states, dynamic sample)
+- [x] 3. Phone portrait artboards (light + dark, states, dynamic sample) — d488434
 - [ ] 4. Phone landscape + large-screen artboards
 - [ ] 5. Reveal artboards (animated, reduced motion, end states)
 - [ ] 6. Link and freeze; draft ticket comments
@@ -44,3 +44,4 @@ Gate 1 passed 2026-11-12. Implementation, task 1: quickstart the Design type, cr
 - 2026-11-12 task 1: the Design type dictates the canvas file layout: `project/canvas.json` plus one `project/<Name>.dc.html` per artboard, each self-contained, with no shared stylesheet. The planned `tokens.css`/`components.css`/`brand-board.html` became component artboards (`Main` = the brand sheet, `DrawHero`, `SelectHeader`), with the token table copied into each and the spec as the source of truth. Sources are committed under `docs/design/3.0-mockups/project/` and published with root `docs/design/3.0-mockups`. Canvas: https://claude.ai/artifact/V3SwNVHPd4UNUtz6YDk15q
 - 2026-11-12 task 1: added an extra `MixedOptions` artboard (five mixed-state checkbox designs), which wasn't in the plan, at the owner's request after picking D18 (a).
 - 2026-11-12 task 2: the check scripts (`check_spec.py`, `spec_contrast.py`, `contrast.py`) are kept in the task folder's `checks/` rather than as scratchpad one-offs, so review can re-run them (`python3 -I checks/check_spec.py docs/design/3.0-spec.md <(git show origin/master:app/src/main/res/values/strings.xml)`). The reveal palette changed while writing: sparkles use `tertiaryContainer` on a `primary` backdrop (light) and `tertiary` on a `primaryContainer` backdrop (dark), because gold on primary was 1.10:1.
+- 2026-11-12 task 3: artboards are grouped by screen rather than one per state (PhoneDraw, PhoneDrawStates, PhoneLists, PhoneEdit, DynamicSample), built from three Top Hat screen components (DrawScreen, ListsScreen, EditScreen). Edit list gained a 4th state, 'rename', separate from 'edit'. The spec's artboard checklist is renamed to match in task 6.
