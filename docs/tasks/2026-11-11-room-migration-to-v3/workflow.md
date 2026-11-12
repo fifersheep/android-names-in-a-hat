@@ -5,7 +5,7 @@ ticket: NAM-5 — Open the existing database with Room and migrate it to v3 (htt
 ticket-id: NAM-5
 tracker-synced: In Engineering
 mode: full
-phase: code-review
+phase: reporting
 branch: flow/room-migration-to-v3
 worktree:
 created: 2026-11-11
@@ -13,7 +13,7 @@ updated: 2026-11-12
 ---
 
 ## Next action
-Baseline verify passed (`./gradlew --no-watch-fs :app:assembleDebug :shared:allTests`, exit 0, 210 tests / 0 failures). All 7 plan tasks done, verify green. Code review: dispatch flow-reviewer on `main..HEAD` against plan.md, fix blocking findings, outcome verification.
+Baseline verify passed (`./gradlew --no-watch-fs :app:assembleDebug :shared:allTests`, exit 0, 210 tests / 0 failures). Review done (review.md: 0 blocking, 1 advisory fixed in 5ea9261; outcome verified on an API 26 SQLite-written file). Verify green at 5ea9261: 234 tests / 0 failures. Reporting: write report.md, open PR, add AC7 to NAM-8, gate 2.
 
 ## Decision log
 - 2026-11-11 mode: full (user confirmed). Reason: High data-loss risk, adds KMP Room/KSP, two migrations plus fixtures, open design questions.
