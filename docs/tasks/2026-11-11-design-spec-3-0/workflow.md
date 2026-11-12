@@ -35,7 +35,7 @@ Gate 1 passed 2026-11-12. Implementation, task 1: quickstart the Design type, cr
 - [x] 1. Brand board (3 directions + D18 comparison), owner pick logged — dd1d1f4, ebaad3d
 - [x] 2. Spec draft docs/design/3.0-spec.md — 5667e25 (checks: 0 gaps)
 - [x] 3. Phone portrait artboards (light + dark, states, dynamic sample) — d488434
-- [ ] 4. Phone landscape + large-screen artboards
+- [x] 4. Phone landscape + large-screen artboards — e609765
 - [ ] 5. Reveal artboards (animated, reduced motion, end states)
 - [ ] 6. Link and freeze; draft ticket comments
 
