@@ -3,7 +3,7 @@ task: room-migration-to-v3
 title: Open the existing database with Room and migrate it to v3
 ticket: NAM-5 — Open the existing database with Room and migrate it to v3 (https://linear.app/northtrack/issue/NAM-5)
 ticket-id: NAM-5
-tracker-synced: In Engineering
+tracker-synced: In Review
 mode: full
 phase: reporting
 branch: flow/room-migration-to-v3
@@ -13,7 +13,7 @@ updated: 2026-11-12
 ---
 
 ## Next action
-Baseline verify passed (`./gradlew --no-watch-fs :app:assembleDebug :shared:allTests`, exit 0, 210 tests / 0 failures). Review done (review.md: 0 blocking, 1 advisory fixed in 5ea9261; outcome verified on an API 26 SQLite-written file). Verify green at 5ea9261: 234 tests / 0 failures. Reporting: write report.md, open PR, add AC7 to NAM-8, gate 2.
+Baseline verify passed (`./gradlew --no-watch-fs :app:assembleDebug :shared:allTests`, exit 0, 210 tests / 0 failures). Review done (review.md: 0 blocking, 1 advisory fixed in 5ea9261; outcome verified on an API 26 SQLite-written file). Verify green at 5ea9261: 234 tests / 0 failures. report.md written; PR #25 open (https://github.com/fifersheep/android-names-in-a-hat/pull/25); NAM-5 → In Review; AC7 carried to NAM-8 as a comment. Awaiting gate 2 (merge approval).
 
 ## Decision log
 - 2026-11-11 mode: full (user confirmed). Reason: High data-loss risk, adds KMP Room/KSP, two migrations plus fixtures, open design questions.
