@@ -53,12 +53,8 @@ Spec: [Draw from remaining](S#draw-from-remaining), [Chip states](S#chip-states)
 
 - **Always on.** Reset sits in the top bar with an **undo** snackbar, and there is no confirmation.
 - **Drawn names:** strikethrough, a ticket icon and the TalkBack state "drawn". They are never shown by colour alone.
-- ⚠ **Put back in the hat** (undraw one name): clears drawn **and** sets selected. This needs a per-name un-draw in `NameRepository` (see NAM-5).
+- ⚠ **Put back in the hat** (undraw one name): clears drawn **and** sets selected. NAM-5 shipped `NameRepository` with only `markDrawn(ids)` and `clearDrawn(groupId)`, so this ticket adds a per-name un-draw (e.g. `clearDrawn(ids: Collection<Long>)`) to `NameRepository` and `RoomNameRepository`, with tests.
 - **Counter and stepper** count *in the hat* (selected and not drawn). The minimum is 1 on the remaining pool.
-
-## NAM-5 — Room migration
-
-One hand-off from the 3.0 design spec: [Chip states](S#chip-states) adds **"Put back in the hat"**, which needs a per-name un-draw on `NameRepository`. Today the interface has only `markDrawn(ids)` and `clearDrawn(groupId)`. Please add something like `clearDrawn(ids: Collection<Long>)`, or `setDrawn(id, false)`, and implement it. NAM-12 is the caller.
 
 ## NAM-6 — DataStore
 

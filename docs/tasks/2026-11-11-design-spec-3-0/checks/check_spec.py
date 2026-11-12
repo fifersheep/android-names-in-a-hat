@@ -19,8 +19,8 @@ print(f"coverage rows: {len(rows)} (expect 9), without a link: {len(bad)}")
 gaps += (len(rows) != 9) + len(bad)
 
 # 3. Ticket index: per-ticket counts match research.md 'What downstream tickets expect'
-#    (NAM-7: 7 items, NAM-8: 4, NAM-9: 7, NAM-10: 4, NAM-12: 6) plus hand-offs NAM-5: 1, NAM-6: 1.
-expected = {"7": 7, "8": 4, "9": 7, "10": 4, "12": 6, "5": 1, "6": 1}
+#    (NAM-7: 7 items, NAM-8: 4, NAM-9: 7, NAM-10: 4, NAM-12: 6) plus the NAM-6 hand-off (NAM-5 merged before the spec; its hand-off moved to NAM-12).
+expected = {"7": 7, "8": 4, "9": 7, "10": 4, "12": 6, "6": 1}
 idx = spec.split('<a id="ticket-index"></a>')[1].split('<a id="artboards"></a>')[0]
 got = {}
 for m in re.finditer(r'^\| NAM-(\d+)\.(\d+) \|', idx, re.M):
