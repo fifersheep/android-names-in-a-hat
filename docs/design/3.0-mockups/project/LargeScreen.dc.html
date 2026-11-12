@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Large screen list-detail (Top Hat)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Roboto+Flex:wght@400;500;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 1280px; height: 800px; box-sizing: border-box; display: flex; overflow: hidden; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; background: {{t.surface}}; color: {{t.onSurface}}">
+  <div style="width: 360px; height: 800px; flex-shrink: 0">
+    <dc-import name="ListsScreen" theme="{{theme}}" screen="{{listsScreen}}" w="{{360}}" h="{{800}}" selected="{{selected}}" hint-size="360px,800px"></dc-import>
+  </div>
+  <div style="width: 1px; height: 800px; flex-shrink: 0; background: {{t.outlineVariant}}"></div>
+  <div style="flex-grow: 1; height: 800px; display: flex">
+    <sc-if value="{{isDraw}}" hint-placeholder-val="{{ true }}">
+      <dc-import name="DrawScreen" theme="{{theme}}" screen="default" w="{{919}}" h="{{800}}" pane="{{true}}" hint-size="919px,800px"></dc-import>
+    </sc-if>
+    <sc-if value="{{isEdit}}" hint-placeholder-val="{{ false }}">
+      <dc-import name="EditScreen" theme="{{theme}}" screen="edit" w="{{919}}" h="{{800}}" hint-size="919px,800px"></dc-import>
+    </sc-if>
+    <sc-if value="{{isNone}}" hint-placeholder-val="{{ false }}">
+      <div style="flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center">
+        <svg viewBox="0 0 108 108" width="140" height="140" role="img" aria-label="A top hat with sparkles">
+          <path d="M30 24 L31.5 28.5 L36 30 L31.5 31.5 L30 36 L28.5 31.5 L24 30 L28.5 28.5 Z" fill="{{t.tertiary}}"></path>
+          <path d="M78 19 L79.2 22.8 L83 24 L79.2 25.2 L78 29 L76.8 25.2 L73 24 L76.8 22.8 Z" fill="{{t.tertiary}}"></path>
+          <path d="M84 38 L85 41 L88 42 L85 43 L84 46 L83 43 L80 42 L83 41 Z" fill="{{t.tertiary}}"></path>
+          <path d="M38 32 L70 32 L68 66 L40 66 Z" fill="{{t.primary}}"></path>
+          <rect x="39.5" y="56" width="29" height="6" fill="{{t.tertiary}}"></rect>
+          <rect x="26" y="64" width="56" height="8" rx="4" fill="{{t.primary}}"></rect>
+        </svg>
+        <h2 style="margin: 0; font-size: 30px; font-weight: 400; font-family: 'DM Serif Display', Georgia, serif">Pick a list to draw from</h2>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"detail":{"editor":"enum","options":["draw","edit","none"],"default":"draw"},"lists":{"editor":"enum","options":["populated","empty"],"default":"populated"},"$preview":{"width":1280,"height":800}}'>
+var TH = {
+  light: {primary:'#4D4BB3',tertiary:'#7A5900',surface:'#FCF8FF',onSurface:'#1B1B21',outlineVariant:'#C8C5D0'},
+  dark: {primary:'#C3C0FF',tertiary:'#F5BE48',surface:'#131318',onSurface:'#E4E1E9',outlineVariant:'#47464F'}
+};
+class Component extends DCLogic {
+  renderVals() {
+    var theme = this.props.theme ?? 'light';
+    var detail = this.props.detail ?? 'draw';
+    var lists = this.props.lists ?? 'populated';
+    return {
+      t: TH[theme] || TH.light, theme: theme, listsScreen: lists,
+      selected: detail === 'none' ? -1 : 0,
+      isDraw: detail === 'draw', isEdit: detail === 'edit', isNone: detail === 'none'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>D18 select-all comparison</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400;500;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 1864px; height: 480px; box-sizing: border-box; padding: 32px; display: flex; flex-direction: column; gap: 16px; background: #ECEAE8; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; color: #1F1F1F">
+  <div style="font-size: 22px; font-weight: 700; height: 30px">The same header, all four selection states, in the {{dirName}} palette</div>
+  <div style="display: grid; grid-template-columns: 160px repeat(4, minmax(0, 1fr)); column-gap: 20px; row-gap: 12px; align-items: center">
+    <div></div>
+    <div style="grid-column: span 2; font-size: 16px; font-weight: 700">(a) Tri-state checkbox</div>
+    <div style="grid-column: span 2; font-size: 16px; font-weight: 700">(b) Text button</div>
+    <div></div>
+    <div style="font-size: 13px; font-weight: 500; color: #4A4A4A">Light</div>
+    <div style="font-size: 13px; font-weight: 500; color: #4A4A4A">Dark</div>
+    <div style="font-size: 13px; font-weight: 500; color: #4A4A4A">Light</div>
+    <div style="font-size: 13px; font-weight: 500; color: #4A4A4A">Dark</div>
+    <sc-for list="{{rows}}" as="row" hint-placeholder-count="4">
+      <div style="font-size: 14px; font-weight: 500; line-height: 1.3">{{row.label}}</div>
+      <dc-import name="SelectHeader" direction="{{direction}}" theme="light" variant="a" sel="{{row.sel}}" hint-size="390px,64px"></dc-import>
+      <dc-import name="SelectHeader" direction="{{direction}}" theme="dark" variant="a" sel="{{row.sel}}" hint-size="390px,64px"></dc-import>
+      <dc-import name="SelectHeader" direction="{{direction}}" theme="light" variant="b" sel="{{row.sel}}" hint-size="390px,64px"></dc-import>
+      <dc-import name="SelectHeader" direction="{{direction}}" theme="dark" variant="b" sel="{{row.sel}}" hint-size="390px,64px"></dc-import>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"direction":{"editor":"enum","options":["ticket","tophat","chalk"],"default":"ticket"},"$preview":{"width":1864,"height":480}}'>
+var NAMES = {ticket: 'Ticket', tophat: 'Top Hat', chalk: 'Chalkboard'};
+class Component extends DCLogic {
+  renderVals() {
+    var direction = this.props.direction ?? 'ticket';
+    return {
+      direction: direction,
+      dirName: NAMES[direction] || 'Ticket',
+      rows: [
+        {label: 'All selected', sel: 'all'},
+        {label: 'All selected, 4 drawn', sel: 'alldrawn'},
+        {label: 'Some selected', sel: 'some'},
+        {label: 'None selected', sel: 'none'}
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

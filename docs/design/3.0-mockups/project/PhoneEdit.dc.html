@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Edit list — phone portrait</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Roboto+Flex:wght@400;500;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 1740px; height: 1860px; box-sizing: border-box; padding: 24px 30px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 40px; row-gap: 40px; background: #ECEAE8; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; color: #1F1F1F">
+  <sc-for list="{{cells}}" as="c" hint-placeholder-count="8">
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <div style="font-size: 14px; font-weight: 700; height: 28px; display: flex; align-items: center">{{c.label}}</div>
+      <div style="width: 390px; height: 844px; border-radius: 28px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.18)">
+        <dc-import name="EditScreen" theme="{{c.theme}}" screen="{{c.screen}}" hint-size="390px,844px"></dc-import>
+      </div>
+    </div>
+  </sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1740,"height":1860}}'>
+var SCREENS = [['new', 'New list: name it first'], ['edit', 'Edit list'], ['rename', 'Tap a name to rename inline'], ['error', 'Blank name + delete undo']];
+class Component extends DCLogic {
+  renderVals() {
+    var cells = [];
+    ['light', 'dark'].forEach(function (theme) {
+      SCREENS.forEach(function (s) { cells.push({theme: theme, screen: s[0], label: s[1] + ' · ' + theme}); });
+    });
+    return {cells: cells};
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mixed-state checkbox options</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400;500;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 1252px; height: 720px; box-sizing: border-box; padding: 32px; display: flex; flex-direction: column; gap: 14px; background: #ECEAE8; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; color: #1F1F1F">
+  <div style="font-size: 22px; font-weight: 700">Select all: the "some selected" box, five ways (Top Hat)</div>
+  <div style="display: grid; grid-template-columns: 340px repeat(2, minmax(0, 1fr)); column-gap: 24px; row-gap: 12px; align-items: stretch">
+    <div></div>
+    <div style="font-size: 13px; font-weight: 700; color: #4A4A4A">Light: none · some · all, then the header</div>
+    <div style="font-size: 13px; font-weight: 700; color: #4A4A4A">Dark: none · some · all, then the header</div>
+    <sc-for list="{{options}}" as="o" hint-placeholder-count="5">
+      <div style="display: flex; flex-direction: column; justify-content: center; gap: 4px">
+        <div style="font-size: 16px; font-weight: 700">{{o.title}}</div>
+        <div style="font-size: 13px; line-height: 1.4; color: #4A4A4A">{{o.note}}</div>
+      </div>
+      <sc-for list="{{o.themes}}" as="th" hint-placeholder-count="2">
+        <div style="height: 96px; box-sizing: border-box; padding: 0 20px; border-radius: 16px; display: flex; align-items: center; gap: 18px; background: {{th.surface}}; color: {{th.onSurface}}">
+          <sc-for list="{{th.boxes}}" as="b" hint-placeholder-count="3">
+            <svg viewBox="0 0 24 24" width="44" height="44" role="img" aria-label="{{b.label}}">
+              <rect x="3" y="3" width="18" height="18" rx="3" fill="{{b.fill}}" stroke="{{b.stroke}}" stroke-width="2"></rect>
+              <sc-if value="{{b.dash}}" hint-placeholder-val="{{ false }}"><path d="M7.5 12 H16.5" stroke="{{b.glyph}}" stroke-width="2.6" stroke-linecap="round"></path></sc-if>
+              <sc-if value="{{b.check}}" hint-placeholder-val="{{ false }}"><path d="M7 12.3 L10.5 15.8 L17 9" fill="none" stroke="{{b.glyph}}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path></sc-if>
+              <sc-if value="{{b.square}}" hint-placeholder-val="{{ false }}"><rect x="8" y="8" width="8" height="8" rx="1.5" fill="{{b.glyph}}"></rect></sc-if>
+            </svg>
+          </sc-for>
+          <div style="width: 1px; height: 40px; background: {{th.outlineVariant}}"></div>
+          <div style="display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 500">
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="3" fill="{{th.mixed.fill}}" stroke="{{th.mixed.stroke}}" stroke-width="2"></rect>
+              <sc-if value="{{th.mixed.dash}}" hint-placeholder-val="{{ false }}"><path d="M7.5 12 H16.5" stroke="{{th.mixed.glyph}}" stroke-width="2.6" stroke-linecap="round"></path></sc-if>
+              <sc-if value="{{th.mixed.square}}" hint-placeholder-val="{{ false }}"><rect x="8" y="8" width="8" height="8" rx="1.5" fill="{{th.mixed.glyph}}"></rect></sc-if>
+            </svg>
+            15 of 24 in the hat
+          </div>
+        </div>
+      </sc-for>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1252,"height":720}}'>
+var T = {
+  light: {primary:'#4D4BB3',onPrimary:'#FFFFFF',primaryContainer:'#E2DFFF',tertiary:'#7A5900',onTertiary:'#FFFFFF',surface:'#FCF8FF',onSurface:'#1B1B21',onSurfaceVariant:'#47464F',outlineVariant:'#C8C5D0'},
+  dark: {primary:'#C3C0FF',onPrimary:'#1F1A86',primaryContainer:'#35319A',tertiary:'#F5BE48',onTertiary:'#402D00',surface:'#131318',onSurface:'#E4E1E9',onSurfaceVariant:'#C8C5D0',outlineVariant:'#47464F'}
+};
+function box(fill, stroke, glyph, kind, label) {
+  return {fill: fill, stroke: stroke, glyph: glyph, dash: kind === 'dash', check: kind === 'check', square: kind === 'square', label: label};
+}
+var MIXED = {
+  standard: function (t) { return box(t.primary, t.primary, t.onPrimary, 'dash', 'Some selected'); },
+  tonal: function (t) { return box(t.primaryContainer, t.primary, t.primary, 'dash', 'Some selected'); },
+  outlined: function (t) { return box('transparent', t.primary, t.primary, 'dash', 'Some selected'); },
+  square: function (t) { return box('transparent', t.primary, t.primary, 'square', 'Some selected'); },
+  gold: function (t) { return box(t.tertiary, t.tertiary, t.onTertiary, 'dash', 'Some selected'); }
+};
+var OPTIONS = [
+  {key: 'standard', title: '1 · Filled dash (M3 default)', note: 'Same fill as checked, only the glyph differs. This is what the board showed.'},
+  {key: 'tonal', title: '2 · Tonal dash', note: 'A light tonal fill with a primary border. Clearly lighter than checked and clearly marked compared with none.'},
+  {key: 'outlined', title: '3 · Outlined dash', note: 'No fill: the primary border and dash only. The biggest jump to checked; closest in weight to none.'},
+  {key: 'square', title: '4 · Inner square', note: 'A primary border around a small filled square, the classic desktop "partial" mark. Reads as part-full.'},
+  {key: 'gold', title: '5 · Gold dash', note: 'The Top Hat gold for "some". Differs from checked in hue and in glyph, but not much in lightness.'}
+];
+class Component extends DCLogic {
+  renderVals() {
+    var options = OPTIONS.map(function (o) {
+      return {
+        title: o.title, note: o.note,
+        themes: ['light', 'dark'].map(function (k) {
+          var t = T[k];
+          var mixed = MIXED[o.key](t);
+          return {
+            surface: t.surface, onSurface: t.onSurface, outlineVariant: t.outlineVariant, mixed: mixed,
+            boxes: [box('transparent', t.onSurfaceVariant, t.onSurfaceVariant, 'none', 'None selected'), mixed, box(t.primary, t.primary, t.onPrimary, 'check', 'All selected')]
+          };
+        })
+      };
+    });
+    return {options: options};
+  }
+}
+</script>
+</body>
+</html>

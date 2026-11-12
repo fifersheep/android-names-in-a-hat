@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Large — list-detail with Draw</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Roboto+Flex:wght@400;500;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div style="width: 2660px; height: 888px; box-sizing: border-box; padding: 24px 30px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; background: #ECEAE8; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; color: #1F1F1F">
+  <sc-for list="{{cells}}" as="c" hint-placeholder-count="2">
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <div style="font-size: 14px; font-weight: 700; height: 28px; display: flex; align-items: center">{{c.label}}</div>
+      <div style="width: 1280px; height: 800px; border-radius: 20px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.18)">
+        <dc-import name="LargeScreen" theme="{{c.theme}}" detail="draw" lists="populated" hint-size="1280px,800px"></dc-import>
+      </div>
+    </div>
+  </sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":2660,"height":888}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {cells: [{theme: 'light', label: 'Tablet 1280 × 800 · light'}, {theme: 'dark', label: 'Tablet 1280 × 800 · dark'}]};
+  }
+}
+</script>
+</body>
+</html>

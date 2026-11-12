@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lists screen (Top Hat)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Roboto+Flex:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="width: {{w}}px; height: {{h}}px; box-sizing: border-box; position: relative; display: flex; flex-direction: column; overflow: hidden; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; background: {{t.surface}}; color: {{t.onSurface}}">
+  <div style="height: 64px; padding: 0 4px; display: flex; align-items: center; justify-content: flex-end">
+    <button aria-label="More options" style="width: 48px; height: 48px; border: 0; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; color: {{t.onSurfaceVariant}}">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="12" cy="5" r="1.8" fill="currentColor"></circle><circle cx="12" cy="12" r="1.8" fill="currentColor"></circle><circle cx="12" cy="19" r="1.8" fill="currentColor"></circle></svg>
+    </button>
+  </div>
+  <h1 style="margin: 0; padding: 8px 20px 20px; font-size: 40px; line-height: 1.05; font-weight: 400; font-family: 'DM Serif Display', Georgia, serif">Your lists</h1>
+
+  <sc-if value="{{hasLists}}" hint-placeholder-val="{{ true }}">
+    <div role="list" style="padding: 0 16px; display: flex; flex-direction: column; gap: 2px">
+      <sc-for list="{{lists}}" as="l" hint-placeholder-count="5">
+        <div role="listitem" style="height: 76px; padding: 0 4px 0 20px; display: flex; align-items: center; gap: 8px; border-radius: {{l.radius}}; background: {{l.bg}}">
+          <a href="#" style="flex-grow: 1; display: flex; flex-direction: column; gap: 3px; text-decoration: none; color: {{t.onSurface}}">
+            <span style="font-size: 18px; font-weight: 500">{{l.name}}</span>
+            <span style="font-size: 14px; color: {{t.onSurfaceVariant}}">{{l.meta}}</span>
+          </a>
+          <button aria-label="Options for {{l.name}}" style="width: 48px; height: 48px; border: 0; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; color: {{t.onSurfaceVariant}}">
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="5" r="1.8" fill="currentColor"></circle><circle cx="12" cy="12" r="1.8" fill="currentColor"></circle><circle cx="12" cy="19" r="1.8" fill="currentColor"></circle></svg>
+          </button>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isEmpty}}" hint-placeholder-val="{{ false }}">
+    <div style="flex-grow: 1; padding: 0 40px 120px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center">
+      <svg viewBox="0 0 108 108" width="140" height="140" role="img" aria-label="A top hat with sparkles">
+        <path d="M30 24 L31.5 28.5 L36 30 L31.5 31.5 L30 36 L28.5 31.5 L24 30 L28.5 28.5 Z" fill="{{t.tertiary}}"></path>
+        <path d="M78 19 L79.2 22.8 L83 24 L79.2 25.2 L78 29 L76.8 25.2 L73 24 L76.8 22.8 Z" fill="{{t.tertiary}}"></path>
+        <path d="M84 38 L85 41 L88 42 L85 43 L84 46 L83 43 L80 42 L83 41 Z" fill="{{t.tertiary}}"></path>
+        <path d="M38 32 L70 32 L68 66 L40 66 Z" fill="{{t.primary}}"></path>
+        <rect x="39.5" y="56" width="29" height="6" fill="{{t.tertiary}}"></rect>
+        <rect x="26" y="64" width="56" height="8" rx="4" fill="{{t.primary}}"></rect>
+      </svg>
+      <h2 style="margin: 0; font-size: 28px; font-weight: 400; font-family: 'DM Serif Display', Georgia, serif">No lists yet</h2>
+      <p style="margin: 0; font-size: 16px; line-height: 1.45; color: {{t.onSurfaceVariant}}">Make a list of names, then draw them from the hat.</p>
+    </div>
+  </sc-if>
+
+  <button style="position: absolute; right: 16px; bottom: 28px; height: 56px; padding: 0 22px 0 18px; border: 0; border-radius: 999px; display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; box-shadow: 0 3px 8px rgba(0,0,0,0.2); background: {{t.primaryContainer}}; color: {{t.onPrimaryContainer}}">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 5 V19 M5 12 H19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path></svg>
+    New list
+  </button>
+
+  <sc-if value="{{isAbout}}" hint-placeholder-val="{{ false }}">
+    <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.32)"></div>
+    <div role="dialog" aria-label="About" style="position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 24px 36px; border-radius: 28px 28px 0 0; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; background: {{t.surfaceContainerLow}}">
+      <div style="width: 32px; height: 4px; border-radius: 2px; margin-bottom: 14px; opacity: 0.4; background: {{t.onSurfaceVariant}}"></div>
+      <div style="width: 72px; height: 72px; border-radius: 50%; overflow: hidden">
+        <svg viewBox="0 0 108 108" width="72" height="72" role="img" aria-label="Names in a Hat icon">
+          <rect width="108" height="108" fill="#35319A"></rect>
+          <path d="M30 24 L31.5 28.5 L36 30 L31.5 31.5 L30 36 L28.5 31.5 L24 30 L28.5 28.5 Z" fill="#F5BE48"></path>
+          <path d="M78 19 L79.2 22.8 L83 24 L79.2 25.2 L78 29 L76.8 25.2 L73 24 L76.8 22.8 Z" fill="#F5BE48"></path>
+          <path d="M84 38 L85 41 L88 42 L85 43 L84 46 L83 43 L80 42 L83 41 Z" fill="#F5BE48"></path>
+          <path d="M38 32 L70 32 L68 66 L40 66 Z" fill="#F4F2FF"></path>
+          <rect x="39.5" y="56" width="29" height="6" fill="#F5BE48"></rect>
+          <rect x="26" y="64" width="56" height="8" rx="4" fill="#F4F2FF"></rect>
+        </svg>
+      </div>
+      <h2 style="margin: 4px 0 0; font-size: 28px; font-weight: 400; font-family: 'DM Serif Display', Georgia, serif">Names in a Hat</h2>
+      <div style="font-size: 14px; color: {{t.onSurfaceVariant}}">Version 3.0.0</div>
+      <div style="margin-top: 8px; font-size: 16px; font-weight: 500">Made by Northtrack Studio</div>
+      <div style="font-size: 14px; color: {{t.onSurfaceVariant}}">Previously published by Lobster Doodle</div>
+      <a href="https://fifersheep.github.io/android-names-in-a-hat/privacy-policy.html" style="margin-top: 12px; height: 48px; padding: 0 20px; border-radius: 999px; display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; text-decoration: none; border: 1px solid {{t.outline}}; color: {{t.primary}}">
+        Privacy policy
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M14 5 H19 V10 M19 5 L11 13 M17 14 V19 H5 V7 H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </a>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"screen":{"editor":"enum","options":["populated","empty","about"],"default":"populated"},"w":{"editor":"int","default":390},"h":{"editor":"int","default":844},"selected":{"editor":"int","default":-1},"$preview":{"width":390,"height":844}}'>
+var TH = {
+  light: {primary:'#4D4BB3',onPrimary:'#FFFFFF',primaryContainer:'#E2DFFF',onPrimaryContainer:'#0B006B',secondaryContainer:'#E3E0F9',tertiary:'#7A5900',surface:'#FCF8FF',surfaceContainerLow:'#F6F2FA',surfaceContainer:'#F0ECF7',onSurface:'#1B1B21',onSurfaceVariant:'#47464F',outline:'#787680'},
+  dark: {primary:'#C3C0FF',onPrimary:'#1F1A86',primaryContainer:'#35319A',onPrimaryContainer:'#E2DFFF',secondaryContainer:'#46455A',tertiary:'#F5BE48',surface:'#131318',surfaceContainerLow:'#1B1B21',surfaceContainer:'#1F1F25',onSurface:'#E4E1E9',onSurfaceVariant:'#C8C5D0',outline:'#928F99'}
+};
+var LISTS = [
+  ['Year 5 Maple', '24 names · 4 drawn'],
+  ['Friday raffle', '120 names · 3 drawn'],
+  ['Book club', '9 names'],
+  ['Five-a-side', '10 names'],
+  ['Year 6 Oak', '1 name']
+];
+class Component extends DCLogic {
+  renderVals() {
+    var t = TH[this.props.theme ?? 'light'] || TH.light;
+    var screen = this.props.screen ?? 'populated';
+    var last = LISTS.length - 1;
+    var sel = this.props.selected ?? -1;
+    var lists = LISTS.map(function (l, i) {
+      var top = i === 0 ? '24px' : '6px';
+      var bottom = i === last ? '24px' : '6px';
+      return {name: l[0], meta: l[1], bg: i === sel ? t.secondaryContainer : t.surfaceContainer, radius: top + ' ' + top + ' ' + bottom + ' ' + bottom};
+    });
+    return {t: t, lists: lists, hasLists: screen !== 'empty', isEmpty: screen === 'empty', isAbout: screen === 'about',
+      w: this.props.w ?? 390, h: this.props.h ?? 844};
+  }
+}
+</script>
+</body>
+</html>

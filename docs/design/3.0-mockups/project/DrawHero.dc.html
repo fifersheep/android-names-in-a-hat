@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Draw screen</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700&amp;family=DM+Serif+Display&amp;family=Nunito:wght@800&amp;family=Roboto+Flex:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; background: {{t.surface}}; color: {{t.onSurface}}">
+  <div style="height: 64px; padding: 0 4px; display: flex; align-items: center; gap: 4px">
+    <button aria-label="Back to lists" style="width: 48px; height: 48px; border: 0; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; color: {{t.onSurface}}">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M19 12 H5 M11 6 L5 12 L11 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+    <div style="flex-grow: 1"></div>
+    <button aria-label="Sort: A to Z. Tap for Z to A" style="height: 40px; padding: 0 14px; border: 0; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; border-radius: {{btnRadius}}; background: {{t.secondaryContainer}}; color: {{t.onSecondaryContainer}}">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 7 H20 M4 12 H15 M4 17 H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+      A–Z
+    </button>
+    <button aria-label="Reset drawn names" style="width: 48px; height: 48px; border: 0; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; color: {{t.onSurfaceVariant}}">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M5 12 A7 7 0 1 0 7.5 6.6 M5 4 V9 H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+    <button aria-label="More options" style="width: 48px; height: 48px; border: 0; border-radius: 50%; background: transparent; display: flex; align-items: center; justify-content: center; color: {{t.onSurfaceVariant}}">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="12" cy="5" r="1.8" fill="currentColor"></circle><circle cx="12" cy="12" r="1.8" fill="currentColor"></circle><circle cx="12" cy="19" r="1.8" fill="currentColor"></circle></svg>
+    </button>
+  </div>
+  <h1 style="margin: 0; padding: 0 20px 12px; font-size: 34px; line-height: 1.1; font-weight: 700; font-family: {{display}}">Year 5 Maple</h1>
+
+  <div style="height: 56px; padding: 0 12px 0 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid {{t.outlineVariant}}">
+    <sc-if value="{{isA}}" hint-placeholder-val="{{ true }}">
+      <label style="display: flex; align-items: center; gap: 12px; flex-grow: 1; font-size: 15px; font-weight: 500">
+        <span role="checkbox" aria-checked="mixed" aria-label="Select all. 17 of 24 in the hat, 4 drawn" tabindex="0" style="width: 22px; height: 22px; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; background: {{t.primary}}">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 12 H18" stroke="{{t.onPrimary}}" stroke-width="3" stroke-linecap="round"></path></svg>
+        </span>
+        17 of 24 in the hat · 4 drawn
+      </label>
+    </sc-if>
+    <sc-if value="{{isB}}" hint-placeholder-val="{{ false }}">
+      <span style="flex-grow: 1; font-size: 15px; font-weight: 500">17 of 24 in the hat · 4 drawn</span>
+      <button style="height: 40px; padding: 0 12px; border: 0; background: transparent; font-size: 14px; font-weight: 700; border-radius: {{btnRadius}}; color: {{t.primary}}">Select all</button>
+    </sc-if>
+  </div>
+
+  <div style="flex-grow: 1; padding: 16px; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; overflow: hidden">
+    <sc-for list="{{chips}}" as="c" hint-placeholder-count="24">
+      <button aria-pressed="{{c.pressed}}" aria-label="{{c.a11y}}" style="height: 40px; padding: 0 14px; display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 500; box-sizing: border-box; border-radius: {{chipRadius}}; background: {{c.bg}}; color: {{c.fg}}; border: 1px solid {{c.edge}}; text-decoration: {{c.deco}}">
+        <sc-if value="{{c.isIn}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12.5 L10 17.5 L19 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+        <sc-if value="{{c.isDrawn}}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 7 H20 V10 A2 2 0 0 0 20 14 V17 H4 V14 A2 2 0 0 0 4 10 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path></svg></sc-if>
+        {{c.text}}
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="padding: 12px 16px 28px; display: flex; gap: 12px; align-items: center; background: {{t.surfaceContainer}}">
+    <div role="group" aria-label="How many to draw" style="display: flex; gap: 2px">
+      <button aria-label="Fewer" style="width: 48px; height: 56px; border: 0; display: flex; align-items: center; justify-content: center; border-radius: {{stepStart}}; background: {{t.surfaceContainerHigh}}; color: {{t.onSurface}}">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 12 H18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path></svg>
+      </button>
+      <span aria-live="polite" style="width: 44px; height: 56px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; background: {{t.surfaceContainerHigh}}">1</span>
+      <button aria-label="More" style="width: 48px; height: 56px; border: 0; display: flex; align-items: center; justify-content: center; border-radius: {{stepEnd}}; background: {{t.surfaceContainerHigh}}; color: {{t.onSurface}}">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 6 V18 M6 12 H18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path></svg>
+      </button>
+    </div>
+    <button style="flex-grow: 1; height: 56px; border: 0; font-size: 19px; font-weight: 700; letter-spacing: 0.01em; border-radius: {{btnRadius}}; background: {{t.primary}}; color: {{t.onPrimary}}">Draw 1</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"direction":{"editor":"enum","options":["ticket","tophat","chalk"],"default":"ticket"},"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"variant":{"editor":"enum","options":["a","b"],"default":"a"},"$preview":{"width":390,"height":844}}'>
+var NIAH = {
+  ticket: {
+    display: '"Bricolage Grotesque", "Roboto Flex", sans-serif', chip: '8px', btn: '16px', inner: '4px',
+    light: {primary:'#9C4400',onPrimary:'#FFFFFF',primaryContainer:'#FFDBCA',onPrimaryContainer:'#341100',secondaryContainer:'#F6DED3',onSecondaryContainer:'#2C160D',tertiary:'#006874',tertiaryContainer:'#9EEFFD',onTertiaryContainer:'#001F24',surface:'#FFF8F5',surfaceContainer:'#F9EBE4',surfaceContainerHigh:'#F3E5DE',onSurface:'#221A16',onSurfaceVariant:'#53443C',outline:'#85736A',outlineVariant:'#D8C2B8'},
+    dark: {primary:'#FFB68F',onPrimary:'#552000',primaryContainer:'#773300',onPrimaryContainer:'#FFDBCA',secondaryContainer:'#5B4135',onSecondaryContainer:'#FFDBCC',tertiary:'#82D3E0',tertiaryContainer:'#004F58',onTertiaryContainer:'#9EEFFD',surface:'#1A120E',surfaceContainer:'#271E1A',surfaceContainerHigh:'#322824',onSurface:'#F0DFD8',onSurfaceVariant:'#D8C2B8',outline:'#A08D84',outlineVariant:'#53443C'}
+  },
+  tophat: {
+    display: '"DM Serif Display", Georgia, serif', chip: '999px', btn: '999px', inner: '6px',
+    light: {primary:'#4D4BB3',onPrimary:'#FFFFFF',primaryContainer:'#E2DFFF',onPrimaryContainer:'#0B006B',secondaryContainer:'#E3E0F9',onSecondaryContainer:'#1A1A2C',tertiary:'#7A5900',tertiaryContainer:'#FFDEA3',onTertiaryContainer:'#261900',surface:'#FCF8FF',surfaceContainer:'#F0ECF7',surfaceContainerHigh:'#EAE6F1',onSurface:'#1B1B21',onSurfaceVariant:'#47464F',outline:'#787680',outlineVariant:'#C8C5D0'},
+    dark: {primary:'#C3C0FF',onPrimary:'#1F1A86',primaryContainer:'#35319A',onPrimaryContainer:'#E2DFFF',secondaryContainer:'#46455A',onSecondaryContainer:'#E3E0F9',tertiary:'#F5BE48',tertiaryContainer:'#5C4200',onTertiaryContainer:'#FFDEA3',surface:'#131318',surfaceContainer:'#1F1F25',surfaceContainerHigh:'#2A292F',onSurface:'#E4E1E9',onSurfaceVariant:'#C8C5D0',outline:'#928F99',outlineVariant:'#47464F'}
+  },
+  chalk: {
+    display: 'Nunito, "Roboto Flex", sans-serif', chip: '12px', btn: '20px', inner: '6px',
+    light: {primary:'#006B5F',onPrimary:'#FFFFFF',primaryContainer:'#9FF2E2',onPrimaryContainer:'#00201C',secondaryContainer:'#CCE8E2',onSecondaryContainer:'#051F1C',tertiary:'#6A5F00',tertiaryContainer:'#F7E570',onTertiaryContainer:'#201C00',surface:'#F5FBF8',surfaceContainer:'#E9EFEC',surfaceContainerHigh:'#E3EAE7',onSurface:'#171D1B',onSurfaceVariant:'#3F4946',outline:'#6F7976',outlineVariant:'#BEC9C5'},
+    dark: {primary:'#83D5C6',onPrimary:'#003731',primaryContainer:'#005047',onPrimaryContainer:'#9FF2E2',secondaryContainer:'#334B47',onSecondaryContainer:'#CCE8E2',tertiary:'#DAC957',tertiaryContainer:'#4F4800',onTertiaryContainer:'#F7E570',surface:'#0E1513',surfaceContainer:'#1B2120',surfaceContainerHigh:'#252B2A',onSurface:'#DEE4E1',onSurfaceVariant:'#BEC9C5',outline:'#899390',outlineVariant:'#3F4946'}
+  }
+};
+var NAMES = [
+  ['Ada','in'],['Ben','out'],['Chloe','drawn'],['Dev','in'],['Eilidh','in'],['Femi','in'],['Grace','in'],['Hamza','drawn'],
+  ['Isla','in'],['Jack','in'],['Kai','in'],['Leah','in'],['Mo','in'],['Nia','in'],['Oscar','out'],['Priya','drawn'],
+  ['Quinn','in'],['Rory','in'],['Sam','drawn'],['Sam','in'],['Tom','in'],['Uma','out'],['Will','in'],['Zara','in']
+];
+class Component extends DCLogic {
+  renderVals() {
+    var d = NIAH[this.props.direction ?? 'ticket'] || NIAH.ticket;
+    var t = d[this.props.theme ?? 'light'] || d.light;
+    var variant = this.props.variant ?? 'a';
+    var chips = NAMES.map(function (n) {
+      var s = n[1];
+      if (s === 'in') return {text: n[0], isIn: true, isDrawn: false, pressed: 'true', a11y: n[0] + ', in the hat', bg: t.secondaryContainer, fg: t.onSecondaryContainer, edge: t.secondaryContainer, deco: 'none'};
+      if (s === 'out') return {text: n[0], isIn: false, isDrawn: false, pressed: 'false', a11y: n[0] + ', out of the hat', bg: 'transparent', fg: t.onSurfaceVariant, edge: t.outline, deco: 'none'};
+      return {text: n[0], isIn: false, isDrawn: true, pressed: 'false', a11y: n[0] + ', drawn. Double tap to put back', bg: t.surfaceContainerHigh, fg: t.onSurfaceVariant, edge: t.surfaceContainerHigh, deco: 'line-through'};
+    });
+    var outer = d.btn === '999px' ? '28px' : d.btn;
+    return {
+      t: t, display: d.display, chipRadius: d.chip, btnRadius: d.btn, chips: chips,
+      stepStart: outer + ' ' + d.inner + ' ' + d.inner + ' ' + outer,
+      stepEnd: d.inner + ' ' + outer + ' ' + outer + ' ' + d.inner,
+      isA: variant === 'a', isB: variant === 'b'
+    };
+  }
+}
+</script>
+</body>
+</html>

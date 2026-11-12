@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reveal (Top Hat)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Roboto+Flex:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+button{font:inherit;cursor:pointer}
+@keyframes rvShake{0%{transform:rotate(0)}2%{transform:rotate(-6deg)}4%{transform:rotate(6deg)}6%{transform:rotate(-6deg)}8%{transform:rotate(6deg)}10%{transform:rotate(-4deg)}12%{transform:rotate(0)}100%{transform:rotate(0)}}
+@keyframes rvPop{0%,12%{opacity:0;transform:translateY(90px) scale(0.55)}19%{opacity:1;transform:translateY(-10px) scale(1.05)}23%{transform:translateY(3px) scale(0.99)}26%,90%{opacity:1;transform:translateY(0) scale(1)}96%,100%{opacity:0;transform:translateY(0) scale(1)}}
+@keyframes rvLate{0%,30%{opacity:0}36%,90%{opacity:1}96%,100%{opacity:0}}
+@keyframes rvFade{0%{opacity:0}6%,90%{opacity:1}96%,100%{opacity:0}}
+.rv-shake{animation:rvShake 5s ease-in-out infinite both;transform-origin:50% 90%}
+.rv-pop{animation:rvPop 5s cubic-bezier(0.2,0,0,1) infinite both}
+.rv-late{animation:rvLate 5s linear infinite both}
+.rv-fade{animation:rvFade 5s linear infinite both}
+.rv-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</helmet>
+<div style="width: {{w}}px; height: {{h}}px; box-sizing: border-box; position: relative; overflow: hidden; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; background: {{c.backdrop}}; color: {{c.onBackdrop}}">
+  <div role="status" aria-live="assertive" class="rv-sr">Drawn: {{spoken}}</div>
+  <div class="{{fadeCls}}" style="width: 100%; height: 100%; box-sizing: border-box; padding: {{pad}}; display: flex; flex-direction: {{dir}}; align-items: center; gap: {{gap}}">
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 12px; order: {{hatOrder}}; flex-shrink: 0">
+      <sc-if value="{{titleWithHat}}" hint-placeholder-val="{{ false }}">
+        <h1 style="margin: 0; font-size: 34px; font-weight: 400; font-family: 'DM Serif Display', Georgia, serif">Out of the hat</h1>
+      </sc-if>
+      <svg class="{{shakeCls}}" viewBox="0 0 108 108" width="{{hatSize}}" height="{{hatSize}}" aria-hidden="true">
+        <path d="M30 24 L31.5 28.5 L36 30 L31.5 31.5 L30 36 L28.5 31.5 L24 30 L28.5 28.5 Z" fill="{{c.sparkle}}"></path>
+        <path d="M78 19 L79.2 22.8 L83 24 L79.2 25.2 L78 29 L76.8 25.2 L73 24 L76.8 22.8 Z" fill="{{c.sparkle}}"></path>
+        <path d="M84 38 L85 41 L88 42 L85 43 L84 46 L83 43 L80 42 L83 41 Z" fill="{{c.sparkle}}"></path>
+        <path d="M38 32 L70 32 L68 66 L40 66 Z" fill="#F4F2FF"></path>
+        <rect x="39.5" y="56" width="29" height="6" fill="{{c.sparkle}}"></rect>
+        <rect x="26" y="64" width="56" height="8" rx="4" fill="#F4F2FF"></rect>
+      </svg>
+    </div>
+
+    <div style="flex-grow: 1; align-self: stretch; display: flex; flex-direction: column; justify-content: center; gap: 16px; order: 1; min-width: 0">
+      <sc-if value="{{titleAbove}}" hint-placeholder-val="{{ true }}">
+        <h1 style="margin: 0; text-align: center; font-size: 38px; font-weight: 400; font-family: 'DM Serif Display', Georgia, serif">Out of the hat</h1>
+      </sc-if>
+      <ol style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat({{cols}}, minmax(0, 1fr)); gap: 12px">
+        <sc-for list="{{cards}}" as="k" hint-placeholder-count="3">
+          <li class="{{k.cls}}" style="animation-delay: {{k.delay}}; padding: {{cardPad}}; border-radius: 28px; text-align: center; box-shadow: 0 4px 14px rgba(0,0,0,0.18); background: {{c.card}}; color: {{c.onCard}}; font-family: 'DM Serif Display', Georgia, serif; font-size: {{nameSize}}; line-height: 1.1">{{k.name}}</li>
+        </sc-for>
+      </ol>
+    </div>
+
+    <div class="{{lateCls}}" style="order: 3; display: flex; flex-direction: {{btnDir}}; align-items: center; justify-content: center; gap: 12px; flex-shrink: 0; width: {{btnW}}">
+      <button style="height: 56px; padding: 0 28px; border-radius: 999px; font-size: 17px; font-weight: 700; background: transparent; border: 2px solid {{c.onBackdrop}}; color: {{c.onBackdrop}}; width: {{btnFill}}">Done</button>
+      <sc-if value="{{hasMore}}" hint-placeholder-val="{{ true }}">
+        <button style="height: 56px; padding: 0 28px; border: 0; border-radius: 999px; font-size: 17px; font-weight: 700; background: {{c.moreBg}}; color: {{c.moreFg}}; width: {{btnFill}}">{{moreLabel}}</button>
+      </sc-if>
+      <sc-if value="{{noneLeft}}" hint-placeholder-val="{{ false }}">
+        <span style="font-size: 16px; font-weight: 500; text-align: center">Everyone’s been drawn</span>
+      </sc-if>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"layout":{"editor":"enum","options":["phone","land","large"],"default":"phone"},"count":{"editor":"enum","options":["1","3"],"default":"3"},"ending":{"editor":"enum","options":["more","fewer","none"],"default":"more"},"motion":{"editor":"enum","options":["full","reduced","still"],"default":"full"},"$preview":{"width":390,"height":844}}'>
+var C = {
+  light: {backdrop: '#4D4BB3', onBackdrop: '#FFFFFF', sparkle: '#FFDEA3', card: '#FFFFFF', onCard: '#1B1B21', moreBg: '#FFFFFF', moreFg: '#4D4BB3'},
+  dark: {backdrop: '#35319A', onBackdrop: '#E2DFFF', sparkle: '#F5BE48', card: '#0E0E13', onCard: '#E4E1E9', moreBg: '#C3C0FF', moreFg: '#1F1A86'}
+};
+var SIZES = {
+  phone: {w: 390, h: 844, pad: '40px 24px 32px', dir: 'column', gap: '20px', hatOrder: 2, hatSize: 112, cols: 1, btnDir: 'row', btnW: '100%', btnFill: 'auto', titleAbove: true},
+  land: {w: 844, h: 390, pad: '24px 28px', dir: 'row', gap: '28px', hatOrder: 0, hatSize: 120, cols: 2, btnDir: 'column', btnW: '200px', btnFill: '100%', titleAbove: false},
+  large: {w: 1280, h: 800, pad: '56px 120px 48px', dir: 'column', gap: '28px', hatOrder: 2, hatSize: 140, cols: 3, btnDir: 'row', btnW: '100%', btnFill: 'auto', titleAbove: true}
+};
+var ONE = ['Isla'];
+var THREE = ['Isla', 'Dev', 'Zara'];
+class Component extends DCLogic {
+  renderVals() {
+    var c = C[this.props.theme ?? 'light'] || C.light;
+    var layout = this.props.layout ?? 'phone';
+    var s = SIZES[layout] || SIZES.phone;
+    var names = (this.props.count ?? '3') === '1' ? ONE : THREE;
+    var motion = this.props.motion ?? 'full';
+    var full = motion === 'full';
+    var ending = this.props.ending ?? 'more';
+    var n = names.length;
+    var stagger = n > 4 ? Math.min(250, 900 / (n - 1)) : 250;
+    var cards = names.map(function (name, i) { return {name: name, cls: full ? 'rv-pop' : '', delay: full ? (i * stagger) + 'ms' : '0ms'}; });
+    var moreLabel = ending === 'fewer' ? 'Draw 2 more' : ('Draw ' + n + ' more');
+    var spoken = n === 1 ? names[0] : names.slice(0, -1).join(', ') + ' and ' + names[n - 1];
+    var big = n === 1;
+    return {
+      c: c, w: s.w, h: s.h, pad: s.pad, dir: s.dir, gap: s.gap, hatOrder: s.hatOrder, hatSize: s.hatSize,
+      cols: big ? 1 : s.cols, btnDir: s.btnDir, btnW: s.btnW, btnFill: s.btnFill,
+      titleAbove: s.titleAbove, titleWithHat: !s.titleAbove,
+      cards: cards, nameSize: big ? (layout === 'land' ? '52px' : '64px') : (layout === 'land' ? '30px' : '40px'),
+      cardPad: big ? '28px 24px' : (layout === 'land' ? '14px 16px' : '18px 24px'),
+      shakeCls: full ? 'rv-shake' : '', lateCls: full ? 'rv-late' : '', fadeCls: motion === 'reduced' ? 'rv-fade' : '',
+      hasMore: ending !== 'none', noneLeft: ending === 'none', moreLabel: moreLabel, spoken: spoken
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Select header</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+button{font:inherit;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 390px; height: 64px; box-sizing: border-box; padding: 0 12px 0 16px; display: flex; align-items: center; gap: 12px; font-family: 'Roboto Flex', Roboto, system-ui, sans-serif; background: {{t.surface}}; color: {{t.onSurface}}; border-bottom: 1px solid {{t.outlineVariant}}">
+  <sc-if value="{{isA}}" hint-placeholder-val="{{ true }}">
+    <label style="display: flex; align-items: center; gap: 12px; flex-grow: 1; height: 48px; font-size: 15px; font-weight: 500">
+      <span role="checkbox" aria-checked="{{ariaChecked}}" aria-label="Select all" tabindex="0" style="width: 22px; height: 22px; box-sizing: border-box; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; background: {{boxBg}}; border: 2px solid {{boxEdge}}">
+        <sc-if value="{{isChecked}}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12.5 L10 17.5 L19 7" fill="none" stroke="{{t.onPrimary}}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+        <sc-if value="{{isMixed}}" hint-placeholder-val="{{ true }}"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 12 H18" stroke="{{t.onPrimary}}" stroke-width="3" stroke-linecap="round"></path></svg></sc-if>
+      </span>
+      {{counter}}
+    </label>
+  </sc-if>
+  <sc-if value="{{isB}}" hint-placeholder-val="{{ false }}">
+    <span style="flex-grow: 1; font-size: 15px; font-weight: 500">{{counter}}</span>
+    <button style="height: 40px; padding: 0 12px; border: 0; background: transparent; font-size: 14px; font-weight: 700; border-radius: 999px; color: {{t.primary}}">{{toggleLabel}}</button>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"direction":{"editor":"enum","options":["ticket","tophat","chalk"],"default":"ticket"},"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"variant":{"editor":"enum","options":["a","b"],"default":"a"},"sel":{"editor":"enum","options":["all","alldrawn","some","none"],"default":"some"},"$preview":{"width":390,"height":64}}'>
+var NIAH = {
+  ticket: {
+    light: {primary:'#9C4400',onPrimary:'#FFFFFF',surface:'#FFF8F5',onSurface:'#221A16',onSurfaceVariant:'#53443C',outlineVariant:'#D8C2B8'},
+    dark: {primary:'#FFB68F',onPrimary:'#552000',surface:'#1A120E',onSurface:'#F0DFD8',onSurfaceVariant:'#D8C2B8',outlineVariant:'#53443C'}
+  },
+  tophat: {
+    light: {primary:'#4D4BB3',onPrimary:'#FFFFFF',surface:'#FCF8FF',onSurface:'#1B1B21',onSurfaceVariant:'#47464F',outlineVariant:'#C8C5D0'},
+    dark: {primary:'#C3C0FF',onPrimary:'#1F1A86',surface:'#131318',onSurface:'#E4E1E9',onSurfaceVariant:'#C8C5D0',outlineVariant:'#47464F'}
+  },
+  chalk: {
+    light: {primary:'#006B5F',onPrimary:'#FFFFFF',surface:'#F5FBF8',onSurface:'#171D1B',onSurfaceVariant:'#3F4946',outlineVariant:'#BEC9C5'},
+    dark: {primary:'#83D5C6',onPrimary:'#003731',surface:'#0E1513',onSurface:'#DEE4E1',onSurfaceVariant:'#BEC9C5',outlineVariant:'#3F4946'}
+  }
+};
+var SEL = {
+  all: {counter: '24 of 24 in the hat', box: 'true', toggle: 'Clear all'},
+  alldrawn: {counter: '20 of 24 in the hat · 4 drawn', box: 'true', toggle: 'Clear all'},
+  some: {counter: '15 of 24 in the hat', box: 'mixed', toggle: 'Select all'},
+  none: {counter: '0 of 24 in the hat', box: 'false', toggle: 'Select all'}
+};
+class Component extends DCLogic {
+  renderVals() {
+    var d = NIAH[this.props.direction ?? 'ticket'] || NIAH.ticket;
+    var t = d[this.props.theme ?? 'light'] || d.light;
+    var s = SEL[this.props.sel ?? 'some'] || SEL.some;
+    var variant = this.props.variant ?? 'a';
+    var filled = s.box !== 'false';
+    return {
+      t: t, counter: s.counter, toggleLabel: s.toggle, ariaChecked: s.box,
+      isChecked: s.box === 'true', isMixed: s.box === 'mixed',
+      boxBg: filled ? t.primary : 'transparent', boxEdge: filled ? t.primary : t.onSurfaceVariant,
+      isA: variant === 'a', isB: variant === 'b'
+    };
+  }
+}
+</script>
+</body>
+</html>

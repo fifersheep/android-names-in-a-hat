@@ -1,0 +1,333 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-11-12T09:30:00Z"
+  },
+  "title": "Names in a Hat 3.0 — Design",
+  "launch": {
+    "view": "canvas"
+  },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 880,
+      "h": 1040,
+      "title": "Direction A — Ticket"
+    },
+    "BrandTopHat.dc.html": {
+      "x": 960,
+      "y": 0,
+      "w": 880,
+      "h": 1040,
+      "title": "Direction B — Top Hat"
+    },
+    "BrandChalk.dc.html": {
+      "x": 1920,
+      "y": 0,
+      "w": 880,
+      "h": 1040,
+      "title": "Direction C — Chalkboard"
+    },
+    "HeroTicket.dc.html": {
+      "x": 0,
+      "y": 1580,
+      "w": 880,
+      "h": 932,
+      "title": "Ticket — Draw screen, light | dark"
+    },
+    "HeroTopHat.dc.html": {
+      "x": 960,
+      "y": 1580,
+      "w": 880,
+      "h": 932,
+      "title": "Top Hat — Draw screen, light | dark"
+    },
+    "HeroChalk.dc.html": {
+      "x": 1920,
+      "y": 1580,
+      "w": 880,
+      "h": 932,
+      "title": "Chalkboard — Draw screen, light | dark"
+    },
+    "SelectCompare.dc.html": {
+      "x": 0,
+      "y": 3060,
+      "w": 1864,
+      "h": 480,
+      "title": "D18 — select-all control, (a) vs (b)"
+    },
+    "DrawHero.dc.html": {
+      "x": 0,
+      "y": 4820,
+      "w": 390,
+      "h": 844,
+      "title": "Component — Draw screen"
+    },
+    "SelectHeader.dc.html": {
+      "x": 470,
+      "y": 4820,
+      "w": 390,
+      "h": 64,
+      "title": "Component — select header"
+    },
+    "MixedOptions.dc.html": {
+      "x": 0,
+      "y": 3820,
+      "w": 1252,
+      "h": 720,
+      "title": "D18 — mixed-state box options"
+    },
+    "DrawScreen.dc.html": {
+      "x": 940,
+      "y": 4820,
+      "w": 390,
+      "h": 844,
+      "title": "Component — Draw (Top Hat)"
+    },
+    "ListsScreen.dc.html": {
+      "x": 1410,
+      "y": 4820,
+      "w": 390,
+      "h": 844,
+      "title": "Component — Lists (Top Hat)"
+    },
+    "EditScreen.dc.html": {
+      "x": 1880,
+      "y": 4820,
+      "w": 390,
+      "h": 844,
+      "title": "Component — Edit list (Top Hat)"
+    },
+    "PhoneDraw.dc.html": {
+      "x": 0,
+      "y": 6200,
+      "w": 1740,
+      "h": 1860,
+      "title": "Draw — phone: A–Z · Unsorted · Z–A · put back"
+    },
+    "PhoneDrawStates.dc.html": {
+      "x": 1820,
+      "y": 6200,
+      "w": 1310,
+      "h": 1860,
+      "title": "Draw — phone: nothing in the hat · all drawn · empty list"
+    },
+    "DynamicSample.dc.html": {
+      "x": 3210,
+      "y": 6200,
+      "w": 450,
+      "h": 932,
+      "title": "Draw — sample dynamic colour scheme"
+    },
+    "PhoneLists.dc.html": {
+      "x": 0,
+      "y": 8580,
+      "w": 1310,
+      "h": 1860,
+      "title": "Lists — phone: populated · empty · About"
+    },
+    "PhoneEdit.dc.html": {
+      "x": 1390,
+      "y": 8580,
+      "w": 1740,
+      "h": 1860,
+      "title": "Edit list — phone: new · edit · rename inline · blank error + undo"
+    },
+    "LargeScreen.dc.html": {
+      "x": 2350,
+      "y": 4820,
+      "w": 1280,
+      "h": 800,
+      "title": "Component — large-screen list-detail"
+    },
+    "LandScreen.dc.html": {
+      "x": 3710,
+      "y": 4820,
+      "w": 844,
+      "h": 390,
+      "title": "Component — phone landscape"
+    },
+    "LargeDraw.dc.html": {
+      "x": 0,
+      "y": 10980,
+      "w": 2660,
+      "h": 888,
+      "title": "Large — list-detail with Draw, light | dark"
+    },
+    "LargeEdit.dc.html": {
+      "x": 0,
+      "y": 11988,
+      "w": 2660,
+      "h": 888,
+      "title": "Large — list-detail with Edit list, light | dark"
+    },
+    "LargeEmpty.dc.html": {
+      "x": 0,
+      "y": 12996,
+      "w": 2660,
+      "h": 1768,
+      "title": "Large — no list open · no lists"
+    },
+    "LandPhone.dc.html": {
+      "x": 0,
+      "y": 15300,
+      "w": 2672,
+      "h": 948,
+      "title": "Phone landscape — Lists · Edit list · Draw"
+    },
+    "Reveal.dc.html": {
+      "x": 4634,
+      "y": 4820,
+      "w": 390,
+      "h": 844,
+      "title": "Component — reveal"
+    },
+    "RevealPhone.dc.html": {
+      "x": 0,
+      "y": 16780,
+      "w": 1740,
+      "h": 932,
+      "title": "Reveal — phone, animated: 1 and 3 names, light | dark",
+      "is_interactive": true
+    },
+    "RevealReduced.dc.html": {
+      "x": 1820,
+      "y": 16780,
+      "w": 880,
+      "h": 932,
+      "title": "Reveal — reduced motion (one crossfade)",
+      "is_interactive": true
+    },
+    "RevealEnds.dc.html": {
+      "x": 0,
+      "y": 17832,
+      "w": 1310,
+      "h": 1860,
+      "title": "Reveal — end states: more left · fewer left than n · none left"
+    },
+    "RevealLand.dc.html": {
+      "x": 1390,
+      "y": 17832,
+      "w": 1788,
+      "h": 480,
+      "title": "Reveal — phone landscape, animated",
+      "is_interactive": true
+    },
+    "RevealLarge.dc.html": {
+      "x": 0,
+      "y": 19812,
+      "w": 2660,
+      "h": 888,
+      "title": "Reveal — large screen, animated",
+      "is_interactive": true
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "BrandTopHat.dc.html",
+    "BrandChalk.dc.html",
+    "HeroTicket.dc.html",
+    "HeroTopHat.dc.html",
+    "HeroChalk.dc.html",
+    "SelectCompare.dc.html",
+    "MixedOptions.dc.html",
+    "DrawHero.dc.html",
+    "SelectHeader.dc.html",
+    "DrawScreen.dc.html",
+    "ListsScreen.dc.html",
+    "EditScreen.dc.html",
+    "PhoneDraw.dc.html",
+    "PhoneDrawStates.dc.html",
+    "DynamicSample.dc.html",
+    "PhoneLists.dc.html",
+    "PhoneEdit.dc.html",
+    "LargeScreen.dc.html",
+    "LandScreen.dc.html",
+    "LargeDraw.dc.html",
+    "LargeEdit.dc.html",
+    "LargeEmpty.dc.html",
+    "LandPhone.dc.html",
+    "Reveal.dc.html",
+    "RevealPhone.dc.html",
+    "RevealReduced.dc.html",
+    "RevealEnds.dc.html",
+    "RevealLand.dc.html",
+    "RevealLarge.dc.html"
+  ],
+  "notes": {
+    "brandTitle": {
+      "x": 0,
+      "y": -260,
+      "text": "Pick a direction",
+      "kind": "title1",
+      "maxW": 2800
+    },
+    "heroTitle": {
+      "x": 0,
+      "y": 1300,
+      "text": "The Draw screen in each direction",
+      "kind": "title1",
+      "maxW": 2800
+    },
+    "d18Title": {
+      "x": 0,
+      "y": 2780,
+      "text": "Select all: (a) tri-state checkbox vs (b) text button",
+      "kind": "title1",
+      "maxW": 1864
+    },
+    "mixedTitle": {
+      "x": 0,
+      "y": 3580,
+      "text": "The \"some selected\" box: five options",
+      "kind": "title1",
+      "maxW": 1252
+    },
+    "phoneDrawTitle": {
+      "x": 0,
+      "y": 5940,
+      "text": "Draw — phone portrait (light above, dark below)",
+      "kind": "title1",
+      "maxW": 3660
+    },
+    "phoneListsTitle": {
+      "x": 0,
+      "y": 8320,
+      "text": "Lists and Edit list — phone portrait",
+      "kind": "title1",
+      "maxW": 2700
+    },
+    "componentsTitle": {
+      "x": 0,
+      "y": 4560,
+      "text": "Components",
+      "kind": "title1",
+      "maxW": 2270
+    },
+    "largeTitle": {
+      "x": 0,
+      "y": 10720,
+      "text": "Large screens — list-detail (≥ 840 dp wide and ≥ 480 dp tall)",
+      "kind": "title1",
+      "maxW": 2660
+    },
+    "landTitle": {
+      "x": 0,
+      "y": 15040,
+      "text": "Phone landscape (compact height)",
+      "kind": "title1",
+      "maxW": 2672
+    },
+    "revealTitle": {
+      "x": 0,
+      "y": 16520,
+      "text": "The reveal — the draw moment",
+      "kind": "title1",
+      "maxW": 2700
+    }
+  },
+  "designSystems": []
+}
