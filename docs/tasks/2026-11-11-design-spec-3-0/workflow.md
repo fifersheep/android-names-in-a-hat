@@ -5,7 +5,7 @@ ticket: NAM-2 — Produce the 3.0 design spec (https://linear.app/northtrack/iss
 ticket-id: NAM-2
 tracker-synced: In Engineering
 mode: full
-phase: code-review
+phase: reporting
 branch: flow/design-spec-3-0
 worktree: ../android-names-in-a-hat-nam2
 created: 2026-11-11
@@ -13,7 +13,7 @@ updated: 2026-11-12
 ---
 
 ## Next action
-Implementation complete (tasks 1–6 ticked). Verify GREEN 2026-11-12 @ 45ef713: `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests`, exit 0, 210 tests / 0 failures. Spec checks report 0 gaps. Docs-only diff vs merge-base e73220a. Code review: dispatch flow-reviewer on e73220a..HEAD against plan.md.
+Code review done (review.md): 0 blocking, 20 advisory (19 fixed, 1 recorded). Outcome check on the live canvas found and fixed one mock-up mismatch (select-all box), with screenshots in screens/. Verify GREEN after review fixes (210 tests / 0 failures; docs-only since). Reporting: write report.md, open the PR, move NAM-2 to In Review, then gate 2. Gate 2 needs the owner's NAM-2 approval comment (AC4) and confirmation of the review refinements (D18 box over not-drawn names, 'Everyone's been drawn' condition, back discards a new list).
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
