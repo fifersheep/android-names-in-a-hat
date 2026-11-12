@@ -32,7 +32,7 @@ Gate 1 passed 2026-11-12. Implementation, task 1: quickstart the Design type, cr
 - 2026-11-12 Q: mixed-state box? A: **option 2, tonal dash**: primaryContainer fill, 2px primary border, primary dash. Checked = primary fill + onPrimary check; none = onSurfaceVariant border. (A tonal fill alone is 1.23:1 against surface, so the border is required.)
 
 ## Progress
-- [ ] 1. Brand board (3 directions + D18 comparison), owner pick logged
+- [x] 1. Brand board (3 directions + D18 comparison), owner pick logged — dd1d1f4, ebaad3d
 - [ ] 2. Spec draft docs/design/3.0-spec.md
 - [ ] 3. Phone portrait artboards (light + dark, states, dynamic sample)
 - [ ] 4. Phone landscape + large-screen artboards
