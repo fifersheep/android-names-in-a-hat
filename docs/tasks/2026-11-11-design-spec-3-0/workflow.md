@@ -5,7 +5,7 @@ ticket: NAM-2 — Produce the 3.0 design spec (https://linear.app/northtrack/iss
 ticket-id: NAM-2
 tracker-synced: In Engineering
 mode: full
-phase: implementation
+phase: code-review
 branch: flow/design-spec-3-0
 worktree: ../android-names-in-a-hat-nam2
 created: 2026-11-11
@@ -13,7 +13,7 @@ updated: 2026-11-12
 ---
 
 ## Next action
-Gate 1 passed 2026-11-12. Implementation, task 1: quickstart the Design type, create the canvas, then build the brand board (3 Northtrack directions plus the D18 a/b comparison). Hold for the owner's pick and log it. Baseline 2026-11-11: verify PASS @ e73220a (210 tests / 0 failures).
+Implementation complete (tasks 1–6 ticked). Verify GREEN 2026-11-12 @ 45ef713: `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests`, exit 0, 210 tests / 0 failures. Spec checks report 0 gaps. Docs-only diff vs merge-base e73220a. Code review: dispatch flow-reviewer on e73220a..HEAD against plan.md.
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
