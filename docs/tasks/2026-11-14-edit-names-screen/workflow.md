@@ -5,7 +5,7 @@ ticket: NAM-9 — Build the edit names screen (https://linear.app/northtrack/iss
 ticket-id: NAM-9
 tracker-synced: In Engineering
 mode: full
-phase: code-review
+phase: reporting
 branch: flow/edit-names-screen
 worktree: ../android-names-in-a-hat-nam-9
 created: 2026-11-14
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Implementation complete (tasks 1–6 ticked). Final verify GREEN at HEAD: `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests :app:testDebugUnitTest :app:lintDebug` exit 0; shared 277/0, app 110/0. Device evidence in evidence/README.md (phone, tablet, api36_niah install-over). Next: code review of main@0201792..HEAD against plan.md.
+Code review done (review.md): 0 blocking, 4 advisory, all fixed (e97a81b, 5714c96, 8eea812, 2d6d040) and re-checked on niah_debug_api36. Verify GREEN at 2d6d040: shared 277/0, app 110/0, lint clean. Owner follow-ups: TalkBack walk; real-device scroll smoothness (emulator-bound, AC7). Next: write report.md, open the PR, NAM-9 → In Review, hold at gate 2.
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"

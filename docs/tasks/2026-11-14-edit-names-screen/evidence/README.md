@@ -29,3 +29,7 @@ The install-over used a local release build, signed with the same certificate as
 - **Key events move focus.** After a theme change, a stray `KEYCODE_ENTER` hit the keyboard-focused Up button and went back to Lists. Use taps for navigation.
 - **Gboard on api36_niah** shows its "Try out your stylus" tutorial on first focus, which swallows `input text`. Cancel it first (already in memory).
 - **Not checked by me:** the TalkBack walk (open, owner). Labels from the accessibility tree: "Delete Ada", "Save name", "Cancel rename", "Add", "Ada deleted", "Undo".
+
+## After code review (2d6d040)
+See review.md, "Re-verify after fixes": A1 (`review-a1-rename-scrolled-back.png`), A2 (loading frame, no "Name the list first"), A3 (`review-a3-add-during-undo.png`). Scroll frame stats: names list 76% janky (p50 61 ms) and system Settings 82% (p50 89 ms) on the same headless emulator. That is emulator-bound, so real-device smoothness is an owner check.
+
