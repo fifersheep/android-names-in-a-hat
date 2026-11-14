@@ -5,7 +5,7 @@ ticket: NAM-12 — Draw additional names from those remaining (https://linear.ap
 ticket-id: NAM-12
 tracker-synced: In Engineering
 mode: full
-phase: plan-review
+phase: implementation
 branch: flow/draw-from-remaining
 worktree: ../android-names-in-a-hat-nam-12
 created: 2026-11-14
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Gate 1: waiting for the user to approve plan.md. The critic has run once and plan.md is revised (1 Blocking issue on the AC10 evidence was fixed with a Robolectric semantics test; Advisory findings were folded in).
+Task 5 (device check) is blocked: waiting for the user to pick an emulator. niah_debug_api36 is running (possibly in use by the names-in-a-hat-bd session); niah_api30 hung, then refused to boot with "not enough disk space" (9.5 GiB free, Data volume 99% full). Tasks 1-4 are done; app 163/0, shared jvm 133 / iOS 94 / androidHost 101, lint 0 errors.
 
 ## Decision log
 - 2026-11-14 mode: full, confirmed by the user. It spans :shared draw logic, a new per-name un-draw in NameRepository/Room, and draw-screen UI, with 11 ACs.
@@ -22,9 +22,18 @@ Gate 1: waiting for the user to approve plan.md. The critic has run once and pla
 
 - 2026-11-14 research: no shape-changing questions, since spec D2/D7/D8/D9 and the owner's NAM-12 comment settle behaviour. Defaults (use-case placement, put-back atomicity, undo semantics and lifetime) are recorded in research.md and carry into plan.md Assumptions. AC11 (close GitHub #16) is deferred to wrap, with the user's OK.
 - 2026-11-14 plan critic: 1 Blocking finding: AC10 can't be evidenced by a uiautomator dump, which has no Compose stateDescription or custom actions. Fixed by adding one Robolectric Compose semantics test to :app, with the owner's TalkBack check as the fallback. 8 Advisory findings were folded in: the 4 more VM tests that marking breaks, fake failure/gate hooks, VM catches a failed mark, DatabaseThreadingTest, no snackbar for an empty reset, a one-script Reset→Undo device step, the landscape snackbar check, and the assumption-2 evidence corrected.
+- 2026-11-14 gate 1: plan approved by user (including the Robolectric semantics test for AC10)
 
 ## Progress
-<!-- replace this comment with one checkbox per plan task; keep this heading (never add a second ## Progress) -->
+- [x] 1. Per-name un-draw in the repo + fake hooks (3b0c1ef)
+- [x] 2. HatDraw use case + tests (28dd911)
+- [x] 3. DrawViewModel on HatDraw: mark on draw, reset/undo, put back (8e9ca3c)
+- [x] 4. UI: Reset, undo snackbar, Put back menu + a11y action, semantics test (9a4bc2f)
+- [ ] 5. Device check
 
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
+- 2026-11-14 task 4: the compact-height SnackbarHost was put in the names area up front, instead of "check on device first, then move". The trailing panel is inside the content, so a Scaffold snackbar would sit over its button. Device step 6 still checks placement.
+- 2026-11-14 task 4: :app lint now reports NewerVersionAvailable for robolectric 4.17 → 4.18, because :app uses the catalog entry. Kept at 4.17 to match :shared (warning only; 0 errors).
+- 2026-11-14 task 4: unitTests.isIncludeAndroidResources = true was added to :app (needed for the Robolectric semantics test to resolve strings). The plan didn't name it.
+- 2026-11-14 task 5: niah_debug_api36 was already running with an app updated at 20:17, and the names-in-a-hat-bd session was busy, so niah_api30 was used instead to avoid interfering. niah_api30's adb hung (uiautomator, screencap and shell all stalled; ColorBuffer errors). A reboot with -gpu swiftshader_indirect was refused: "not enough disk space" (9.5 GiB free). The debug build was installed on niah_api30 and a "Year 6 Oak" list seeded there before it hung. Now waiting on the user.
