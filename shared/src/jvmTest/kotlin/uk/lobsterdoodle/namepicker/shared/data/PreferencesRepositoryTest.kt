@@ -52,14 +52,6 @@ class PreferencesRepositoryTest {
     }
 
     @Test
-    fun `the retired grid columns read as the default and are never stored`() = test {
-        assertEquals(2, prefs.gridColumns.first())
-        prefs.setGridColumns(1)
-        assertEquals(2, prefs.gridColumns.first())
-        assertTrue(storedKeys().isEmpty(), "nothing should be stored: ${storedKeys()}")
-    }
-
-    @Test
     fun `the active group is set and cleared under the legacy key`() = test {
         prefs.setActiveGroup(7)
         assertEquals(7L, prefs.activeGroupId.first())
@@ -119,9 +111,10 @@ class PreferencesRepositoryTest {
             (1..50).map { async(Dispatchers.Default) { prefs.updateSortType(9) { it.next() } } }.awaitAll()
         }
 
-        // NONE -> ASC -> DESC -> ASC ...: a lost update would repeat a value and skew the split.
-        assertEquals(25, results.count { it == NameSortType.ASC }, "results: $results")
-        assertEquals(25, results.count { it == NameSortType.DESC }, "results: $results")
+        // NONE -> ASC -> DESC -> NONE ...: a lost update would repeat a value and skew the split.
+        assertEquals(17, results.count { it == NameSortType.ASC }, "results: $results")
+        assertEquals(17, results.count { it == NameSortType.DESC }, "results: $results")
+        assertEquals(16, results.count { it == NameSortType.NONE }, "results: $results")
         assertEquals(NameSortType.DESC, prefs.sortType(9).first())
     }
 

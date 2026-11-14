@@ -9,16 +9,13 @@ import uk.lobsterdoodle.namepicker.shared.repository.PreferencesRepository
 /** In-memory [PreferencesRepository] that records every write as a readable string in [calls]. */
 class FakePreferencesRepository(
     activeGroupId: Long? = null,
-    gridColumns: Int = 2,
     sortTypes: Map<Long, NameSortType> = emptyMap(),
 ) : PreferencesRepository {
     val activeGroup = MutableStateFlow(activeGroupId)
-    val columns = MutableStateFlow(gridColumns)
     val sorts = MutableStateFlow(sortTypes)
     val calls = mutableListOf<String>()
 
     override val activeGroupId: Flow<Long?> = activeGroup
-    override val gridColumns: Flow<Int> = columns
 
     override suspend fun setActiveGroup(id: Long) {
         calls += "setActiveGroup($id)"
@@ -33,11 +30,6 @@ class FakePreferencesRepository(
     override suspend fun clearActiveGroupIf(id: Long) {
         calls += "clearActiveGroupIf($id)"
         if (activeGroup.value == id) activeGroup.value = null
-    }
-
-    override suspend fun setGridColumns(count: Int) {
-        calls += "setGridColumns($count)"
-        columns.value = count
     }
 
     override fun sortType(groupId: Long): Flow<NameSortType> = sorts.map { it[groupId] ?: NameSortType.NONE }

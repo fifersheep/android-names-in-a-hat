@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import uk.lobsterdoodle.namepicker.shared.model.NameSortType
 import uk.lobsterdoodle.namepicker.shared.repository.PreferencesRepository
 
-/** Each group's name order, which the sort action cycles NONE → ASC → DESC → ASC. */
+/** Each group's name order, which the sort action cycles NONE → ASC → DESC → NONE. */
 class SortOrder(private val prefs: PreferencesRepository) {
 
     fun observe(groupId: Long): Flow<NameSortType> = prefs.sortType(groupId)

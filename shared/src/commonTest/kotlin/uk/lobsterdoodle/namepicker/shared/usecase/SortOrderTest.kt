@@ -25,10 +25,10 @@ class SortOrderTest {
     }
 
     @Test
-    fun `cycle from DESC stores ASC`() = runTest {
+    fun `cycle from DESC stores NONE`() = runTest {
         val prefs = FakePreferencesRepository(sortTypes = mapOf(24L to NameSortType.DESC))
         SortOrder(prefs).cycle(24)
-        assertEquals(NameSortType.ASC, prefs.sorts.value[24L])
+        assertEquals(NameSortType.NONE, prefs.sorts.value[24L])
     }
 
     @Test

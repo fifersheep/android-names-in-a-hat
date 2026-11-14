@@ -18,12 +18,17 @@ import androidx.compose.ui.unit.dp
  * `docs/design/3.0-mockups/project/ListsScreen.dc.html:43-50`). Built in Compose rather than as a
  * drawable so its two colours follow the Compose colour scheme, dynamic colour included: a resource
  * vector takes one tint, and its theme attributes resolve against the platform theme. Decorative:
- * the text beside it says what it means.
+ * the text beside it says what it means. The colours can be overridden (the reveal, NAM-10).
  */
 @Composable
-fun HatIllustration(modifier: Modifier = Modifier, size: Dp = 140.dp) {
-    val hat = MaterialTheme.colorScheme.primary
-    val sparkle = MaterialTheme.colorScheme.tertiary
+fun HatIllustration(
+    modifier: Modifier = Modifier,
+    size: Dp = 140.dp,
+    /** The hat's crown and brim. The reveal passes its own, over the coloured backdrop (spec "Reveal"). */
+    hat: Color = MaterialTheme.colorScheme.primary,
+    /** The sparkles and the band. */
+    sparkle: Color = MaterialTheme.colorScheme.tertiary,
+) {
     val image = remember(hat, sparkle) { hatVector(hat, sparkle) }
     Image(image, contentDescription = null, modifier = modifier.size(size))
 }

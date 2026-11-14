@@ -9,12 +9,15 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 import uk.lobsterdoodle.namepicker.shared.data.NamesStorage
 import uk.lobsterdoodle.namepicker.shared.data.SettingsStorage
+import uk.lobsterdoodle.namepicker.shared.draw.NameDraw
+import uk.lobsterdoodle.namepicker.shared.draw.RandomNumberGenerator
 import uk.lobsterdoodle.namepicker.shared.repository.GroupRepository
 import uk.lobsterdoodle.namepicker.shared.repository.NameRepository
 import uk.lobsterdoodle.namepicker.shared.repository.PreferencesRepository
 import uk.lobsterdoodle.namepicker.shared.usecase.ActiveGroup
 import uk.lobsterdoodle.namepicker.shared.usecase.GroupEditor
 import uk.lobsterdoodle.namepicker.shared.usecase.NameEditor
+import uk.lobsterdoodle.namepicker.shared.usecase.SortOrder
 
 /**
  * Provides `:shared`, which has no DI annotations. Both storages must be one per process: a second
@@ -50,4 +53,11 @@ object StorageModule {
 
     @Provides
     fun nameEditor(names: NameRepository): NameEditor = NameEditor(names)
+
+    @Provides
+    fun sortOrder(prefs: PreferencesRepository): SortOrder = SortOrder(prefs)
+
+    /** Production randomness: [RandomNumberGenerator]'s default, `Random.Default`. Never a fixed seed. */
+    @Provides
+    fun nameDraw(): NameDraw = NameDraw(RandomNumberGenerator())
 }

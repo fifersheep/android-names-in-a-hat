@@ -1,5 +1,6 @@
 package uk.lobsterdoodle.namepicker
 
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -14,6 +15,9 @@ class FakeNames(vararg initial: Name) : NameRepository {
 
     /** Makes the next writes throw, as Room does when the list was deleted underneath (foreign key). */
     var failWrites = false
+
+    /** While set, selection writes suspend until it completes: a slow database write (NAM-10 race tests). */
+    var selectionGate: CompletableDeferred<Unit>? = null
 
     fun texts(groupId: Long) = names.value.filter { it.groupId == groupId }.map { it.text }
 
@@ -41,14 +45,25 @@ class FakeNames(vararg initial: Name) : NameRepository {
         return existing
     }
 
-    override suspend fun setSelected(id: Long, selected: Boolean) = update({ it.id == id }) { it.copy(selected = selected) }
+    override suspend fun setSelected(id: Long, selected: Boolean) {
+        selectionGate?.await()
+        update({ it.id == id }) { it.copy(selected = selected) }
+    }
 
-    override suspend fun setAllSelected(groupId: Long, selected: Boolean) =
+    override suspend fun setAllSelected(groupId: Long, selected: Boolean) {
+        selectionGate?.await()
         update({ it.groupId == groupId }) { it.copy(selected = selected) }
+    }
 
-    override suspend fun markDrawn(ids: Collection<Long>) = update({ it.id in ids }) { it.copy(drawn = true) }
+    override suspend fun markDrawn(ids: Collection<Long>) {
+        calls += "markDrawn($ids)"
+        update({ it.id in ids }) { it.copy(drawn = true) }
+    }
 
-    override suspend fun clearDrawn(groupId: Long) = update({ it.groupId == groupId }) { it.copy(drawn = false) }
+    override suspend fun clearDrawn(groupId: Long) {
+        calls += "clearDrawn($groupId)"
+        update({ it.groupId == groupId }) { it.copy(drawn = false) }
+    }
 
     private fun update(where: (Name) -> Boolean, change: (Name) -> Name) {
         names.value = names.value.map { if (where(it)) change(it) else it }
