@@ -10,8 +10,9 @@ import uk.lobsterdoodle.namepicker.R
 internal val DmSerifDisplay = FontFamily(Font(R.font.dm_serif_display, FontWeight.Normal))
 
 /**
- * The M3 type scale with DM Serif Display for display and headline styles (spec "Type").
- * Everything else stays on the system default.
+ * The M3 type scale with DM Serif Display for displayLarge–Small and headlineLarge–Medium (spec
+ * "Type"). Everything else, headlineSmall included (M3 dialog titles use it), stays on the system
+ * default. The material3 1.5 `*Emphasized` styles are left alone too; set them here if a screen needs one.
  */
 internal val NamesTypography: Typography = Typography().run {
     copy(
@@ -20,6 +21,5 @@ internal val NamesTypography: Typography = Typography().run {
         displaySmall = displaySmall.copy(fontFamily = DmSerifDisplay),
         headlineLarge = headlineLarge.copy(fontFamily = DmSerifDisplay),
         headlineMedium = headlineMedium.copy(fontFamily = DmSerifDisplay),
-        headlineSmall = headlineSmall.copy(fontFamily = DmSerifDisplay),
     )
 }
