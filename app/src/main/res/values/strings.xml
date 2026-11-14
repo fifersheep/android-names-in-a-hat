@@ -61,19 +61,45 @@
     <!-- Shown for a blank name migrated from 2.7.0, which had no validation (GitHub #5). -->
     <string name="name_untitled">Unnamed</string>
 
-    <!-- Draw (NAM-7 shell; NAM-10 adds the rest) -->
+    <!-- Draw (NAM-10). Reset and Put back (draw_reset*, chip_put_back) arrive with NAM-12. -->
     <string name="draw_back">Back to lists</string>
+    <string name="draw_count_group">How many to draw</string>
+    <plurals name="draw_counter">
+        <item quantity="one">%1$d of %2$d in the hat</item>
+        <item quantity="other">%1$d of %2$d in the hat</item>
+    </plurals>
+    <plurals name="draw_counter_drawn">
+        <item quantity="one">· %d drawn</item>
+        <item quantity="other">· %d drawn</item>
+    </plurals>
+    <string name="draw_select_all">Select all</string>
+    <string name="draw_clear_all">Clear all</string>
+    <!-- The select-all checkbox's TalkBack label: the action, then the counter (spec "Select-all header"). -->
+    <string name="draw_select_all_a11y">%1$s, %2$s</string>
+    <string name="draw_sort_unsorted">Unsorted</string>
+    <string name="draw_sort_az">A–Z</string>
+    <string name="draw_sort_za">Z–A</string>
+    <string name="draw_sort_a11y">Sort: %s</string>
+    <string name="draw_button">Draw %d</string>
+    <string name="draw_button_plain">Draw</string>
+    <string name="draw_fewer">Draw fewer</string>
+    <string name="draw_more_a11y">Draw more</string>
+    <string name="draw_nothing_in_hat">Tap names to put them in the hat</string>
+    <string name="draw_all_drawn">Everyone’s been drawn</string>
+    <string name="draw_empty_title">This hat is empty</string>
+    <string name="draw_empty_body">Add some names to start drawing.</string>
+    <string name="draw_empty_action">Add names</string>
+    <string name="chip_in">in the hat</string>
+    <string name="chip_out">out of the hat</string>
+    <string name="chip_drawn">drawn</string>
 
-    <!-- 2.7.0 strings still to be replaced: draw (NAM-10). -->
-
-    <string name="title_activity_selection">Draw Names</string>
-
-    <string name="generated_names_dialog_title_singular">The selected name is…</string>
-    <string name="generated_names_dialog_title_multiple">The selected names are…</string>
-    <string name="generated_names_dialog_positive_button">Okay</string>
-    <string name="selection_draw_button_label">Draw</string>
-    <string name="menu_item_action_grid_one">One Column</string>
-    <string name="menu_item_action_grid_two">Two Columns</string>
-    <string name="selection_empty_message">This draw contains no names.\n\nAdd names to the draw using the draw\'s menu button on the Overview screen.</string>
-    <string name="sort_alphabetically">Sort Alphabetically</string>
+    <!-- Reveal (NAM-10) -->
+    <string name="reveal_title">Out of the hat</string>
+    <string name="reveal_done">Done</string>
+    <plurals name="reveal_draw_more">
+        <item quantity="one">Draw %d more</item>
+        <item quantity="other">Draw %d more</item>
+    </plurals>
+    <string name="reveal_none_left">Everyone’s been drawn</string>
+    <string name="reveal_a11y">Drawn: %s</string>
 </resources>
