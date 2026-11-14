@@ -119,9 +119,10 @@ class PreferencesRepositoryTest {
             (1..50).map { async(Dispatchers.Default) { prefs.updateSortType(9) { it.next() } } }.awaitAll()
         }
 
-        // NONE -> ASC -> DESC -> ASC ...: a lost update would repeat a value and skew the split.
-        assertEquals(25, results.count { it == NameSortType.ASC }, "results: $results")
-        assertEquals(25, results.count { it == NameSortType.DESC }, "results: $results")
+        // NONE -> ASC -> DESC -> NONE ...: a lost update would repeat a value and skew the split.
+        assertEquals(17, results.count { it == NameSortType.ASC }, "results: $results")
+        assertEquals(17, results.count { it == NameSortType.DESC }, "results: $results")
+        assertEquals(16, results.count { it == NameSortType.NONE }, "results: $results")
         assertEquals(NameSortType.DESC, prefs.sortType(9).first())
     }
 

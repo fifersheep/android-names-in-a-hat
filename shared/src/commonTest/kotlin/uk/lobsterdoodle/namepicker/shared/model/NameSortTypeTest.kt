@@ -11,10 +11,11 @@ class NameSortTypeTest {
     }
 
     @Test
-    fun `next cycles NONE to ASC to DESC and back to ASC`() {
+    fun `next cycles NONE to ASC to DESC and back to NONE`() {
+        // 3.0 spec D17: Unsorted -> A-Z -> Z-A -> Unsorted (2.7.0 went DESC -> ASC).
         assertEquals(NameSortType.ASC, NameSortType.NONE.next())
         assertEquals(NameSortType.DESC, NameSortType.ASC.next())
-        assertEquals(NameSortType.ASC, NameSortType.DESC.next())
+        assertEquals(NameSortType.NONE, NameSortType.DESC.next())
     }
 
     @Test

@@ -9,11 +9,11 @@ package uk.lobsterdoodle.namepicker.shared.model
 enum class NameSortType {
     NONE, ASC, DESC;
 
-    /** The order selected by the next press of the sort action: NONE → ASC → DESC → ASC. */
+    /** The order selected by the next press of the sort action: NONE → ASC → DESC → NONE (3.0 spec D17). */
     fun next(): NameSortType = when (this) {
         NONE -> ASC
         ASC -> DESC
-        DESC -> ASC
+        DESC -> NONE
     }
 
     companion object {
