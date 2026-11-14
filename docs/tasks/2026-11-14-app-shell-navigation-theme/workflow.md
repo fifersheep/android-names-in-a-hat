@@ -5,7 +5,7 @@ ticket: NAM-7 — Build the app shell: single activity, navigation, theme and in
 ticket-id: NAM-7
 tracker-synced: In Review
 mode: full
-phase: reporting
+phase: complete
 branch: flow/app-shell-navigation-theme
 worktree:
 created: 2026-11-14
@@ -13,9 +13,10 @@ updated: 2026-11-14
 ---
 
 ## Next action
-report.md written and PR #28 opened (https://github.com/fifersheep/android-names-in-a-hat/pull/28); NAM-7 → In Review with the PR linked. Verify PASS at 4ca74b2 (app 45/0, shared 255/0, lint clean, iOS compile). CI was pending when the PR opened. Holding at gate 2 for merge approval.
+Complete. PR #28 is squash-merged into `main` after gate 2 (CI green). Learnings went to memory (outside the repo): names-build-gotchas (kotlin-test-junit in :app; `:app:clean` after deleting res dirs) and names-device-verification (api36_niah is the 2.7.0 data device, never debug-install or pm clear there; new AVDs; process-death, splash, themed-icon and cutout tactics); names-repo-layout corrected. No repo-file learnings. After the merge, NAM-7 → Done. Final verify at 4ca74b2: app 45/0, shared 255/0, lint clean.
 
 ## Decision log
+- 2026-11-14 gate 2: merge approved by user (PR #28, CI green)
 - 2026-11-14 gate 1: plan approved by user (including removing Room's unused MultiInstanceInvalidationService from the merged manifest for AC1)
 - 2026-11-14 Q: what to bind for PreferencesRepository before NAM-6? A: another agent is building NAM-6 now. Wait for it to merge and use the real implementation; no fake.
 - 2026-11-14 Q: stale active-list id vs not gating the splash on the DB? A: route optimistically. The splash waits for the prefs read only; Draw pops to Lists and clears the id if the list is gone.
