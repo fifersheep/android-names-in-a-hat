@@ -3,7 +3,7 @@ task: edit-names-screen
 title: Build the edit names screen
 ticket: NAM-9 — Build the edit names screen (https://linear.app/northtrack/issue/NAM-9/build-the-edit-names-screen)
 ticket-id: NAM-9
-tracker-synced: In Engineering
+tracker-synced: In Review
 mode: full
 phase: reporting
 branch: flow/edit-names-screen
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Code review done (review.md): 0 blocking, 4 advisory, all fixed (e97a81b, 5714c96, 8eea812, 2d6d040) and re-checked on niah_debug_api36. Verify GREEN at 2d6d040: shared 277/0, app 110/0, lint clean. Owner follow-ups: TalkBack walk; real-device scroll smoothness (emulator-bound, AC7). Next: write report.md, open the PR, NAM-9 → In Review, hold at gate 2.
+At gate 2. report.md written; PR #30 open (https://github.com/fifersheep/android-names-in-a-hat/pull/30); NAM-9 → In Review. Verify GREEN at a5f39c2/e1e00a2: shared 277/0, app 110/0, lint 0 errors. Waiting for the user to approve the merge or request changes.
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
