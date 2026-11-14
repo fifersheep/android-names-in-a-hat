@@ -3,7 +3,7 @@ task: draw-from-remaining
 title: Draw additional names from those remaining (drawn state persisted per group)
 ticket: NAM-12 — Draw additional names from those remaining (https://linear.app/northtrack/issue/NAM-12/draw-additional-names-from-those-remaining)
 ticket-id: NAM-12
-tracker-synced: In Engineering
+tracker-synced: In Review
 mode: full
 phase: reporting
 branch: flow/draw-from-remaining
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Reporting: write report.md, open the PR, move NAM-12 to In Review, then hold at gate 2. Review: 0 Blocking; 2 Advisory, both fixed in 6e1af72 (review.md). Verify at 6e1af72 is green: app 165/0, shared jvm 133 / iOS 94 / androidHost 101, lint 0 errors. Outcome checked on niah_api30 (evidence/README.md steps 13-14).
+Gate 2: waiting for the user to approve the merge of PR #32 (https://github.com/fifersheep/android-names-in-a-hat/pull/32); report.md is written. NAM-12 → In Review. Verify at 4017cf3 is green: app 165/0, shared jvm 133 / iOS 94 / androidHost 101, lint 0 errors.
 
 ## Decision log
 - 2026-11-14 mode: full, confirmed by the user. It spans :shared draw logic, a new per-name un-draw in NameRepository/Room, and draw-screen UI, with 11 ACs.
