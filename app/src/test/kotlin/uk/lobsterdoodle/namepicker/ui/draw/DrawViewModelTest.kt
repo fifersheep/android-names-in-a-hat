@@ -436,6 +436,39 @@ class DrawViewModelTest {
     }
 
     @Test
+    fun `draw more that repeats the same names is still a new draw`() = runTest {
+        val vm = vm(FakeNames(name(1, "Ada")))
+        vm.draw()
+        vm.onRevealPlayed()
+        val first = assertNotNull(vm.state.reveal)
+        vm.drawMore()
+        val second = assertNotNull(vm.state.reveal)
+        assertEquals(first.names, second.names)
+        assertTrue(second.drawId != first.drawId)
+        assertFalse(second.played)
+    }
+
+    @Test
+    fun `the draw id survives a restore`() = runTest {
+        val saved = SavedStateHandle()
+        val first = vm(saved = saved).apply { draw() }
+        assertEquals(first.state.reveal?.drawId, vm(saved = saved).state.reveal?.drawId)
+    }
+
+    @Test
+    fun `done before an in-flight draw more lands keeps the reveal closed`() = runTest {
+        val gate = CompletableDeferred<Unit>()
+        val vm = vm()
+        vm.draw()
+        six.selectionGate = gate
+        vm.toggle(4)
+        vm.drawMore()
+        vm.dismiss()
+        gate.complete(Unit)
+        assertNull(vm.state.reveal)
+    }
+
+    @Test
     fun `dismiss clears the result`() = runTest {
         val saved = SavedStateHandle()
         val vm = vm(saved = saved)

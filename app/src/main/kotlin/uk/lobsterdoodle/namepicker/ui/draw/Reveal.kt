@@ -171,14 +171,14 @@ private fun RevealContent(reveal: RevealUi, onDone: () -> Unit, onDrawMore: () -
     val currentOnDone by rememberUpdatedState(onDone)
 
     // --- Motion: one set of animatables per result; at rest at the end layout once played. ---
-    val reduced = remember { reducedMotion(context) }
+    val reduced = remember(reveal.drawId) { reducedMotion(context) }
     val start = if (reveal.played) 1f else 0f
-    val shake = remember(reveal.names) { Animatable(0f) }
-    val cards = remember(reveal.names) { reveal.names.map { Animatable(start) } }
-    val buttons = remember(reveal.names) { Animatable(start) }
-    val fade = remember(reveal.names) { Animatable(if (reveal.played || !reduced) 1f else 0f) }
+    val shake = remember(reveal.drawId) { Animatable(0f) }
+    val cards = remember(reveal.drawId) { reveal.names.map { Animatable(start) } }
+    val buttons = remember(reveal.drawId) { Animatable(start) }
+    val fade = remember(reveal.drawId) { Animatable(if (reveal.played || !reduced) 1f else 0f) }
     val spring = MaterialTheme.motionScheme.defaultSpatialSpec<Float>()
-    LaunchedEffect(reveal.names) {
+    LaunchedEffect(reveal.drawId) {
         if (reveal.played) return@LaunchedEffect
         if (reduced) {
             cards.forEach { it.snapTo(1f) }
@@ -215,8 +215,8 @@ private fun RevealContent(reveal: RevealUi, onDone: () -> Unit, onDrawMore: () -
     // speaks on a change). A restore doesn't announce again. ---
     val spokenNames = reveal.names.map { nameLabel(it.text) }
     val announcement = stringResource(R.string.reveal_a11y, ListFormatter.getInstance().format(spokenNames))
-    var spoken by remember(reveal.names) { mutableStateOf(if (reveal.played) announcement else "") }
-    LaunchedEffect(reveal.names) {
+    var spoken by remember(reveal.drawId) { mutableStateOf(if (reveal.played) announcement else "") }
+    LaunchedEffect(reveal.drawId) {
         if (!reveal.played) {
             withFrameNanos {}
             spoken = announcement

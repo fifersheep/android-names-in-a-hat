@@ -42,7 +42,12 @@ data class ChipUi(val id: Long, val text: String, val visual: ChipVisual)
 /** One drawn name, as it was when drawn: a later rename or delete never changes a result. */
 data class RevealName(val id: Long, val text: String)
 
+/** A stored result: the draw's id and its names. */
+private data class DrawResult(val drawId: Long, val names: List<RevealName>)
+
 data class RevealUi(
+    /** One per draw, so a "Draw more" that happens to repeat the same names still plays and announces. */
+    val drawId: Long,
     val names: List<RevealName>,
     /** "Draw n more": the chosen count, capped at what is left in the hat. */
     val more: Int,
@@ -118,7 +123,7 @@ class DrawViewModel @AssistedInject constructor(
                 draw = draw,
                 count = n,
                 reveal = result?.let {
-                    RevealUi(it, more = if (draw.inHat > 0) n else 0, noneLeft = draw.inHat == 0, played = played)
+                    RevealUi(it.drawId, it.names, more = if (draw.inHat > 0) n else 0, noneLeft = draw.inHat == 0, played = played)
                 },
             )
         }.stateIn(viewModelScope, SharingStarted.Eagerly, DrawUiState())
@@ -201,9 +206,12 @@ class DrawViewModel @AssistedInject constructor(
     private fun drawInto() {
         if (drawing) return
         drawing = true
+        // The result this request was made against; a Done that lands first cancels it.
+        val against = result.value?.drawId
         viewModelScope.launch {
             try {
                 writes.withLock {
+                    if (result.value?.drawId != against) return@withLock
                     val names = current()
                     val inHat = names.count { it.inHat }
                     if (inHat < MIN_NAMES_TO_DRAW) return@withLock
@@ -231,17 +239,22 @@ class DrawViewModel @AssistedInject constructor(
     }
 
     private fun setResult(value: List<RevealName>?) {
-        result.value = value
+        val next = value?.let {
+            val id = (saved.get<Long>(KEY_DRAW_ID) ?: 0L) + 1
+            saved[KEY_DRAW_ID] = id
+            DrawResult(id, it)
+        }
+        result.value = next
         played.value = false
         saved[KEY_RESULT_IDS] = value?.map { it.id }?.toLongArray()
         saved[KEY_RESULT_TEXTS] = value?.mapTo(ArrayList()) { it.text }
         saved[KEY_PLAYED] = false
     }
 
-    private fun restoreResult(): List<RevealName>? {
+    private fun restoreResult(): DrawResult? {
         val ids = saved.get<LongArray>(KEY_RESULT_IDS) ?: return null
         val texts = saved.get<ArrayList<String>>(KEY_RESULT_TEXTS) ?: return null
-        return ids.zip(texts) { id, text -> RevealName(id, text) }
+        return DrawResult(saved.get<Long>(KEY_DRAW_ID) ?: 0L, ids.zip(texts) { id, text -> RevealName(id, text) })
     }
 
     private fun Name.visual() = when {
@@ -260,5 +273,6 @@ class DrawViewModel @AssistedInject constructor(
         const val KEY_RESULT_IDS = "resultIds"
         const val KEY_RESULT_TEXTS = "resultTexts"
         const val KEY_PLAYED = "revealPlayed"
+        const val KEY_DRAW_ID = "drawId"
     }
 }
