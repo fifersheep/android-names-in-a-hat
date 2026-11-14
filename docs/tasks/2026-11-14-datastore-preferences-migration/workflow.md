@@ -5,7 +5,7 @@ ticket: NAM-6 — Replace SharedPreferences with DataStore and migrate existing 
 ticket-id: NAM-6
 tracker-synced: In Engineering
 mode: full
-phase: code-review
+phase: reporting
 branch: flow/datastore-preferences-migration
 worktree: ../android-names-in-a-hat-nam-6
 created: 2026-11-14
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Implementation complete 2026-11-14 (commits 351581d..37290e9). Full verify `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests` PASS: 254 tests / 0 failures (baseline 234), and the iOS main targets compile. Next: code review with one flow-reviewer pass over main..HEAD against plan.md.
+Code review done 2026-11-14 (review.md): 0 blocking, 2 advisory, both addressed. The lazy settings path is fixed in b1cbfee, and the decoded .preferences_pb is captured. Verify PASS: 255 tests / 0 failures. Outcome driven under Robolectric with the production factory: a 2.7.0 XML file becomes settings.preferences_pb with the 4 expected keys and the old file deleted. Next: write report.md, open the PR, move NAM-6 to In Review, then gate 2.
 
 ## Decision log
 - 2026-11-14 mode: full (user confirmed). Reason: new multiplatform library (DataStore in :shared), Android-only SharedPreferencesMigration wiring, open questions on per-platform file location and how a group delete reaches the sort key.
