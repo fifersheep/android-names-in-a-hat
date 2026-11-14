@@ -6,14 +6,18 @@ import uk.lobsterdoodle.namepicker.shared.repository.NameRepository
 /** Adds, renames and deletes names and changes which are selected, enforcing the label rules. */
 class NameEditor(private val names: NameRepository) {
 
-    /** Adds the trimmed [raw] name to a group, selected (as 2.7.0 did); returns its id, or [WriteResult.Blank]. */
+    /**
+     * Adds [raw] to a group, selected (as 2.7.0 did), after [validateName]: inner tabs and line breaks
+     * become spaces and the ends are trimmed. Returns its id, or [WriteResult.Blank].
+     */
     suspend fun add(groupId: Long, raw: String): WriteResult<Long> {
-        val text = validateLabel(raw) ?: return WriteResult.Blank
+        val text = validateName(raw) ?: return WriteResult.Blank
         return WriteResult.Saved(names.add(groupId, text, selected = true))
     }
 
+    /** Renames a name, validated as [add] does. */
     suspend fun rename(id: Long, raw: String): WriteResult<Unit> {
-        val text = validateLabel(raw) ?: return WriteResult.Blank
+        val text = validateName(raw) ?: return WriteResult.Blank
         names.rename(id, text)
         return WriteResult.Saved(Unit)
     }

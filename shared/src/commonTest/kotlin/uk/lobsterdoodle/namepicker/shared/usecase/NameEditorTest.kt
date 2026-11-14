@@ -51,6 +51,18 @@ class NameEditorTest {
     }
 
     @Test
+    fun `add replaces inner line breaks and tabs with spaces`() = runTest {
+        editor.add(24, "Ada\nBen\tCy")
+        assertEquals(listOf("add(24, Ada Ben Cy, true)"), names.calls)
+    }
+
+    @Test
+    fun `rename replaces inner line breaks and tabs with spaces`() = runTest {
+        assertEquals(WriteResult.Saved(Unit), editor.rename(1, "Jack\r\nBauer"))
+        assertEquals("Jack Bauer", names.names.value.single { it.id == 1L }.text)
+    }
+
+    @Test
     fun `delete returns the deleted name`() = runTest {
         assertEquals(Name(1, groupId = 24, text = "Jack", selected = false), editor.delete(1))
         assertTrue(names.names.value.none { it.id == 1L })
