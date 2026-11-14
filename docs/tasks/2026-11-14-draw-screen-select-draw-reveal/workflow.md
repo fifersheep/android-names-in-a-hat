@@ -5,7 +5,7 @@ ticket: NAM-10 — Build the draw screen: select names, draw, reveal (https://li
 ticket-id: NAM-10
 tracker-synced: In Engineering
 mode: full
-phase: code-review
+phase: reporting
 branch: flow/draw-screen-select-draw-reveal
 worktree: /Users/scoot/dev/names-in-a-hat/android-names-in-a-hat-nam10
 created: 2026-11-14
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Code review: dispatch flow-reviewer on origin/main..HEAD (main 8bae63c) against plan.md; fix blocking findings; then outcome verification. Implementation is complete: 9/9 tasks, verify green (:shared jvm 120, host 89, iOS 82; :app 143; lint 0 errors). One open item for the user: AC1's Z–A-from-2.7.0 check (see Deviations).
+Reporting: write report.md from review.md and evidence/README.md, open the PR, move NAM-10 to In Review, then hold at gate 2. Review: 1 Blocking (fixed, 7111bce), 3 cheap Advisories fixed (7111bce, 85bd0ca). Verify green: :shared 120/89/82, :app 146, lint 0 errors. Open for the user: AC1's Z–A-from-2.7.0 check.
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
@@ -50,3 +50,5 @@ Code review: dispatch flow-reviewer on origin/main..HEAD (main 8bae63c) against 
 - 2026-11-14 task 9: the reveal title was left-aligned in portrait and large layouts; it is now full width and centred.
 - 2026-11-14 task 9: predictive back on the reveal works (a dialog window gives PredictiveBackHandler its progress), so no fallback was needed.
 - 2026-11-14 task 9: the title morph wasn't captured mid-transition (screencap is too slow), so it is not evidenced.
+- 2026-11-14 review: deviations the reviewer found that hadn't been logged. Reduced motion fades the whole takeover with one `Animatable` alpha (tween 300) instead of `AnimatedVisibility(fadeIn)`. `status` stays a separate flow next to `uiState`. `HatIllustration` takes `hat`/`sparkle`, not `body`/`band`/`sparkle`, because the band shares the sparkle colour in both mock-ups.
+- 2026-11-14 review: the fix for B1 adds a `drawId` to `RevealUi` and to saved state (`KEY_DRAW_ID`), which the plan didn't have.
