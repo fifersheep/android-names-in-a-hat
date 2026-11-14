@@ -5,7 +5,7 @@ ticket: NAM-9 — Build the edit names screen (https://linear.app/northtrack/iss
 ticket-id: NAM-9
 tracker-synced: In Engineering
 mode: full
-phase: implementation
+phase: code-review
 branch: flow/edit-names-screen
 worktree: ../android-names-in-a-hat-nam-9
 created: 2026-11-14
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Gate 1 approved. Implement plan.md tasks 1–6 in order with per-task commits; start with task 1 (:shared normaliseName + NameEditor + tests). Baseline: shared 256/0, app 74/0 at 0201792.
+Implementation complete (tasks 1–6 ticked). Final verify GREEN at HEAD: `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests :app:testDebugUnitTest :app:lintDebug` exit 0; shared 277/0, app 110/0. Device evidence in evidence/README.md (phone, tablet, api36_niah install-over). Next: code review of main@0201792..HEAD against plan.md.
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
@@ -32,10 +32,12 @@ Gate 1 approved. Implement plan.md tasks 1–6 in order with per-task commits; s
 - [x] 3. EditNamesViewModel and tests — 55f6c8c
 - [x] 4. Copy and icons — ed6191b
 - [x] 5. Names section UI and wiring — 7278cc1
-- [ ] 6. Device verification and evidence
+- [x] 6. Device verification and evidence — 412152b
 
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
 - 2026-11-14 task 1: added `validateName(raw)` (normalise + validateLabel) in Labels.kt as the single entry point, so NameEditor and the EditNamesViewModel's local add check share one function.
 - 2026-11-14 setup briefly checked out flow/edit-names-screen in the main checkout while the NAM-8 session had flow/groups-screen there (no commits, no file changes; restored within a minute). NAM-9 moved to a worktree.
 - 2026-11-14 task 2: the `name_untitled` string was added here, not in task 4, because `nameLabel()` needs it to compile.
+- 2026-11-14 task 6: inner line-break paste not checked on device (adb can't set the clipboard on this image); covered by LabelsTest/NameEditorTest on all targets and EditNamesViewModelTest.
+- 2026-11-14 task 6: a first tablet run let the 10 s snackbars time out between tool calls (correct commits, test data lost); the list-pending check was rerun as one script. See evidence/README.md.
