@@ -30,6 +30,12 @@ class LayoutTest {
     fun `a tablet in landscape is list-detail`() = assertTrue(isListDetail(size(1280, 800)))
 
     @Test
+    fun `a phone in landscape has compact height`() = assertTrue(isCompactHeight(size(915, 412)))
+
+    @Test
+    fun `a phone in portrait does not have compact height`() = assertFalse(isCompactHeight(size(412, 915)))
+
+    @Test
     fun `the list pane is 360 dp below 1600 dp`() = assertEquals(360.dp, listPaneWidth(size(1599, 900)))
 
     @Test

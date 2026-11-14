@@ -21,9 +21,9 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import uk.lobsterdoodle.namepicker.ShellViewModel
+import uk.lobsterdoodle.namepicker.ui.editlist.EditListScreen
+import uk.lobsterdoodle.namepicker.ui.lists.ListsScreen
 import uk.lobsterdoodle.namepicker.ui.placeholder.DrawPlaceholder
-import uk.lobsterdoodle.namepicker.ui.placeholder.EditListPlaceholder
-import uk.lobsterdoodle.namepicker.ui.placeholder.ListsPlaceholder
 import uk.lobsterdoodle.namepicker.ui.placeholder.PickAListPlaceholder
 
 /**
@@ -47,6 +47,7 @@ fun AppNavigation(start: List<AppKey>, shell: ShellViewModel) {
     val adaptiveInfo = currentWindowAdaptiveInfoV2()
     val sizeClass = adaptiveInfo.windowSizeClass
     val listDetail = isListDetail(sizeClass)
+    val compactHeight = isCompactHeight(sizeClass)
     val defaultDirective = calculatePaneScaffoldDirective(adaptiveInfo)
     val directive = remember(defaultDirective, listDetail) {
         if (listDetail) {
@@ -73,6 +74,8 @@ fun AppNavigation(start: List<AppKey>, shell: ShellViewModel) {
         backStack.listGone(id)
         shell.onListGone(id)
     }
+    // The list the detail pane shows (list-detail), for the Lists pane's selection and delete.
+    val openId = backStack.drop(1).firstNotNullOfOrNull { (it as? Draw)?.listId ?: (it as? EditList)?.listId }
 
     SharedTransitionLayout {
         CompositionLocalProvider(LocalSharedTransitionScope provides this) {
@@ -92,15 +95,23 @@ fun AppNavigation(start: List<AppKey>, shell: ShellViewModel) {
                         metadata = ListDetailSceneStrategy.listPane(detailPlaceholder = { PickAListPlaceholder() }) +
                             ListDetailSceneStrategy.preferredPaneSize(width = listPaneWidth(sizeClass)),
                     ) {
-                        ListsPlaceholder(
+                        ListsScreen(
+                            openId = openId,
+                            singlePane = !listDetail,
+                            compactHeight = compactHeight,
                             onOpen = { backStack.openList(it) },
                             onNew = { backStack.newList() },
                             onEdit = { backStack.editList(it, fromDraw = false) },
+                            // Deleting the open list closes the detail and clears the active list at
+                            // once; Undo reopens it (spec "Large screens").
+                            onHideOpen = listGone,
+                            onReopen = { backStack.openList(it) },
                         )
                     }
                     entry<Draw>(metadata = ListDetailSceneStrategy.detailPane()) { key ->
                         DrawPlaceholder(
                             key = key,
+                            singlePane = !listDetail,
                             onUp = back,
                             onEdit = { backStack.editList(key.listId, fromDraw = true) },
                             onGone = listGone,
@@ -112,8 +123,10 @@ fun AppNavigation(start: List<AppKey>, shell: ShellViewModel) {
                         clazzContentKey = { "EditList:${it.session}" },
                         metadata = ListDetailSceneStrategy.detailPane(),
                     ) { key ->
-                        EditListPlaceholder(
+                        EditListScreen(
                             key = key,
+                            singlePane = !listDetail,
+                            compactHeight = compactHeight,
                             onUp = back,
                             onCreated = { backStack.listCreated(it, key.session) },
                             onDone = { backStack.doneEditing() },

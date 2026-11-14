@@ -40,8 +40,6 @@
     <string name="edit_list_name">List name</string>
     <string name="edit_list_name_hint">e.g. Year 5 Maple</string>
     <string name="edit_list_name_blank">Enter a list name</string>
-    <!-- Placeholder only: removed when NAM-8 wires the real Edit list screen. -->
-    <string name="placeholder_create">Create list</string>
 
     <!-- Draw (NAM-7 shell; NAM-10 adds the rest) -->
     <string name="draw_back">Back to lists</string>
