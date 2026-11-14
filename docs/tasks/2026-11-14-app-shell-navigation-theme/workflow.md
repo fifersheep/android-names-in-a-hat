@@ -5,7 +5,7 @@ ticket: NAM-7 — Build the app shell: single activity, navigation, theme and in
 ticket-id: NAM-7
 tracker-synced: In Engineering
 mode: full
-phase: research
+phase: planning
 branch: flow/app-shell-navigation-theme
 worktree:
 created: 2026-11-14
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-HOLD: research done (research.md). Waiting for NAM-6 (DataStore PreferencesRepository, being built by another agent) to merge into main. When it has merged: rebase flow/app-shell-navigation-theme onto main, add the NAM-6 implementation's Hilt binding to research.md findings, then set phase: planning and run flow-plan. Baseline 2026-11-14 @ 271fd7b: `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests` PASS, 234 tests / 0 failures. NAM-7 → In Engineering.
+Research done (research.md, including the NAM-6 section). NAM-6 merged as PR #27, and the branch was rebased onto main @ c25a883 on 2026-11-14. Next: write plan.md, run the plan-critic, then hold at gate 1. Baseline 2026-11-14 @ 271fd7b: `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests` PASS, 234 tests / 0 failures (re-run on the rebased branch during planning).
 
 ## Decision log
 - 2026-11-14 Q: what to bind for PreferencesRepository before NAM-6? A: another agent is building NAM-6 now. Wait for it to merge and use the real implementation; no fake.

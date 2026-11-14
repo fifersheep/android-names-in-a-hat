@@ -121,6 +121,17 @@ All of these fit compileSdk 37 and AGP 9.5.1. NAM-2's API-stability table is sti
 - `LocalListDetailSceneScope` is null outside list-detail. Use it to hide Up in two-pane.
 - The default `backNavigationBehavior = PopUntilScaffoldValueChange`. Picking another list in two-pane should **replace** the top `Draw` rather than push, so back doesn't walk through every list opened (spec rule 5: back from Draw lands on Lists).
 
+### NAM-6 landed (main @ c25a883, PR #27); branch rebased onto it 2026-11-14
+- The real implementation is `SettingsStorage(context)` (`shared/src/androidMain/.../data/SettingsStorage.android.kt:13-21`). It exposes `.preferences: PreferencesRepository` (`commonMain/.../data/SettingsStorage.kt:31-34`).
+- **Hilt must provide it as an app-lifetime `@Singleton`.** A second instance on the same file throws on first use (`SettingsStorage.kt:26-29`; NAM-6 report.md:71-72).
+- `NamesStorage(context)` is the same: one per process.
+- Construction is cheap on the main thread. The path is produced lazily on the store's IO scope (NAM-6 report.md:19).
+- The first read runs the 2.7.0 `name_list` SharedPreferences migration once, inside DataStore. So on the first 3.0 launch the splash waits for that small migration. It's a prefs read, not the DB, which the optimistic-routing decision allows.
+- A corrupt file is replaced with empty settings. A read `IOException` still surfaces through the flows, and **NAM-7 decides what launch does**. Default: treat a failed read as "no active list", route to `[Lists]`, and log it.
+- `gridColumns` is retired: the implementation always emits 2, and NAM-10 removes it (`PreferencesRepository.kt:24-28`). The shell doesn't use it.
+- CI unit-test job now also runs `:shared:testAndroidHostTest` (Robolectric, sdk=34) (`.github/workflows/android.yml:48-49`).
+- The DataStore preferences dependency is `implementation` in `:shared`. `:app` sees only the interface, so it needs no DataStore dependency.
+
 ## Constraints & prior art
 - NAM-2 research already checked API stability on 2026-11-11 (`docs/tasks/2026-11-11-design-spec-3-0/research.md:33-57`). Re-confirmed above.
 - The root `build.gradle.kts` declares the KMP plugin `apply false` to lift built-in Kotlin's KGP to 2.4.21. Register the serialization plugin the same way.
@@ -152,6 +163,7 @@ All of these fit compileSdk 37 and AGP 9.5.1. NAM-2's API-stability table is sti
   - On-device checks via AVDs for AC3, AC4, AC5 and AC7, with screenshots in report.md.
   - No instrumented tests: CI doesn't run them.
 - **D-g, legacy 2.7.0 strings** stay until the screen tickets replace their copy. The shell adds only what it uses.
+- **D-i, failed settings read at launch:** route to `[Lists]` and log (NAM-6 hand-off).
 - **D-h, EditList contentKey on replace:** decided in the plan, with the trade-off above. The shell guarantees the replace is a single back-stack write.
 
 ### Shape-changing (asked)
