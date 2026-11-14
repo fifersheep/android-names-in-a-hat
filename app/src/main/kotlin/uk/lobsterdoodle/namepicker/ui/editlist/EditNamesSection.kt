@@ -103,6 +103,9 @@ fun ColumnScope.EditListNamesSlot(
     // The rename that has already taken focus. A rename row re-enters composition when it scrolls
     // back into view; it must not take focus back from the add field then (review A1).
     var renameFocused by rememberSaveable { mutableStateOf<Long?>(null) }
+    // A closed rename forgets it, so reopening the same name takes focus again.
+    val renamingId = vm?.renamingId
+    LaunchedEffect(renamingId) { if (renamingId == null) renameFocused = null }
 
     if (vm != null) {
         DelayedDeleteSnackbar(state.pending, snackbar, vm)
