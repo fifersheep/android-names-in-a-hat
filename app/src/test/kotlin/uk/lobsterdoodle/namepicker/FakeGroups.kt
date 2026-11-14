@@ -10,10 +10,18 @@ import uk.lobsterdoodle.namepicker.shared.repository.GroupRepository
 /** In-memory [GroupRepository] for `:app` tests. */
 class FakeGroups(vararg initial: Group) : GroupRepository {
     val groups = MutableStateFlow(initial.toList())
+
+    /** Name and drawn counts per group id, read on each emission of [observeGroups]; absent = 0. */
+    val counts = mutableMapOf<Long, Pair<Int, Int>>()
     private var nextId = (initial.maxOfOrNull { it.id } ?: 0) + 1
 
     override fun observeGroups(): Flow<List<GroupSummary>> =
-        groups.map { all -> all.reversed().map { GroupSummary(it, nameCount = 0) } }
+        groups.map { all ->
+            all.reversed().map {
+                val (names, drawn) = counts[it.id] ?: (0 to 0)
+                GroupSummary(it, nameCount = names, drawnCount = drawn)
+            }
+        }
 
     override fun observeGroup(id: Long): Flow<Group?> = groups.map { all -> all.find { it.id == id } }
 

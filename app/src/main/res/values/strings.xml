@@ -2,51 +2,59 @@
 <resources>
     <string name="app_name">Names in a Hat</string>
 
-    <!-- 3.0 shell (NAM-7). Keys and text from the spec's copy deck; the screen tickets add the rest. -->
+    <!-- 3.0 copy deck (docs/design/3.0-spec.md "Copy deck"). Keys and text come from the spec. -->
+
+    <!-- Lists (NAM-8) -->
     <string name="lists_title">Your lists</string>
     <string name="lists_new">New list</string>
+    <string name="lists_empty_title">No lists yet</string>
+    <string name="lists_empty_body">Make a list of names, then draw them from the hat.</string>
     <plurals name="lists_item_names">
         <item quantity="one">%d name</item>
         <item quantity="other">%d names</item>
     </plurals>
+    <plurals name="lists_item_drawn">
+        <item quantity="one">· %d drawn</item>
+        <item quantity="other">· %d drawn</item>
+    </plurals>
+    <string name="list_options">Options for %s</string>
     <string name="list_edit">Edit list</string>
     <string name="list_delete">Delete list</string>
+    <string name="list_deleted">%s deleted</string>
+    <!-- Shown for a blank list name migrated from 2.7.0, which had no validation (GitHub #6). -->
+    <string name="list_untitled">Untitled list</string>
+    <string name="action_undo">Undo</string>
     <string name="action_back">Back</string>
-    <string name="draw_back">Back to lists</string>
+    <string name="action_more">More options</string>
+    <string name="large_pick_list">Pick a list to draw from</string>
+
+    <!-- About (D19) -->
+    <string name="about">About</string>
+    <string name="about_version">Version %s</string>
+    <string name="about_made_by">Made by Northtrack Studio</string>
+    <string name="about_previously">Previously published by Lobster Doodle</string>
+    <string name="about_privacy">Privacy policy</string>
+
+    <!-- Edit list, list-name header (NAM-8) -->
     <string name="edit_title_new">New list</string>
     <string name="edit_title">Edit list</string>
     <string name="edit_done">Done</string>
     <string name="edit_list_name">List name</string>
-    <string name="large_pick_list">Pick a list to draw from</string>
-    <!-- Placeholder only: NAM-8 creates the list when its name is committed. -->
-    <string name="placeholder_create">Create list</string>
+    <string name="edit_list_name_hint">e.g. Year 5 Maple</string>
+    <string name="edit_list_name_blank">Enter a list name</string>
 
-    <!-- 2.7.0 strings, kept until the screen tickets replace them with the copy deck. -->
+    <!-- Draw (NAM-7 shell; NAM-10 adds the rest) -->
+    <string name="draw_back">Back to lists</string>
 
-    <string name="action_settings">Settings</string>
+    <!-- 2.7.0 strings still to be replaced: names section (NAM-9) and draw (NAM-10). -->
 
-    <string name="title_activity_overview">Draws</string>
-    <string name="title_activity_create_group">Create Draw</string>
     <string name="title_activity_add_names">Add Names</string>
     <string name="title_activity_selection">Draw Names</string>
 
-    <string name="overview_label">Select a draw</string>
-    <string name="overview_add_group">Add Draw</string>
-    <string name="overview_add_group_hint">Begin by adding a draw. This is where you\'ll create a list of names to draw from.</string>
-
-    <string name="add_group_input_label_name">Draw Title</string>
-    <string name="add_group_button_done">Done</string>
     <string name="add_group_button_add_name">Add Name</string>
     <string name="add_group_label_names">Names</string>
-    <string name="add_group_group_name_input_hint">e.g. Team Rocket</string>
     <string name="add_group_name_input_hint">e.g. Jesse</string>
 
-    <string name="group_saved_successfully">Draw Saved</string>
-
-    <string name="overview_card_overflow_description">Draw Options</string>
-    <string name="overview_card_overflow_edit_names">Edit Names</string>
-    <string name="overview_card_overflow_edit_group">Edit Draw Details</string>
-    <string name="overview_card_overflow_delete_group">Delete Draw</string>
     <string name="delete_name_button_description">Delete Name</string>
 
     <string name="generated_names_dialog_title_singular">The selected name is…</string>

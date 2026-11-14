@@ -15,6 +15,10 @@ fun isListDetail(sizeClass: WindowSizeClass): Boolean =
     sizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_EXPANDED_LOWER_BOUND) &&
         sizeClass.isHeightAtLeastBreakpoint(HEIGHT_DP_MEDIUM_LOWER_BOUND)
 
+/** Compact height (below 480 dp): phone landscape specs, whatever the width (spec "Large screens"). */
+fun isCompactHeight(sizeClass: WindowSizeClass): Boolean =
+    !sizeClass.isHeightAtLeastBreakpoint(HEIGHT_DP_MEDIUM_LOWER_BOUND)
+
 /** The Lists pane: 360 dp, or 400 dp from 1600 dp wide. */
 fun listPaneWidth(sizeClass: WindowSizeClass): Dp =
     if (sizeClass.isWidthAtLeastBreakpoint(WIDTH_DP_EXTRA_LARGE_LOWER_BOUND)) 400.dp else 360.dp

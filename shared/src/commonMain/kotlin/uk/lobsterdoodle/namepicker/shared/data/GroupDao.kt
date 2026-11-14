@@ -8,9 +8,13 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal interface GroupDao {
-    /** Newest first, as 2.7.0 listed them (`ORDER BY column_group_id DESC`). */
+    /**
+     * Newest first, as 2.7.0 listed them (`ORDER BY column_group_id DESC`). `drawn` is 0 or 1
+     * (schema v3, `Migrations.kt`); the LEFT JOIN gives NULL for a group with no names, hence COALESCE.
+     */
     @Query(
-        "SELECT g.id AS id, g.label AS label, COUNT(n.id) AS nameCount " +
+        "SELECT g.id AS id, g.label AS label, COUNT(n.id) AS nameCount, " +
+            "COALESCE(SUM(n.drawn), 0) AS drawnCount " +
             "FROM name_groups g LEFT JOIN names n ON n.group_id = g.id " +
             "GROUP BY g.id ORDER BY g.id DESC",
     )

@@ -56,6 +56,24 @@ class RoomRepositoryTest {
     }
 
     @Test
+    fun `group summaries count drawn names and an empty group has none`() = test {
+        val a = groups.create("Class A")
+        val empty = groups.create("Empty")
+        val ann = names.add(a, "Ann", selected = true)
+        names.add(a, "Bob", selected = false)
+        val cat = names.add(a, "Cat", selected = false)
+        names.markDrawn(listOf(ann, cat))
+
+        assertEquals(
+            listOf(
+                GroupSummary(Group(empty, "Empty"), nameCount = 0, drawnCount = 0),
+                GroupSummary(Group(a, "Class A"), nameCount = 3, drawnCount = 2),
+            ),
+            groups.observeGroups().first(),
+        )
+    }
+
+    @Test
     fun `observeGroup follows rename and becomes null after delete`() = test {
         val id = groups.create("Old")
         groups.rename(id, "New")

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    The app icon as a flat image for the About sheet (spec "About"; art from
+    docs/design/3.0-mockups/project/ListsScreen.dc.html:71-79). The launcher icon is an adaptive
+    icon, which painterResource can't draw. Brand colours, not theme colours, as on the launcher.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="72dp"
+    android:height="72dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#35319A"
+        android:pathData="M54,0 A54,54 0 1 1 54,108 A54,54 0 1 1 54,0 Z" />
+    <path
+        android:fillColor="#F5BE48"
+        android:pathData="M30,24 L31.5,28.5 L36,30 L31.5,31.5 L30,36 L28.5,31.5 L24,30 L28.5,28.5 Z" />
+    <path
+        android:fillColor="#F5BE48"
+        android:pathData="M78,19 L79.2,22.8 L83,24 L79.2,25.2 L78,29 L76.8,25.2 L73,24 L76.8,22.8 Z" />
+    <path
+        android:fillColor="#F5BE48"
+        android:pathData="M84,38 L85,41 L88,42 L85,43 L84,46 L83,43 L80,42 L83,41 Z" />
+    <path
+        android:fillColor="#F4F2FF"
+        android:pathData="M38,32 L70,32 L68,66 L40,66 Z" />
+    <path
+        android:fillColor="#F5BE48"
+        android:pathData="M39.5,56 H68.5 V62 H39.5 Z" />
+    <path
+        android:fillColor="#F4F2FF"
+        android:pathData="M30,64 H78 A4,4 0 0 1 82,68 A4,4 0 0 1 78,72 H30 A4,4 0 0 1 26,68 A4,4 0 0 1 30,64 Z" />
+</vector>
