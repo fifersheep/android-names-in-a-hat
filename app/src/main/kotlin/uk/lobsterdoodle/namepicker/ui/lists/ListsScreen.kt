@@ -50,6 +50,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import uk.lobsterdoodle.namepicker.R
+import uk.lobsterdoodle.namepicker.ui.listLabel
 import uk.lobsterdoodle.namepicker.ui.components.HatIllustration
 import uk.lobsterdoodle.namepicker.ui.components.sharedBoundsIfSinglePane
 
@@ -186,7 +187,7 @@ private fun DelayedDeleteSnackbar(
     openId: Long?,
     onReopen: (Long) -> Unit,
 ) {
-    val message = pending?.let { stringResource(R.string.list_deleted, it.label) }
+    val message = pending?.let { stringResource(R.string.list_deleted, listLabel(it.label)) }
     val undo = stringResource(R.string.action_undo)
     val reopen by rememberUpdatedState(onReopen)
     val detailOpen by rememberUpdatedState(openId)
@@ -223,10 +224,10 @@ private fun ListCardItem(
         colors = colors,
         modifier = modifier,
         supportingContent = { Text(countLine(card)) },
-        trailingContent = { CardOverflow(card.label, onEdit, onDelete) },
+        trailingContent = { CardOverflow(listLabel(card.label), onEdit, onDelete) },
     ) {
         Text(
-            card.label,
+            listLabel(card.label),
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.sharedBoundsIfSinglePane(ListsSharedKeys.title(card.id), singlePane),
         )

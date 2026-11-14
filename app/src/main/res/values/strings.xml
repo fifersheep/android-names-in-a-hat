@@ -21,6 +21,8 @@
     <string name="list_edit">Edit list</string>
     <string name="list_delete">Delete list</string>
     <string name="list_deleted">%s deleted</string>
+    <!-- Shown for a blank list name migrated from 2.7.0, which had no validation (GitHub #6). -->
+    <string name="list_untitled">Untitled list</string>
     <string name="action_undo">Undo</string>
     <string name="action_back">Back</string>
     <string name="action_more">More options</string>

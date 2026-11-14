@@ -26,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import uk.lobsterdoodle.namepicker.R
 import uk.lobsterdoodle.namepicker.navigation.Draw
 import uk.lobsterdoodle.namepicker.ui.ListStatus
+import uk.lobsterdoodle.namepicker.ui.listLabel
 import uk.lobsterdoodle.namepicker.ui.components.HatIllustration
 import uk.lobsterdoodle.namepicker.ui.components.UpButton
 import uk.lobsterdoodle.namepicker.ui.components.sharedBoundsIfSinglePane
@@ -50,7 +51,7 @@ fun DrawPlaceholder(key: Draw, singlePane: Boolean, onUp: () -> Unit, onEdit: ()
             TopAppBar(
                 title = {
                     Text(
-                        (status as? ListStatus.Present)?.label.orEmpty(),
+                        (status as? ListStatus.Present)?.let { listLabel(it.label) }.orEmpty(),
                         style = MaterialTheme.typography.headlineMedium,
                         modifier = Modifier.sharedBoundsIfSinglePane(ListsSharedKeys.title(key.listId), singlePane),
                     )
