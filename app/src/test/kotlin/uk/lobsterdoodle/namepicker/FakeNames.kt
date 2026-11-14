@@ -19,6 +19,9 @@ class FakeNames(vararg initial: Name) : NameRepository {
     /** While set, selection writes suspend until it completes: a slow database write (NAM-10 race tests). */
     var selectionGate: CompletableDeferred<Unit>? = null
 
+    /** While set, [markDrawn] suspends until it completes: a slow draw write (NAM-12). */
+    var drawGate: CompletableDeferred<Unit>? = null
+
     fun texts(groupId: Long) = names.value.filter { it.groupId == groupId }.map { it.text }
 
     override fun observeNames(groupId: Long): Flow<List<Name>> =
@@ -57,12 +60,19 @@ class FakeNames(vararg initial: Name) : NameRepository {
 
     override suspend fun markDrawn(ids: Collection<Long>) {
         calls += "markDrawn($ids)"
+        drawGate?.await()
+        check(!failWrites) { "write failed" }
         update({ it.id in ids }) { it.copy(drawn = true) }
     }
 
     override suspend fun clearDrawn(groupId: Long) {
         calls += "clearDrawn($groupId)"
         update({ it.groupId == groupId }) { it.copy(drawn = false) }
+    }
+
+    override suspend fun clearDrawn(ids: Collection<Long>) {
+        calls += "clearDrawn($ids)"
+        update({ it.id in ids }) { it.copy(drawn = false) }
     }
 
     private fun update(where: (Name) -> Boolean, change: (Name) -> Name) {

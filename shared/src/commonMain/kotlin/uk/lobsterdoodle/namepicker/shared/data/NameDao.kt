@@ -43,4 +43,7 @@ internal interface NameDao {
 
     @Query("UPDATE names SET drawn = 0 WHERE group_id = :groupId")
     suspend fun clearDrawn(groupId: Long)
+
+    @Query("UPDATE names SET drawn = 0 WHERE id IN (:ids)")
+    suspend fun clearDrawnByIds(ids: List<Long>)
 }

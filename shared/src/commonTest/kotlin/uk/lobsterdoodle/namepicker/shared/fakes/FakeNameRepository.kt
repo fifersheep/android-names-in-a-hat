@@ -10,6 +10,9 @@ import uk.lobsterdoodle.namepicker.shared.repository.NameRepository
 class FakeNameRepository(initial: List<Name> = emptyList()) : NameRepository {
     val names = MutableStateFlow(initial)
     val calls = mutableListOf<String>()
+
+    /** Makes [markDrawn] throw, as a failed database write would. */
+    var failMarkDrawn = false
     private var nextId = (initial.maxOfOrNull { it.id } ?: 0L) + 1
 
     override fun observeNames(groupId: Long): Flow<List<Name>> =
@@ -46,12 +49,18 @@ class FakeNameRepository(initial: List<Name> = emptyList()) : NameRepository {
 
     override suspend fun markDrawn(ids: Collection<Long>) {
         calls += "markDrawn(${ids.sorted()})"
+        check(!failMarkDrawn) { "write failed" }
         update({ it.id in ids }) { it.copy(drawn = true) }
     }
 
     override suspend fun clearDrawn(groupId: Long) {
         calls += "clearDrawn($groupId)"
         update({ it.groupId == groupId }) { it.copy(drawn = false) }
+    }
+
+    override suspend fun clearDrawn(ids: Collection<Long>) {
+        calls += "clearDrawn(${ids.sorted()})"
+        update({ it.id in ids }) { it.copy(drawn = false) }
     }
 
     private fun update(where: (Name) -> Boolean, change: (Name) -> Name) {

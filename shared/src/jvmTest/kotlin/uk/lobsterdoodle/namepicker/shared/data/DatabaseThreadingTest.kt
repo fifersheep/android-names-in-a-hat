@@ -59,6 +59,7 @@ class DatabaseThreadingTest {
                     "NameRepository.setAllSelected" to { names.setAllSelected(groupId, true) },
                     "NameRepository.markDrawn" to { names.markDrawn(listOf(nameId)) },
                     "NameRepository.clearDrawn" to { names.clearDrawn(groupId) },
+                    "NameRepository.clearDrawn(ids)" to { names.clearDrawn(listOf(nameId)) },
                     "NameRepository.delete" to { names.delete(nameId) },
                     "GroupRepository.delete" to { groups.delete(groupId) },
                 )
