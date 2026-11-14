@@ -333,11 +333,15 @@ private fun Stepper(count: Int, max: Int, vertical: Boolean, onFewer: () -> Unit
         Box(
             Modifier
                 .then(if (vertical) Modifier.size(width = 72.dp, height = 44.dp) else Modifier.size(width = 44.dp, height = 56.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainerHigh)
-                .semantics { liveRegion = LiveRegionMode.Polite },
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh),
             contentAlignment = Alignment.Center,
         ) {
-            Text(count.toString(), style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold))
+            // The live region is on the node whose text changes, so TalkBack reads each new value.
+            Text(
+                count.toString(),
+                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite },
+            )
         }
     }
     val groupModifier = Modifier.semantics { contentDescription = group }
