@@ -5,7 +5,7 @@ ticket: NAM-10 — Build the draw screen: select names, draw, reveal (https://li
 ticket-id: NAM-10
 tracker-synced: In Engineering
 mode: full
-phase: implementation
+phase: code-review
 branch: flow/draw-screen-select-draw-reveal
 worktree: /Users/scoot/dev/names-in-a-hat/android-names-in-a-hat-nam10
 created: 2026-11-14
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Implementation: rebased onto main 8bae63c (NAM-8 #29 and NAM-9 #30 merged), and the parts the plan reuses are there. Working through Progress from task 1.
+Code review: dispatch flow-reviewer on origin/main..HEAD (main 8bae63c) against plan.md; fix blocking findings; then outcome verification. Implementation is complete: 9/9 tasks, verify green (:shared jvm 120, host 89, iOS 82; :app 143; lint 0 errors). One open item for the user: AC1's Z–A-from-2.7.0 check (see Deviations).
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
@@ -36,7 +36,7 @@ Implementation: rebased onto main 8bae63c (NAM-8 #29 and NAM-9 #30 merged), and 
 - [x] 6. Draw screen UI (baafd4d): assembleDebug passes; lintDebug has 0 errors (the new warnings are only the reveal strings task 7 uses); the device look is checked with task 8's wiring, before task 9
 - [x] 7. Reveal (0c302da): assembleDebug passes; lintDebug 0 errors (only the 4 warnings that were already there); RevealStaggerTest 3/0; :app 143/0; checked on device after task 8
 - [x] 8. Wire into the shell (25c8837): full verify + lint passes; :shared jvm 120/0, host 89/0, iOS 82/0; :app 143/0 (BackStackTest unchanged); lint 0 errors
-- [ ] 9. Device verification + evidence
+- [x] 9. Device verification + evidence (305f1c0): AC2–AC12 pass on phone and tablet in light and dark (evidence/README.md). AC1 checked for selection, the stored Unsorted order and launch into the active list; Z–A from 2.7.0 is not checked. Reveal title centring fixed. Final verify: :shared 120/89/82, :app 143, lint 0 errors
 
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
@@ -46,3 +46,7 @@ Implementation: rebased onto main 8bae63c (NAM-8 #29 and NAM-9 #30 merged), and 
 - 2026-11-14 task 5: added `draw_select_all_a11y` ("%1$s, %2$s"), a key that isn't in the copy deck, so the box's TalkBack label "Select all, 15 of 24 in the hat" isn't a hard-coded join. The chip check reuses NAM-9's `ic_check` (Material); `ic_sort`, `ic_ticket` and `ic_remove` are stroke vectors from the mock-up.
 - 2026-11-14 task 6: the quick device install planned for task 6 moved to after task 8, because DrawScreen can't be reached until the shell entry is wired. The stepper is two Surfaces and a value box with the mock-up's connected corner shapes (`LandScreen.dc.html:116-124` for the vertical one), not M3's `ButtonGroup`: the value segment isn't a button, and the vertical stack has no M3 equivalent.
 - 2026-11-14 task 7: the reveal's hat body uses `onPrimary`/`onPrimaryContainer` (the colour on the backdrop) instead of the mock-up's fixed #F4F2FF, so it follows dynamic colour. The reveal layout is chosen from the window: compact height → landscape; width ≥ 840 dp → the large grid (3 columns); otherwise the phone column. Added `RevealStaggerTest`, which isn't in the plan.
+- 2026-11-14 task 9: AC1's Z–A part was not checked on device. `api36_niah`'s 2.7.0 data has no stored sort key: NAM-8's Z–A was set during its own session and discarded with `emu kill`. Auto mode blocked writing the 2.7.0 data (deselecting Eli, adding a DESC key) as root, and that was not worked around. Needs the user's go-ahead to set Z–A in 2.7.0 first. The unit tests (`LegacyNameListMigrationTest`) cover DESC migration.
+- 2026-11-14 task 9: the reveal title was left-aligned in portrait and large layouts; it is now full width and centred.
+- 2026-11-14 task 9: predictive back on the reveal works (a dialog window gives PredictiveBackHandler its progress), so no fallback was needed.
+- 2026-11-14 task 9: the title morph wasn't captured mid-transition (screencap is too slow), so it is not evidenced.
