@@ -5,7 +5,7 @@ ticket: NAM-7 — Build the app shell: single activity, navigation, theme and in
 ticket-id: NAM-7
 tracker-synced: In Engineering
 mode: full
-phase: code-review
+phase: reporting
 branch: flow/app-shell-navigation-theme
 worktree:
 created: 2026-11-14
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Implementation complete: all 8 tasks ticked. Final verify 2026-11-14: `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests :app:testDebugUnitTest :app:lintDebug :app:processReleaseMainManifest` PASS (shared 255/0, app 41/0, lint clean, release manifest 1 activity / 0 services). Next: the flow-reviewer over the diff c25a883..HEAD against plan.md, fix blocking findings inline, then outcome verification.
+Review done (review.md): 0 blocking, 6 advisory. Three fixed in code (3ce8801, ea41560, 7d0a49e), two closed by device checks (rule 4 walked; corner and punch-hole cutouts), one pending the report (font size). Verify PASS at 7d0a49e: `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests :app:testDebugUnitTest :app:lintDebug :app:processReleaseMainManifest`, shared 255/0, app 45/0, lint clean. Outcome re-verified on niah_debug_api36 after the fixes. Next: write report.md, open the PR, NAM-7 → In Review, then hold at gate 2.
 
 ## Decision log
 - 2026-11-14 gate 1: plan approved by user (including removing Room's unused MultiInstanceInvalidationService from the merged manifest for AC1)
@@ -60,3 +60,4 @@ Implementation complete: all 8 tasks ticked. Final verify 2026-11-14: `./gradlew
 - 2026-11-14 Task 8: the first tablet process-death run was invalid (`am kill` left the process alive). The rerun confirmed the process was gone, and restored EditList with its text. The UI dump after pressing back on the restored tablet came back empty (probably mid-animation), so back-after-restore in two-pane wasn't captured. On the phone it was.
 - 2026-11-14 Task 8: a splash fix was found and made during verification (9bd0dd4): the status-bar icons were dark on the indigo splash.
 - 2026-11-14 Task 8: created AVDs niah_debug_api36 (Pixel 6), niah_tablet_api36 (pixel_c) and niah_api30 (Pixel 6), and downloaded system image android-30 google_apis arm64-v8a.
+- 2026-11-14 Review fixes changed the plan's approach in two places: the active list is now set from the Draw entry's `LifecycleStartEffect` (via `onShown`), not inside the ViewModel; and `listCreated` takes the visit's session.
