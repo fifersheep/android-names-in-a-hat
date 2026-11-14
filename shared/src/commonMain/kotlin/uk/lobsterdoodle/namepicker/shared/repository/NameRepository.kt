@@ -32,4 +32,7 @@ interface NameRepository {
 
     /** Clears `drawn` on every name in the group. Must not change `selected`. */
     suspend fun clearDrawn(groupId: Long)
+
+    /** Clears `drawn` on the given names only ("Put back in the hat"). Must not change `selected`. */
+    suspend fun clearDrawn(ids: Collection<Long>)
 }

@@ -29,5 +29,10 @@ internal class RoomNameRepository(database: NamesDatabase) : NameRepository {
 
     override suspend fun clearDrawn(groupId: Long) = dao.clearDrawn(groupId)
 
+    override suspend fun clearDrawn(ids: Collection<Long>) {
+        if (ids.isEmpty()) return
+        dao.clearDrawnByIds(ids.toList())
+    }
+
     private fun NameEntity.toModel() = Name(id, groupId, text, selected, drawn)
 }

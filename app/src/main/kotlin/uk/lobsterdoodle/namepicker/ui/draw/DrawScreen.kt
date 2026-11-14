@@ -1,5 +1,6 @@
 package uk.lobsterdoodle.namepicker.ui.draw
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumFlexibleTopAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -85,14 +90,25 @@ fun DrawScreen(
         vm.onShown()
         onStopOrDispose {}
     }
+    // Leaving Draw (Edit pushed on top, Up, the app backgrounded) ends the reset's Undo, as the delayed
+    // deletes commit on leave. A rotation is not leaving: Undo is shown again.
+    val activity = LocalActivity.current
+    LifecycleStartEffect(vm) {
+        onStopOrDispose { if (activity?.isChangingConfigurations != true) vm.dropPendingReset() }
+    }
 
     val label = (status as? ListStatus.Present)?.let { listLabel(it.label) }.orEmpty()
     val titleModifier = Modifier.sharedBoundsIfSinglePane(ListsSharedKeys.title(key.listId), singlePane)
     val hasNames = state.loaded && state.draw.hasNames
     val actions: @Composable () -> Unit = {
-        if (hasNames) SortPill(state.sort, vm::cycleSort)
+        if (hasNames) {
+            SortPill(state.sort, vm::cycleSort)
+            ResetButton(enabled = state.draw.drawnCount > 0, onClick = vm::reset)
+        }
         DrawOverflow(onEdit)
     }
+    val snackbar = remember { SnackbarHostState() }
+    ResetSnackbar(state.pendingReset, snackbar, vm)
     val scrollBehavior = if (compactHeight) null else TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     Scaffold(
@@ -120,12 +136,14 @@ fun DrawScreen(
                 )
             }
         },
+        // In compact height the snackbar sits over the names, clear of the trailing draw panel.
+        snackbarHost = { if (!compactHeight) SnackbarHost(snackbar) },
         bottomBar = {
             if (hasNames && !compactHeight) {
                 Surface(color = MaterialTheme.colorScheme.surfaceContainer) {
                     DrawBar(
                         state.draw, state.count, vertical = false,
-                        onFewer = vm::decrement, onMore = vm::increment, onDraw = vm::draw,
+                        onFewer = vm::decrement, onMore = vm::increment, onDraw = vm::draw, onReset = vm::reset,
                         modifier = Modifier.windowInsetsPadding(WindowInsets.navigationBars),
                     )
                 }
@@ -136,11 +154,14 @@ fun DrawScreen(
             !state.loaded -> Unit
             !state.draw.hasNames -> DrawEmptyState(onAddNames = onEdit, modifier = Modifier.fillMaxSize().padding(padding))
             compactHeight -> Row(Modifier.fillMaxSize().padding(padding)) {
-                NamesArea(state, vm, Modifier.weight(1f))
+                Box(Modifier.weight(1f)) {
+                    NamesArea(state, vm, Modifier.fillMaxSize())
+                    SnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter))
+                }
                 Surface(color = MaterialTheme.colorScheme.surfaceContainer, modifier = Modifier.fillMaxHeight()) {
                     DrawBar(
                         state.draw, state.count, vertical = true,
-                        onFewer = vm::decrement, onMore = vm::increment, onDraw = vm::draw,
+                        onFewer = vm::decrement, onMore = vm::increment, onDraw = vm::draw, onReset = vm::reset,
                     )
                 }
             }
@@ -164,7 +185,7 @@ private fun NamesArea(state: DrawUiState, vm: DrawViewModel, modifier: Modifier)
     Column(modifier) {
         SelectAllHeader(state.draw, onToggle = vm::toggleAll)
         Box(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState())) {
-            NameChips(state.chips, onToggle = vm::toggle)
+            NameChips(state.chips, onToggle = vm::toggle, onPutBack = vm::putBack)
         }
     }
 }
@@ -189,6 +210,32 @@ private fun SortPill(sort: NameSortType, onClick: () -> Unit) {
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(painterResource(R.drawable.ic_sort), contentDescription = null, modifier = Modifier.size(18.dp))
             Text(text, style = MaterialTheme.typography.labelLarge)
+        }
+    }
+}
+
+/** Reset drawn names (spec "Draw from remaining"): enabled once anything is drawn. */
+@Composable
+private fun ResetButton(enabled: Boolean, onClick: () -> Unit) {
+    IconButton(onClick = onClick, enabled = enabled) {
+        Icon(painterResource(R.drawable.ic_reset), contentDescription = stringResource(R.string.draw_reset_a11y))
+    }
+}
+
+/**
+ * "Drawn names reset" with Undo after a reset. Keyed by the reset's token, so a newer reset replaces
+ * the message and an older one's result never acts on it. Re-shown after rotation.
+ */
+@Composable
+private fun ResetSnackbar(pending: PendingReset?, snackbar: SnackbarHostState, vm: DrawViewModel) {
+    val message = stringResource(R.string.draw_reset_done)
+    val undo = stringResource(R.string.action_undo)
+    LaunchedEffect(pending?.token) {
+        val token = pending?.token ?: return@LaunchedEffect
+        // Explicit: with an action, the default duration is Indefinite, which would never time out.
+        when (snackbar.showSnackbar(message, actionLabel = undo, duration = SnackbarDuration.Long)) {
+            SnackbarResult.ActionPerformed -> vm.undoReset(token)
+            SnackbarResult.Dismissed -> vm.dropReset(token)
         }
     }
 }

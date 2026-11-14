@@ -215,6 +215,27 @@ class RoomRepositoryTest {
     }
 
     @Test
+    fun `clearDrawn for ids clears only those names and never changes selected`() = test {
+        val g = groups.create("G")
+        val ann = names.add(g, "Ann", selected = false)
+        val bob = names.add(g, "Bob", selected = true)
+        val carl = names.add(g, "Carl", selected = true)
+        names.markDrawn(listOf(ann, bob, carl))
+
+        names.clearDrawn(listOf(ann, bob))
+        names.clearDrawn(emptyList<Long>())
+
+        assertEquals(
+            listOf(
+                Name(ann, g, "Ann", selected = false, drawn = false),
+                Name(bob, g, "Bob", selected = true, drawn = false),
+                Name(carl, g, "Carl", selected = true, drawn = true),
+            ),
+            namesOf(g),
+        )
+    }
+
+    @Test
     fun `the flows emit again after writes`() = test {
         val groupUpdates = Channel<List<GroupSummary>>(Channel.UNLIMITED)
         val g = groups.create("G")

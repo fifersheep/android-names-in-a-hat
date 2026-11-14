@@ -65,6 +65,8 @@ android {
     testOptions {
         // ViewModels log with android.util.Log; JVM unit tests get no-op stubs instead of throwing.
         unitTests.isReturnDefaultValues = true
+        // The Robolectric Compose semantics test (NAM-12 AC10) reads strings and drawables.
+        unitTests.isIncludeAndroidResources = true
     }
 
     lint {
@@ -102,4 +104,9 @@ dependencies {
     testImplementation(libs.kotlin.test.junit)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+    // Compose semantics under Robolectric (NAM-12 AC10): uiautomator can't see stateDescription or custom actions.
+    testImplementation(platform(libs.compose.bom))
+    testImplementation(libs.compose.ui.test.junit4)
+    testImplementation(libs.robolectric)
+    debugImplementation(libs.compose.ui.test.manifest)
 }

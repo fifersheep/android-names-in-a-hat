@@ -22,6 +22,7 @@ import uk.lobsterdoodle.namepicker.FakeGroups
 import uk.lobsterdoodle.namepicker.FakeNames
 import uk.lobsterdoodle.namepicker.FakePreferences
 import uk.lobsterdoodle.namepicker.shared.draw.DrawBarState
+import uk.lobsterdoodle.namepicker.shared.draw.HatDraw
 import uk.lobsterdoodle.namepicker.shared.draw.NameDraw
 import uk.lobsterdoodle.namepicker.shared.draw.RandomNumberGenerator
 import uk.lobsterdoodle.namepicker.shared.draw.SelectAllBox
@@ -71,7 +72,7 @@ class DrawViewModelTest {
         names = names,
         editor = NameEditor(names),
         sortOrder = SortOrder(prefs),
-        nameDraw = NameDraw(RandomNumberGenerator(Random(seed))),
+        hat = HatDraw(names, NameDraw(RandomNumberGenerator(Random(seed)))),
         saved = saved,
     )
 
@@ -332,27 +333,83 @@ class DrawViewModelTest {
     @Test
     fun `a draw of k returns k distinct names from the hat`() = runTest {
         val vm = vm()
+        val inHat = six.names.value.filter { it.selected && !it.drawn }.map { it.id }.toSet()
         repeat(2) { vm.increment() }
         vm.draw()
         val reveal = assertNotNull(vm.state.reveal)
         assertEquals(3, reveal.names.size)
         assertEquals(3, reveal.names.map { it.id }.toSet().size)
-        val inHat = six.names.value.filter { it.selected && !it.drawn }.map { it.id }.toSet()
         assertTrue(reveal.names.all { it.id in inHat })
     }
 
     @Test
     fun `a seeded draw is deterministic`() = runTest {
-        val a = vm(seed = 42).apply { increment(); draw() }.state.reveal
-        val b = vm(seed = 42).apply { increment(); draw() }.state.reveal
+        // A fresh list each time: a draw marks names drawn, which would change the second pool.
+        val a = vm(names = FakeNames(*six.names.value.toTypedArray()), seed = 42).apply { increment(); draw() }.state.reveal
+        val b = vm(names = FakeNames(*six.names.value.toTypedArray()), seed = 42).apply { increment(); draw() }.state.reveal
         assertEquals(a, b)
     }
 
     @Test
-    fun `a draw never marks names drawn`() = runTest {
-        vm().draw()
-        assertEquals(emptyList(), six.calls)
+    fun `a draw marks its names drawn before the result shows`() = runTest {
+        val gate = CompletableDeferred<Unit>()
+        six.drawGate = gate
+        val vm = vm()
+        vm.increment()
+        vm.draw()
+        assertNull(vm.state.reveal)
         assertTrue(six.names.value.none { it.drawn })
+        gate.complete(Unit)
+        val picked = assertNotNull(vm.state.reveal).names.map { it.id }
+        assertEquals(listOf("markDrawn($picked)"), six.calls)
+        assertEquals(picked.toSet(), six.names.value.filter { it.drawn }.map { it.id }.toSet())
+    }
+
+    @Test
+    fun `a failed mark shows no result`() = runTest {
+        six.failWrites = true
+        val vm = vm()
+        vm.draw()
+        assertNull(vm.state.reveal)
+        assertTrue(six.names.value.none { it.drawn })
+    }
+
+    @Test
+    fun `the counter and stepper follow what is left after a draw`() = runTest {
+        // AC7: 4 in the hat; draw 2.
+        val vm = vm()
+        vm.increment()
+        vm.draw()
+        vm.dismiss()
+        assertEquals(2, vm.state.draw.inHat)
+        assertEquals(6, vm.state.draw.total)
+        assertEquals(2, vm.state.draw.drawnCount)
+        assertEquals(DrawBarState.Stepper(max = 2), vm.state.draw.bar)
+    }
+
+    @Test
+    fun `a second draw never repeats a name from the first`() = runTest {
+        val vm = vm()
+        vm.increment()
+        vm.draw()
+        val first = assertNotNull(vm.state.reveal).names.map { it.id }.toSet()
+        vm.dismiss()
+        vm.draw()
+        val second = assertNotNull(vm.state.reveal).names.map { it.id }.toSet()
+        assertEquals(2, second.size)
+        assertTrue(first.intersect(second).isEmpty())
+    }
+
+    @Test
+    fun `drawing everyone leaves the bar on everyone drawn`() = runTest {
+        // AC2.
+        val vm = vm()
+        repeat(3) { vm.increment() }
+        vm.draw()
+        val reveal = assertNotNull(vm.state.reveal)
+        assertTrue(reveal.noneLeft)
+        assertEquals(0, reveal.more)
+        assertEquals(DrawBarState.AllDrawn, vm.state.draw.bar)
     }
 
     @Test
@@ -419,8 +476,30 @@ class DrawViewModelTest {
         repeat(2) { vm.increment() }
         vm.draw()
         val reveal = assertNotNull(vm.state.reveal)
-        assertEquals(3, reveal.more)
+        // 3 of the 4 in the hat are drawn: only 1 is left.
+        assertEquals(1, reveal.more)
         assertFalse(reveal.noneLeft)
+    }
+
+    @Test
+    fun `the reveal offers the full count again when enough are left`() = runTest {
+        val vm = vm(FakeNames(*(1L..8L).map { name(it, "N$it") }.toTypedArray()))
+        vm.increment()
+        vm.draw()
+        assertEquals(2, assertNotNull(vm.state.reveal).more)
+    }
+
+    @Test
+    fun `draw more draws only from the names left in the hat`() = runTest {
+        val vm = vm()
+        vm.increment()
+        vm.draw()
+        val first = assertNotNull(vm.state.reveal).names.map { it.id }.toSet()
+        vm.drawMore()
+        val second = assertNotNull(vm.state.reveal).names.map { it.id }.toSet()
+        assertEquals(2, second.size)
+        assertTrue(first.intersect(second).isEmpty())
+        assertEquals(4, six.names.value.count { it.drawn })
     }
 
     @Test
@@ -441,6 +520,8 @@ class DrawViewModelTest {
         vm.draw()
         vm.onRevealPlayed()
         val first = assertNotNull(vm.state.reveal)
+        // Ada is drawn; put her back so the hat holds the same single name again.
+        vm.putBack(1)
         vm.drawMore()
         val second = assertNotNull(vm.state.reveal)
         assertEquals(first.names, second.names)
@@ -476,5 +557,113 @@ class DrawViewModelTest {
         vm.dismiss()
         assertNull(vm.state.reveal)
         assertNull(vm(saved = saved).state.reveal)
+    }
+
+    // --- Draw from remaining: reset, undo and put back (NAM-12) ---
+
+    private fun drawnList() = FakeNames(
+        name(1, "Ada", drawn = true), name(2, "Ben", selected = false, drawn = true), name(3, "Cat"), name(4, "Dan", selected = false),
+    )
+
+    @Test
+    fun `reset clears drawn keeps the selection and offers undo`() = runTest {
+        // AC3.
+        val names = drawnList()
+        val vm = vm(names)
+        vm.reset()
+        assertTrue(names.names.value.none { it.drawn })
+        assertEquals(listOf(true, false, true, false), names.names.value.map { it.selected })
+        assertEquals(listOf(1L, 2L), assertNotNull(vm.state.pendingReset).ids)
+        assertEquals(2, vm.state.draw.inHat)
+    }
+
+    @Test
+    fun `undo restores the drawn names`() = runTest {
+        val names = drawnList()
+        val vm = vm(names)
+        vm.reset()
+        vm.undoReset(assertNotNull(vm.state.pendingReset).token)
+        assertEquals(listOf(true, true, false, false), names.names.value.map { it.drawn })
+        assertEquals(listOf(true, false, true, false), names.names.value.map { it.selected })
+        assertNull(vm.state.pendingReset)
+    }
+
+    @Test
+    fun `undo survives a restore from saved state`() = runTest {
+        val names = drawnList()
+        val saved = SavedStateHandle()
+        val first = vm(names, saved = saved)
+        first.reset()
+        val pending = assertNotNull(first.state.pendingReset)
+        val restored = vm(names, saved = saved)
+        assertEquals(pending, restored.state.pendingReset)
+        restored.undoReset(pending.token)
+        assertEquals(listOf(true, true, false, false), names.names.value.map { it.drawn })
+    }
+
+    @Test
+    fun `a dismissed reset can no longer be undone`() = runTest {
+        val names = drawnList()
+        val saved = SavedStateHandle()
+        val vm = vm(names, saved = saved)
+        vm.reset()
+        val token = assertNotNull(vm.state.pendingReset).token
+        vm.dropReset(token)
+        assertNull(vm.state.pendingReset)
+        assertNull(vm(names, saved = saved).state.pendingReset)
+        vm.undoReset(token)
+        assertTrue(names.names.value.none { it.drawn })
+    }
+
+    @Test
+    fun `an older reset token never undoes a newer reset`() = runTest {
+        val names = drawnList()
+        val vm = vm(names)
+        vm.reset()
+        val old = assertNotNull(vm.state.pendingReset).token
+        vm.draw()
+        vm.dismiss()
+        vm.reset()
+        val newer = assertNotNull(vm.state.pendingReset)
+        assertTrue(newer.token != old)
+        vm.undoReset(old)
+        assertEquals(newer, vm.state.pendingReset)
+        assertTrue(names.names.value.none { it.drawn })
+    }
+
+    @Test
+    fun `leaving draw ends the reset undo`() = runTest {
+        val names = drawnList()
+        val saved = SavedStateHandle()
+        val vm = vm(names, saved = saved)
+        vm.reset()
+        vm.dropPendingReset()
+        assertNull(vm.state.pendingReset)
+        assertNull(vm(names, saved = saved).state.pendingReset)
+    }
+
+    @Test
+    fun `reset with nothing drawn offers no undo`() = runTest {
+        val vm = vm()
+        vm.reset()
+        assertNull(vm.state.pendingReset)
+        assertEquals(emptyList(), six.calls)
+    }
+
+    @Test
+    fun `put back returns a drawn name to the hat`() = runTest {
+        val names = drawnList()
+        val vm = vm(names)
+        vm.putBack(2)
+        assertEquals(name(2, "Ben"), names.names.value[1])
+        assertEquals(ChipVisual.IN, vm.state.chips.first { it.id == 2L }.visual)
+        assertEquals(listOf(true, false, false, false), names.names.value.map { it.drawn })
+    }
+
+    @Test
+    fun `put back ignores a name that is not drawn`() = runTest {
+        val names = drawnList()
+        vm(names).putBack(4)
+        assertEquals(emptyList(), names.calls)
     }
 }

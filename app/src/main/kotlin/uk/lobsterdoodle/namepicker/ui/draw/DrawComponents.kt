@@ -8,6 +8,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +29,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -36,7 +39,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,10 +51,12 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
@@ -146,23 +153,24 @@ private fun SelectAllBoxIcon(box: SelectAllBox) {
 /** The names, wrapping, in the current sort order, keyed by id. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun NameChips(chips: List<ChipUi>, onToggle: (Long) -> Unit, modifier: Modifier = Modifier) {
+fun NameChips(chips: List<ChipUi>, onToggle: (Long) -> Unit, onPutBack: (Long) -> Unit, modifier: Modifier = Modifier) {
     FlowRow(
         modifier.padding(16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        chips.forEach { chip -> androidx.compose.runtime.key(chip.id) { NameChip(chip, onToggle) } }
+        chips.forEach { chip -> androidx.compose.runtime.key(chip.id) { NameChip(chip, onToggle, onPutBack) } }
     }
 }
 
 /**
  * One name (spec "Chip states"): In, Out or Drawn. In and Out toggle with a fast spatial spring on a
  * 0.96 press scale and a fast effects crossfade. Drawn is never colour alone: it has the ticket
- * icon, the strikethrough and its state description. Tapping it does nothing yet (Put back is NAM-12).
+ * icon, the strikethrough and its state description. Tapping a drawn chip opens a menu anchored to it
+ * with "Put back in the hat", which is also a custom accessibility action (NAM-12).
  */
 @Composable
-private fun NameChip(chip: ChipUi, onToggle: (Long) -> Unit) {
+internal fun NameChip(chip: ChipUi, onToggle: (Long) -> Unit, onPutBack: (Long) -> Unit) {
     val colors = MaterialTheme.colorScheme
     val motion = MaterialTheme.motionScheme
     val text = nameLabel(chip.text)
@@ -188,9 +196,16 @@ private fun NameChip(chip: ChipUi, onToggle: (Long) -> Unit) {
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
     val scale by animateFloatAsState(if (pressed) 0.96f else 1f, motion.fastSpatialSpec())
+    var menu by remember { mutableStateOf(false) }
+    val putBackLabel = stringResource(R.string.chip_put_back)
 
     val toggle = when (chip.visual) {
-        ChipVisual.DRAWN -> Modifier
+        ChipVisual.DRAWN -> Modifier.clickable(
+            interactionSource = interaction,
+            indication = androidx.compose.material3.ripple(),
+            role = Role.Button,
+            onClick = { menu = true },
+        )
         else -> Modifier.toggleable(
             value = chip.visual == ChipVisual.IN,
             interactionSource = interaction,
@@ -209,7 +224,17 @@ private fun NameChip(chip: ChipUi, onToggle: (Long) -> Unit) {
                 .scale(scale)
                 .clip(CircleShape)
                 .then(toggle)
-                .semantics(mergeDescendants = true) { stateDescription = stateText },
+                .semantics(mergeDescendants = true) {
+                    stateDescription = stateText
+                    if (chip.visual == ChipVisual.DRAWN) {
+                        customActions = listOf(
+                            CustomAccessibilityAction(putBackLabel) {
+                                onPutBack(chip.id)
+                                true
+                            },
+                        )
+                    }
+                },
         ) {
             Row(
                 Modifier.heightIn(min = 40.dp).padding(horizontal = 16.dp, vertical = 8.dp),
@@ -231,6 +256,18 @@ private fun NameChip(chip: ChipUi, onToggle: (Long) -> Unit) {
                 )
             }
         }
+        if (chip.visual == ChipVisual.DRAWN) {
+            DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
+                DropdownMenuItem(
+                    text = { Text(putBackLabel) },
+                    leadingIcon = { Icon(painterResource(R.drawable.ic_put_back), contentDescription = null) },
+                    onClick = {
+                        menu = false
+                        onPutBack(chip.id)
+                    },
+                )
+            }
+        }
     }
 }
 
@@ -246,20 +283,27 @@ fun DrawBar(
     onFewer: () -> Unit,
     onMore: () -> Unit,
     onDraw: () -> Unit,
+    onReset: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val spring = MaterialTheme.motionScheme.defaultSpatialSpec<androidx.compose.ui.unit.IntSize>()
     val bar = draw.bar
     val drawButton: @Composable (Modifier) -> Unit = { m ->
+        // Everyone's been drawn: Draw morphs into a filled Reset (spec "Draw bar", "Motion").
+        val allDrawn = bar is DrawBarState.AllDrawn
         Button(
-            onClick = onDraw,
-            enabled = bar is DrawBarState.Stepper,
+            onClick = if (allDrawn) onReset else onDraw,
+            enabled = bar is DrawBarState.Stepper || allDrawn,
             shape = CircleShape,
             contentPadding = ButtonDefaults.ContentPadding,
             modifier = m.height(56.dp),
         ) {
             Text(
-                if (bar is DrawBarState.Stepper) stringResource(R.string.draw_button, count) else stringResource(R.string.draw_button_plain),
+                when (bar) {
+                    is DrawBarState.Stepper -> stringResource(R.string.draw_button, count)
+                    DrawBarState.AllDrawn -> stringResource(R.string.draw_reset)
+                    DrawBarState.NothingInHat -> stringResource(R.string.draw_button_plain)
+                },
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
             )
         }

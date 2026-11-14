@@ -61,7 +61,7 @@
     <!-- Shown for a blank name migrated from 2.7.0, which had no validation (GitHub #5). -->
     <string name="name_untitled">Unnamed</string>
 
-    <!-- Draw (NAM-10). Reset and Put back (draw_reset*, chip_put_back) arrive with NAM-12. -->
+    <!-- Draw (NAM-10; Reset and Put back from NAM-12) -->
     <string name="draw_back">Back to lists</string>
     <string name="draw_count_group">How many to draw</string>
     <plurals name="draw_counter">
@@ -92,6 +92,10 @@
     <string name="chip_in">in the hat</string>
     <string name="chip_out">out of the hat</string>
     <string name="chip_drawn">drawn</string>
+    <string name="chip_put_back">Put back in the hat</string>
+    <string name="draw_reset">Reset</string>
+    <string name="draw_reset_a11y">Reset drawn names</string>
+    <string name="draw_reset_done">Drawn names reset</string>
 
     <!-- Reveal (NAM-10) -->
     <string name="reveal_title">Out of the hat</string>
