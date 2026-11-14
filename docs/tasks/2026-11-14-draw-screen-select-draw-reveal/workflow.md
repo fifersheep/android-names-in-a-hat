@@ -3,7 +3,7 @@ task: draw-screen-select-draw-reveal
 title: Build the draw screen: select names, draw, reveal
 ticket: NAM-10 — Build the draw screen: select names, draw, reveal (https://linear.app/northtrack/issue/NAM-10/build-the-draw-screen-select-names-draw-reveal)
 ticket-id: NAM-10
-tracker-synced: In Engineering
+tracker-synced: In Review
 mode: full
 phase: reporting
 branch: flow/draw-screen-select-draw-reveal
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Reporting: write report.md from review.md and evidence/README.md, open the PR, move NAM-10 to In Review, then hold at gate 2. Review: 1 Blocking (fixed, 7111bce), 3 cheap Advisories fixed (7111bce, 85bd0ca). Verify green: :shared 120/89/82, :app 146, lint 0 errors. Open for the user: AC1's Z–A-from-2.7.0 check.
+Gate 2: PR #31 is open (https://github.com/fifersheep/android-names-in-a-hat/pull/31), report.md is written and NAM-10 is In Review. Waiting for the user's merge approval. Open items flagged to the user: AC1 Z–A from 2.7.0 on device; a live TalkBack listen.
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
