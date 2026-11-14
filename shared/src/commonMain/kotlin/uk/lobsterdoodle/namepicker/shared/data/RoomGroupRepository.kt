@@ -10,7 +10,7 @@ internal class RoomGroupRepository(database: NamesDatabase) : GroupRepository {
     private val dao = database.groupDao()
 
     override fun observeGroups(): Flow<List<GroupSummary>> =
-        dao.observeSummaries().map { rows -> rows.map { GroupSummary(Group(it.id, it.label), it.nameCount) } }
+        dao.observeSummaries().map { rows -> rows.map { GroupSummary(Group(it.id, it.label), it.nameCount, it.drawnCount) } }
 
     override fun observeGroup(id: Long): Flow<Group?> = dao.observe(id).map { it?.toModel() }
 

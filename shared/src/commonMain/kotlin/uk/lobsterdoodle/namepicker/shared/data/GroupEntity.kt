@@ -13,9 +13,10 @@ internal data class GroupEntity(
     val label: String,
 )
 
-/** A group with its name count, read by [GroupDao.observeSummaries]. */
+/** A group with its name and drawn counts, read by [GroupDao.observeSummaries]. */
 internal data class GroupSummaryRow(
     val id: Long,
     val label: String,
     val nameCount: Int,
+    val drawnCount: Int,
 )
