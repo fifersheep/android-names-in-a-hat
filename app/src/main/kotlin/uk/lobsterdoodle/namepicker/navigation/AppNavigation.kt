@@ -21,9 +21,9 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import uk.lobsterdoodle.namepicker.ShellViewModel
+import uk.lobsterdoodle.namepicker.ui.draw.DrawScreen
 import uk.lobsterdoodle.namepicker.ui.editlist.EditListScreen
 import uk.lobsterdoodle.namepicker.ui.lists.ListsScreen
-import uk.lobsterdoodle.namepicker.ui.placeholder.DrawPlaceholder
 import uk.lobsterdoodle.namepicker.ui.placeholder.PickAListPlaceholder
 
 /**
@@ -109,9 +109,10 @@ fun AppNavigation(start: List<AppKey>, shell: ShellViewModel) {
                         )
                     }
                     entry<Draw>(metadata = ListDetailSceneStrategy.detailPane()) { key ->
-                        DrawPlaceholder(
+                        DrawScreen(
                             key = key,
                             singlePane = !listDetail,
+                            compactHeight = compactHeight,
                             onUp = back,
                             onEdit = { backStack.editList(key.listId, fromDraw = true) },
                             onGone = listGone,

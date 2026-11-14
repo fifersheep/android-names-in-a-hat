@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Implementation: BLOCKED until NAM-8 (flow/groups-screen) merges into main. Then `git fetch && git rebase origin/main` in this worktree, check that NAM-8 landed what plan.md assumes (ui/ListStatus.kt, ui/components/{UpButton,HatIllustration}.kt, ic_add/ic_more_vert, action_more, the Draw entry's singlePane and title key), and start plan task 1. Baseline at ff34628: verify PASSED.
+Implementation: rebased onto main 8bae63c (NAM-8 #29 and NAM-9 #30 merged), and the parts the plan reuses are there. Working through Progress from task 1.
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
@@ -28,8 +28,21 @@ Implementation: BLOCKED until NAM-8 (flow/groups-screen) merges into main. Then 
 - 2026-11-14 Q: how to sequence against the parallel NAM-8 and NAM-9? A: wait for NAM-8. Plan now; start implementation only after NAM-8 (flow/groups-screen) merges, since it owns ic_hat, the ListStatus move and the app-scope DI. Then rebase onto main.
 
 ## Progress
-<!-- replace this comment with one checkbox per plan task; keep this heading (never add a second ## Progress) -->
+- [x] 1. Sort cycle (ea0f273): :shared jvm 116/0, android host 84/0, iOS 77/0
+- [x] 2. Draw rules (81cb73e): :shared jvm 128/0, android host 96/0, iOS 89/0
+- [x] 3. Retire the grid (d455e70): AC14 grep is empty; :shared jvm 120/0, host 89/0, iOS 82/0; :app 110/0
+- [x] 4. DrawViewModel + tests (2294fb7): DrawViewModelTest 36/0 (the toggle-then-draw race test fails if the in-lock re-read is removed); :app 140/0
+- [x] 5. Copy + icons (781c29d): :app:clean :app:assembleDebug passes
+- [x] 6. Draw screen UI (baafd4d): assembleDebug passes; lintDebug has 0 errors (the new warnings are only the reveal strings task 7 uses); the device look is checked with task 8's wiring, before task 9
+- [x] 7. Reveal (0c302da): assembleDebug passes; lintDebug 0 errors (only the 4 warnings that were already there); RevealStaggerTest 3/0; :app 143/0; checked on device after task 8
+- [ ] 8. Wire into the shell
+- [ ] 9. Device verification + evidence
 
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
 - 2026-11-14 setup: created the branch in the shared main checkout by mistake. Another session's flow/groups-screen was checked out there, with an untracked task folder. Switched it back within seconds (both branches at ff34628, so no files changed) and moved this task to its own worktree, android-names-in-a-hat-nam10. Other sessions share this repo: work only in this worktree.
+- 2026-11-14 task 1: plan.md said the concurrent-sort test "ends on ASC". 50 cycles from NONE actually end on DESC (50 mod 3 = 2), so the final assertion is unchanged; only the split changed, to 17/17/16.
+- 2026-11-14 task 4: PlaceholderViewModels.kt is deleted outright, since DrawViewModel was the only thing left in it after NAM-8. `DrawPlaceholder` imports the new `ui.draw.DrawViewModel` until task 8 replaces it. NAM-9 had already provided `NameEditor`, so DI only gains `SortOrder` and `NameDraw`.
+- 2026-11-14 task 5: added `draw_select_all_a11y` ("%1$s, %2$s"), a key that isn't in the copy deck, so the box's TalkBack label "Select all, 15 of 24 in the hat" isn't a hard-coded join. The chip check reuses NAM-9's `ic_check` (Material); `ic_sort`, `ic_ticket` and `ic_remove` are stroke vectors from the mock-up.
+- 2026-11-14 task 6: the quick device install planned for task 6 moved to after task 8, because DrawScreen can't be reached until the shell entry is wired. The stepper is two Surfaces and a value box with the mock-up's connected corner shapes (`LandScreen.dc.html:116-124` for the vertical one), not M3's `ButtonGroup`: the value segment isn't a button, and the vertical stack has no M3 equivalent.
+- 2026-11-14 task 7: the reveal's hat body uses `onPrimary`/`onPrimaryContainer` (the colour on the backdrop) instead of the mock-up's fixed #F4F2FF, so it follows dynamic colour. The reveal layout is chosen from the window: compact height → landscape; width ≥ 840 dp → the large grid (3 columns); otherwise the phone column. Added `RevealStaggerTest`, which isn't in the plan.
