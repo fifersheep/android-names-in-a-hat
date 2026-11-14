@@ -3,7 +3,7 @@ task: groups-screen
 title: Build the groups screen — list, create, rename, delete
 ticket: NAM-8 — Build the groups screen: list, create, rename, delete (https://linear.app/northtrack/issue/NAM-8/build-the-groups-screen-list-create-rename-delete)
 ticket-id: NAM-8
-tracker-synced: In Engineering
+tracker-synced: In Review
 mode: full
 phase: reporting
 branch: flow/groups-screen
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Review done (review.md: 0 Blocking, 6 Advisory; A2/A4 fixed in aebc5be/f0079ac and driven on device; A1/A3/A5 follow-ups). Verify GREEN (app 71, shared 256). Reporting: write report.md, open the PR, move NAM-8 to In Review, hold at gate 2.
+report.md written; PR #29 open (https://github.com/fifersheep/android-names-in-a-hat/pull/29); NAM-8 moved to In Review. Holding at gate 2 for merge approval.
 
 ## Decision log
 - 2026-11-14 mode: full (user confirmed) — new screen spanning ViewModel, UI and data hooks; open design questions (delete undo vs confirm, create landing, list-detail).
