@@ -27,13 +27,15 @@ Gate 1 approved. Implement plan.md tasks 1–6 in order with per-task commits; s
 - 2026-11-14 isolation: git worktree at ../android-names-in-a-hat-nam-9. A parallel session is running NAM-8 (flow/groups-screen) in the main checkout.
 
 ## Progress
-- [ ] 1. :shared normalisation (H1)
-- [ ] 2. DI, manifest and EditListViewModel hooks
-- [ ] 3. EditNamesViewModel and tests
-- [ ] 4. Copy and icons
-- [ ] 5. Names section UI and wiring
+- [x] 1. :shared normalisation (H1) — fa0320a
+- [x] 2. DI, manifest and EditListViewModel hooks — a252b4e
+- [x] 3. EditNamesViewModel and tests — 55f6c8c
+- [x] 4. Copy and icons — ed6191b
+- [x] 5. Names section UI and wiring — 7278cc1
 - [ ] 6. Device verification and evidence
 
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
+- 2026-11-14 task 1: added `validateName(raw)` (normalise + validateLabel) in Labels.kt as the single entry point, so NameEditor and the EditNamesViewModel's local add check share one function.
 - 2026-11-14 setup briefly checked out flow/edit-names-screen in the main checkout while the NAM-8 session had flow/groups-screen there (no commits, no file changes; restored within a minute). NAM-9 moved to a worktree.
+- 2026-11-14 task 2: the `name_untitled` string was added here, not in task 4, because `nameLabel()` needs it to compile.
