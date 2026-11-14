@@ -45,7 +45,8 @@ jobs:
           java-version: '17'
       - uses: gradle/actions/setup-gradle@v6
       - name: Unit tests
-        run: ./gradlew :shared:jvmTest :app:testDebugUnitTest
+        # testAndroidHostTest: Robolectric tests for the Android-only SharedPreferences migration (NAM-6).
+        run: ./gradlew :shared:jvmTest :shared:testAndroidHostTest :app:testDebugUnitTest
 
   assemble:
     runs-on: ubuntu-latest
