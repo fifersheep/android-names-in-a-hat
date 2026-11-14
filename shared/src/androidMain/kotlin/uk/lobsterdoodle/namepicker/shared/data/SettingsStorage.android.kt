@@ -13,8 +13,9 @@ import okio.Path.Companion.toOkioPath
 fun SettingsStorage(context: Context): SettingsStorage {
     val app = context.applicationContext
     return openSettingsStorage(
-        path = app.dataStoreFile(SETTINGS_FILE_NAME).toOkioPath(),
         fileSystem = FileSystem.SYSTEM,
         migrations = listOf(legacyNameListMigration(app)),
+        // Lazy: getFilesDir() stats (and may create) a directory, so it runs on the store's scope.
+        producePath = { app.dataStoreFile(SETTINGS_FILE_NAME).toOkioPath() },
     )
 }

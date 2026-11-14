@@ -92,6 +92,30 @@ class PreferencesThreadingTest {
     }
 }
 
+class SettingsPathThreadingTest {
+    @get:Rule
+    val tmp = TemporaryFolder()
+
+    @Test
+    fun `creating the store does not work out the path on the caller and the first read does it off the caller`() =
+        runBlocking {
+            withTimeout(10_000) {
+                val pathThreads = Collections.synchronizedList(mutableListOf<Thread>())
+                val settings = openSettingsStorage(fileSystem = FileSystem.SYSTEM) {
+                    pathThreads += Thread.currentThread()
+                    settingsPath(tmp.root)
+                }
+                // On Android the path needs getFilesDir(), which stats the disk: never on the main thread.
+                assertTrue(pathThreads.isEmpty(), "the path was produced while creating the store: $pathThreads")
+
+                settings.preferences.activeGroupId.first()
+                assertTrue(pathThreads.isNotEmpty(), "the first read never produced the path")
+                assertTrue(Thread.currentThread() !in pathThreads, "the path was produced on the caller: $pathThreads")
+                settings.closeAndJoin()
+            }
+        }
+}
+
 /** Wraps a file system and records the thread of every call that names a path. */
 private class RecordingFileSystem(delegate: FileSystem) : ForwardingFileSystem(delegate) {
     val threads: MutableList<Thread> = Collections.synchronizedList(mutableListOf())

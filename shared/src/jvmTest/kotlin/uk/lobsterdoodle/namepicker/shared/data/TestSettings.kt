@@ -20,4 +20,4 @@ internal fun openSettings(
     dir: File,
     scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
     fileSystem: FileSystem = FileSystem.SYSTEM,
-): SettingsStorage = openSettingsStorage(path = settingsPath(dir), fileSystem = fileSystem, scope = scope)
+): SettingsStorage = openSettingsStorage(fileSystem = fileSystem, scope = scope) { settingsPath(dir) }

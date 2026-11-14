@@ -43,17 +43,18 @@ class SettingsStorage internal constructor(
 
 /**
  * Builds the settings store the same way on every platform. All file work runs in [scope], which
- * must live as long as the store (cancelling it stops the store). [migrations] run once, on first
- * use. A corrupt file is replaced with empty settings rather than failing every read.
+ * must live as long as the store (cancelling it stops the store); that includes [producePath],
+ * so working out the path never touches the disk on the caller's thread. [migrations] run once,
+ * on first use. A corrupt file is replaced with empty settings rather than failing every read.
  */
 internal fun openSettingsStorage(
-    path: Path,
     fileSystem: FileSystem,
     migrations: List<DataMigration<Preferences>> = emptyList(),
     scope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
+    producePath: () -> Path,
 ): SettingsStorage = SettingsStorage(
     PreferenceDataStoreFactory.create(
-        storage = OkioStorage(fileSystem, PreferencesSerializer) { path },
+        storage = OkioStorage(fileSystem, PreferencesSerializer, producePath = producePath),
         corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
         migrations = migrations,
         scope = scope,
