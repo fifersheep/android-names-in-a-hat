@@ -17,6 +17,8 @@ Debug build at 07b7f16 on the phone and tablet. Release-signed build (same certi
 | AC10 Edit rules | phone | Next creates once (key swap kept the same entry); Done → Draw → back → Lists. Edit → change → back: renamed ("Green Team"). Edit → clear → back: old name kept. | — |
 | AC11 a11y | phone | Labels from the accessibility tree: "Options for <list>", "More options", "Back", "New list". TalkBack focus can't be driven on the emulator, so the **TalkBack walk is left to the owner**. | — |
 
-Found and fixed during these checks (07b7f16): cards had no visible fill; the New list FAB had no accessible label.
+Found and fixed during these checks (07b7f16): cards had no visible fill; the New list FAB had no accessible label. `phone-delete-rotated.png` predates that card-fill fix; `phone-lists-landscape.png` shows landscape after it.
+
+After code review (aebc5be, f0079ac): Edit → "Alpha Prime" → Done stored at once (`5:Alpha Prime`); on the tablet, delete the open Gamma → open Beta → Undo restores Gamma and keeps Beta in the detail (`tablet-undo-keeps-detail.png`, dark because the AVD's night mode persisted).
 
 Open: a blank title migrated from 2.7.0 shows as an untitled card announced "Options for " (see report).

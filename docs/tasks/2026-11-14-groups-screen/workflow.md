@@ -5,7 +5,7 @@ ticket: NAM-8 — Build the groups screen: list, create, rename, delete (https:/
 ticket-id: NAM-8
 tracker-synced: In Engineering
 mode: full
-phase: code-review
+phase: reporting
 branch: flow/groups-screen
 worktree:
 created: 2026-11-14
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-All 9 tasks done. Final verify GREEN (`./gradlew --no-watch-fs :app:assembleDebug :shared:allTests :app:testDebugUnitTest :app:lintDebug` exit 0; app 70, shared 256 tests, 0 failures). Code review: dispatch flow-reviewer on main..flow/groups-screen against plan.md.
+Review done (review.md: 0 Blocking, 6 Advisory; A2/A4 fixed in aebc5be/f0079ac and driven on device; A1/A3/A5 follow-ups). Verify GREEN (app 71, shared 256). Reporting: write report.md, open the PR, move NAM-8 to In Review, hold at gate 2.
 
 ## Decision log
 - 2026-11-14 mode: full (user confirmed) — new screen spanning ViewModel, UI and data hooks; open design questions (delete undo vs confirm, create landing, list-detail).
