@@ -5,7 +5,7 @@ ticket: NAM-12 — Draw additional names from those remaining (https://linear.ap
 ticket-id: NAM-12
 tracker-synced: In Engineering
 mode: full
-phase: implementation
+phase: code-review
 branch: flow/draw-from-remaining
 worktree: ../android-names-in-a-hat-nam-12
 created: 2026-11-14
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Task 5 (device check) is blocked: waiting for the user to pick an emulator. niah_debug_api36 is running (possibly in use by the names-in-a-hat-bd session); niah_api30 hung, then refused to boot with "not enough disk space" (9.5 GiB free, Data volume 99% full). Tasks 1-4 are done; app 163/0, shared jvm 133 / iOS 94 / androidHost 101, lint 0 errors.
+Code review: run the flow-reviewer once over origin/main..HEAD against plan.md, fix any Blocking findings inline, then verify the outcome. Verify at f3f32b4 is green: app 163/0, shared jvm 133 / iOS 94 / androidHost 101 (328) / 0 failures, lint 0 errors (4 warnings, one new: robolectric 4.18 available).
 
 ## Decision log
 - 2026-11-14 mode: full, confirmed by the user. It spans :shared draw logic, a new per-name un-draw in NameRepository/Room, and draw-screen UI, with 11 ACs.
