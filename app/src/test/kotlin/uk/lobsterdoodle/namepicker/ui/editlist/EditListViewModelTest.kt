@@ -273,4 +273,57 @@ class EditListViewModelTest {
         assertEquals(emptyList(), restored.commit())
         assertEquals(listOf(Group(1, "Team 2")), groups.groups.value)
     }
+
+    // Hooks for the names section (NAM-9)
+
+    @Test
+    fun `commitName reports whether the name was valid`() {
+        val groups = FakeGroups(Group(3, "Year 5"))
+        val vm = vm(3, groups)
+        vm.onTextChange("  ")
+        assertFalse(vm.commitName {})
+        vm.onTextChange("Year 6")
+        assertTrue(vm.commitName {})
+        assertTrue(vm(null, FakeGroups()).apply { onTextChange("New") }.commitName {})
+    }
+
+    @Test
+    fun `listId follows the list once this visit creates it`() {
+        val vm = vm(null, FakeGroups())
+        assertEquals(null, vm.listId.value)
+        vm.onTextChange("Team")
+        vm.commit()
+        assertEquals(1L, vm.listId.value)
+        assertEquals(3L, vm(3, FakeGroups(Group(3, "Year 5"))).listId.value)
+    }
+
+    @Test
+    fun `focus leaving the name renames a changed existing list`() {
+        val groups = FakeGroups(Group(3, "Year 5"))
+        val vm = vm(3, groups)
+        vm.onTextChange(" Year 6 ")
+        vm.commitNameOnFocusLeave()
+        assertEquals(listOf("Year 6"), groups.labels())
+        assertFalse(vm.error)
+    }
+
+    @Test
+    fun `focus leaving a blank name keeps the old one and shows no error`() {
+        val groups = FakeGroups(Group(3, "Year 5"))
+        val vm = vm(3, groups)
+        vm.onTextChange("   ")
+        vm.commitNameOnFocusLeave()
+        assertEquals(listOf("Year 5"), groups.labels())
+        assertFalse(vm.error)
+    }
+
+    @Test
+    fun `focus leaving the name of a list not yet created does nothing`() {
+        val groups = FakeGroups()
+        val vm = vm(null, groups)
+        vm.onTextChange("Team")
+        vm.commitNameOnFocusLeave()
+        assertEquals(emptyList(), groups.groups.value)
+        assertFalse(vm.listExists)
+    }
 }
