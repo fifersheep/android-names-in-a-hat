@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Themed (monochrome) icon layer for Android 13+: the Top Hat silhouette with its sparkles. The band
+    is a gap in the crown. The mock-up's concept (Main.dc.html:87-91) still drew direction A's ticket;
+    that is dropped here. Same transform as ic_launcher_foreground.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:pivotX="56"
+        android:pivotY="45.5"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:translateX="-2"
+        android:translateY="8.5">
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M30,24 L31.5,28.5 L36,30 L31.5,31.5 L30,36 L28.5,31.5 L24,30 L28.5,28.5 Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M78,19 L79.2,22.8 L83,24 L79.2,25.2 L78,29 L76.8,25.2 L73,24 L76.8,22.8 Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M84,38 L85,41 L88,42 L85,43 L84,46 L83,43 L80,42 L83,41 Z" />
+        <!-- Crown above the band, then below it -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M38,32 L70,32 L68.59,56 L39.41,56 Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M39.76,62 L68.24,62 L68,66 L40,66 Z" />
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M30,64 H78 A4,4 0 0 1 82,68 A4,4 0 0 1 78,72 H30 A4,4 0 0 1 26,68 A4,4 0 0 1 30,64 Z" />
+    </group>
+</vector>
