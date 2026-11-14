@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.MaterialTheme
+import uk.lobsterdoodle.namepicker.ui.theme.NamesTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme {
+            NamesTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     PlaceholderScreen()
                 }
@@ -50,5 +51,5 @@ private fun PlaceholderScreen(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun PlaceholderScreenPreview() {
-    MaterialTheme { PlaceholderScreen() }
+    NamesTheme { PlaceholderScreen() }
 }
