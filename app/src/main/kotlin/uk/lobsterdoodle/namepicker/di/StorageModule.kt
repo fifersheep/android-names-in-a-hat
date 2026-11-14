@@ -9,6 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 import uk.lobsterdoodle.namepicker.shared.data.NamesStorage
 import uk.lobsterdoodle.namepicker.shared.data.SettingsStorage
+import uk.lobsterdoodle.namepicker.shared.draw.HatDraw
 import uk.lobsterdoodle.namepicker.shared.draw.NameDraw
 import uk.lobsterdoodle.namepicker.shared.draw.RandomNumberGenerator
 import uk.lobsterdoodle.namepicker.shared.repository.GroupRepository
@@ -60,4 +61,7 @@ object StorageModule {
     /** Production randomness: [RandomNumberGenerator]'s default, `Random.Default`. Never a fixed seed. */
     @Provides
     fun nameDraw(): NameDraw = NameDraw(RandomNumberGenerator())
+
+    @Provides
+    fun hatDraw(names: NameRepository, nameDraw: NameDraw): HatDraw = HatDraw(names, nameDraw)
 }

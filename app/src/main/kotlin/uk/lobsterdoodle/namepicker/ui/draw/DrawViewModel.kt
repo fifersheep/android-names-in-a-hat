@@ -7,6 +7,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -18,8 +19,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import uk.lobsterdoodle.namepicker.shared.draw.DrawState
+import uk.lobsterdoodle.namepicker.shared.draw.HatDraw
 import uk.lobsterdoodle.namepicker.shared.draw.MIN_NAMES_TO_DRAW
-import uk.lobsterdoodle.namepicker.shared.draw.NameDraw
 import uk.lobsterdoodle.namepicker.shared.draw.SelectAllBox
 import uk.lobsterdoodle.namepicker.shared.draw.clampCount
 import uk.lobsterdoodle.namepicker.shared.draw.inHat
@@ -57,6 +58,12 @@ data class RevealUi(
     val played: Boolean,
 )
 
+/**
+ * A reset that can still be undone (spec "Draw from remaining": "Drawn names reset" with Undo).
+ * [token] is new for every reset, so an older snackbar never undoes a newer one.
+ */
+data class PendingReset(val token: Long, val ids: List<Long>)
+
 data class DrawUiState(
     /** False until the names and the sort order are read, so the empty state never flashes. */
     val loaded: Boolean = false,
@@ -67,6 +74,8 @@ data class DrawUiState(
     /** How many the next draw picks: 1..in the hat. */
     val count: Int = 1,
     val reveal: RevealUi? = null,
+    /** Set from a reset until its snackbar is dismissed or Undo is tapped. */
+    val pendingReset: PendingReset? = null,
 )
 
 /**
@@ -79,7 +88,9 @@ data class DrawUiState(
  *   animates it. The animation never changes the outcome.
  * - **Saved state** holds the count, the result and whether the reveal has played, in
  *   platform-parcelable types, so all three survive rotation and process death (AC9).
- * - Names are never marked drawn here (decision log: NAM-12 adds `markDrawn` inside the draw step).
+ * - **Draw from remaining** (NAM-12): [HatDraw] marks the picks drawn before the result is stored, so a
+ *   result is never shown that wasn't saved. Reset keeps an undo snapshot in saved state; Put back
+ *   returns one drawn name to the hat.
  */
 @HiltViewModel(assistedFactory = DrawViewModel.Factory::class)
 class DrawViewModel @AssistedInject constructor(
@@ -89,7 +100,7 @@ class DrawViewModel @AssistedInject constructor(
     private val names: NameRepository,
     private val editor: NameEditor,
     private val sortOrder: SortOrder,
-    private val nameDraw: NameDraw,
+    private val hat: HatDraw,
     private val saved: SavedStateHandle,
 ) : ViewModel() {
 
@@ -106,6 +117,7 @@ class DrawViewModel @AssistedInject constructor(
     private val count = MutableStateFlow(saved.get<Int>(KEY_COUNT) ?: 1)
     private val result = MutableStateFlow(restoreResult())
     private val played = MutableStateFlow(saved.get<Boolean>(KEY_PLAYED) ?: false)
+    private val pendingReset = MutableStateFlow(restorePendingReset())
 
     private val writes = Mutex()
     private var drawing = false
@@ -126,7 +138,8 @@ class DrawViewModel @AssistedInject constructor(
                     RevealUi(it.drawId, it.names, more = if (draw.inHat > 0) n else 0, noneLeft = draw.inHat == 0, played = played)
                 },
             )
-        }.stateIn(viewModelScope, SharingStarted.Eagerly, DrawUiState())
+        }.combine(pendingReset) { ui, reset -> if (ui.loaded) ui.copy(pendingReset = reset) else ui }
+            .stateIn(viewModelScope, SharingStarted.Eagerly, DrawUiState())
 
     init {
         // Clamp the stored count whenever the pool shrinks below it (spec "Draw bar"), only once the
@@ -151,7 +164,7 @@ class DrawViewModel @AssistedInject constructor(
         viewModelScope.launch { activeGroup.open(listId) }
     }
 
-    /** Puts a name in or out of the hat. Drawn names aren't toggled (Put back is NAM-12). */
+    /** Puts a name in or out of the hat. Drawn names aren't toggled: they are put back ([putBack]). */
     fun toggle(id: Long) {
         viewModelScope.launch {
             writes.withLock {
@@ -172,6 +185,46 @@ class DrawViewModel @AssistedInject constructor(
                 }
             }
         }
+    }
+
+    /** "Put back in the hat" on a drawn chip: selected and no longer drawn. Ignored if it isn't drawn. */
+    fun putBack(id: Long) {
+        viewModelScope.launch {
+            writes.withLock {
+                val name = current().firstOrNull { it.id == id } ?: return@withLock
+                if (name.drawn) hat.putBack(id)
+            }
+        }
+    }
+
+    /** Reset: clears drawn for the list, never selection, and offers Undo. With nothing drawn, nothing happens. */
+    fun reset() {
+        viewModelScope.launch {
+            writes.withLock {
+                val ids = hat.reset(listId)
+                if (ids.isNotEmpty()) {
+                    val token = (saved.get<Long>(KEY_RESET_TOKEN) ?: 0L) + 1
+                    saved[KEY_RESET_TOKEN] = token
+                    setPendingReset(PendingReset(token, ids))
+                }
+            }
+        }
+    }
+
+    /** Undo on the reset snackbar: the names drawn before that reset are drawn again. */
+    fun undoReset(token: Long) {
+        viewModelScope.launch {
+            writes.withLock {
+                val pending = pendingReset.value?.takeIf { it.token == token } ?: return@withLock
+                setPendingReset(null)
+                hat.undoReset(pending.ids)
+            }
+        }
+    }
+
+    /** The reset snackbar timed out or was dismissed: the reset stands. */
+    fun dropReset(token: Long) {
+        if (pendingReset.value?.token == token) setPendingReset(null)
     }
 
     fun cycleSort() {
@@ -215,8 +268,16 @@ class DrawViewModel @AssistedInject constructor(
                     val names = current()
                     val inHat = names.count { it.inHat }
                     if (inHat < MIN_NAMES_TO_DRAW) return@withLock
-                    val picked = nameDraw.drawFrom(names, clampCount(count.value, inHat))
-                    // NAM-12: names.markDrawn(picked.map { it.id }) goes here, before the result is shown.
+                    // Marked drawn before the result is stored: a result that wasn't saved is never shown.
+                    val picked = try {
+                        hat.draw(listId, clampCount(count.value, inHat))
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        // The write failed (e.g. the list was deleted underneath): no result, no crash.
+                        return@withLock
+                    }
+                    if (picked.isEmpty()) return@withLock
                     setResult(picked.map { RevealName(it.id, it.text) })
                 }
             } finally {
@@ -251,6 +312,16 @@ class DrawViewModel @AssistedInject constructor(
         saved[KEY_PLAYED] = false
     }
 
+    private fun setPendingReset(value: PendingReset?) {
+        pendingReset.value = value
+        saved[KEY_RESET_IDS] = value?.ids?.toLongArray()
+    }
+
+    private fun restorePendingReset(): PendingReset? {
+        val ids = saved.get<LongArray>(KEY_RESET_IDS) ?: return null
+        return PendingReset(saved.get<Long>(KEY_RESET_TOKEN) ?: 0L, ids.toList())
+    }
+
     private fun restoreResult(): DrawResult? {
         val ids = saved.get<LongArray>(KEY_RESULT_IDS) ?: return null
         val texts = saved.get<ArrayList<String>>(KEY_RESULT_TEXTS) ?: return null
@@ -274,5 +345,7 @@ class DrawViewModel @AssistedInject constructor(
         const val KEY_RESULT_TEXTS = "resultTexts"
         const val KEY_PLAYED = "revealPlayed"
         const val KEY_DRAW_ID = "drawId"
+        const val KEY_RESET_TOKEN = "resetToken"
+        const val KEY_RESET_IDS = "resetIds"
     }
 }
