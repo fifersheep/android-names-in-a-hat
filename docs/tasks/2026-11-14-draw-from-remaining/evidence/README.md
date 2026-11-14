@@ -18,3 +18,9 @@ Seeded list "Year 6 Oak" with Ada, Ben, Cat, Dev, Eve, Fin, all selected and non
 | 12 | Landscape: top-bar Reset | The snackbar sits in the names area, clear of the trailing panel's Draw button. Left to time out |
 
 Not checkable here: TalkBack speech for the "drawn" state and the Put back action (covered by `DrawChipSemanticsTest`; the owner does a live listen).
+
+## After review fix 6e1af72 (same AVD, rebuilt)
+| # | Step | Result |
+|---|---|---|
+| 13 | Draw 1, top-bar Reset, then overflow → Edit list → Up, all within one script (back at t+13 s) | **No "Drawn names reset" snackbar on return**; the reset stands (DB sum(drawn) = 0) (review A1) |
+| 14 | Draw 1, Reset, rotate to landscape at t+5 s | The snackbar and Undo are still shown: rotation isn't leaving |
