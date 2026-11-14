@@ -2,12 +2,16 @@ package uk.lobsterdoodle.namepicker.ui.editlist
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,8 +47,8 @@ import uk.lobsterdoodle.namepicker.ui.components.sharedBoundsIfSinglePane
 import uk.lobsterdoodle.namepicker.ui.lists.ListsSharedKeys
 
 /**
- * Create a list or edit one (spec "Edit list", D3). NAM-8 owns the screen and the list-name field;
- * the names section is [EditListNamesSlot], which NAM-9 fills.
+ * Create a list or edit one (spec "Edit list", D3). NAM-8 built the screen and the list-name field;
+ * the names section is [EditListNamesSlot] (NAM-9).
  *
  * @param compactHeight phone landscape: the name field shares the top bar's row.
  * @param onCreated the list was created by this visit: the shell swaps the key (rule 1).
@@ -66,9 +70,22 @@ fun EditListScreen(
     val status by vm.status.collectAsStateWithLifecycle()
     LaunchedEffect(status) { if (status == ListStatus.Gone) key.listId?.let(onGone) }
 
+    // The names section follows the ViewModel's id, not the key, which can lag a create (review A3),
+    // and only while the list is present (so nothing is added to a list deleted underneath).
+    val listId by vm.listId.collectAsStateWithLifecycle()
+    val namesListId = listId.takeIf { status is ListStatus.Present }
+    // Set by Next on a valid name; the names section moves focus to its add field and clears it.
+    var focusAdd by rememberSaveable { mutableStateOf(false) }
+
     val isNew = key.listId == null || key.isNew
     val nameField: @Composable (Modifier, TextStyle) -> Unit = { modifier, style ->
-        ListNameField(vm, autoFocus = key.listId == null, onCreated = onCreated, textStyle = style, modifier = modifier)
+        ListNameField(
+            vm,
+            autoFocus = key.listId == null,
+            onNext = { if (vm.commitName(onCreated)) focusAdd = true },
+            textStyle = style,
+            modifier = modifier,
+        )
     }
 
     Scaffold(
@@ -96,17 +113,29 @@ fun EditListScreen(
             )
         },
     ) { padding ->
+        // Only the top bar's padding: the names section's add bar runs to the bottom edge and takes
+        // the bottom and side insets (keyboard included) itself.
         Column(
-            modifier = Modifier.fillMaxSize().padding(padding).padding(horizontal = 16.dp),
+            modifier = Modifier.fillMaxSize().padding(top = padding.calculateTopPadding()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             if (!compactHeight) {
                 nameField(
-                    Modifier.widthIn(max = 840.dp).fillMaxWidth().padding(top = 8.dp, bottom = 16.dp),
+                    Modifier
+                        .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
+                        .padding(horizontal = 16.dp)
+                        .widthIn(max = 840.dp)
+                        .fillMaxWidth()
+                        .padding(top = 8.dp, bottom = 16.dp),
                     MaterialTheme.typography.headlineSmall,
                 )
             }
-            EditListNamesSlot(listId = (status as? ListStatus.Present)?.let { key.listId })
+            EditListNamesSlot(
+                listId = namesListId,
+                focusAdd = focusAdd,
+                onFocusAddHandled = { focusAdd = false },
+                onFieldFocused = vm::commitNameOnFocusLeave,
+            )
         }
     }
 }
@@ -119,7 +148,7 @@ fun EditListScreen(
 private fun ListNameField(
     vm: EditListViewModel,
     autoFocus: Boolean,
-    onCreated: (Long) -> Unit,
+    onNext: () -> Unit,
     textStyle: TextStyle,
     modifier: Modifier = Modifier,
 ) {
@@ -145,18 +174,9 @@ private fun ListNameField(
         },
         singleLine = true,
         keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences, imeAction = ImeAction.Next),
-        // Handling Next replaces the default focus move, so focus stays here on an error. NAM-9's add
-        // field takes it from here once it exists.
-        keyboardActions = KeyboardActions(onNext = { vm.commitName(onCreated) }),
+        // Handling Next replaces the default focus move, so focus stays here on an error; on a valid
+        // name the names section moves it to the add field once that is enabled.
+        keyboardActions = KeyboardActions(onNext = { onNext() }),
         modifier = modifier.focusRequester(focus),
     )
 }
-
-/**
- * The names section of Edit list: NAM-9 builds it here (the names header, the names, and the
- * docked add field, disabled with "Name the list first" while [listId] is null). Its add field
- * calls [EditListViewModel.commitName] when it takes focus (spec: "focus moving to another field").
- */
-@Suppress("UNUSED_PARAMETER")
-@Composable
-fun ColumnScope.EditListNamesSlot(listId: Long?) = Unit
