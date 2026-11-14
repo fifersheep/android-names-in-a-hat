@@ -222,6 +222,11 @@ class DrawViewModel @AssistedInject constructor(
         }
     }
 
+    /** Draw was left (not rotated) with Undo still showing: the reset stands, and Undo isn't re-offered on return. */
+    fun dropPendingReset() {
+        pendingReset.value?.let { dropReset(it.token) }
+    }
+
     /** The reset snackbar timed out or was dismissed: the reset stands. */
     fun dropReset(token: Long) {
         if (pendingReset.value?.token == token) setPendingReset(null)

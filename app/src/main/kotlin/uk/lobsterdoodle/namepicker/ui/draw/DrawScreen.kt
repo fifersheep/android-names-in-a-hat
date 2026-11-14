@@ -1,5 +1,6 @@
 package uk.lobsterdoodle.namepicker.ui.draw
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -88,6 +89,12 @@ fun DrawScreen(
     LifecycleStartEffect(status) {
         vm.onShown()
         onStopOrDispose {}
+    }
+    // Leaving Draw (Edit pushed on top, Up, the app backgrounded) ends the reset's Undo, as the delayed
+    // deletes commit on leave. A rotation is not leaving: Undo is shown again.
+    val activity = LocalActivity.current
+    LifecycleStartEffect(vm) {
+        onStopOrDispose { if (activity?.isChangingConfigurations != true) vm.dropPendingReset() }
     }
 
     val label = (status as? ListStatus.Present)?.let { listLabel(it.label) }.orEmpty()

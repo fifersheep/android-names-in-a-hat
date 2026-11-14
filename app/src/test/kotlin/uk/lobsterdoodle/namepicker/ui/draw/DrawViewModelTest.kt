@@ -490,6 +490,19 @@ class DrawViewModelTest {
     }
 
     @Test
+    fun `draw more draws only from the names left in the hat`() = runTest {
+        val vm = vm()
+        vm.increment()
+        vm.draw()
+        val first = assertNotNull(vm.state.reveal).names.map { it.id }.toSet()
+        vm.drawMore()
+        val second = assertNotNull(vm.state.reveal).names.map { it.id }.toSet()
+        assertEquals(2, second.size)
+        assertTrue(first.intersect(second).isEmpty())
+        assertEquals(4, six.names.value.count { it.drawn })
+    }
+
+    @Test
     fun `draw more replaces the result and replays`() = runTest {
         val vm = vm(seed = 3)
         vm.draw()
@@ -616,6 +629,17 @@ class DrawViewModelTest {
         vm.undoReset(old)
         assertEquals(newer, vm.state.pendingReset)
         assertTrue(names.names.value.none { it.drawn })
+    }
+
+    @Test
+    fun `leaving draw ends the reset undo`() = runTest {
+        val names = drawnList()
+        val saved = SavedStateHandle()
+        val vm = vm(names, saved = saved)
+        vm.reset()
+        vm.dropPendingReset()
+        assertNull(vm.state.pendingReset)
+        assertNull(vm(names, saved = saved).state.pendingReset)
     }
 
     @Test
