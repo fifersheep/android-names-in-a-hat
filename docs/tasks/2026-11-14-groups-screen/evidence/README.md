@@ -21,4 +21,4 @@ Found and fixed during these checks (07b7f16): cards had no visible fill; the Ne
 
 After code review (aebc5be, f0079ac): Edit → "Alpha Prime" → Done stored at once (`5:Alpha Prime`); on the tablet, delete the open Gamma → open Beta → Undo restores Gamma and keeps Beta in the detail (`tablet-undo-keeps-detail.png`, dark because the AVD's night mode persisted).
 
-Open: a blank title migrated from 2.7.0 shows as an untitled card announced "Options for " (see report).
+Gate 2 change (5964626): a blank list name (inserted with sqlite to mimic 2.7.0 data) shows as "Untitled list"; the overflow reads "Options for Untitled list", the Draw title is "Untitled list", and delete shows "Untitled list deleted · Undo" (`phone-untitled-deleted.png`, `phone-untitled-list.png`).

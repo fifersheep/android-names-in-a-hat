@@ -12,7 +12,7 @@ None.
 | A2 | `EditListViewModel.kt:136-141`. The rename for Done or Next ran on `viewModelScope`. An immediate pop could cancel it, and `onCleared` then treated the name as already stored, so the rename was lost silently. | **Fixed in aebc5be.** Renames run on the app scope. New test: `done keeps the rename when the screen is cleared before the write runs` (red before the fix, green after). Device: Edit → "Alpha Prime" → Done → DB `5:Alpha Prime`. |
 | A3 | `EditListViewModel.kt:103-111`. `onCreated` is captured from the composition at the time of Next. An activity recreation during the create, within a few milliseconds, leaves the key as `EditList(null)` while the ViewModel holds the id. Done then pops instead of going to Draw, and the names slot sees null. | **Follow-up (NAM-9).** Take the slot's `listId` from the ViewModel, not the key, and consider re-issuing `listCreated` once the screen is recomposed. |
 | A4 | `ListsScreen.kt:194`. Undo after opening another list replaced that list's Draw with the restored one. | **Fixed in f0079ac.** Undo reopens only into an empty detail pane. Tablet: delete Gamma (open) → open Beta → Undo → Gamma restored and the detail stays on Beta (`tablet-undo-keeps-detail.png`). The baseline still works: delete the open list → Undo → reopened. |
-| A5 | A blank title migrated from 2.7.0 shows an untitled card, "Options for " and " deleted". | **Follow-up for gate 2** (workflow.md deviation). Needs a product decision, e.g. an "Untitled list" fallback. |
+| A5 | A blank title migrated from 2.7.0 shows an untitled card, "Options for " and " deleted". | **Fixed at gate 2 (5964626)** by user decision. Blank labels display as "Untitled list" on the card, the overflow description, the snackbar and the Draw title. 3 `ListLabelTest` cases. Device: `phone-untitled-*.png`. The change is display-only, so this review pass still stands. |
 | A6 | The phone-landscape Lists evidence predated the card-fill fix. | **Filled:** `phone-lists-landscape.png` taken after the fix. |
 
 ## Acceptance criteria
@@ -29,7 +29,7 @@ None.
 | AC8 spec match | MET | checklist screenshots, light and dark, including `phone-lists-landscape.png` |
 | AC9 VM tests | MET | `ListsViewModelTest`, `EditListViewModelTest` (71 app tests) |
 | AC10 Edit rules | MET | tests + phone walk |
-| AC11 accessibility | PARTIAL | labels wired and checked in the a11y tree; **TalkBack walk is the owner's** (emulator can't drive it); A5 affects blank titles |
+| AC11 accessibility | PARTIAL | labels wired and checked in the a11y tree, blank titles included ("Options for Untitled list"); **TalkBack walk is the owner's** (the emulator can't drive it) |
 | AC12 copy | MET | grep clean; superseded keys removed; lint in verify |
 
 ## Checked (reviewer)

@@ -1,7 +1,7 @@
 # Report: build the groups screen — list, create, rename, delete (NAM-8)
 
 ## Changed vs plan
-All 9 plan tasks are done ([plan.md](plan.md); Progress is in [workflow.md](workflow.md)).
+All 9 plan tasks are done, plus one gate-2 change ([plan.md](plan.md); Progress is in [workflow.md](workflow.md)).
 
 - **AC status:** every acceptance criterion is met except **AC11**, which is partial. The TalkBack walk couldn't be driven on the emulator, so it's left for the owner.
 - **Review:** 0 Blocking and 6 Advisory. Two advisories were fixed and three are follow-ups ([review.md](review.md)).
@@ -19,6 +19,7 @@ All 9 plan tasks are done ([plan.md](plan.md); Progress is in [workflow.md](work
 | 8 Shell wiring | c3f22f2 | Real screens in `AppNavigation`. The Lists pane gets `openId`, close-on-delete and reopen-on-undo. The card title shares a key with the Draw placeholder title. Dead placeholder code is removed. |
 | 9 Device checks | 07b7f16, 5624bb2 | Phone, tablet, and install-over on api36_niah. Two bugs found and fixed (07b7f16). |
 | Review fixes | aebc5be, f0079ac | Done/Next renames run on the app scope. Undo reopens only into an empty detail pane. |
+| Gate 2 change | 5964626 | Blank list names from 2.7.0 display as **"Untitled list"** on the card, the overflow description, the delete snackbar and the Draw title. New key `list_untitled`, also added to the spec's Copy deck. 3 tests. |
 
 ## Deviations
 All of these are logged in workflow.md as they happened.
@@ -35,7 +36,7 @@ All of these are logged in workflow.md as they happened.
   - The New list FAB had **no accessible label**. material3 clears the extended FAB's text semantics and labels the FAB from its icon, which had `contentDescription = null`.
 - **The TalkBack walk (AC11) goes to the owner.** On the emulator TalkBack ignores injected swipes and Alt+arrow shortcuts; it was tried 3 ways. Labels were checked in the accessibility tree instead.
 - **AC6 names were seeded with sqlite.** Names can't be added in the UI until NAM-9, so they went into the debug DB with the app stopped.
-- **The install-over found an unplanned case: a blank group title from 2.7.0.** 2.7.0 had no validation (GitHub #6), and the title migrates as-is. See Follow-ups.
+- **The install-over found an unplanned case: a blank group title from 2.7.0.** 2.7.0 had no validation (GitHub #6), and the title migrates as-is. At gate 2 the user chose to fix it now: it displays as "Untitled list". That string wasn't in the approved copy deck, so it was added to the spec's Copy deck table.
 
 ## Evidence
 **Machine** at e3da5ee: `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests :app:testDebugUnitTest :app:lintDebug`
@@ -46,7 +47,7 @@ BUILD SUCCESSFUL in 4s
 EXIT=0
 ```
 
-Counts from the test-results XML: `app:testDebugUnitTest 71`, `shared:jvmTest 109`, `shared:iosSimulatorArm64Test 70`, `shared:testAndroidHostTest 77`, with 0 failures and 0 errors. The baseline was shared 255; the new test is the Room drawn count.
+Counts from the test-results XML: `app:testDebugUnitTest 71` (74 after the gate-2 change at 5964626, also exit 0), `shared:jvmTest 109`, `shared:iosSimulatorArm64Test 70`, `shared:testAndroidHostTest 77`, with 0 failures and 0 errors. The baseline was shared 255; the new test is the Room drawn count.
 
 **Device** (full table and screenshots in [evidence/README.md](evidence/README.md)):
 - **Install-over (AC1, AC1b, NAM-5 AC7, NAM-6 AC6).** api36_niah, release-signed, same certificate as 2.7.0.
@@ -67,9 +68,9 @@ Counts from the test-results XML: `app:testDebugUnitTest 71`, `shared:jvmTest 10
   - Deleting the open list shows "Pick a list" and clears `active_group_id`. Undo reopens it, and the id is set again.
   - Delete during an unsaved edit, then Undo, keeps the old name.
   - After the review fix: delete the open list, open another, Undo restores the deleted list and leaves the detail alone.
+- **Gate 2 change (phone):** a blank-named list shows "Untitled list". The overflow reads "Options for Untitled list", the Draw title is "Untitled list", and delete shows "Untitled list deleted · Undo".
 
 ## Follow-ups
-- **Owner: decide how a blank 2.7.0 title should look** (review A5). The card has no title, the overflow reads "Options for " and the snackbar reads " deleted". The suggestion is an "Untitled list" display fallback; a ticket or a gate-2 change.
 - **Owner: TalkBack walk on a real device** (AC11): open, the card overflow, Edit, Delete, Undo, the FAB and About.
 - **A pending delete stranded by a resize** (review A1). On list-detail, delete a list and then resize to single pane with another list open. The delete stays pending (hidden, not deleted) until the user goes back to Lists. It needs a commit trigger outside the Lists composition (process lifecycle or the shell).
 - **NAM-9:**

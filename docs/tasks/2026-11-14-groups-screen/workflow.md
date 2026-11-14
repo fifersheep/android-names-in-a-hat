@@ -13,13 +13,14 @@ updated: 2026-11-14
 ---
 
 ## Next action
-report.md written; PR #29 open (https://github.com/fifersheep/android-names-in-a-hat/pull/29); NAM-8 moved to In Review. Holding at gate 2 for merge approval.
+Gate 2 change done (5964626): blank titles display as \"Untitled list\"; verify GREEN (app 74, shared 256); device-checked. Display-only change, prior review pass stands (noted in review.md). Back at gate 2 for merge approval on PR #29.
 
 ## Decision log
 - 2026-11-14 mode: full (user confirmed) — new screen spanning ViewModel, UI and data hooks; open design questions (delete undo vs confirm, create landing, list-detail).
 - 2026-11-14 Q: NAM-9 runs in parallel; how to split the Edit list screen? A: NAM-8 builds the whole Edit list screen first (scaffold, top bar, Done, back/Up commit rules, list-name field + ViewModel) with a stub names area; NAM-9 waits for NAM-8 to merge, then builds the names section on top.
 - 2026-11-14 Q: the About sheet (D19) on the Lists overflow has no owning ticket — build it in NAM-8? A: yes, in NAM-8.
 - 2026-11-14 gate 1: plan approved by user
+- 2026-11-14 gate 2 Q: blank 2.7.0 titles show as untitled cards — ticket it or fix now? A: fix now ("Untitled list" display fallback), then merge.
 
 ## Progress
 - [x] 1. Drawn count in :shared + verify config (af892c3)
@@ -31,6 +32,7 @@ report.md written; PR #29 open (https://github.com/fifersheep/android-names-in-a
 - [x] 7. Edit list screen (5bb483c)
 - [x] 8. Wire into the shell (c3f22f2)
 - [x] 9. Device verification + evidence (07b7f16 fixes, 5624bb2 evidence)
+- [x] 10. Gate 2 change: "Untitled list" display fallback for blank titles (5964626)
 
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
@@ -45,3 +47,4 @@ report.md written; PR #29 open (https://github.com/fifersheep/android-names-in-a
 - 2026-11-14 task 9: TalkBack focus can't be driven on the emulator (adb swipes and Alt+arrow shortcuts don't move it after 3 tries); the AC11 TalkBack walk goes to the owner as a manual check. Labels were checked through the accessibility tree instead.
 - 2026-11-14 task 9: the install-over found a case outside the plan: a blank group title that 2.7.0 allowed (GitHub #6) migrates as-is and shows as an untitled card ("Options for "). Not fixed here; raised for the report and gate 2.
 - 2026-11-14 task 9: 2.7.0 couldn't have names added by UI in 3.0 yet (NAM-9), so AC6 plural data was seeded with sqlite on the debug device while the app was stopped.
+- 2026-11-14 gate 2 change: list_untitled isn't in the approved copy deck; added it to the spec's Copy deck table (docs/design/3.0-spec.md) so the deck stays the single source of strings.
