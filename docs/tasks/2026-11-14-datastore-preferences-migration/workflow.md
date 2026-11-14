@@ -3,7 +3,7 @@ task: datastore-preferences-migration
 title: Replace SharedPreferences with DataStore and migrate existing settings
 ticket: NAM-6 — Replace SharedPreferences with DataStore and migrate existing settings (https://linear.app/northtrack/issue/NAM-6/replace-sharedpreferences-with-datastore-and-migrate-existing-settings)
 ticket-id: NAM-6
-tracker-synced: In Engineering
+tracker-synced: In Review
 mode: full
 phase: reporting
 branch: flow/datastore-preferences-migration
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Code review done 2026-11-14 (review.md): 0 blocking, 2 advisory, both addressed. The lazy settings path is fixed in b1cbfee, and the decoded .preferences_pb is captured. Verify PASS: 255 tests / 0 failures. Outcome driven under Robolectric with the production factory: a 2.7.0 XML file becomes settings.preferences_pb with the 4 expected keys and the old file deleted. Next: write report.md, open the PR, move NAM-6 to In Review, then gate 2.
+Report written and PR #27 opened 2026-11-14 (https://github.com/fifersheep/android-names-in-a-hat/pull/27). NAM-6 → In Review. Hand-off comments posted on NAM-8 (the AC6 settings check), NAM-7 (Hilt singleton, launch) and NAM-13 (backup). Verify at 68dc540: 255 tests / 0 failures, plus the iOS compile and lint. Next: gate 2, user approval to merge (watch the CI checks on #27).
 
 ## Decision log
 - 2026-11-14 mode: full (user confirmed). Reason: new multiplatform library (DataStore in :shared), Android-only SharedPreferencesMigration wiring, open questions on per-platform file location and how a group delete reaches the sort key.
