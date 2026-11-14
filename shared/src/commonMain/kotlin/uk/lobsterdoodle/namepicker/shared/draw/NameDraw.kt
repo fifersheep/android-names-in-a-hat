@@ -18,6 +18,9 @@ class NameDraw(private val generator: NumberGenerator) {
         }
     }
 
-    /** Draws up to [count] of the selected [names]; unselected names never take part. */
-    fun drawFrom(names: List<Name>, count: Int): List<Name> = draw(names.filter { it.selected }, count)
+    /**
+     * Draws up to [count] of the [names] in the hat (selected and not drawn). Unselected and drawn
+     * names never take part.
+     */
+    fun drawFrom(names: List<Name>, count: Int): List<Name> = draw(names.filter { it.inHat }, count)
 }

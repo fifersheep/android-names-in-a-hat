@@ -87,5 +87,35 @@ class NameDrawTest {
         assertEquals(2, drawn.size)
     }
 
-    private fun name(id: Long, text: String, selected: Boolean) = Name(id, groupId = 1, text = text, selected = selected)
+    @Test
+    fun `drawFrom never draws a drawn name`() {
+        val names = listOf(
+            name(1, "Ada", selected = true, drawn = true),
+            name(2, "Grace", selected = true),
+            name(3, "Alan", selected = false, drawn = true),
+            name(4, "Edsger", selected = true),
+        )
+        val drawn = NameDraw(RandomNumberGenerator(Random(3))).drawFrom(names, 4)
+        assertEquals(setOf(2L, 4L), drawn.map { it.id }.toSet())
+    }
+
+    @Test
+    fun `drawFrom returns k distinct names from the hat`() {
+        val names = (1L..10L).map { name(it, "N$it", selected = it % 2 == 0L) }
+        val drawn = NameDraw(RandomNumberGenerator(Random(11))).drawFrom(names, 3)
+        assertEquals(3, drawn.size)
+        assertEquals(3, drawn.map { it.id }.toSet().size)
+        assertTrue(drawn.all { it.selected && !it.drawn })
+    }
+
+    @Test
+    fun `drawFrom with the same seed draws the same names`() {
+        val names = (1L..10L).map { name(it, "N$it", selected = true) }
+        val first = NameDraw(RandomNumberGenerator(Random(42))).drawFrom(names, 4)
+        val second = NameDraw(RandomNumberGenerator(Random(42))).drawFrom(names, 4)
+        assertEquals(first, second)
+    }
+
+    private fun name(id: Long, text: String, selected: Boolean, drawn: Boolean = false) =
+        Name(id, groupId = 1, text = text, selected = selected, drawn = drawn)
 }
