@@ -132,6 +132,7 @@ fun EditListScreen(
             }
             EditListNamesSlot(
                 listId = namesListId,
+                listCreated = listId != null,
                 focusAdd = focusAdd,
                 onFocusAddHandled = { focusAdd = false },
                 onFieldFocused = vm::commitNameOnFocusLeave,

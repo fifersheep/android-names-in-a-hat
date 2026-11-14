@@ -75,6 +75,8 @@ private val SideInsets = WindowInsetsSides.Horizontal
  * ([listId] null) only the add field shows, disabled, with "Name the list first".
  *
  * @param listId the list, once it exists **and** is present (NAM-8 review A3: from the ViewModel).
+ * @param listCreated the list exists, even if it is still loading: "Name the list first" only shows
+ *   before that, so an existing list doesn't flash it while it loads (review A2).
  * @param focusAdd Next on the list name asked for focus to move here; [onFocusAddHandled] clears it.
  * @param onFieldFocused one of this section's fields took focus: the list name commits (spec:
  *   "focus moving to another field").
@@ -82,6 +84,7 @@ private val SideInsets = WindowInsetsSides.Horizontal
 @Composable
 fun ColumnScope.EditListNamesSlot(
     listId: Long?,
+    listCreated: Boolean,
     focusAdd: Boolean,
     onFocusAddHandled: () -> Unit,
     onFieldFocused: () -> Unit,
@@ -167,6 +170,7 @@ fun ColumnScope.EditListNamesSlot(
     AddNameBar(
         text = vm?.addText.orEmpty(),
         enabled = vm != null,
+        namePending = !listCreated,
         error = vm?.addError == true,
         onTextChange = { vm?.onAddTextChange(it) },
         onAdd = { if (vm?.add() == true) scrollToNew = true },
@@ -271,6 +275,7 @@ private fun RenameRow(vm: EditNamesViewModel, onFocused: () -> Unit, modifier: M
 private fun AddNameBar(
     text: String,
     enabled: Boolean,
+    namePending: Boolean,
     error: Boolean,
     onTextChange: (String) -> Unit,
     onAdd: () -> Unit,
@@ -278,7 +283,8 @@ private fun AddNameBar(
     focus: FocusRequester,
 ) {
     val support = when {
-        !enabled -> stringResource(R.string.edit_name_first)
+        namePending -> stringResource(R.string.edit_name_first)
+        !enabled -> null
         error -> stringResource(R.string.edit_name_blank)
         else -> null
     }
