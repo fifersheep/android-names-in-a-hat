@@ -15,4 +15,7 @@ class ListLabelTest {
     @Test
     fun `a whitespace-only name shows the untitled label`() =
         assertEquals("Untitled list", displayLabel(" \t\n", untitled = "Untitled list"))
+
+    @Test
+    fun `a blank name shows the unnamed label`() = assertEquals("Unnamed", displayLabel(" ", untitled = "Unnamed"))
 }

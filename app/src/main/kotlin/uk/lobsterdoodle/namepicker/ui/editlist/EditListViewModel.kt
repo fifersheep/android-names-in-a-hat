@@ -15,6 +15,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
@@ -67,6 +68,9 @@ class EditListViewModel @AssistedInject constructor(
 
     val listExists: Boolean get() = id.value != null
 
+    /** The list's id: null until this visit creates it. The names section follows this, not the key (NAM-8 review A3). */
+    val listId: StateFlow<Long?> = id.asStateFlow()
+
     val status: StateFlow<ListStatus> = id
         .flatMapLatest { id -> if (id == null) flowOf(ListStatus.Unsaved) else groups.status(id) }
         .stateIn(viewModelScope, SharingStarted.Eagerly, if (id.value == null) ListStatus.Unsaved else ListStatus.Loading)
@@ -91,14 +95,24 @@ class EditListViewModel @AssistedInject constructor(
     }
 
     /**
-     * Commits the name (IME Next, or focus moving to another field). Creates the list on the first
-     * commit and calls [onCreated] with its id; renames it after that. Blank shows the error.
+     * Commits the name (IME Next). Creates the list on the first commit and calls [onCreated] with
+     * its id; renames it after that. Blank shows the error.
+     *
+     * @return false if the name was blank, so the caller keeps focus here; true otherwise (Next then
+     *   moves on to the add field).
      */
-    fun commitName(onCreated: (Long) -> Unit) {
-        val label = validateLabel(text) ?: return storeError(true)
+    fun commitName(onCreated: (Long) -> Unit): Boolean {
+        val label = validateLabel(text)
+        if (label == null) {
+            storeError(true)
+            return false
+        }
         val existing = id.value
-        if (existing != null) return rename(existing, label)
-        if (creating) return
+        if (existing != null) {
+            rename(existing, label)
+            return true
+        }
+        if (creating) return true
         creating = true
         viewModelScope.launch {
             when (val result = editor.create(label)) {
@@ -114,6 +128,18 @@ class EditListViewModel @AssistedInject constructor(
             }
             creating = false
         }
+        return true
+    }
+
+    /**
+     * Focus moved from the name to another field (spec: "focus moving to another field with
+     * non-blank text"): renames an existing list if the name is non-blank and changed. Never shows
+     * the error and never creates: the names section's fields only exist once the list does.
+     */
+    fun commitNameOnFocusLeave() {
+        val existing = id.value ?: return
+        val label = validateLabel(text) ?: return
+        rename(existing, label)
     }
 
     /** Done: saves a changed name, then calls [onDone]. Blank shows the error and stays. */

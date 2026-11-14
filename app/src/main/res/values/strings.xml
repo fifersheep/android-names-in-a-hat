@@ -42,6 +42,7 @@
     <string name="edit_list_name">List name</string>
     <string name="edit_list_name_hint">e.g. Year 5 Maple</string>
     <string name="edit_list_name_blank">Enter a list name</string>
+    <string name="name_untitled">Unnamed</string>
 
     <!-- Draw (NAM-7 shell; NAM-10 adds the rest) -->
     <string name="draw_back">Back to lists</string>

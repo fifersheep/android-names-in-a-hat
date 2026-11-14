@@ -14,6 +14,7 @@ import uk.lobsterdoodle.namepicker.shared.repository.NameRepository
 import uk.lobsterdoodle.namepicker.shared.repository.PreferencesRepository
 import uk.lobsterdoodle.namepicker.shared.usecase.ActiveGroup
 import uk.lobsterdoodle.namepicker.shared.usecase.GroupEditor
+import uk.lobsterdoodle.namepicker.shared.usecase.NameEditor
 
 /**
  * Provides `:shared`, which has no DI annotations. Both storages must be one per process: a second
@@ -46,4 +47,7 @@ object StorageModule {
 
     @Provides
     fun groupEditor(groups: GroupRepository, prefs: PreferencesRepository): GroupEditor = GroupEditor(groups, prefs)
+
+    @Provides
+    fun nameEditor(names: NameRepository): NameEditor = NameEditor(names)
 }
