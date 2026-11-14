@@ -26,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import uk.lobsterdoodle.namepicker.R
 import uk.lobsterdoodle.namepicker.navigation.Draw
 import uk.lobsterdoodle.namepicker.ui.ListStatus
+import uk.lobsterdoodle.namepicker.ui.draw.DrawViewModel
 import uk.lobsterdoodle.namepicker.ui.listLabel
 import uk.lobsterdoodle.namepicker.ui.components.HatIllustration
 import uk.lobsterdoodle.namepicker.ui.components.UpButton
