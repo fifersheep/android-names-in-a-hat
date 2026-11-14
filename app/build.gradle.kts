@@ -98,7 +98,8 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.lifecycle.viewmodel.compose)
 
-    testImplementation(libs.kotlin.test)
+    // AGP 9 built-in Kotlin doesn't infer kotlin-test's JUnit adapter, so it is named explicitly.
+    testImplementation(libs.kotlin.test.junit)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
 }
