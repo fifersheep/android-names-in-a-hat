@@ -35,7 +35,7 @@ Implementation: rebased onto main 8bae63c (NAM-8 #29 and NAM-9 #30 merged), and 
 - [x] 5. Copy + icons (781c29d): :app:clean :app:assembleDebug passes
 - [x] 6. Draw screen UI (baafd4d): assembleDebug passes; lintDebug has 0 errors (the new warnings are only the reveal strings task 7 uses); the device look is checked with task 8's wiring, before task 9
 - [x] 7. Reveal (0c302da): assembleDebug passes; lintDebug 0 errors (only the 4 warnings that were already there); RevealStaggerTest 3/0; :app 143/0; checked on device after task 8
-- [ ] 8. Wire into the shell
+- [x] 8. Wire into the shell (25c8837): full verify + lint passes; :shared jvm 120/0, host 89/0, iOS 82/0; :app 143/0 (BackStackTest unchanged); lint 0 errors
 - [ ] 9. Device verification + evidence
 
 ## Deviations

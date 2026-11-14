@@ -275,8 +275,8 @@ private fun RevealContent(reveal: RevealUi, onDone: () -> Unit, onDrawMore: () -
                 },
             )
         }
-        val titleText: @Composable (TextStyle) -> Unit = { style ->
-            Text(title, style = style, color = colors.onBackdrop, textAlign = TextAlign.Center)
+        val titleText: @Composable (TextStyle, Modifier) -> Unit = { style, m ->
+            Text(title, style = style, color = colors.onBackdrop, textAlign = TextAlign.Center, modifier = m)
         }
         val cardsArea: @Composable (Modifier, Int) -> Unit = { modifier, columns ->
             RevealCards(reveal, cards, layout, columns, modifier)
@@ -293,7 +293,7 @@ private fun RevealContent(reveal: RevealUi, onDone: () -> Unit, onDrawMore: () -
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    titleText(MaterialTheme.typography.headlineLarge)
+                    titleText(MaterialTheme.typography.headlineLarge, Modifier)
                     hat(120)
                 }
                 cardsArea(Modifier.weight(1f), if (single) 1 else 2)
@@ -317,7 +317,7 @@ private fun RevealContent(reveal: RevealUi, onDone: () -> Unit, onDrawMore: () -
                     Modifier.weight(1f).fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
                 ) {
-                    titleText(MaterialTheme.typography.displaySmall.copy(textAlign = TextAlign.Center))
+                    titleText(MaterialTheme.typography.displaySmall, Modifier.fillMaxWidth())
                     cardsArea(Modifier.fillMaxWidth().weight(1f, fill = false), if (single || layout == RevealLayout.PHONE) 1 else 3)
                 }
                 hat(if (layout == RevealLayout.LARGE) 140 else 112)
