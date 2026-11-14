@@ -100,6 +100,9 @@ fun ColumnScope.EditListNamesSlot(
     val listState = rememberLazyListState()
     val addFocus = remember { FocusRequester() }
     var scrollToNew by rememberSaveable { mutableStateOf(false) }
+    // The rename that has already taken focus. A rename row re-enters composition when it scrolls
+    // back into view; it must not take focus back from the add field then (review A1).
+    var renameFocused by rememberSaveable { mutableStateOf<Long?>(null) }
 
     if (vm != null) {
         DelayedDeleteSnackbar(state.pending, snackbar, vm)
@@ -152,7 +155,13 @@ fun ColumnScope.EditListNamesSlot(
                 items(state.names, key = { it.id }) { row ->
                     val rowModifier = Modifier.animateItem().widthIn(max = MaxContentWidth).fillMaxWidth()
                     if (vm.renamingId == row.id) {
-                        RenameRow(vm, onFieldFocused, rowModifier)
+                        RenameRow(
+                            vm = vm,
+                            takeFocus = renameFocused != row.id,
+                            onFocusTaken = { renameFocused = row.id },
+                            onFocused = onFieldFocused,
+                            modifier = rowModifier,
+                        )
                     } else {
                         NameRowItem(
                             row = row,
@@ -216,11 +225,25 @@ private fun NameRowItem(row: NameRow, onRename: () -> Unit, onDelete: () -> Unit
     }
 }
 
-/** A name being renamed: a field with ✓ and ✕. IME Done or ✓ saves; blank shows "Enter a name". */
+/**
+ * A name being renamed: a field with ✓ and ✕. IME Done or ✓ saves; blank shows "Enter a name".
+ * It takes focus once, when the rename opens ([takeFocus]), not each time it scrolls back into view.
+ */
 @Composable
-private fun RenameRow(vm: EditNamesViewModel, onFocused: () -> Unit, modifier: Modifier = Modifier) {
+private fun RenameRow(
+    vm: EditNamesViewModel,
+    takeFocus: Boolean,
+    onFocusTaken: () -> Unit,
+    onFocused: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val focus = remember { FocusRequester() }
-    LaunchedEffect(Unit) { focus.requestFocus() }
+    LaunchedEffect(Unit) {
+        if (takeFocus) {
+            focus.requestFocus()
+            onFocusTaken()
+        }
+    }
     val blank = stringResource(R.string.edit_name_blank)
     Column(modifier) {
         Row(
