@@ -5,7 +5,7 @@ ticket: NAM-6 — Replace SharedPreferences with DataStore and migrate existing 
 ticket-id: NAM-6
 tracker-synced: In Engineering
 mode: full
-phase: implementation
+phase: code-review
 branch: flow/datastore-preferences-migration
 worktree: ../android-names-in-a-hat-nam-6
 created: 2026-11-14
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Gate 1 passed 2026-11-14. Baseline at setup: verify PASS, 234 tests / 0 failures @ 271fd7b. Next: implement plan.md Task 1 (dependencies, Robolectric host-test setup and smoke test).
+Implementation complete 2026-11-14 (commits 351581d..37290e9). Full verify `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests` PASS: 254 tests / 0 failures (baseline 234), and the iOS main targets compile. Next: code review with one flow-reviewer pass over main..HEAD against plan.md.
 
 ## Decision log
 - 2026-11-14 mode: full (user confirmed). Reason: new multiplatform library (DataStore in :shared), Android-only SharedPreferencesMigration wiring, open questions on per-platform file location and how a group delete reaches the sort key.
@@ -24,11 +24,13 @@ Gate 1 passed 2026-11-14. Baseline at setup: verify PASS, 234 tests / 0 failures
 - 2026-11-14 gate 1: plan approved by user
 
 ## Progress
-- [ ] 1. Dependencies and test setup (DataStore 1.3.0, Robolectric 4.17 host tests, smoke test)
-- [ ] 2. Repository and builder, test-first (AC2, AC3, AC4, persistence, atomicity, corruption)
-- [ ] 3. Threading proof (AC5)
-- [ ] 4. Android factory and legacy migration (AC1, plus AC2 and AC3 on Android)
-- [ ] 5. CI and full verify (AC7)
+- [x] 1. Dependencies and test setup (DataStore 1.3.0, Robolectric 4.17 host tests, smoke test) — 6818fd5 (235 tests, 0 failures)
+- [x] 2. Repository and builder, test-first (AC2, AC3, AC4, persistence, atomicity, corruption) — 4cb0af1 (12 tests; mutation check: a non-atomic updateSortType fails the atomicity test)
+- [x] 3. Threading proof (AC5) — e8eb880 (1 test, jvmTest 107)
+- [x] 4. Android factory and legacy migration (AC1, plus AC2 and AC3 on Android) — 2162b90 (6 Robolectric tests; mutation check: copying every key or overwriting existing keys fails 4 of them)
+- [x] 5. CI and full verify (AC7) — 37290e9 (verify + iOS compile PASS: 254 tests / 0 failures = jvmTest 107, testAndroidHostTest 77, iosSimulatorArm64Test 70; CI unit-tests command PASS locally)
 
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
+- 2026-11-14 Task 4: the path comes from `context.dataStoreFile(SETTINGS_FILE_NAME)`, not `preferencesDataStoreFile("settings")`. It is the same file (`files/datastore/settings.preferences_pb`), with one name constant shared with the commonMain builder.
+- 2026-11-14 Task 2: `openSettingsStorage` takes `fileSystem` with no default, so commonMain doesn't depend on `FileSystem.SYSTEM` being in okio's common API. The Android factory and the JVM tests pass `FileSystem.SYSTEM`.
