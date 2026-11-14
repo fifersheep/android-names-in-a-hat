@@ -86,7 +86,7 @@ fun ListsScreen(
     val snackbar = remember { SnackbarHostState() }
     var aboutOpen by rememberSaveable { mutableStateOf(false) }
 
-    DelayedDeleteSnackbar(state.pending, snackbar, vm, onReopen)
+    DelayedDeleteSnackbar(state.pending, snackbar, vm, openId, onReopen)
 
     // Leaving the app ends the undo window: on Android 12+ back from here only backgrounds the
     // task, so the ViewModel may never be cleared. A rotation is not leaving.
@@ -173,25 +173,28 @@ fun ListsScreen(
 }
 
 /**
- * The "<list> deleted · Undo" snackbar for the pending delete. Undo un-hides the list (and reopens
- * it if it was open); the snackbar timing out commits the delete. Each result names its own list,
- * so a late result never touches a newer delete. Re-shown after rotation.
+ * The "<list> deleted · Undo" snackbar for the pending delete. Undo un-hides the list, and reopens
+ * it if it was open and the detail pane is still empty (the user may have opened another list
+ * since). The snackbar timing out commits the delete. Each result names its own list, so a late
+ * result never touches a newer delete. Re-shown after rotation.
  */
 @Composable
 private fun DelayedDeleteSnackbar(
     pending: PendingDelete?,
     snackbar: SnackbarHostState,
     vm: ListsViewModel,
+    openId: Long?,
     onReopen: (Long) -> Unit,
 ) {
     val message = pending?.let { stringResource(R.string.list_deleted, it.label) }
     val undo = stringResource(R.string.action_undo)
     val reopen by rememberUpdatedState(onReopen)
+    val detailOpen by rememberUpdatedState(openId)
     LaunchedEffect(pending?.id) {
         val id = pending?.id ?: return@LaunchedEffect
         // Explicit: with an action, the default duration is Indefinite, which would never commit.
         when (snackbar.showSnackbar(message.orEmpty(), actionLabel = undo, duration = SnackbarDuration.Long)) {
-            SnackbarResult.ActionPerformed -> vm.undo(id)?.let { if (it.reopen) reopen(it.id) }
+            SnackbarResult.ActionPerformed -> vm.undo(id)?.let { if (it.reopen && detailOpen == null) reopen(it.id) }
             SnackbarResult.Dismissed -> vm.commit(id)
         }
     }
