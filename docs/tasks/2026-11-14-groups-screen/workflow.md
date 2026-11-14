@@ -5,7 +5,7 @@ ticket: NAM-8 — Build the groups screen: list, create, rename, delete (https:/
 ticket-id: NAM-8
 tracker-synced: In Engineering
 mode: full
-phase: implementation
+phase: code-review
 branch: flow/groups-screen
 worktree:
 created: 2026-11-14
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Task 9: device verification on niah_debug_api36 (phone), niah_tablet_api36 (tablet), then api36_niah install-over with a release build. Evidence in evidence/.
+All 9 tasks done. Final verify GREEN (`./gradlew --no-watch-fs :app:assembleDebug :shared:allTests :app:testDebugUnitTest :app:lintDebug` exit 0; app 70, shared 256 tests, 0 failures). Code review: dispatch flow-reviewer on main..flow/groups-screen against plan.md.
 
 ## Decision log
 - 2026-11-14 mode: full (user confirmed) — new screen spanning ViewModel, UI and data hooks; open design questions (delete undo vs confirm, create landing, list-detail).
@@ -30,7 +30,7 @@ Task 9: device verification on niah_debug_api36 (phone), niah_tablet_api36 (tabl
 - [x] 6. Lists screen + About sheet (f40122a)
 - [x] 7. Edit list screen (5bb483c)
 - [x] 8. Wire into the shell (c3f22f2)
-- [ ] 9. Device verification + evidence
+- [x] 9. Device verification + evidence (07b7f16 fixes, 5624bb2 evidence)
 
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
