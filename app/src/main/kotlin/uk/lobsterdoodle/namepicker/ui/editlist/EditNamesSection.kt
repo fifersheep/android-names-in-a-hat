@@ -7,10 +7,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.only
@@ -39,6 +42,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -48,6 +52,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -65,6 +70,9 @@ import uk.lobsterdoodle.namepicker.ui.nameLabel
 
 /** Content is capped and centred on wide panes, like the list-name field (spec "Large screens"). */
 private val MaxContentWidth = 840.dp
+
+/** A snackbar (48 dp) and its margins, kept clear below the last name while one shows. */
+private val SnackbarRoom = 72.dp
 
 /** Horizontal safe-drawing insets: the Column above only takes the top bar's padding. */
 private val SideInsets = WindowInsetsSides.Horizontal
@@ -126,13 +134,19 @@ fun ColumnScope.EditListNamesSlot(
         }
     }
 
-    // The list scrolls to show a name just added, once it arrives from the database.
+    // The list scrolls to show a name just added, once it arrives from the database: only when the
+    // count grew, and any change clears the request, so a failed add can't cause a later jump (A4).
+    var lastCount by remember { mutableIntStateOf(state.names.size) }
     LaunchedEffect(state.names.size) {
-        if (scrollToNew && state.names.isNotEmpty()) {
-            listState.animateScrollToItem(state.names.lastIndex)
-            scrollToNew = false
-        }
+        val grew = state.names.size > lastCount
+        lastCount = state.names.size
+        if (scrollToNew && grew) listState.animateScrollToItem(state.names.lastIndex)
+        if (state.loaded) scrollToNew = false
     }
+    // While the undo snackbar shows it covers the bottom of the list: keep the last row clear (A3).
+    val snackbarRoom = if (snackbar.currentSnackbarData != null) SnackbarRoom else 0.dp
+    val layoutDirection = LocalLayoutDirection.current
+    val sides = WindowInsets.safeDrawing.only(SideInsets).asPaddingValues()
 
     if (vm != null && state.loaded) {
         Text(
@@ -151,7 +165,11 @@ fun ColumnScope.EditListNamesSlot(
         if (vm != null) {
             LazyColumn(
                 state = listState,
-                contentPadding = WindowInsets.safeDrawing.only(SideInsets).asPaddingValues(),
+                contentPadding = PaddingValues(
+                    start = sides.calculateStartPadding(layoutDirection),
+                    end = sides.calculateEndPadding(layoutDirection),
+                    bottom = snackbarRoom,
+                ),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxWidth(),
             ) {
