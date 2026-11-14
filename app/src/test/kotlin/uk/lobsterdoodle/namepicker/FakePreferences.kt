@@ -40,5 +40,7 @@ class FakePreferences(activeGroupId: Long? = null, private val failReads: Boolea
     override suspend fun updateSortType(groupId: Long, transform: (NameSortType) -> NameSortType) =
         transform(NameSortType.NONE)
 
-    override suspend fun removeSortType(groupId: Long) = Unit
+    override suspend fun removeSortType(groupId: Long) {
+        calls += "removeSortType($groupId)"
+    }
 }
