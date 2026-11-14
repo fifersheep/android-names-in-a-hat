@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Names in a Hat</string>
-    <string name="placeholder_message">Version 3.0 is on its way</string>
+
+    <!-- 3.0 shell (NAM-7). Keys and text from the spec's copy deck; the screen tickets add the rest. -->
+    <string name="lists_title">Your lists</string>
+    <string name="lists_new">New list</string>
+    <plurals name="lists_item_names">
+        <item quantity="one">%d name</item>
+        <item quantity="other">%d names</item>
+    </plurals>
+    <string name="list_edit">Edit list</string>
+    <string name="list_delete">Delete list</string>
+    <string name="action_back">Back</string>
+    <string name="draw_back">Back to lists</string>
+    <string name="edit_title_new">New list</string>
+    <string name="edit_title">Edit list</string>
+    <string name="edit_done">Done</string>
+    <string name="edit_list_name">List name</string>
+    <string name="large_pick_list">Pick a list to draw from</string>
+    <!-- Placeholder only: NAM-8 creates the list when its name is committed. -->
+    <string name="placeholder_create">Create list</string>
+
+    <!-- 2.7.0 strings, kept until the screen tickets replace them with the copy deck. -->
 
     <string name="action_settings">Settings</string>
 
