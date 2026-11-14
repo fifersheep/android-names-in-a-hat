@@ -3,7 +3,7 @@ task: app-shell-navigation-theme
 title: Build the app shell: single activity, navigation, theme and insets
 ticket: NAM-7 — Build the app shell: single activity, navigation, theme and insets (https://linear.app/northtrack/issue/NAM-7/build-the-app-shell-single-activity-navigation-theme-and-insets)
 ticket-id: NAM-7
-tracker-synced: In Engineering
+tracker-synced: In Review
 mode: full
 phase: reporting
 branch: flow/app-shell-navigation-theme
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Review done (review.md): 0 blocking, 6 advisory. Three fixed in code (3ce8801, ea41560, 7d0a49e), two closed by device checks (rule 4 walked; corner and punch-hole cutouts), one pending the report (font size). Verify PASS at 7d0a49e: `./gradlew --no-watch-fs :app:assembleDebug :shared:allTests :app:testDebugUnitTest :app:lintDebug :app:processReleaseMainManifest`, shared 255/0, app 45/0, lint clean. Outcome re-verified on niah_debug_api36 after the fixes. Next: write report.md, open the PR, NAM-7 → In Review, then hold at gate 2.
+report.md written and PR #28 opened (https://github.com/fifersheep/android-names-in-a-hat/pull/28); NAM-7 → In Review with the PR linked. Verify PASS at 4ca74b2 (app 45/0, shared 255/0, lint clean, iOS compile). CI was pending when the PR opened. Holding at gate 2 for merge approval.
 
 ## Decision log
 - 2026-11-14 gate 1: plan approved by user (including removing Room's unused MultiInstanceInvalidationService from the merged manifest for AC1)
