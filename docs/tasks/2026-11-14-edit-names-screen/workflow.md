@@ -5,7 +5,7 @@ ticket: NAM-9 — Build the edit names screen (https://linear.app/northtrack/iss
 ticket-id: NAM-9
 tracker-synced: In Review
 mode: full
-phase: reporting
+phase: complete
 branch: flow/edit-names-screen
 worktree: ../android-names-in-a-hat-nam-9
 created: 2026-11-14
@@ -13,9 +13,10 @@ updated: 2026-11-14
 ---
 
 ## Next action
-At gate 2. report.md written; PR #30 open (https://github.com/fifersheep/android-names-in-a-hat/pull/30); NAM-9 → In Review. Verify GREEN at a5f39c2/e1e00a2: shared 277/0, app 110/0, lint 0 errors. Waiting for the user to approve the merge or request changes.
+Complete 2026-11-14. Merged via PR #30 (squash) after gate 2, CI green. Learnings saved to memory (outside the repo): names-device-verification (snackbar-window steps in one script, keyevent focus, glide swipes, no adb clipboard, headless jank meaningless) and names-repo-layout (parallel sessions share the main checkout: check reflog, use a worktree). No repo-file learnings. After the merge: NAM-9 → Done. Owner follow-ups in report.md: TalkBack walk, real-device scroll smoothness.
 
 ## Decision log
+- 2026-11-14 gate 2: merge approved by user (PR #30, CI green)
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
      answered unknowns look like: "- 2026-07-05 Q: per-user or per-team limits? A: per-user"
      log an answer the moment it is given — conversation context does not
