@@ -17,7 +17,10 @@ kotlin {
         namespace = "uk.lobsterdoodle.namepicker.shared"
         compileSdk = 37
         minSdk = 26
-        withHostTest {}
+        // Robolectric runs the Android-only DataStore migration tests (NAM-6); settings follow androidx's own.
+        withHostTest {
+            isIncludeAndroidResources = true
+        }
     }
     jvm()
     iosArm64()
@@ -31,6 +34,12 @@ kotlin {
             // implementation: Room stays behind NamesStorage and the repository interfaces.
             implementation(libs.androidx.room3.runtime)
             implementation(libs.androidx.sqlite.bundled)
+            // implementation: DataStore stays behind SettingsStorage and PreferencesRepository.
+            implementation(libs.androidx.datastore.preferences.core)
+        }
+        // SharedPreferencesMigration and preferencesDataStoreFile exist only in the Android artifact.
+        androidMain.dependencies {
+            implementation(libs.androidx.datastore.preferences)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -40,6 +49,12 @@ kotlin {
         // SQLite native library, and MigrationTestHelper is a JVM JUnit4 rule.
         jvmTest.dependencies {
             implementation(libs.androidx.room3.testing)
+        }
+        // Robolectric host tests for the Android-only SharedPreferences migration (NAM-6).
+        getByName("androidHostTest").dependencies {
+            implementation(libs.robolectric)
+            implementation(libs.androidx.test.core)
+            implementation(libs.junit)
         }
     }
 }
