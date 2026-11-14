@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Window theme only: Compose draws everything edge-to-edge (NamesTheme). Dark lives in values-night. -->
     <style name="Theme.NamesInAHat" parent="android:Theme.Material.Light.NoActionBar" />
 
@@ -12,5 +12,8 @@
         <item name="windowSplashScreenBackground">@color/top_hat_indigo</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
         <item name="postSplashScreenTheme">@style/Theme.NamesInAHat</item>
+        <!-- Light bar icons on the dark indigo splash, whatever the system theme. -->
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
     </style>
 </resources>
