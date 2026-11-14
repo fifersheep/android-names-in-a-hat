@@ -5,7 +5,7 @@ ticket: NAM-10 — Build the draw screen: select names, draw, reveal (https://li
 ticket-id: NAM-10
 tracker-synced: In Review
 mode: full
-phase: reporting
+phase: complete
 branch: flow/draw-screen-select-draw-reveal
 worktree: /Users/scoot/dev/names-in-a-hat/android-names-in-a-hat-nam10
 created: 2026-11-14
@@ -13,13 +13,14 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Gate 2: PR #31 is open (https://github.com/fifersheep/android-names-in-a-hat/pull/31), report.md is written and NAM-10 is In Review. Waiting for the user's merge approval. Open items flagged to the user: AC1 Z–A from 2.7.0 on device; a live TalkBack listen.
+Complete. PR #31 is squash-merged into `main` after gate 2 (CI green). The learnings went to memory, outside the repo: names-device-verification gained api36_niah's 2.7.0 data (no sort key), the pushed-.sql seeding method and capture limits. No repo-file learnings. After the merge, NAM-10 → Done. Final verify at c77199d: :shared 120/89/82, :app 146, lint 0 errors. Follow-ups are in report.md (AC1 Z–A on device, a live TalkBack listen, NAM-12 hand-offs).
 
 ## Decision log
 <!-- gate entries look like: "- 2026-07-05 gate 1: plan approved by user"
      answered unknowns look like: "- 2026-07-05 Q: per-user or per-team limits? A: per-user"
      log an answer the moment it is given — conversation context does not
      survive a compaction; this file does -->
+- 2026-11-14 gate 2: merge approved by user (PR #31, CI green; AC1 Z–A on device and the live TalkBack listen left as follow-ups)
 - 2026-11-14 gate 1: plan approved by user
 - 2026-11-14 mode: full (user confirmed). Reason: the app's main screen, with many files; a full-window reveal with motion and a reduced-motion version; a draw result that must survive process death; :shared changes (sort cycle, grid columns retired).
 - 2026-11-14 scope: the ticket's 2026-11-12 spec comment overrides the description. Names are wrapping chips (delete GridLayout/GridColumns and PreferencesRepository.gridColumns; AC1's column clause drops). The count control is a stepper [− n +] plus "Draw n". The counter reads "8 of 30 in the hat · 4 drawn" and labels a tri-state select-all checkbox computed over not-drawn names. Sort cycles NONE → ASC → DESC → NONE (update NameSortTypeTest, SortOrderTest, the SortOrder KDoc). MIN_NAMES_TO_DRAW = 1. The reveal is a full-window takeover with a reduced-motion crossfade.
