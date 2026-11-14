@@ -42,21 +42,31 @@
     <string name="edit_list_name">List name</string>
     <string name="edit_list_name_hint">e.g. Year 5 Maple</string>
     <string name="edit_list_name_blank">Enter a list name</string>
+
+    <!-- Edit list, names section (NAM-9) -->
+    <plurals name="edit_names_count">
+        <item quantity="one">%d name</item>
+        <item quantity="other">%d names</item>
+    </plurals>
+    <string name="edit_add_name">Add a name</string>
+    <string name="edit_add_name_hint">e.g. Ada</string>
+    <string name="edit_add_name_action">Add</string>
+    <string name="edit_name_blank">Enter a name</string>
+    <string name="edit_name_first">Name the list first</string>
+    <string name="edit_delete_name">Delete %s</string>
+    <string name="edit_rename_name">Rename %s</string>
+    <string name="edit_rename_save">Save name</string>
+    <string name="edit_rename_cancel">Cancel rename</string>
+    <string name="name_deleted">%s deleted</string>
+    <!-- Shown for a blank name migrated from 2.7.0, which had no validation (GitHub #5). -->
     <string name="name_untitled">Unnamed</string>
 
     <!-- Draw (NAM-7 shell; NAM-10 adds the rest) -->
     <string name="draw_back">Back to lists</string>
 
-    <!-- 2.7.0 strings still to be replaced: names section (NAM-9) and draw (NAM-10). -->
+    <!-- 2.7.0 strings still to be replaced: draw (NAM-10). -->
 
-    <string name="title_activity_add_names">Add Names</string>
     <string name="title_activity_selection">Draw Names</string>
-
-    <string name="add_group_button_add_name">Add Name</string>
-    <string name="add_group_label_names">Names</string>
-    <string name="add_group_name_input_hint">e.g. Jesse</string>
-
-    <string name="delete_name_button_description">Delete Name</string>
 
     <string name="generated_names_dialog_title_singular">The selected name is…</string>
     <string name="generated_names_dialog_title_multiple">The selected names are…</string>
