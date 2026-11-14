@@ -5,7 +5,7 @@ ticket: NAM-8 — Build the groups screen: list, create, rename, delete (https:/
 ticket-id: NAM-8
 tracker-synced: In Review
 mode: full
-phase: reporting
+phase: complete
 branch: flow/groups-screen
 worktree:
 created: 2026-11-14
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Gate 2 change done (5964626): blank titles display as \"Untitled list\"; verify GREEN (app 74, shared 256); device-checked. Display-only change, prior review pass stands (noted in review.md). Back at gate 2 for merge approval on PR #29.
+Complete 2026-11-14. Merged via PR #29 after gate 2. Learnings saved to memory (outside the repo): material3 1.5 traps (names-build-gotchas) and device-check tactics, including adb root on api36_niah (names-device-verification). Owner follow-up: the TalkBack walk on a real device. Other follow-ups are in report.md (A1 stranded pending delete; NAM-9 slot listId and commitName; NAM-10 shared title key).
 
 ## Decision log
 - 2026-11-14 mode: full (user confirmed) — new screen spanning ViewModel, UI and data hooks; open design questions (delete undo vs confirm, create landing, list-detail).
@@ -21,6 +21,7 @@ Gate 2 change done (5964626): blank titles display as \"Untitled list\"; verify 
 - 2026-11-14 Q: the About sheet (D19) on the Lists overflow has no owning ticket — build it in NAM-8? A: yes, in NAM-8.
 - 2026-11-14 gate 1: plan approved by user
 - 2026-11-14 gate 2 Q: blank 2.7.0 titles show as untitled cards — ticket it or fix now? A: fix now ("Untitled list" display fallback), then merge.
+- 2026-11-14 gate 2: merge approved by user
 
 ## Progress
 - [x] 1. Drawn count in :shared + verify config (af892c3)
