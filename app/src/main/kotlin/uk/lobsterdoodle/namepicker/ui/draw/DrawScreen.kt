@@ -148,6 +148,14 @@ fun DrawScreen(
         }
     }
 
+    state.reveal?.let { reveal ->
+        RevealOverlay(
+            reveal = reveal,
+            onDone = vm::dismiss,
+            onDrawMore = vm::drawMore,
+            onPlayed = vm::onRevealPlayed,
+        )
+    }
 }
 
 /** The sticky select-all header over the scrolling chips. */
