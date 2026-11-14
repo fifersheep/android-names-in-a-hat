@@ -52,14 +52,6 @@ class PreferencesRepositoryTest {
     }
 
     @Test
-    fun `the retired grid columns read as the default and are never stored`() = test {
-        assertEquals(2, prefs.gridColumns.first())
-        prefs.setGridColumns(1)
-        assertEquals(2, prefs.gridColumns.first())
-        assertTrue(storedKeys().isEmpty(), "nothing should be stored: ${storedKeys()}")
-    }
-
-    @Test
     fun `the active group is set and cleared under the legacy key`() = test {
         prefs.setActiveGroup(7)
         assertEquals(7L, prefs.activeGroupId.first())

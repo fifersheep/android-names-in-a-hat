@@ -105,7 +105,6 @@ class LegacyNameListMigrationTest {
 
         assertNull(prefs.activeGroupId.first())
         assertEquals(NameSortType.NONE, prefs.sortType(3).first())
-        assertEquals(2, prefs.gridColumns.first())
         assertFalse(legacyFile.exists())
     }
 

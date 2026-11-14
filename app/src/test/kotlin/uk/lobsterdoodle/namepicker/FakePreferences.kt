@@ -31,10 +31,6 @@ class FakePreferences(activeGroupId: Long? = null, private val failReads: Boolea
         if (active.value == id) active.value = null
     }
 
-    override val gridColumns: Flow<Int> = flowOf(2)
-
-    override suspend fun setGridColumns(count: Int) = Unit
-
     override fun sortType(groupId: Long): Flow<NameSortType> = flowOf(NameSortType.NONE)
 
     override suspend fun updateSortType(groupId: Long, transform: (NameSortType) -> NameSortType) =

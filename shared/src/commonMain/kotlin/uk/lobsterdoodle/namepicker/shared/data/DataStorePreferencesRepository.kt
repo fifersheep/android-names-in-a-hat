@@ -7,11 +7,9 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import uk.lobsterdoodle.namepicker.shared.model.NameSortType
 import uk.lobsterdoodle.namepicker.shared.repository.PreferencesRepository
-import uk.lobsterdoodle.namepicker.shared.selection.DEFAULT_GRID_COLUMNS
 
 /*
  * Key names and value types are 2.7.0's (`name_list` SharedPreferences), so migrated values are
@@ -48,12 +46,6 @@ internal class DataStorePreferencesRepository(private val store: DataStore<Prefe
     override suspend fun clearActiveGroupIf(id: Long) {
         store.edit { if (it[activeGroupIdKey] == id) it.remove(activeGroupIdKey) }
     }
-
-    /** Retired with the column toggle (3.0 spec D5): never stored. NAM-10 removes it from the interface. */
-    override val gridColumns: Flow<Int> = flowOf(DEFAULT_GRID_COLUMNS)
-
-    /** Retired with the column toggle (3.0 spec D5): does nothing. */
-    override suspend fun setGridColumns(count: Int) = Unit
 
     override fun sortType(groupId: Long): Flow<NameSortType> =
         store.data.map { NameSortType.fromStored(it[sortTypeKey(groupId)]) }.distinctUntilChanged()

@@ -21,15 +21,6 @@ interface PreferencesRepository {
      */
     suspend fun clearActiveGroupIf(id: Long)
 
-    /**
-     * The draw-screen column count, or 2 when nothing is stored. Not range-checked here.
-     * Retired with the column toggle (3.0 spec D5): the DataStore implementation neither migrates
-     * nor stores it and always emits 2. NAM-10 removes it.
-     */
-    val gridColumns: Flow<Int>
-
-    suspend fun setGridColumns(count: Int)
-
     /** A group's name order; [NameSortType.NONE] when nothing, or an unrecognised value, is stored. */
     fun sortType(groupId: Long): Flow<NameSortType>
 

@@ -81,12 +81,6 @@ class PreferencesThreadingTest {
                 "removeSortType" to { prefs.removeSortType(1) },
             )
             for ((label, write) in writes) assertFileWorkOffCaller(label, write)
-
-            // Retired: no file work at all, so certainly none on the caller.
-            fileSystem.threads.clear()
-            prefs.gridColumns.first()
-            prefs.setGridColumns(1)
-            assertTrue(Thread.currentThread() !in fileSystem.threads, "gridColumns did file work on the caller")
             settings.closeAndJoin()
         }
     }
