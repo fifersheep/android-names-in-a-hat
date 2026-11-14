@@ -2,6 +2,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
+    // Navigation 3 keys are @Serializable so the back stack survives process death.
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
@@ -60,6 +62,11 @@ android {
         compose = true
     }
 
+    testOptions {
+        // ViewModels log with android.util.Log; JVM unit tests get no-op stubs instead of throwing.
+        unitTests.isReturnDefaultValues = true
+    }
+
     lint {
         // Unavoidable: the Play listing already sits at 2000000001, so every future code is "very high".
         disable += "HighAppVersionCode"
@@ -74,9 +81,24 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
     implementation(libs.compose.material3)
+    implementation(libs.compose.material3.adaptive)
+    implementation(libs.compose.material3.adaptive.layout)
+    implementation(libs.compose.material3.adaptive.navigation3)
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
 
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.kotlinx.serialization.core)
+    implementation(libs.androidx.core.splashscreen)
+
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.lifecycle.viewmodel.compose)
+
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
