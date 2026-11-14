@@ -115,7 +115,7 @@ fun AppNavigation(start: List<AppKey>, shell: ShellViewModel) {
                         EditListPlaceholder(
                             key = key,
                             onUp = back,
-                            onCreated = { backStack.listCreated(it) },
+                            onCreated = { backStack.listCreated(it, key.session) },
                             onDone = { backStack.doneEditing() },
                             onGone = listGone,
                         )

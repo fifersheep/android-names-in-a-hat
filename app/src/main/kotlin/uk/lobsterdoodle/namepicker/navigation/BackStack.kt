@@ -32,10 +32,13 @@ fun MutableList<NavKey>.editList(id: Long, fromDraw: Boolean, session: Long = ne
     add(EditList(listId = id, session = session))
 }
 
-/** The new list was created: swap `EditList(null)` for `EditList(id)` in place (rule 1). */
-fun MutableList<NavKey>.listCreated(id: Long) {
+/**
+ * Visit [session] created its list: swap its `EditList(null)` for `EditList(id)` in place (rule 1).
+ * A create that finishes after the user has moved on to another visit changes nothing.
+ */
+fun MutableList<NavKey>.listCreated(id: Long, session: Long) {
     val top = lastOrNull() as? EditList ?: return
-    if (top.listId != null) return
+    if (top.listId != null || top.session != session) return
     set(lastIndex, top.copy(listId = id, isNew = true))
 }
 

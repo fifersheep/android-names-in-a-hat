@@ -51,8 +51,23 @@ class BackStackTest {
     @Test
     fun `creating the list replaces EditList(null) and keeps the session (rule 1)`() {
         val s = stack(Lists, EditList(null, session = 11))
-        s.listCreated(5)
+        s.listCreated(5, session = 11)
         assertEquals<List<NavKey>>(listOf(Lists, EditList(5, isNew = true, session = 11)), s)
+    }
+
+    @Test
+    fun `a late create from an earlier visit leaves the current visit alone`() {
+        val s = stack(Lists, EditList(null, session = 12))
+        s.listCreated(5, session = 11)
+        assertEquals<List<NavKey>>(listOf(Lists, EditList(null, session = 12)), s)
+    }
+
+    @Test
+    fun `back from an edit opened from Lists returns to Lists (rule 3)`() {
+        val s = stack(Lists)
+        s.editList(4, fromDraw = false, session = 13)
+        assertNull(s.back(singlePane = true))
+        assertEquals<List<NavKey>>(listOf(Lists), s)
     }
 
     @Test
