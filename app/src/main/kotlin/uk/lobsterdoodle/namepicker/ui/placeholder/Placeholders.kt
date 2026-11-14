@@ -39,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import uk.lobsterdoodle.namepicker.R
 import uk.lobsterdoodle.namepicker.navigation.Draw
@@ -86,6 +87,11 @@ fun DrawPlaceholder(key: Draw, onUp: () -> Unit, onEdit: () -> Unit, onGone: (Lo
     val vm = hiltViewModel<DrawViewModel, DrawViewModel.Factory>(creationCallback = { it.create(key.listId) })
     val status by vm.status.collectAsStateWithLifecycle()
     LaunchedEffect(status) { if (status == ListStatus.Gone) onGone(key.listId) }
+    // Started only while the entry is on the back stack (Navigation 3 caps popped entries at CREATED).
+    LifecycleStartEffect(status) {
+        vm.onShown()
+        onStopOrDispose {}
+    }
     Scaffold(
         topBar = {
             TopAppBar(

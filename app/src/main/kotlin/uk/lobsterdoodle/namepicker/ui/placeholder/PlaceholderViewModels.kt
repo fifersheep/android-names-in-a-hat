@@ -64,22 +64,21 @@ class DrawViewModel @AssistedInject constructor(
     private val activeGroup: ActiveGroup,
 ) : ViewModel() {
 
-    private val _status = MutableStateFlow<ListStatus>(ListStatus.Loading)
-    val status: StateFlow<ListStatus> = _status.asStateFlow()
+    val status: StateFlow<ListStatus> =
+        groups.status(listId).stateIn(viewModelScope, SharingStarted.Eagerly, ListStatus.Loading)
 
-    init {
-        viewModelScope.launch {
-            var opened = false
-            groups.status(listId).collect { status ->
-                // Opening Draw makes the list active (spec "Launch"), but only once it is known to
-                // exist, so a stale id at launch is never stored again.
-                if (status is ListStatus.Present && !opened) {
-                    opened = true
-                    activeGroup.open(listId)
-                }
-                _status.value = status
-            }
-        }
+    private var opened = false
+
+    /**
+     * Opening Draw makes the list active (spec "Launch"). The entry calls this while it is started,
+     * which a popped entry never is again, so a list the user has just left (or replaced in
+     * list-detail) can't be stored after the fact. It does nothing until the list is known to
+     * exist, so a stale id at launch is never stored again; the entry calls again once it is.
+     */
+    fun onShown() {
+        if (opened || status.value !is ListStatus.Present) return
+        opened = true
+        viewModelScope.launch { activeGroup.open(listId) }
     }
 
     @AssistedFactory
