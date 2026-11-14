@@ -137,7 +137,9 @@ class EditListViewModel @AssistedInject constructor(
         storeText(label)
         if (label == storedLabel) return
         storedLabel = label
-        viewModelScope.launch { editor.rename(id, label) }
+        // The app scope, not viewModelScope: Done pops the screen at once, and a cancelled write
+        // would be lost because onCleared sees the name as already stored.
+        appScope.launch { editor.rename(id, label) }
     }
 
     private fun storeText(value: String) {

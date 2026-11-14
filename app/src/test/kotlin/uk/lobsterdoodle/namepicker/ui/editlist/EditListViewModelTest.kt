@@ -14,6 +14,7 @@ import kotlin.test.assertTrue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -188,6 +189,18 @@ class EditListViewModelTest {
         assertEquals(0, done)
         assertTrue(vm.error)
         assertEquals(listOf("Year 5"), groups.labels())
+    }
+
+    @Test
+    fun `done keeps the rename when the screen is cleared before the write runs`() {
+        // Main queues work, so viewModelScope hasn't run anything when the store is cleared.
+        Dispatchers.setMain(StandardTestDispatcher())
+        val groups = FakeGroups(Group(3, "Year 5"))
+        val (vm, store) = stored(3, groups)
+        vm.onTextChange("Year 6")
+        vm.done {}
+        store.clear()
+        assertEquals(listOf("Year 6"), groups.labels())
     }
 
     @Test
