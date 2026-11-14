@@ -122,7 +122,8 @@ fun ListsScreen(
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = { leaving(onNew) },
-                icon = { Icon(painterResource(R.drawable.ic_add), contentDescription = null) },
+                // The FAB's accessible label comes from its icon: material3 clears the text's semantics.
+                icon = { Icon(painterResource(R.drawable.ic_add), contentDescription = stringResource(R.string.lists_new)) },
                 text = { Text(stringResource(R.string.lists_new)) },
                 modifier = Modifier.sharedBoundsIfSinglePane(ListsSharedKeys.NEW_LIST, singlePane),
             )
@@ -208,11 +209,11 @@ private fun ListCardItem(
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val colors = if (selected) {
-        ListItemDefaults.segmentedColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
-    } else {
-        ListItemDefaults.segmentedColors()
-    }
+    // The canvas fills cards with surfaceContainer, and the open list with secondaryContainer
+    // (ListsScreen.dc.html); M3's segmented default is close to the surface and barely shows.
+    val colors = ListItemDefaults.segmentedColors(
+        containerColor = if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainer,
+    )
     SegmentedListItem(
         onClick = onOpen,
         shapes = ListItemDefaults.segmentedShapes(index, count),
