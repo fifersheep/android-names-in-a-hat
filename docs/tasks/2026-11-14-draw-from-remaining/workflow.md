@@ -5,7 +5,7 @@ ticket: NAM-12 — Draw additional names from those remaining (https://linear.ap
 ticket-id: NAM-12
 tracker-synced: In Review
 mode: full
-phase: reporting
+phase: complete
 branch: flow/draw-from-remaining
 worktree: ../android-names-in-a-hat-nam-12
 created: 2026-11-14
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Gate 2: waiting for the user to approve the merge of PR #32 (https://github.com/fifersheep/android-names-in-a-hat/pull/32); report.md is written. NAM-12 → In Review. Verify at 4017cf3 is green: app 165/0, shared jvm 133 / iOS 94 / androidHost 101, lint 0 errors.
+Complete. PR #32 is squash-merged into `main` after gate 2 (CI green). Learnings went to memory, outside the repo: names-device-verification gained the spare debug AVD (niah_api30), the disk-space check, `timeout` around adb, and Compose semantics via Robolectric. There are no repo-file learnings. After the merge, NAM-12 → Done. Owner follow-ups are in report.md: closing GitHub #16 (AC11, asked separately), a live TalkBack listen, and an optional tablet check. Final verify at 4017cf3: app 165/0; shared jvm 133, iOS 94, androidHost 101; lint 0 errors.
 
 ## Decision log
 - 2026-11-14 mode: full, confirmed by the user. It spans :shared draw logic, a new per-name un-draw in NameRepository/Room, and draw-screen UI, with 11 ACs.
@@ -25,6 +25,7 @@ Gate 2: waiting for the user to approve the merge of PR #32 (https://github.com/
 - 2026-11-14 gate 1: plan approved by user (including the Robolectric semantics test for AC10)
 
 - 2026-11-14 Q: which emulator for task 5, given the disk-full failure? A: the user freed disk space; retry niah_api30.
+- 2026-11-14 gate 2: merge approved by user (PR #32, CI green)
 
 ## Progress
 - [x] 1. Per-name un-draw in the repo + fake hooks (3b0c1ef)
