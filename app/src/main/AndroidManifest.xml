@@ -6,24 +6,35 @@
         android:name=".NamesApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NamesInAHat"
-        tools:targetApi="31">
+        tools:targetApi="33">
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.NamesInAHat">
+            android:theme="@style/Theme.NamesInAHat.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--
+            Room 3 declares this for multi-instance invalidation, which buildNamesDatabase never enables
+            (shared/.../data/DatabaseBuilder.kt), so it is never started. Removed so the app has no
+            Service (NAM-7 AC1). Restore it if enableMultiInstanceInvalidation() is ever added.
+            MissingClass: Room is an implementation dependency of :shared, so lint can't see the class.
+        -->
+        <service
+            android:name="androidx.room3.MultiInstanceInvalidationService"
+            tools:ignore="MissingClass"
+            tools:node="remove" />
     </application>
 
 </manifest>

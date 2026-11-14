@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Window theme only; Compose draws edge-to-edge. The real theme arrives with the app shell (NAM-7). -->
+    <!-- Window theme only: Compose draws everything edge-to-edge (NamesTheme). Dark lives in values-night. -->
     <style name="Theme.NamesInAHat" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!--
+        Launch theme for the platform splash (core-splashscreen). It shows until the launch route is
+        known, then MainActivity switches to postSplashScreenTheme. No exit animation: on API 31-32 a
+        custom one re-applies system-bar flags from the post theme over enableEdgeToEdge.
+    -->
+    <style name="Theme.NamesInAHat.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/top_hat_indigo</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.NamesInAHat</item>
+    </style>
 </resources>
