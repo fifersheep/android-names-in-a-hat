@@ -2,7 +2,6 @@ package uk.lobsterdoodle.namepicker.ui.placeholder
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,16 +14,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.navigation3.LocalListDetailSceneScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,7 +28,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -44,6 +38,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import uk.lobsterdoodle.namepicker.R
 import uk.lobsterdoodle.namepicker.navigation.Draw
 import uk.lobsterdoodle.namepicker.navigation.EditList
+import uk.lobsterdoodle.namepicker.ui.ListStatus
+import uk.lobsterdoodle.namepicker.ui.components.HatIllustration
+import uk.lobsterdoodle.namepicker.ui.components.UpButton
 
 // Placeholder destinations (NAM-7). Each shows its key and drives the shell's back-stack
 // operations; the screen tickets replace the content, not the wiring.
@@ -158,22 +155,17 @@ fun EditListPlaceholder(
 /** The detail pane when no list is open (spec "Large screens"). */
 @Composable
 fun PickAListPlaceholder() {
-    Box(Modifier.fillMaxSize().safeDrawingPadding(), contentAlignment = Alignment.Center) {
+    Column(
+        Modifier.fillMaxSize().safeDrawingPadding().padding(horizontal = 40.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        HatIllustration()
         Text(
             stringResource(R.string.large_pick_list),
             style = MaterialTheme.typography.headlineSmall,
             textAlign = TextAlign.Center,
         )
-    }
-}
-
-/** Up, hidden in list-detail where Lists is always visible beside the detail. */
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
-@Composable
-private fun UpButton(onUp: () -> Unit, description: Int) {
-    if (LocalListDetailSceneScope.current != null) return
-    IconButton(onClick = onUp) {
-        Icon(painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(description))
     }
 }
 

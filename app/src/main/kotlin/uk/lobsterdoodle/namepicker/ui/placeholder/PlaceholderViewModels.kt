@@ -13,10 +13,11 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import uk.lobsterdoodle.namepicker.shared.model.GroupSummary
+import uk.lobsterdoodle.namepicker.ui.ListStatus
+import uk.lobsterdoodle.namepicker.ui.status
 import uk.lobsterdoodle.namepicker.shared.repository.GroupRepository
 import uk.lobsterdoodle.namepicker.shared.usecase.ActiveGroup
 import uk.lobsterdoodle.namepicker.shared.usecase.GroupEditor
@@ -24,22 +25,6 @@ import uk.lobsterdoodle.namepicker.shared.usecase.WriteResult
 
 // Placeholder ViewModels for the shell (NAM-7). The screen tickets (NAM-8/9/10) grow these into
 // the real screens' ViewModels; the list-status handling and the active-list rule stay.
-
-/** Whether the list a destination shows still exists. */
-sealed interface ListStatus {
-    data object Loading : ListStatus
-
-    /** Edit list before the list is created. */
-    data object Unsaved : ListStatus
-
-    data class Present(val label: String) : ListStatus
-
-    /** Deleted, or a stale id: the shell drops the destination. */
-    data object Gone : ListStatus
-}
-
-private fun GroupRepository.status(id: Long) =
-    observeGroup(id).map { group -> group?.let { ListStatus.Present(it.label) } ?: ListStatus.Gone }
 
 @HiltViewModel
 class ListsViewModel @Inject constructor(
