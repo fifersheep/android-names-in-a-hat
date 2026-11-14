@@ -24,12 +24,14 @@ Task 5 (device check) is blocked: waiting for the user to pick an emulator. niah
 - 2026-11-14 plan critic: 1 Blocking finding: AC10 can't be evidenced by a uiautomator dump, which has no Compose stateDescription or custom actions. Fixed by adding one Robolectric Compose semantics test to :app, with the owner's TalkBack check as the fallback. 8 Advisory findings were folded in: the 4 more VM tests that marking breaks, fake failure/gate hooks, VM catches a failed mark, DatabaseThreadingTest, no snackbar for an empty reset, a one-script Reset→Undo device step, the landscape snackbar check, and the assumption-2 evidence corrected.
 - 2026-11-14 gate 1: plan approved by user (including the Robolectric semantics test for AC10)
 
+- 2026-11-14 Q: which emulator for task 5, given the disk-full failure? A: the user freed disk space; retry niah_api30.
+
 ## Progress
 - [x] 1. Per-name un-draw in the repo + fake hooks (3b0c1ef)
 - [x] 2. HatDraw use case + tests (28dd911)
 - [x] 3. DrawViewModel on HatDraw: mark on draw, reset/undo, put back (8e9ca3c)
 - [x] 4. UI: Reset, undo snackbar, Put back menu + a11y action, semantics test (9a4bc2f)
-- [ ] 5. Device check
+- [x] 5. Device check (evidence/README.md)
 
 ## Deviations
 <!-- record at the moment they happen, never reconstructed later -->
@@ -37,3 +39,4 @@ Task 5 (device check) is blocked: waiting for the user to pick an emulator. niah
 - 2026-11-14 task 4: :app lint now reports NewerVersionAvailable for robolectric 4.17 → 4.18, because :app uses the catalog entry. Kept at 4.17 to match :shared (warning only; 0 errors).
 - 2026-11-14 task 4: unitTests.isIncludeAndroidResources = true was added to :app (needed for the Robolectric semantics test to resolve strings). The plan didn't name it.
 - 2026-11-14 task 5: niah_debug_api36 was already running with an app updated at 20:17, and the names-in-a-hat-bd session was busy, so niah_api30 was used instead to avoid interfering. niah_api30's adb hung (uiautomator, screencap and shell all stalled; ColorBuffer errors). A reboot with -gpu swiftshader_indirect was refused: "not enough disk space" (9.5 GiB free). The debug build was installed on niah_api30 and a "Year 6 Oak" list seeded there before it hung. Now waiting on the user.
+- 2026-11-14 task 5: run on niah_api30 (API 30), not niah_debug_api36 (which another session may be using). After the user freed disk space, niah_api30 booted fine. The check covered portrait and landscape on a phone; no tablet run (not in the plan).
