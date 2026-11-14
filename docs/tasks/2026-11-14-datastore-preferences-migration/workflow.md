@@ -5,7 +5,7 @@ ticket: NAM-6 — Replace SharedPreferences with DataStore and migrate existing 
 ticket-id: NAM-6
 tracker-synced: In Review
 mode: full
-phase: reporting
+phase: complete
 branch: flow/datastore-preferences-migration
 worktree: ../android-names-in-a-hat-nam-6
 created: 2026-11-14
@@ -13,7 +13,7 @@ updated: 2026-11-14
 ---
 
 ## Next action
-Report written and PR #27 opened 2026-11-14 (https://github.com/fifersheep/android-names-in-a-hat/pull/27). NAM-6 → In Review. Hand-off comments posted on NAM-8 (the AC6 settings check), NAM-7 (Hilt singleton, launch) and NAM-13 (backup). Verify at 68dc540: 255 tests / 0 failures, plus the iOS compile and lint. Next: gate 2, user approval to merge (watch the CI checks on #27).
+Complete 2026-11-14. Merged via PR #27 after gate 2. Learning saved to the names-build-gotchas memory (outside the repo): worktrees need local.properties, and Robolectric is pinned to sdk=34 on JDK 17. Follow-ups are on NAM-8 (AC6 settings check), NAM-7 (Hilt singleton, launch) and NAM-13 (backup rules).
 
 ## Decision log
 - 2026-11-14 mode: full (user confirmed). Reason: new multiplatform library (DataStore in :shared), Android-only SharedPreferencesMigration wiring, open questions on per-platform file location and how a group delete reaches the sort key.
@@ -22,6 +22,7 @@ Report written and PR #27 opened 2026-11-14 (https://github.com/fifersheep/andro
 - 2026-11-14 Q: AC6 (device check: 2.7.0 then this build over it) needs :app wiring, which is NAM-7's. A: defer it to NAM-8's install-over check, as with NAM-5's AC7. No :app changes in NAM-6; prove the migration with a Robolectric test on a 2.7.0-format name_list.xml. Add the settings check to NAM-8 at reporting.
 - 2026-11-14 Q: AC1 test route? A: Robolectric (4.17, not 4.18, which is one day old) host tests in :shared androidHostTest, and add the Android host test task to CI's unit-tests job.
 - 2026-11-14 gate 1: plan approved by user
+- 2026-11-14 gate 2: merge approved by user
 
 ## Progress
 - [x] 1. Dependencies and test setup (DataStore 1.3.0, Robolectric 4.17 host tests, smoke test) — 6818fd5 (235 tests, 0 failures)
